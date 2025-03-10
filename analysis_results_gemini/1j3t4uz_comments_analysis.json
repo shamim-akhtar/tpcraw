@@ -1,0 +1,32 @@
+[
+  {
+    "author": "DragSufficient6885",
+    "comment": "check out the other question  i created about bda modules information. you can get some from there",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "TheoryPatient6067",
+    "comment": "No point being like others & waiting for seniors to help you. Be resourceful.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Be resourceful\", \"Take initiative\", \"Don't rely solely on seniors for help\"]\n}\n```"
+  },
+  {
+    "author": "Traditional_Tough613",
+    "comment": "Ah yes, the pinnacle of wisdom from the \u2018I suffered, so you should too\u2019 school of thought. Iconic. Truly, what would the world do without self-proclaimed gatekeepers of knowledge like you? If asking seniors for guidance is a crime, I guess mentorship, teamwork, and basic human decency must be obsolete concepts in your world. Keep flexing that 'resourcefulness'. OP, I hope someone responds to your question soon. And atb for y2!",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"mentorship\"],\n  \"complaints\": [\"Dismissive attitude of seniors towards underclassmen\", \"Lack of mentorship and guidance from seniors\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "TheoryPatient6067",
+    "comment": "Everyt can be found on the school\u2019s website? What is there to gate keep? You scared to lose out too in the race is it? I have nth to worry about as I am alr doing ok. Im alr projected to be in director\u2019s list, don\u2019t need to gate keep anything. Its facts, a lot of the students SHOULD be resourceful themselves - how else did i survive both semester as someone who came in with ZERO knowledge of coding?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of readily available information (implies gatekeeping)\", \"Students should be more resourceful\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "DragSufficient6885",
+    "comment": "damn bro none of your comments are even related to bda and you seem to be so proud of yourself good for you bro but you could keep it to yourself",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Irrelevant comments on a post about Building and Design Arts (BDA)\"],\n  \"suggestions\": [\"Keep comments relevant to the discussion topic\"]\n}\n```"
+  },
+  {
+    "author": "TheoryPatient6067",
+    "comment": "No worries, opinions are meant to be shared. I cant control what you want to absorb or ignore. Regardless where any of us go to in life, we will always face critics. Starting to think that this generation is weak in accepting any form of opinions, regardless of the level of pessimism.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

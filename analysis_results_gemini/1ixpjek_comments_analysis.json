@@ -1,0 +1,12 @@
+[
+  {
+    "author": "nothappygooutside",
+    "comment": "i believe you would have to withdraw from your current full-time course and apply for the part-time course next year. however, you should note that some part-time courses require work experience to get in. do check the requirements for admission of part-time courses in TP before withdrawing.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Check the admission requirements for part-time courses before withdrawing from the full-time course.\"]\n}\n```"
+  },
+  {
+    "author": "Which_Action_5554",
+    "comment": "Perhaps speak with your current CP about it first ?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Speak with current course planner (CP)\"]\n}\n```"
+  }
+]

@@ -1,0 +1,72 @@
+[
+  {
+    "author": "TheoryPatient6067",
+    "comment": " I got A A A, quite expected (last min studied test/quiz and was rushing assignment). Praying it pulls my other subjects",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "A B+ A here. Honestly I really didn't like the assignment, it was way too much yapping and barely related to data structures at all (more like \"how to draw digital diagram course\"). The only trick was \"stacks are not good to represent a queue\" (duh).",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"assignments\"],\n  \"complaints\": [\"Assignment was excessive and unrelated to data structures\", \"Assignment focused too much on digital diagram creation\", \"The 'trick' in the assignment was considered obvious and trivial.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Low_Nobody_5690",
+    "comment": "not that good. ='(. How about you?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"not that good\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "Top 25% of the cohort got higher than 77% in terms of grade, the other top 75% of the cohort got 69% and below in terms of grade.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Large grade disparity between top 25% and the rest of the cohort.  Suggests potential issues with curriculum, teaching, or assessment methods.\"],\n  \"suggestions\": [\"Review grading system and curriculum to address the wide grade disparity. Explore additional support for students struggling to achieve higher grades.\"]\n}\n```"
+  },
+  {
+    "author": "Lower_Cantaloupe_477",
+    "comment": "So easy A A A , idk how yall struggled stupid or what sia",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Low_Nobody_5690",
+    "comment": "waahh. teach me how u study.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Kitapitapy",
+    "comment": "Right especially the last part was so random for a data structures class(????)",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"data structures\"],\n  \"complaints\": [\"The last part of the data structures class was random and confusing.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Low_Nobody_5690",
+    "comment": "i tried comparing my answers to the feedbacks given on politemall; i didnt use stacks and for the validation part, i think mine is not that 'general'. but still, did not get my desired marks. My second quiz was also quite bad. haiizzzzzz",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Received undesired marks on quizzes\", \"Coding approach (lack of stacks and general validation) was insufficient for achieving desired marks\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "No_Afternoon_3157",
+    "comment": "Where did you get these numbers?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Low_Nobody_5690",
+    "comment": "for the module as a whole or for the assignment specifically?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "TheoryPatient6067",
+    "comment": "Aiyo.. relax bro. Tbh the tests were designed in a way where they had varying mark allocation for harder questions. Example, a qn holds 2.5 marks (worth 5 qns) which can greatly bring down a grade if not answered well. Having 2-3 of the 2.5 marks qns wrong can bring you to a D easily\u2026. Quite unfortunate but thats how it is. Even though it wasnt hard for us, i can understand why one with not much experience would struggle.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Test design with disproportionate mark allocation for difficult questions can easily lead to a lower grade.\", \"A few difficult questions can significantly impact the overall grade.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "Imagine lacking substance, so much so that you decide to flex on Reddit...",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Lack of substance\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Fix-IIT",
+    "comment": "the assignment can eat shit",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"assignment workload\", \"difficult assignment\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "assignment",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

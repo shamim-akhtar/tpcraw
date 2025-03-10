@@ -1,0 +1,18 @@
+=== POST CONTENT ===
+Title: Y1 common ICT
+Author: Different_Scratch124
+Score: 5
+URL: https://www.reddit.com/r/TemasekPoly/comments/1iwa8od/y1_common_ict/
+Created: 2025-02-23 21:33:57
+Body: Hi I'm going into common ICT y1 this year .Just curious about what is taught in common ICT y1.
+Thank you
+
+
+=== COMMENTS ===
+Comment by mount2010: TP ITSIG has a website about this: https://tp-itsig.github.io/
+
+Basic networking (routers, switches, modems: what they do and how to connect them), user interface design, Python (through Juypter Notebook), Data Structures/Algorithms intro (Python again), computer math (logarithms, boolean logic, functions, etc), HTML/CSS/JS/SQL, data analytics.
+
+**Note** that for our batch that there was **no** introduction to computers or how to use basic Windows features. If you are a student who has no prior computing knowledge, I would highly recommend picking up how to use Windows **now** rather than when you enrol and find yourself lost. I have given feedback about this but I cannot guarantee that they will make modifications based on it.
+
+

@@ -1,0 +1,36 @@
+=== POST CONTENT ===
+Title: device for poly
+Author: TiredEclipse
+Score: 1
+URL: https://www.reddit.com/r/TemasekPoly/comments/1ipypld/device_for_poly/
+Created: 2025-02-15 18:34:06
+Body: hi guys just curious whether there is any student subsidy to purchase devices for us y1s? eg like any vendor recommended by the sch where we can get devices for a cheaper price
+
+
+=== COMMENTS ===
+Comment by mount2010: Please refer to this page:
+https://www.tp.edu.sg/life-at-tp/tp-students-digital-access-it-matters/students-it-needs.html 
+
+Yes, you can apply for financial subsidy for the device if you have been approved for government bursary. There are two plans, one where you buy and they reimburse later, and one where you pay a lower fee and the school chooses the model (no options).
+
+Personally I went for the latter and the model they chose is pretty solid and exceeds most expectations.
+
+Comment by pokkagreentea100: if I'm not wrong isn't there an eligibility criteria, like income? at least that's what I remembered.
+
+Comment by Aggravating_Ear2679: Do they restrict the device like in Sec sch or no? Cus i don't wanna ruin my laptop
+
+Comment by Double_Background516: May I ask how much did u ending paying for the laptop
+
+Comment by mount2010: Something like that, yeah, OP should check with the student services office -- but I think they said like "most students qualify for government bursary" or something
+
+Comment by mount2010: No restrictions at all apart from needing to download Lockdown Browser for quizzes and tests (from what I see, lockdown browser clears itself completely after you exit). I'd recommend against accepting any "allow your organization to manage your device" prompts (e.g. when signing into Microsoft apps) since that might change settings on your laptop. But other than that I don't think TP cares what you do on your laptop.
+
+Also the school wifi blocks the usual suspects and games but that's about it.
+
+Comment by mount2010: Around $200+. Full price $1200ish, they cover $1000.
+
+Comment by pokkagreentea100: :p FYI actually PCI must be less or equals to $1,100 or GHI less or equals to $4,400, so only 2 tiers of the government bursary are eligible.  (according to sch website) 
+
+op should check if they qualify even trying to apply yea.
+
+

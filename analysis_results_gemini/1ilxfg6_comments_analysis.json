@@ -1,0 +1,42 @@
+[
+  {
+    "author": "Efficient-Artist9230",
+    "comment": "temasekIIT is so back",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Potential-Donut6922",
+    "comment": "huh",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "trixx488",
+    "comment": "knn knn cb",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"The text is incomprehensible and does not provide any information about Temasek Polytechnic.\"],\n  \"suggestions\": [\"More context or clearer language is needed to analyze sentiment and relevant topics.\"]\n}\n```"
+  },
+  {
+    "author": "BlacksmithGloomy9448",
+    "comment": "Guys MUST we follow the sample demo? Or did anyone else just see it but not follow it exactly \ud83d\ude2d\ud83d\ude4f\ud83c\udffb",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "IndependentNo6105",
+    "comment": "peak iit experience",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Comfortable-Net-5126",
+    "comment": "WHERE GOT",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "There\u2019s no need to follow the exact structure as long as it has the same function dun worry",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Comfortable-Net-5126",
+    "comment": "gg",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

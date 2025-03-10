@@ -1,0 +1,52 @@
+[
+  {
+    "author": "AtomZones",
+    "comment": "You\u2019ll literally have to TRY to fail",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "PalpitationLate7376",
+    "comment": "how to fail cict \ud83d\ude2d js don't be a clown wadafak",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Difficulty in CICT module (likely refers to a specific course in the School of Computing & Information Technology)\", \"Frustration with JavaScript\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "nothappygooutside",
+    "comment": "yes i've seen it before. someone failed the entire thing because of one assignment, he didn't read the instructions properly and wrote something completely irrelevant. CICT is usually non-graded so just put minimal effort in it to pass. but the keyword is minimal effort, not lacklustre effort, so make sure to read the marking rubrics before each assignment.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Failed entire module due to one assignment and misunderstanding instructions\", \"Irrelevant work submitted due to not reading instructions\"],\n  \"suggestions\": [\"Read marking rubrics carefully before each assignment\", \"Put minimal but sufficient effort, not lackluster effort\"]\n}\n```"
+  },
+  {
+    "author": "Hopeful_Sea78",
+    "comment": "only possible to fail due to attendance",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Easy to fail due to attendance\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "DistinctSouth",
+    "comment": "Yes, my friend Justin failed",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Odd_Substance336",
+    "comment": "hi i just remod cict this sem so yes its possible\ud83d\ude02\ud83d\ude02",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "diorlysa",
+    "comment": "omg that sucks... then what did the guy do in the end? Did he remod? Because I really think I might fail...",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Fear of failing a module\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "diorlysa",
+    "comment": "wait why? isit bc attendance or the assignment",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Possible deduction of marks due to attendance or assignment issues.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "nothappygooutside",
+    "comment": "um... we actually had a falling out and cut contact so i don't know how he performed for his remod, but he did post on his story his grades for sem 1.1 and his CICT was a \"Fail\". i assume he did remod as i continued seeing him in school. if you fail any subject then you'll have to remod! thankfully CICT is not graded, so you really just need to put in the bare minimum to pass next time. and this won't affect your gpa but you are no longer eligible to get a diploma with merit or be in the director's list.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"grades\"],\n  \"complaints\": [\"Student failed a subject (CICT) and had to remediate.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "diorlysa",
+    "comment": "oo okay, I was so worried tht failing cict wld affect my gpa. thank you for helpingg (\u2060*\u2060\u00b4\u2060\u03c9\u2060\uff40\u2060*\u2060)",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

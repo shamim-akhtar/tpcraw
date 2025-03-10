@@ -1,0 +1,17 @@
+[
+  {
+    "author": "nothappygooutside",
+    "comment": "all TP sports CCAs require experience to get in. its very competitive to get in because a lot of people want the CCA but not everyone can pass the trials. and yes, it's pretty high commitment because training usually starts at 6pm and can end as late as 11pm. you may also be called to come for training during term and semester breaks",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\", \"CCAs\"],\n  \"complaints\": [\"High barrier to entry for sports CCAs due to experience requirement and competitive trials\", \"High commitment with late training hours (6pm-11pm)\", \"Training during term and semester breaks\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "nothappygooutside",
+    "comment": "TP sports club is a good alternative for those who do not have experience in a specific sport :)",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"sports\", \"clubs\", \"student life\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "sunghosguitar",
+    "comment": "you should js try! my friend tried without experience and got in! but defo u need to do ur best and try to stand out so that they shortlist u!! it is high commitment, all sport ccas are since we all train for compeitions!! but u should defo try all of them are q chill !!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"events\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

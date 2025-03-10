@@ -1,0 +1,92 @@
+[
+  {
+    "author": "iamnothingbuta",
+    "comment": "Ain't no one withdrawing for 15 bucks",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Environmental_Key120",
+    "comment": "did op get the gz trip?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "0ofus",
+    "comment": "shouldve been ready with everything at 2pm bruv. and nobody is taking just 15 bucks",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"events\"],\n  \"complaints\": [\"Lack of preparedness/organization for an event (implied)\", \"High cost of something (15 bucks seems excessive in context)\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "TurtleRiskyBoi",
+    "comment": "Lmao the shenzhen trip straight up got cancelled",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\"],\n  \"complaints\": [\"Shenzhen trip cancelled\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "kisushle",
+    "comment": "Dyk shenzhen got cancelled so every one who successfully registered got shifted to guangzhou? Plus they opened 25 more slots tdy at around 2pm",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"events\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Rare-Pianist-6618",
+    "comment": "I'll raise it up to $40 bro",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Rare-Pianist-6618",
+    "comment": "yes I love china guys, time to flex my C6 chinese :)",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Rare-Pianist-6618",
+    "comment": "mb gang I made an oopsie",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "nah bro the trip to shenzhen was very good so no one is gonna take your offer",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"events\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Environmental_Key120",
+    "comment": "what destination did u even get anyway?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Rare-Pianist-6618",
+    "comment": "NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO my sweet sweet china",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Loss of a specific course or program (possibly related to China)\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Rare-Pianist-6618",
+    "comment": "bangkok haha",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Weak-Platypus-5908",
+    "comment": "so sad, my shenzhen trip become guangzhou now",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\"],\n  \"complaints\": [\"Trip location changed from Shenzhen to Guangzhou.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Rare-Pianist-6618",
+    "comment": "just give it to me",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Weak-Platypus-5908",
+    "comment": "huh no need give, they gonna add 25 slots anyways",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Rare-Pianist-6618",
+    "comment": "thats true, i just hope I get one haha",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Weak-Platypus-5908",
+    "comment": "did u get in? my friend group all of them got in le",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Rare-Pianist-6618",
+    "comment": "YESSS AHHAHA",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

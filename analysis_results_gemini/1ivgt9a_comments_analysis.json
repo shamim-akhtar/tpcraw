@@ -1,0 +1,57 @@
+[
+  {
+    "author": "Procrastinator_L",
+    "comment": "Enrolment out alr or just for international students?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrolment\", \"international students\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Fearless_Sky1016",
+    "comment": "hi did u jae or eae",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"application\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "curiousbean28",
+    "comment": "IPA comes first then you will need to apply Student pass. For IPA, school will apply on behalf of student if I\u2019m not wrong, then sch will send you link to make appointment at ICA office. So you will need to wait to get an IPA email first.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"student visa\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Handrwik",
+    "comment": "For International students, I just finished enrolment by submitting documents.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"international students\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Handrwik",
+    "comment": "I got with DAE",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "curiousbean28",
+    "comment": "have you received enrollment package email already?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"enrollment\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Procrastinator_L",
+    "comment": "Alr thanks. \ud83d\ude4f",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Fearless_Sky1016",
+    "comment": "what course?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Handrwik",
+    "comment": "Thanks for the information. I\u2019ve already completed the document submission stage after online enrolment. And yeah, I received the enrollment package after my course offer, but the guide includes all the details without a clear order. That\u2019s why I\u2019m unsure about the next steps, like how to get the IPA letter. I\u2019m also waiting for an email from the polytechnic and have no idea what to do next. For that reason, I am here to seeking help. Really appreciate your help.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"enrollment\", \"administration\", \"communication\"],\n  \"complaints\": [\"Unclear enrollment guide\", \"Lack of clear next steps\", \"Missing information on how to obtain IPA letter\", \"No email communication from the polytechnic\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Handrwik",
+    "comment": "Architectural technology",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "curiousbean28",
+    "comment": "oh i see! IPA letter and student pass application stage dont take long. It only takes like mostly two weeks or three weeks. Don\u2019t worry about it. I would like to advise to prepare medical records first if u r still in your home country. you can pm me for further information also!!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"student pass application\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": [\"prepare medical records before applying for student pass\"]\n}\n```"
+  }
+]

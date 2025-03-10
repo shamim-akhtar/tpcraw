@@ -1,0 +1,17 @@
+[
+  {
+    "author": "Why_salty69",
+    "comment": "Python. Ur cher will give u step by step instructions on what to do so dw",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Vinhunter666",
+    "comment": "Yea python , but the project sucks",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"project\"],\n  \"complaints\": [\"The project sucks\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Unlucky-Earth-3640",
+    "comment": "\ud83d\ude4f\ud83c\udffb\ud83d\ude4f\ud83c\udffb\ud83d\ude40",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

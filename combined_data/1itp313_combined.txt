@@ -1,0 +1,135 @@
+=== POST CONTENT ===
+Title: Preparations for cdf
+Author: kst4r_
+Score: 6
+URL: https://www.reddit.com/r/TemasekPoly/comments/1itp313/preparations_for_cdf/
+Created: 2025-02-20 11:33:53
+Body: Hello, I’ll be a y1 student in April this year. Are there any preparations that I can do before school starts? I have no foundation in cdf or any knowledge related to computers 😭 
+
+Also, does anyone mind telling me what apps I can start with to learn the basic things? What apps do tp use?
+
+
+=== COMMENTS ===
+Comment by mount2010: Hi!
+
+Unfortunately, it's going to be really tough if you don't have much background in computers. I don't think TP does enough for this demographic.
+
+I would recommend looking up some basic technological literacy guides -- how to use folders and files, how to organize your folders, how to unzip a file, basic command line terminal literacy (how to use `cd`, `ls`, `mv` and execute programs in Powershell etc), how to install/uninstall programs, how to identify safe websites for downloading programs, etc. Learning basic Git also will help with some projects.
+
+With anything computers and IT, playing around with it matters the most. Try to do new (or even impossible-sounding) things and see where you go. It's almost impossible to learn how to do most IT things from school alone due to the depth of the subject.
+
+As for directly related to school topics, start by watching the Y1S1 videos here: https://tp-itsig.github.io/#/ 
+
+In addition, as with anything related to school, listen to the lecturers and pay attention during class!
+
+Comment by i_verye_smowt: as a Y2 CDF student, any advice from any IT student for Y1 will be very helpful since we all learn the same things then. Y2 is when you'll start learning things specialised for your course, so I'll give you some advice for that period instead.
+
+
+for the technical side of things, I highly recommend learning the basics of linux and playing around with it. It's a whole different operating system from windows, so it might sound a bit scary, but you can use it without worrying about breaking your laptop using virtual machines (VMs).
+
+
+You can think of VMs as mini computers running inside your actual computer. If you break something in a VM, you can easily revert it to a previous state using snapshots. We use virtualbox for our VM shenanigans, so that's what you'll want to download.
+
+
+Now for how you should approach Y2, ESPECIALLY sem 2, you NEED to lock in hard. Like seriously start doing projects as early as possible, doesn't matter if your lecturer hasn't taught you everything you need to know, just do the project alongside the labs.
+
+
+Don't be like me just settling into a slow comfortable pace, which left me and my groupmates 3 weeks or less to finish 3 hard projects with 2(?) assessments in between, then after that another week to finish 1 more hard project, and after all that I'm left with 4 days to revise 17 weeks worth of content for a test. That test is tomorrow and I've only fully covered 3 weeks of content 💀
+
+Comment by GlasierXplor: For basics, learn: -
+
+* How to use Microsoft Word and Powerpoint efficiently (learn to use styles, page breaks, and references at bare minimum).
+* how to always be hands on with learning. cybersecurity is not something you can learn solely through theory. Watch a youtube video, but do it alongside the video.
+* Learn how to search for instructions/guides on Google effectively, and skim through a whole article before following. This will be an important skill throughout your course and future career.
+* as mount2010 said, get comfortable with unconventional ways to use a computer such as the command line.
+* if you really want to, learn how to install an operating system on a virtualisation software like Oracle VirtualBox. Install something like Ubuntu and learn to navigate and operate a Linux machine.
+* Unlearn trigger happiness. I.e. check/think before you click on something. I have seen someone accidentally re-installing his Windows because hedouble-clicked on a Windows ISO file (mounts it, and opens the folder), then clicked on Setup.exe and clicked Next all the way. This resinstalled his Windows and he lost all his files.. :/
+
+Comment by ZealousidealTry1810: hi im a common ict student who will be starting cdf this april. ive read all the comments and they are very helpful. however most of it is catered towards what u will be learning in year 2 instead of year 1. like what someone said already, y1 everyone will be learning the same thing regardless of ur diploma. so i think it is bttr to focus on y1 than y2 first. we dont touch linux at all in y1 as far as i rmb so maybe hold off on that for now and focus on y1 first! :)
+
+
+y1 sem 1 subjects : Computatitional Thinking (COMT), LOMA (Logics & Maths i think), UXID (User Experience & Interface Design), CYFUN (Cybersecurity Fundamentals), DAVA (Data Visualisation & Analytics). 
+- COMT : Uses python as the main programming language. Basically teaches u on python fundamentals etc. Wld be really helpful if u try learning python first as in year 1, u will be learning python a lot.
+- LOMA : Tbh feels like amaths in o levels. if u struggle with maths then my advice wld be to study and practice a lot. most of my o level classmates did well though.
+- UXID : we made an app prototype using a software called Figma or Axure RP. teaches u importance of user experience in design.
+- CYFUN : teaches you cybersecurity fundamentals and how to use some windows features. my lecturer went thru labs and then our exam and projects wld be somewhat based on those labs so u shld ask questions if u are unsure.
+- DAVA : uses Microsoft Power BI and KNIME to teach u to analyse datasets. personally i hated this module the most haha but some of my classmates liked it. it helps if u get a quickstart on learning what each node is for :)
+
+Comment by Diligent_Driver_1582: Hey y3 just finished everything. Just drop it before its too late. You can request to change to some other IIT course after your 1st year. CDF has no hope, and TP CDF multiply that hopelessness. Even many lectuers feel the same way. Just dont go cdf and waste ur precious time on shit. Not even dogshit cause at least dogs are human best friend.
+
+Comment by mick_ox_long: jus know ur cooked my g have a great 3 years in tp
+
+Comment by Adventurous-Dog17: y3 student here, learn linux and vms, try pentesting tutorials online once you learn linux, try using cli/command line, powershell & command prompt are good skills, codecademy for programming and tryhackme for cybersecurity. y1 will mostly be basic subjects, so focus on picking up python, html, css, data, etc
+
+Comment by kst4r_: Does watching yt videos help in learning basic technological literacy?
+
+Are there any apps that I can start with to learn the basic things?
+
+Comment by kst4r_: Is linux an app?
+
+Comment by kst4r_: Good luck for ur test tmr!
+
+Comment by kst4r_: Ooh omg tysm
+
+Comment by ZealousidealTry1810: for y1 sem 2, 
+NECT (Networking Technology?), ADEV (App Development), DBAV (Database smth), DSAG (Data Structures & Algorithms).
+
+
+- NECT : uses cisco packet tracer. honestly its the module that has the least resources & teaching practical wise and most of my cohort struggled due to this very reason. it was mostly self study/researching. wld help u a lot if u watch videos or experiment with the app bcoz u will learn how to do basic networking on it. we had to create an office networking environment from scratch for 1 individual project, and another grp project. we also had to dabble on aws abit but its more theory based. 
+- ADEV & DBAV : 2 modules that they combine into 1 for projects and tests. but both are graded differently, meaning have different components & weightage for each. ADEV is more on frontend development while DBAV is backend. ADEV focuses on javascript, html, css. while DBAV is mysql. would do u good to learn all 4 languages during ur sem vacation in sep-oct period. would help u a lot. we had to create websites from scratch for 2 projects, but 1 project only the design while the 2nd one had to be a fully working one linked to ur database. i hated adev dbav and it gave everyone the most stress haha. 
+- DSAG : it's like a continuation of COMT where u js learn python but u will learn more python codes and stuff.
+
+
+All in all, focus on sem 1 for year 1 first. 1st sem's gpa will be the most important towards ur cumulative gpa (ur total gpa throughout ur whole 3 yrs in poly) bcoz it will be rlly hard to pull up ur gpa if u start with a low one, especially if u want to go to uni. dont be like me and procrastinate till last minute to start on projects. the moment u get ur project requirements, work on them asap bcoz like someone else here said, u will have little time for ur tests later on to study. finding good classmates to study with is also important bcoz they will be supporting u and u can learn from them as well, so both can help each other. ask questions to ur lecturer whenever u dont understand smth and go for as many consultations if u can, especially in sem 2. all the best!! hope this helps :)
+
+Comment by mount2010: I'm IT and I feel the opposite way, IT is dead because of genAI. Yes, genAI is imperfect, but those who already are talented in IT are even stronger now because of it, and so there's less need for IT talent... 
+
+Sigh this whole industry is kinda screwed, just do it for the certificate I guess. We're about to see a whole lotta unemployment from here. Just hope society can cope with it and finds solutions.
+
+Comment by kst4r_: Is it possible for me to learn linux and vms online for example on YouTube? Or should I go for classes
+
+Comment by mount2010: Hi, youtube might have some stuff, yes. But most important is to play around with it. Click around the Windows file browser, make some folders, get a feel for them.
+
+If you mean phone apps, I don't think so, you should get a computer of any sort to try it out for real. Make sure whatever experimentation you want to do you start in a fresh folder so that everything else isn't affected.
+
+Comment by mount2010: In addition, please don't be too reliant on tests and exams to learn computing - you **absolutely must** play around with it and see what you can do. Start now. My classmates are too reliant on the syllabus and being tested by the school and they are suffering for it.
+
+Comment by mount2010: Linux is an operating system! Compare it to Windows, Android, or iOS. It's what actually runs the apps. Unlike Windows, Android or iOS, Linux is free because it's not made (directly) by a company, but rather is a community effort. This makes it good for servers (do you really want to pay money to Microsoft for your 5000 servers?) As a matter of fact, Android is built based on Linux - you can see why it's important for cybersecurity students to learn about it!
+
+I think they really should consider those with no computing background like you and have some introduction to all these parts of a computer that people take for granted that might not be too familiar to those who are new!
+
+Comment by Diligent_Driver_1582: Yeah la gen ai is a double edge sword. But i was jist talking specifically about IIT and cdf in TP being dogshit. Other poly is way better. Even our diploma manager admitied that in class. But its so funny seeing ppl not know how to code cause they just brute force there way through using ai
+
+Comment by mount2010: TP will have classes on them, but again, I would recommend learning by practice, watching videos means you will likely forget most of the things. Focus on basic technical literacy now - what the other students are saying are too complex for a complete beginner.
+
+Comment by kst4r_: Ohh okay. Do I need to learn coding too? Like using Python or something else
+
+Comment by kst4r_: So should I play around with an android computer since it’s based on Linux?
+
+Comment by kst4r_: How do I practice using linux and vms? 😭
+
+Comment by mount2010: I'd say TP does a good enough job at teaching coding and at a very very gentle pace so as long as you listen to the chers it's fine to just show up for coding. Focus on getting comfortable with using a computer.
+
+Oh yeah, if you're new to computers, keep in mind typing speed as well. Use https://monkeytype.com/ and try to get 70 WPM minimum.
+
+Comment by ryunaaaaa: imo i think it would be beneficial if you watched videos on basic python coding and then trying them out yourself. that way you have more time to grasp how it works and during class you will be able to understand what ur teacher is teaching and you wont be too lost especially later on when they teach the slightly tougher topics like For Loops and While Loops. 😊
+
+Comment by mount2010: Nope -- Android is for mobile devices, Linux is (usually) for desktop and servers.
+
+I wouldn't worry too much about Linux now if you have absolutely no computer experience. Get a computer (laptop or desktop) and get used to Windows first, Linux will come later.
+
+Comment by mount2010: Both will be covered in TP so it's fine:
+
+VMs - cybersecurity fundamentals will cover this
+
+Linux - a CDF module in Year 2 will cover this
+
+I would *highly highly* recommend getting used to Windows first (the things I mentioned above). Then Linux will be comfortable for you.
+
+Comment by kst4r_: Thank you so much this helps me a lot!!
+
+Comment by kst4r_: Okay thank youuu
+
+Comment by kst4r_: Okay tysm!
+
+

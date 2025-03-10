@@ -1,0 +1,27 @@
+[
+  {
+    "author": "DivoKing69",
+    "comment": "I bought an m4 pro MacBook Pro with 24gb of ram 512 storage is it strong enough",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Southern-Cry-8020",
+    "comment": "i think if u can run the required stuff on parallels then you shld be fine? idk this was what i heard ah, cuz im in comp eng and im thinking of getting a macbook pro too",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"computers/technology\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "TurtleRiskyBoi",
+    "comment": "For yr1 sem1 u dont rlly need high specs cos the most u wld run is python. But from yr1 sem 2 onwards, u wld run stuff like 3d modelling and simulations so it needs a laptop that can meet the requirements. Other than to run those, u can use anything rlly.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Asleep_Market1202",
+    "comment": "They won\u2019t *force* you to buy a Windows laptop, but they\u2019ll probably strongly recommend it, especially if certain software isn\u2019t Mac-compatible. Most lecturers just care that you can run the required programs\u2014if you can find workarounds (Boot Camp, Parallels, cloud alternatives), they\u2019ll likely close one eye. Worst case, you might have to use school lab PCs for some tasks. If you're worried, just email them and check.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"Strong recommendation for Windows laptops, potential incompatibility issues with Mac\"],\n  \"suggestions\": [\"Email lecturers to check compatibility before purchasing a laptop\"]\n}\n```"
+  },
+  {
+    "author": "DivoKing69",
+    "comment": "I mean I have a windows laptop that can run msfs I think that could suffice if I need a windows?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

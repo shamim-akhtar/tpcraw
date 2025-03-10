@@ -1,0 +1,12 @@
+[
+  {
+    "author": "Old_Nectarine_1414",
+    "comment": "Hi OP, the distance is in fact a factor that can cause burnt out over time. But if you're interested in the course you're doing I'm sure you will be fine. So atb!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"distance from home\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "No-Philosopher4554",
+    "comment": "I think it might be tiring to travel all the way to tp especially for morning lessons? But if u genuinely enjoy the course you\u2019ll be ok I think",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"academic\"],\n  \"complaints\": [\"long travel time to campus, especially for morning lessons\"],\n  \"suggestions\": []\n}\n```"
+  }
+]
