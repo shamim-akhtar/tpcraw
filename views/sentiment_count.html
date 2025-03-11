@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Stacked Sentiment Chart</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    #chart-container {
+      width: 80%;
+      height: 500px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+    #details {
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Stacked Sentiment Analysis</h1>
+
+<div id="chart-container">
+  <canvas id="sentimentChart"></canvas>
+</div>
+
+<div id="details">Click on a bar to see details.</div>
+
+<script>
+fetch('sentiment_count.csv')
+  .then(response => response.text())
+  .then(csvText => {
+    // Convert CSV to arrays
+    const rows = csvText.split("\n").slice(1);
+    const labels = [], positives = [], negatives = [];
+
+    rows.forEach(row => {
+      // skip empty lines
+      if (!row.trim()) return;
+      const [postId, pos, neg] = row.split(",");
+      labels.push(postId.trim());
+
+      // Parse numeric values
+      const posVal = parseInt(pos, 10);
+      const negVal = parseInt(neg, 10);
+
+      // For a stacked bar, we keep positives as positive and negatives as negative
+      positives.push(posVal);
+      negatives.push(-negVal); // multiply by -1 so they go below zero
+    });
+
+    const ctx = document.getElementById("sentimentChart").getContext("2d");
+
+    // Create the chart
+    const sentimentChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Negative",
+            data: negatives,
+            backgroundColor: "rgba(255, 0, 0, 0.6)", 
+            borderColor: "rgba(200, 0, 0, 1)",
+            borderWidth: 1,
+            stack: 'sentiment'  // This key ensures stacking with Positive
+          },
+          {
+            label: "Positive",
+            data: positives,
+            backgroundColor: "rgba(0, 200, 0, 0.6)",
+            borderColor: "rgba(0, 150, 0, 1)",
+            borderWidth: 1,
+            stack: 'sentiment'  // Same stack ID to group them together
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Stacked Sentiment (Positive vs Negative)',
+            font: { size: 18 }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(tooltipItem) {
+                const value = tooltipItem.raw;
+                if (value < 0) {
+                  return `Negative: ${Math.abs(value)}`;
+                } else {
+                  return `Positive: ${value}`;
+                }
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            stacked: true // Enable stacking on x-axis
+          },
+          y: {
+            stacked: true,  // Enable stacking on y-axis
+            beginAtZero: true
+          }
+        },
+        onClick: (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const clickedPostId = labels[index];
+            const posCount = positives[index];
+            const negCount = Math.abs(negatives[index]);
+            document.getElementById("details").innerText =
+              `📌 ${clickedPostId} — Positive: ${posCount}, Negative: ${negCount}`;
+          }
+        }
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
