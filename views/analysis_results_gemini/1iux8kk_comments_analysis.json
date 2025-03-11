@@ -1,0 +1,12 @@
+[
+  {
+    "author": "TheoryPatient6067",
+    "comment": "We arent the teachers so outcome is unpredictable",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"unpredictable student outcomes\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "IndependentNo6105",
+    "comment": "there isnt a retest from what ive heard",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"No retest available\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

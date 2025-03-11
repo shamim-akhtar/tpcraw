@@ -47,7 +47,26 @@ def analyze_sentiment(text, api_key=GOOGLE_GEMINI_API_KEY):
         print(f"An error occurred: {e}")
         return None
 
+def analyze_summary(text, api_key=GOOGLE_GEMINI_API_KEY):
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel()  # Use 'gemini-pro-vision' for multimodal
 
+    prompt = f"""
+    You are an AI tasked with analyzing text from a Reddit post along with its comments 
+    about Temasek Polytechnic. Provide a concise summary in one paragraph that explains 
+    the main topics or issues discussed in both the post and the comments. Describe the 
+    overall sentiment and emotional tone conveyed in the text. Additionally, if needed, 
+    write a brief paragraph outlining any concerns or recommendations for senior school 
+    management, clearly identifying any subjects, facilities, or aspects of the school 
+    mentioned.
+    """
+
+    try:
+        response = model.generate_content(prompt)
+        return response.text.strip()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
 
 def analyze_sentiment2(text, api_key=GOOGLE_GEMINI_API_KEY):
     genai.configure(api_key=api_key)
@@ -281,6 +300,14 @@ def analyse_all_posts_and_comments_combined():
 
     print(f"Combined analysis saved to: {output_file_path}")
     
+def create_summary_of_a_post_and_associated_comments():
+    # Loop through files in "combined_data"
+    for filename in os.listdir("combined_data"):
+        file_path = os.path.join("combined_data", filename)
+        
+        # Load text and analyze it
+        text_content = load_text_from_file(file_path)
+        summary = analyze_summary(text_content)
 
 
 if __name__ == "__main__":

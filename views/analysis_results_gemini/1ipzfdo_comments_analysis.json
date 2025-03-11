@@ -1,0 +1,72 @@
+[
+  {
+    "author": "Existing_Zucchini_62",
+    "comment": "Idk about SATA but i just went to those under the block clinics and asked fr color vision test and they did it fr me.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\", \"healthcare\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Low-Late",
+    "comment": "hi i want to ask , if you cant get the colour vision test within 5 working days do i call tp to let them know then submit whatever document i have or what.. i tried calling and emailing them but didnt get any reply so far",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Lack of response from Temasek Polytechnic (TP) to phone calls and emails regarding a colour vision test.\", \"Difficulty in getting a timely response regarding required documentation.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "Yeah I remember the medical test, that was annoying lol, such a short time to get it done too I think yes, SATA accepts walk-in, call them first",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"medical\"],\n  \"complaints\": [\"Short time allotted for medical test\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Fancy-Aardvark7650",
+    "comment": "Hii may ik what course are u in ?? js wanna know which course requires Colour vision test",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "gisa_As748",
+    "comment": "Anyone know where to get a colour blind test at woodlands? Struggling to find a place ;( called a few places and they said they don\u2019t provide that service :( It is getting a bit frustrating because some of the wait time is like 20mins just to hear a no\u2026 Edit: i searched other polytechnic pre-admission colour vision test :D other polytechnic added a list of places you can go for a colour vision test! For anyone who is struggling to find a place like me ;]",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"pre-admission\", \"academic\", \"administration\"],\n  \"complaints\": [\"Difficulty finding a place to get a color blind test in Woodlands.\", \"Long wait times to be told the service is unavailable.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Equivalent-Ride8136",
+    "comment": "Just a question, did you send a softcopy of the colour vision form to temasek or do u print it out",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "OkArt2107",
+    "comment": "i also cant get mine in 5 days and emailed them already! they told me i can submit it when i am able to",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Unable to submit something within 5 days despite emailing for assistance.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Equivalent-Ride8136",
+    "comment": "Try to do it on Monday when the office is open!",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Try to do it on Monday when the office is open!\"]\n}\n```"
+  },
+  {
+    "author": "Equivalent-Ride8136",
+    "comment": "Just a question, did you send a softcopy of the colour vision form to temasek or do u print it out",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Equivalent-Ride8136",
+    "comment": "All courses in IIT and Engineering i believe",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Existing_Zucchini_62",
+    "comment": "I printed it out for my doctor to sign and stamp then took picture and convert to pdf to send to temasek",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Low-Late",
+    "comment": "okay thank youu!!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Low-Late",
+    "comment": "okay thank you!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "For me it was - print it out - bring it to SATA - let them fill it in - they will submit to TP",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Inconvenient process for form submission (print, bring to SATA, wait for them to submit)\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

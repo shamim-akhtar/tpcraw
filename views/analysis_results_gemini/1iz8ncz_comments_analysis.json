@@ -1,0 +1,87 @@
+[
+  {
+    "author": "Forward_Age6095",
+    "comment": "https://form.gov.sg/672dc75639ddbc59aa452f92",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "smellypotato_",
+    "comment": "There's a link in page 15 of the enrolment guide under submission of supporting documents",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrolment\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Holiday_Stick3341",
+    "comment": "does anyone know when is the due date \ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Unknown deadline causing stress\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Sufficient_Pie651",
+    "comment": "thank you",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ApocSanma",
+    "comment": "When u accept the course 3 days from then for ur pic n parents form 5 days for medical forms",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Short deadlines for course acceptance paperwork and medical forms.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Holiday_Stick3341",
+    "comment": "okayy but isn\u2019t all these forms must submit in the same form? so how \ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Confusion about form submission process\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Gamer_dude12341",
+    "comment": "What if I send after 3/5 days? I genuinely worried \ud83d\ude41",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Worry about late submission\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ApocSanma",
+    "comment": "Js take pic? Got link one check enrollment package there got somewhere... or join tp tele grp ppl sent the link bef",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrollment\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ApocSanma",
+    "comment": "U auto withdrawn frm ur course. Unless u email/call the sch n tell them",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Auto-withdrawal from course without prior notification\"],\n  \"suggestions\": [\"Improved communication regarding course withdrawal\"]\n}\n```"
+  },
+  {
+    "author": "FATTOMATOES7098",
+    "comment": "Hi, do you know how I can join the TP Tele channel? Thank you",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"events\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Gamer_dude12341",
+    "comment": "Does the confirmation email count as \"they got my info\"?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Wonderful-Two8209",
+    "comment": "nahhhhh no way this stressing me out rn",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Stressful\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "RaspberryOk3853",
+    "comment": "What if the school hasnt been responding to my emails \ud83d\ude2d\ud83d\ude2d i literally need an extension but they havent replied yet will i still get withdrawn",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Lack of response to emails\", \"Fear of withdrawal due to lack of extension\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "orekiflare",
+    "comment": "did you get into your course or did you get rejected after submitting over the deadline?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ApocSanma",
+    "comment": "Call them. Idk maybe theyd be lenient? Try contacting them first and see how",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Contact Temasek Polytechnic directly\"]\n}\n```"
+  },
+  {
+    "author": "orekiflare",
+    "comment": "i enrolled in the course on 24 feb and doing the documents on 3 march, am i cooked",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"enrollment\", \"administration\"],\n  \"complaints\": [\"Late document submission\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Nickyhen3",
+    "comment": "I\u2019m more cooked I only found out about needing to submit these documents today \ud83e\udee0\ud83e\udee0",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Late notification about document submission\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

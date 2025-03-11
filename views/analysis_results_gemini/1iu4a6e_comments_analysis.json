@@ -1,0 +1,37 @@
+[
+  {
+    "author": "Adventurous-Dog17",
+    "comment": "some spelling errors here and there, i apologize, tired, had a long day today, but this is just my experience, not all consultancy companies may be like this, not all projects either, i might just have been unlucky and had a bad case. but i also wanted to mention some things to keep an eye out for 1. tp will not care how much ot you work, that is under the organisation\u2019s business. i dont think tp shows you the info before signing, they\u2019ll just ask if you want an opportunity for an internship and send in your resume. my liasion officer just told me to work harder, compensation is also up to the company, but dont expect off days or less working hours as consultation companies go by the tasks that need to be met, you can\u2019t just abandon it and go off early 2. dont expect any company funding for certifications and what not. they most likely hired you for cheap labour, you\u2019ll be working your ass off. my company gave me 0 funding whatsoever, any certifications that i took (in my very little free time) was with my own money 3. please check reviews for your company, be it glassdoor or whatsoever, do some background research for the love of god. i regret not doing mine",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [\n    \"Temasek Polytechnic (TP) does not care about the amount of overtime worked by students on internships.\",\n    \"TP does not provide information about internship compensation and working conditions before students sign up.\",\n    \"Internship companies may not provide funding for certifications.\",\n    \"Students may be treated as cheap labor and expected to work excessive hours with no additional compensation.\",\n    \"Lack of support from TP liaison officer.\"\n  ],\n  \"suggestions\": [\n    \"Check company reviews on sites like Glassdoor before accepting an internship.\",\n    \"Do thorough background research on potential internship companies.\"\n  ]\n}\n```"
+  },
+  {
+    "author": "definitelytroaxx",
+    "comment": "can you namedrop in dms the company \ud83e\udd2b",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "IamNotAddictedLol",
+    "comment": "just curious , was yours 1 yr or 6 months , also for the minimum pay i think might have changed , im in iit and at least the school states minimum is \u201c1.2k\u201d however some students have internships with lower pay ba",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [\"Minimum internship pay may be lower than officially stated.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Low_Nobody_5690",
+    "comment": "Can we choose our internship?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "stayhandsome",
+    "comment": "Welcome to the workforce I guess. Internship is mostly about giving you the sneak peek of what adult working life is. You will apply abit of what you learn from school, learn abit from your mentor, but mostly is really to adjust you to what\u2019s ahead of you once you graduate and join the workforce. You did amicable in a sense that you know what you want once it\u2019s done. That\u2019s the whole lesson to learn from it. In fact, it\u2019s the same lesson I learned when I finished my internship. I crossed the company from my list and the whole industry. Was from an engineering course, interned in a manufacturing company, don\u2019t like the experience, pursued business management when getting my degree. Anyway, i chuckled when you mentioned ncs is a better experience then you advice looking at reviews via glassdoor. i do not fault you at all because you are green and encountered hell. But hell has levels. Be careful out there. :)",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "casper_07",
+    "comment": "I got my internship in TP grounds. It was after Covid started dying down a little so we could just enter daily and my mentor assigned me software tasks. I would rarely see him every day and so I just told him I\u2019ll WFH and I did for 80% of the internship period. God knows what I was working on during that period but even at peak efficiency, my mentor was busy to even assign much tasks so the overall workload would\u2019ve only went up maybe 50% at most. Easiest 4.0 for the semester, the report was more annoying to write than the actual work done at times Honestly, u should be able to fuck them over for this despite the liaison officer saying otherwise. Call MOM and ask them about all the details, if you\u2019re wrong then whatever but if you\u2019re right then at least u might be reassigned to another internship",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"internship\", \"career/internships\", \"administration\"],\n  \"complaints\": [\"Lack of mentorship and supervision during internship\", \"Insufficient workload\", \"Difficulty in getting tasks assigned\", \"Inconvenient report writing process\"],\n  \"suggestions\": [\"Contact MOM (Ministry of Manpower) to clarify internship guidelines and potentially get reassigned if internship is found to be inadequate\"]\n}\n```"
+  },
+  {
+    "author": "casper_07",
+    "comment": "If u outsource yourself, u should be able to. Other than that, pray u get one in school honestly. I\u2019ve had friends that were doing warehouse work that had nothing to do with their diploma and it\u2019s so hard to gas up what you\u2019re doing since even if u got your referral, they\u2019ll likely expose the fact it\u2019s a warehouse role when called by a hiring manager",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [\"Difficulty finding relevant internships/jobs related to diploma course.\", \"Internship referrals leading to unrelated work (e.g., warehouse work).\", \"Lack of transparency in internship descriptions leading to unexpected work assignments.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

@@ -43,6 +43,47 @@
 <div id="details">Click on a bar to see details.</div>
 
 <script>
+  // Helper function to parse the post text file into an object.
+function parsePostText(text) {
+  const postData = {};
+  // Split by newline and process each line.
+  text.split("\n").forEach(line => {
+    // Split on the first colon only.
+    const parts = line.split(/:(.+)/); // This splits into at most two parts.
+    if (parts.length >= 2) {
+      const key = parts[0].trim();
+      const value = parts[1].trim();
+      postData[key] = value;
+    }
+  });
+  return postData;
+}
+
+function cleanJsonString(maybeMarkdownJson) {
+  // Remove all occurrences of triple backticks and optional "json", then trim the result.
+  return maybeMarkdownJson.replace(/```(json)?/gi, '').trim();
+}
+
+// function cleanJsonString(maybeMarkdownJson) {
+//   /**
+//    * Given a string that might contain triple-backtick fences,
+//    * remove them so the remaining content is valid JSON.
+//    */
+//   // Trim leading/trailing whitespace
+//   let cleaned = maybeMarkdownJson.trim();
+
+//   // If it starts with ```json or ``` (some might have just triple backticks without `json`),
+//   // remove that prefix, plus if it ends with triple backticks, remove that too.
+//   // One robust way is a simple regex replacement:
+
+//   // Remove leading ```json (with or without newlines) and trailing ```
+//   cleaned = cleaned.replace(/^```(?:json)?\s*/, '');
+//   cleaned = cleaned.replace(/```$/, '');
+//   return cleaned.trim();
+// }
+
+
+
 fetch('sentiment_count.csv')
   .then(response => response.text())
   .then(csvText => {
@@ -122,16 +163,136 @@ fetch('sentiment_count.csv')
             beginAtZero: true
           }
         },
+        
         onClick: (event, elements) => {
           if (elements.length > 0) {
             const index = elements[0].index;
             const clickedPostId = labels[index];
             const posCount = positives[index];
             const negCount = Math.abs(negatives[index]);
-            document.getElementById("details").innerText =
-              `📌 ${clickedPostId} — Positive: ${posCount}, Negative: ${negCount}`;
+            const detailsDiv = document.getElementById("details");
+
+            // Show initial header and loading message.
+            detailsDiv.innerHTML = `<p style="text-align: center; font-weight: bold;">
+                                      📌 ${clickedPostId} — Positive: ${posCount}, Negative: ${negCount}
+                                    </p>
+                                    <p>Loading post and comments...</p>`;
+
+            // Construct file URLs (adjust paths as necessary)
+            const postUrl = `../reddit_data/${clickedPostId}_post.txt`;
+            const commentsUrl = `../analysis_results_gemini/${clickedPostId}_comments_analysis.json`;
+
+            // Fetch both post and comments concurrently.
+            Promise.all([
+              fetch(postUrl).then(resp => resp.text()),
+              fetch(commentsUrl).then(resp => resp.text())
+            ])
+            .then(([postText, commentsTextOrig]) => {
+              // Clean the JSON string from comments.
+              const cleanedCommentsString = cleanJsonString(commentsTextOrig);
+              let commentsHtml = "";
+              try {
+                // Parse the cleaned JSON string.
+                const commentsArray = JSON.parse(cleanedCommentsString);
+                // For each comment object, build HTML with formatted fields.
+                commentsArray.forEach(commentObj => {
+                  commentsHtml += `<div style="margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">`;
+                  // Render generic fields except 'analysis'
+                  for (const key in commentObj) {
+                    if (key === "analysis") continue; // Skip for now.
+                    let value = commentObj[key];
+                    if (Array.isArray(value)) {
+                      value = value.join(', ');
+                    }
+                    commentsHtml += `<p><strong>${key}:</strong> ${value}</p>`;
+                  }
+                  // Custom formatting for 'analysis'
+                  if (commentObj.analysis) {
+                    let analysisData = {};
+                    try {
+                      analysisData = JSON.parse(cleanJsonString(commentObj.analysis));
+                    } catch (e) {
+                      console.error("Error parsing analysis JSON:", e);
+                    }
+                    // Determine sentiment arrow
+                    const sentiment = analysisData.sentiment ? analysisData.sentiment.toLowerCase() : "neutral";
+                    let arrow = '';
+                    if (sentiment === "positive") {
+                      arrow = `<span style="color: green; font-size: 18px;">&#x2191;</span>`; // up arrow
+                    } else if (sentiment === "negative") {
+                      arrow = `<span style="color: red; font-size: 18px;">&#x2193;</span>`; // down arrow
+                    } else {
+                      arrow = `<span style="color: blue; font-size: 18px;">&#x2014;</span>`; // em-dash
+                    }
+                    
+                    // Format topics: map each topic to a background color.
+                    const topicColors = {
+                      "sports": "#B3E5FC",
+                      "CCAs": "#FFE082",
+                      "academic": "#C8E6C9",
+                      "technology": "#E1BEE7",
+                      "career/internships": "#FFCDD2",
+                      "campus facilities": "#D1C4E9"
+                    };
+                    let topicsHtml = "";
+                    if (Array.isArray(analysisData.topics)) {
+                      topicsHtml = analysisData.topics.map(topic => {
+                        const bgColor = topicColors[topic] || "#E0E0E0";
+                        return `<span style="font-weight: bold; background-color: ${bgColor}; padding: 2px 4px; margin-right: 4px;">${topic}</span>`;
+                      }).join(", ");
+                    }
+                    
+                    // Build the analysis section.
+                    commentsHtml += `
+                      <p><strong>Analysis:</strong></p>
+                      <p><strong>Sentiment:</strong> ${arrow}</p>
+                      <p><strong>Topics:</strong> ${topicsHtml}</p>
+                    `;
+                  }
+                  commentsHtml += `</div>`;
+                });
+              } catch (error) {
+                commentsHtml = `<p>Error parsing comments JSON.</p>`;
+                console.error("Error parsing comments JSON:", error);
+              }
+              
+              // Parse the post text.
+              const postData = parsePostText(postText);
+
+              // Build the HTML for the post details.
+              const postHTML = `
+                <p><strong>Title:</strong> <span style="font-weight: bold;">${postData["Title"] || "N/A"}</span></p>
+                <p><strong>Author:</strong> ${postData["Author"] || "N/A"}</p>
+                <p><strong>Date:</strong> ${postData["Created"] || "N/A"}</p>
+                <p><strong>URL:</strong> <a href="${postData["URL"] || "#"}" target="_blank">${postData["URL"] || "N/A"}</a></p>
+                <p><strong>Body:</strong></p>
+                <p>${postData["Body"] || ""}</p>
+              `;
+
+              // Update details with formatted HTML.
+              detailsDiv.innerHTML = `
+                <p style="text-align: center; font-weight: bold;">
+                  📌 ${clickedPostId} — Positive: ${posCount}, Negative: ${negCount}
+                </p>
+                <hr>
+                <div style="max-width: 1200px; margin: auto; text-align: left; font-weight: normal;">
+                  ${postHTML}
+                  <p><strong>Comments:</strong></p>
+                  ${commentsHtml}
+                </div>
+              `;
+            })
+            .catch(error => {
+              detailsDiv.innerHTML = `<p style="text-align: center; font-weight: bold;">
+                                        📌 ${clickedPostId} — Positive: ${posCount}, Negative: ${negCount}
+                                      </p>
+                                      <p>Error loading post/comments.</p>`;
+              console.error("Error loading text files:", error);
+            });
           }
         }
+
+
       }
     });
   });

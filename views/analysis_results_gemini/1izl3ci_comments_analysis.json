@@ -1,0 +1,22 @@
+[
+  {
+    "author": "Holiday_Stick3341",
+    "comment": "you can email/call admissions to let them know!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"administration\", \"admissions\"],\n  \"complaints\": [],\n  \"suggestions\": [\"email/call admissions\"]\n}\n```"
+  },
+  {
+    "author": "Fancy-Aardvark7650",
+    "comment": "alright thank u!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "RaspberryOk3853",
+    "comment": "Have they responded yet for you? because it has already been 3 days for me and im still seeing no response\ud83d\ude2d\ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Lack of response from Temasek Polytechnic after 3 days\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Fancy-Aardvark7650",
+    "comment": "no\ud83d\ude2dim still not getting an answer on what to do",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Not getting a response regarding an issue.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

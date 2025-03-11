@@ -1,0 +1,27 @@
+[
+  {
+    "author": "Holiday_Stick3341",
+    "comment": "hey! i think engineering requires special type of laptop (can check tp website)! also can ask the staff when you buying they shld be knowledgeable abt it! but i do know that macbook is a big no no for engineering HAHHAHA",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"engineering\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Check Temasek Polytechnic's website for engineering laptop requirements\", \"Ask staff for recommendations when purchasing a laptop\"]\n}\n```"
+  },
+  {
+    "author": "LoadEnvironmental316",
+    "comment": "Get a lenovo ideapad but no touchscreen pls",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Get a Lenovo Ideapad without a touchscreen\"]\n}\n```"
+  },
+  {
+    "author": "chiikawadestroyer",
+    "comment": "yeah! there are specs and i\u2019ve filtered through them and gotten a few options but im still not sure what to get HAHA on TP it says to get a high end notebook so im getting a laptop with those specs!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Vinhunter666",
+    "comment": "Hi I\u2019m a year 3 student here , i recommend the asus Vivo book because it\u2019s great , idk if it was offered to Mine lasted 3 years and still working fine.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"ASUS VivoBook laptop recommendation\"]\n}\n```"
+  },
+  {
+    "author": "chiikawadestroyer",
+    "comment": "ooh thanks for the advice",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

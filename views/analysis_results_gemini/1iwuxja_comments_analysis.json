@@ -1,0 +1,37 @@
+[
+  {
+    "author": "iamnothingbuta",
+    "comment": "get a gaming laptop, preferably with nvidia graphic card",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"get a gaming laptop\", \"preferably with nvidia graphic card\"]\n}\n```"
+  },
+  {
+    "author": "No-Education-4341",
+    "comment": "hii! im joining aai this april too",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Initial-Cat2582",
+    "comment": "gl to iit students in y1, the subjects are marked unfairly if u get bad teachers and its mostly subjective",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"unfair marking\", \"subjective marking\", \"bad teachers\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Forward_Age6095",
+    "comment": "thx bro",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Forward_Age6095",
+    "comment": "but uh how\u2019s charging devices in class? are there ports to charge at conveniently at every table during class",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "CheezyPieFace",
+    "comment": "https://www.tp.edu.sg/life-at-tp/tp-students-digital-access-it-matters/students-it-needs.html The minimum spec for laptops",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"campus facilities\", \"IT\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "Yeah there's a lot in the classes so don't worry",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

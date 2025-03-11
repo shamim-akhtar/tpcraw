@@ -1,0 +1,7 @@
+[
+  {
+    "author": "someonenamedval",
+    "comment": "omg why ur batch the choices indo/laos only",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"internships\"],\n  \"complaints\": [\"Limited internship choices (only Indonesia/Laos)\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

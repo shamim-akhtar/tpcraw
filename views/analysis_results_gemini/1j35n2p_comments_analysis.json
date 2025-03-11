@@ -1,0 +1,22 @@
+[
+  {
+    "author": "BudgetDevv",
+    "comment": "Hmm, I think the problem is that you will never know the raw score - They deliberately hide some components",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of transparency in grading system\", \"Hidden components in scoring\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "lostclip",
+    "comment": "By right it's calculated by raw marks (which only the lecturers have) and then converted to a grade. They *might*  do a moderation if necessary.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Street_Musician_580",
+    "comment": "can use this link to calc! this is mainly for a rough gage of the actual gpa you will receive... https://www.plsgrade.me/",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "TheoryPatient6067",
+    "comment": "B+, its not easy to get an A in dsag",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

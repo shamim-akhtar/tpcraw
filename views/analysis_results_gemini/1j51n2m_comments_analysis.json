@@ -1,0 +1,57 @@
+[
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Electronic_Face_6830",
+    "comment": "Where did u hear from that pfp ori is starting on April 7 or 15-17?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Maleficent-Buy9350",
+    "comment": "PFP Orientation is on the 7th & 8th April.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "timmmmtammmmm",
+    "comment": "tysm!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "TheoryPatient6067",
+    "comment": "Pls refer to the above reply from no_professional. User may be from organising team",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"events\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Necessary-Guava412",
+    "comment": "i thought only 8 Apr ? as the email said April 8 & April 15-17",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"events\"],\n  \"complaints\": [\"Conflicting information regarding event dates. Email stated April 8th and April 15th-17th, creating confusion.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "No_Profession9091",
+    "comment": "You student facil for pfp right \ud83d\ude2d\ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Maleficent-Buy9350",
+    "comment": "This is for Temasek Poly.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Maleficent-Buy9350",
+    "comment": "Yes.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Necessary-Guava412",
+    "comment": "yea the email from tp said orientation will be on 8apr and 15-17 apr",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\", \"orientation\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "No_Profession9091",
+    "comment": "Hi thats yr1 ori! Pfp's ori is different from yr1 ori",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]
