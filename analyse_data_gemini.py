@@ -1,5 +1,6 @@
 import datetime
 import json
+import ssl
 from dotenv import load_dotenv
 import google.generativeai as genai
 import os
@@ -52,13 +53,14 @@ def analyze_summary(text, api_key=GOOGLE_GEMINI_API_KEY):
     model = genai.GenerativeModel()  # Use 'gemini-pro-vision' for multimodal
 
     prompt = f"""
-    You are an AI tasked with analyzing text from a Reddit post along with its comments 
-    about Temasek Polytechnic. Provide a concise summary in one paragraph that explains 
-    the main topics or issues discussed in both the post and the comments. Describe the 
-    overall sentiment and emotional tone conveyed in the text. Additionally, if needed, 
-    write a brief paragraph outlining any concerns or recommendations for senior school 
-    management, clearly identifying any subjects, facilities, or aspects of the school 
-    mentioned.
+    You are an AI assigned to evaluate a Reddit post and its accompanying comments about 
+    Temasek Polytechnic. Begin by summarizing the main topics or issues discussed in a 
+    concise paragraph. In a second paragraph, describe the overall sentiment and emotional 
+    tone, highlighting any mentions of subjects, the school, or facilities. If warranted, 
+    provide a brief third paragraph with concerns or recommendations for senior management, 
+    clearly specifying any referenced subjects, facilities, or aspects of the school.
+
+    Content: "{text}"
     """
 
     try:
@@ -301,22 +303,35 @@ def analyse_all_posts_and_comments_combined():
     print(f"Combined analysis saved to: {output_file_path}")
     
 def create_summary_of_a_post_and_associated_comments():
+    combined_summary_folder = "analysis_results_combined_summary_gemini"
+    os.makedirs(combined_summary_folder, exist_ok=True)
+
     # Loop through files in "combined_data"
     for filename in os.listdir("combined_data"):
+        post_id = filename.replace("_combined.txt", "")
+        print(f"Writing for post id {post_id}")
         file_path = os.path.join("combined_data", filename)
         
         # Load text and analyze it
         text_content = load_text_from_file(file_path)
         summary = analyze_summary(text_content)
+        print(summary)
+        summary_filename = f"{post_id}_summary.txt"
+        summary_file_path = os.path.join(combined_summary_folder, summary_filename)
 
+        # Write the summary to a file
+        with open(summary_file_path, 'w', encoding='utf-8') as out_f:
+            out_f.write(summary)
 
 if __name__ == "__main__":
     # Replace with your actual API key and file path
     api_key = GOOGLE_GEMINI_API_KEY
+    ssl._create_default_https_context = ssl._create_unverified_context
     
     today_str = datetime.now().strftime('%Y%m%d')
 
     #combine_post_and_comments()
-    analyse_all_posts_and_comments()
-    # analyse_all_posts_and_comments_combined()
-    # compute_sentiment_counts()
+    #analyse_all_posts_and_comments()
+    #analyse_all_posts_and_comments_combined()
+    #compute_sentiment_counts()
+    create_summary_of_a_post_and_associated_comments()

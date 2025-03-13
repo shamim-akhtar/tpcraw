@@ -81,6 +81,30 @@ function cleanJsonString(maybeMarkdownJson) {
 //   cleaned = cleaned.replace(/```$/, '');
 //   return cleaned.trim();
 // }
+function renderCombinedInfo(dataObj) {
+  // Example: Show sentiment, topics, etc. in a styled box
+  const sentiment = dataObj.sentiment || "neutral";
+  const topics = dataObj.topics || [];
+  const complaints = dataObj.complaints || [];
+  const suggestions = dataObj.suggestions || [];
+
+  let topicsHTML = topics.map(t => `<li>${t}</li>`).join("");
+  let complaintsHTML = complaints.map(c => `<li>${c}</li>`).join("");
+  let suggestionsHTML = suggestions.map(s => `<li>${s}</li>`).join("");
+
+  return `
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+      <h3 style="margin-top: 0;">Gemini Analysis (Combined)</h3>
+      <p><strong>Sentiment:</strong> ${sentiment}</p>
+      <p><strong>Topics:</strong></p>
+      <ul>${topicsHTML}</ul>
+      <p><strong>Complaints:</strong></p>
+      <ul>${complaintsHTML}</ul>
+      <p><strong>Suggestions:</strong></p>
+      <ul>${suggestionsHTML}</ul>
+    </div>
+  `;
+}
 
 
 
@@ -181,13 +205,66 @@ fetch('sentiment_count.csv')
             // Construct file URLs (adjust paths as necessary)
             const postUrl = `../reddit_data/${clickedPostId}_post.txt`;
             const commentsUrl = `../analysis_results_gemini/${clickedPostId}_comments_analysis.json`;
+            const summaryUrl = `../analysis_results_combined_summary_gemini/${clickedPostId}_summary.txt`;
+            const combinedUrl = `../analysis_results_combined_gemini/20250310_combined.json`;
 
             // Fetch both post and comments concurrently.
             Promise.all([
+              fetch(summaryUrl).then(resp => resp.text()),
               fetch(postUrl).then(resp => resp.text()),
-              fetch(commentsUrl).then(resp => resp.text())
+              fetch(commentsUrl).then(resp => resp.text()),
+              fetch(combinedUrl).then(resp => resp.text())
             ])
-            .then(([postText, commentsTextOrig]) => {
+            .then(([summaryText, postText, commentsTextOrig, combinedDict]) => {
+              
+      
+              // ----------------------------------------
+              // 1) Parse & display the "combinedUrl.json" data
+              // ----------------------------------------
+              // The dictionary key looks like "1ikp3x8_combined.txt"
+              const dictKey = `${clickedPostId}_combined.txt`;
+              let combinedDataObj = {};
+
+              //print(combinedDict)
+              print(combinedDict[dictKey])
+              if (combinedDict[dictKey]) {
+                const raw = combinedDict[dictKey];
+                print(combinedDict[dictKey])
+
+                // // Strip out the backticks and "json" from triple-backtick sections
+                // const tripleBacktickRegex = /```json([\s\S]*?)```/;
+                // const match = tripleBacktickRegex.exec(raw);
+                // if (match && match[1]) {
+                //   // match[1] is the JSON portion
+                //   try {
+                //     combinedDataObj = JSON.parse(match[1]);
+                //   } catch (err) {
+                //     console.error("Error parsing combined JSON:", err);
+                //   }
+                // } 
+                // else {
+                //   console.error("No valid JSON in combinedUrl data for " + dictKey);
+                // }
+              }
+
+              // Now you have an object like:
+              //  {
+              //    sentiment: "neutral" | "negative" | "positive" | "mixed",
+              //    topics: [...],
+              //    complaints: [...],
+              //    suggestions: [...]
+              //  }
+              // You can decide how you want to render this:
+              const combinedInfoHTML = combinedDict[dictKey];//renderCombinedInfo(combinedDataObj);
+
+              
+              // -- 1) Format summary text for display --
+              const summaryHTML = `
+                <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                  <h3 style="margin-top: 0;">Summary</h3>
+                  <p>${summaryText}</p>
+                </div>
+              `;
               // Clean the JSON string from comments.
               const cleanedCommentsString = cleanJsonString(commentsTextOrig);
               let commentsHtml = "";
@@ -276,6 +353,9 @@ fetch('sentiment_count.csv')
                 </p>
                 <hr>
                 <div style="max-width: 1200px; margin: auto; text-align: left; font-weight: normal;">
+                  <p><strong>Summary:</strong></p>
+                  ${combinedInfoHTML}
+                  ${summaryHTML}
                   ${postHTML}
                   <p><strong>Comments:</strong></p>
                   ${commentsHtml}
