@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"global studies\", \"events\"],\n  \"complaints\": [\"Limited choices for global studies (Indonesia/Laos only)\"],\n  \"suggestions\": []\n}"
+{  "sentiment": "neutral",  "topics": ["academic", "global studies", "events"],  "complaints": ["Limited choices for global studies destinations (Indonesia/Laos only)"],  "suggestions": []}

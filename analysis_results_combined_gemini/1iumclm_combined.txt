@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"students\"],\n  \"complaints\": [\"minor correction needed in CBB Topic 3 flashcards on Quizlet\"],\n  \"suggestions\": []\n}"
+{  "sentiment": "positive",  "topics": ["academic", "students"],  "complaints": ["Minor correction needed for CBB Topic 3 flashcards on Quizlet."],  "suggestions": []}

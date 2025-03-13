@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}"
+{  "sentiment": "neutral",  "topics": ["career/internships"],  "complaints": [],  "suggestions": []}

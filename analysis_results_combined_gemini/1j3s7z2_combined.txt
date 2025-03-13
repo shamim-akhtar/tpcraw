@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"schedule\", \"career/internships\", \"CCA\", \"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Work during flex weeks, study week, vacation\", \"Reschedule work based on timetable\"]\n}"
+{  "sentiment": "positive",  "topics": ["academic", "schedule", "career/internships", "extracurricular activities"],  "complaints": [],  "suggestions": ["Work during flex weeks, study week, and vacation.", "Reschedule work based on the timetable."]}

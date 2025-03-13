@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}"
+{  "sentiment": "positive",  "topics": ["academic"],  "complaints": [],  "suggestions": ["seeking notes for year 2 semester 1 business diploma modules: Business Finance, People and Culture, Computational Thinking for Business, and Intro to Process and Systems"]}

@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"enrolment\"],\n  \"complaints\": [\"Difficulty accessing the colour vision test form.\"],\n  \"suggestions\": []\n}"
+{  "sentiment": "neutral",  "topics": ["administration", "enrolment"],  "complaints": ["Difficulty accessing the colour vision test form."],  "suggestions": []}

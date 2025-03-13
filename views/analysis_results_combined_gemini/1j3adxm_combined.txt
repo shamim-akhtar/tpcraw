@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Poor grade in CRM subject\", \"CRM subject is considered the worst\"],\n  \"suggestions\": []\n}"
+{  "sentiment": "negative",  "topics": ["academic"],  "complaints": ["Poor grade in CRM subject", "CRM subject is the worst"],  "suggestions": []}

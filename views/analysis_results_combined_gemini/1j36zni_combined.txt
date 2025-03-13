@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"events\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"refresh the application page frequently (at a specific time), keep pressing submit and ok buttons to avoid glitches\"]\n}"
+{  "sentiment": "positive",  "topics": ["events", "academic", "career/internships"],  "complaints": [],  "suggestions": ["refresh at 1.59pm 57sec", "keep refreshing until countries appear", "scroll to the bottom immediately", "keep pressing submit and ok buttons"]}

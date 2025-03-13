@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Inconsistent information regarding GPA release date.\"],\n  \"suggestions\": []\n}"
+{  "sentiment": "neutral",  "topics": ["academic", "administration"],  "complaints": ["Uncertainty regarding GPA release date"],  "suggestions": []}

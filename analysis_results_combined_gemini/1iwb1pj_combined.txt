@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"business law\"],\n  \"complaints\": [\"only 4 practice questions provided for the exam\", \"IRAC format is confusing and rarely used by TP law students\"],\n  \"suggestions\": []\n}"
+{  "sentiment": "neutral",  "topics": ["academic", "business law"],  "complaints": ["Only 4 practice questions provided for the exam", "IRAC method is confusing and not strictly followed by TP law students"],  "suggestions": []}

@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"events\", \"orientation\"],\n  \"complaints\": [\"Lack of information regarding start date in enrollment email\"],\n  \"suggestions\": []\n}"
+{  "sentiment": "neutral",  "topics": ["academic", "events", "orientation"],  "complaints": [],  "suggestions": []}

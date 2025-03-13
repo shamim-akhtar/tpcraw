@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrollment\", \"tuition grant\", \"internship\", \"national service (NS)\", \"course (Accountancy & Finance)\", \"EAE (Early Admissions Exercise)\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}"
+{  "sentiment": "neutral",  "topics": ["tuition grant", "internship", "national service (NS)", "enrollment", "course (accountancy and finance)", "eae"],  "complaints": [],  "suggestions": []}

@@ -106,7 +106,9 @@ function renderCombinedInfo(dataObj) {
   `;
 }
 
-
+function formatTextAsHtml(text) {
+    return text.replace(/\n/g, "<br>");
+}
 
 fetch('sentiment_count.csv')
   .then(response => response.text())
@@ -206,7 +208,7 @@ fetch('sentiment_count.csv')
             const postUrl = `../reddit_data/${clickedPostId}_post.txt`;
             const commentsUrl = `../analysis_results_gemini/${clickedPostId}_comments_analysis.json`;
             const summaryUrl = `../analysis_results_combined_summary_gemini/${clickedPostId}_summary.txt`;
-            const combinedUrl = `../analysis_results_combined_gemini/20250310_combined.json`;
+            const combinedUrl = `../analysis_results_combined_gemini/${clickedPostId}_combined.txt`;
 
             // Fetch both post and comments concurrently.
             Promise.all([
@@ -217,48 +219,40 @@ fetch('sentiment_count.csv')
             ])
             .then(([summaryText, postText, commentsTextOrig, combinedDict]) => {
               
-      
-              // ----------------------------------------
-              // 1) Parse & display the "combinedUrl.json" data
-              // ----------------------------------------
-              // The dictionary key looks like "1ikp3x8_combined.txt"
-              const dictKey = `${clickedPostId}_combined.txt`;
-              let combinedDataObj = {};
+              // -- 1) Format summary text for display --
+              
+              const data = JSON.parse(combinedDict);
+                // Now data is a normal JS object
+              console.log(data.sentiment);    // "neutral"
+              console.log(data.topics);       // ["academic", "hardware/technology"]
+              console.log(data.complaints);   // ["poor build quality of ...", "bulky gaming laptops", ...]
+              console.log(data.suggestions);
 
-              //print(combinedDict)
-              print(combinedDict[dictKey])
-              if (combinedDict[dictKey]) {
-                const raw = combinedDict[dictKey];
-                print(combinedDict[dictKey])
+              // Accumulate your HTML content in this variable
+              let html = "";
 
-                // // Strip out the backticks and "json" from triple-backtick sections
-                // const tripleBacktickRegex = /```json([\s\S]*?)```/;
-                // const match = tripleBacktickRegex.exec(raw);
-                // if (match && match[1]) {
-                //   // match[1] is the JSON portion
-                //   try {
-                //     combinedDataObj = JSON.parse(match[1]);
-                //   } catch (err) {
-                //     console.error("Error parsing combined JSON:", err);
-                //   }
-                // } 
-                // else {
-                //   console.error("No valid JSON in combinedUrl data for " + dictKey);
-                // }
+              // Loop through each key-value pair
+              for (const [key, value] of Object.entries(data)) {
+                if (Array.isArray(value)) {
+                  // If the value is an array, join elements with commas
+                  html += `<p><strong>${key}:</strong> ${value.join(", ")}</p>\n`;
+                } else {
+                  // Otherwise, just convert to string
+                  html += `<p><strong>${key}:</strong> ${value}</p>\n`;
+                }
               }
 
-              // Now you have an object like:
-              //  {
-              //    sentiment: "neutral" | "negative" | "positive" | "mixed",
-              //    topics: [...],
-              //    complaints: [...],
-              //    suggestions: [...]
-              //  }
-              // You can decide how you want to render this:
-              const combinedInfoHTML = combinedDict[dictKey];//renderCombinedInfo(combinedDataObj);
+              // Build the final summary box
+              const combinedInfoHTML = `
+                <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                  ${html}
+                </div>
+              `;
+
 
               
               // -- 1) Format summary text for display --
+              summaryText = formatTextAsHtml(summaryText);
               const summaryHTML = `
                 <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
                   <h3 style="margin-top: 0;">Summary</h3>
@@ -321,7 +315,8 @@ fetch('sentiment_count.csv')
                     
                     // Build the analysis section.
                     commentsHtml += `
-                      <p><strong>Analysis:</strong></p>
+                    
+                      <h3 style="margin-top: 0;">Analysis</h3>
                       <p><strong>Sentiment:</strong> ${arrow}</p>
                       <p><strong>Topics:</strong> ${topicsHtml}</p>
                     `;
@@ -353,9 +348,12 @@ fetch('sentiment_count.csv')
                 </p>
                 <hr>
                 <div style="max-width: 1200px; margin: auto; text-align: left; font-weight: normal;">
-                  <p><strong>Summary:</strong></p>
+                  <h3><strong>Analysis:</strong></h3>
                   ${combinedInfoHTML}
                   ${summaryHTML}
+                </div>
+                <div style="max-width: 1200px; margin: auto; text-align: left; font-weight: normal;">
+                  <h3><strong>Post Details:</strong></h3>
                   ${postHTML}
                   <p><strong>Comments:</strong></p>
                   ${commentsHtml}

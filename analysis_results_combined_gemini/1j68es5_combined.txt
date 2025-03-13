@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"career/internships\", \"application process\"],\n  \"complaints\": [\"Low GPA (2.84) affecting university application chances.\"],\n  \"suggestions\": []\n}"
+{  "sentiment": "negative",  "topics": ["academic", "career/internships", "application process"],  "complaints": ["Low GPA (2.84) hindering university application"],  "suggestions": []}

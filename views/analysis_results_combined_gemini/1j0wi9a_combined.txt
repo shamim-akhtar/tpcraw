@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"student email access\", \"enrollment\"],\n  \"complaints\": [\"Inability to access student email before school starts\", \"Delayed access to student email\"],\n  \"suggestions\": []\n}"
+{  "sentiment": "neutral",  "topics": ["student email access", "enrollment"],  "complaints": ["Inability to access student email before the start of the semester."],  "suggestions": []}

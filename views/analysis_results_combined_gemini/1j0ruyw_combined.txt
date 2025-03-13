@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"admission\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"regularly check the TP application portal\"]\n}"
+{  "sentiment": "neutral",  "topics": ["academic", "administration"],  "complaints": [],  "suggestions": ["Regularly check the TP application portal for updates"]}

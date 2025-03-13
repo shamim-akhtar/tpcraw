@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of information regarding retests for ADEB DBAV quiz\", \"Uncertainty about notification for retests\"],\n  \"suggestions\": []\n}"
+{  "sentiment": "negative",  "topics": ["academic"],  "complaints": ["Lack of information regarding retests for the ADEV DBAV quiz.", "Uncertainty about notification for retests if the overall subject is failed without the quiz."],  "suggestions": []}

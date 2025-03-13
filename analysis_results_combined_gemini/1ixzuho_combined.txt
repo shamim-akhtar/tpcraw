@@ -1,1 +1,1 @@
-"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"sports\", \"CCA\", \"events\"],\n  \"complaints\": [],\n  \"suggestions\": [\"practicing field hockey skills at void decks\", \"watching YouTube videos on field hockey\"]\n}"
+{  "sentiment": "neutral",  "topics": ["sports", "CCA", "events"],  "complaints": [],  "suggestions": ["practicing field hockey skills at void decks", "watching YouTube videos on field hockey"]}
