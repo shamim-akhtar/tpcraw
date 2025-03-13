@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"CCA\", \"sports CCA\", \"table tennis\", \"badminton\", \"student selection process\"],\n  \"complaints\": [\"Difficulty in joining a sports CCA due to competitiveness and prior experience requirement.\"],\n  \"suggestions\": []\n}"

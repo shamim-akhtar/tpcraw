@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"course_specific\", \"timetable\", \"workload\", \"group_projects\", \"logistics\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Find good project partners\", \"Be proactive in seeking teacher consultation\", \"Prepare for the course by self-learning relevant skills\"]\n}"

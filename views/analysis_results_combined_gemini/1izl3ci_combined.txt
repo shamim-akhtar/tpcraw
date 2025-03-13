@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"medical\"],\n  \"complaints\": [\"Lack of response from admissions regarding medical checkups.\", \"Difficulty in scheduling medical checkup before term start for students returning from overseas.\"],\n  \"suggestions\": []\n}"

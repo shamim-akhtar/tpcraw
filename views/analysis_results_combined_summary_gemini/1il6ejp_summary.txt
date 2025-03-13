@@ -1,0 +1,14 @@
+The Reddit post and its comments center on the suitability of an iPad versus a MacBook for a Communication Design course at Temasek Polytechnic (TP).  The original poster (OP) inquires about using an iPad, while numerous commenters strongly advise against it, citing the intensive use of Adobe software (Photoshop, Illustrator, After Effects, Premiere Pro, Figma) and other design applications that are either unsupported or poorly performant on iPads.  The discussion also touches upon alternative Windows laptops as a more budget-friendly option, and the importance of sufficient RAM and storage for smooth operation.
+
+The overall sentiment is overwhelmingly negative towards using only an iPad for the course.  Commenters express concern about potential crashes, limitations in software compatibility, and the overall inefficiency of using an iPad for professional-level design work.  There's a strong consensus that a MacBook (or a high-spec Windows laptop) is essential.  While some suggest Windows laptops as a more affordable alternative, the preference for MacBooks is heavily emphasized due to better compatibility with Adobe Creative Suite and industry standard software.  The comments frequently highlight the limitations of iPad versions of professional design software, the potential for crashes and frustration, and the importance of having sufficient RAM and storage for these resource-intensive applications.  Facilities at TP are not directly mentioned, but the implicit assumption is that the software and hardware requirements for the course reflect the school's expectations and industry standards.
+
+**Recommendations for Temasek Polytechnic Senior Management:**
+
+Given the significant number of students encountering compatibility issues and expressing concern about the limitations of iPads for their design course, senior management should consider the following:
+
+1. **Update Course Materials and Requirements:**  Clearly communicate the minimum hardware and software requirements for the Communication Design course.  Explicitly state that an iPad is insufficient for the coursework, emphasizing the necessity of a laptop with sufficient processing power, RAM, and storage for Adobe Creative Suite and other professional design applications.
+
+2. **Provide More Comprehensive Technology Support:** Offer workshops or tutorials to help students select suitable laptops within their budget, focusing on specifications that meet the course demands.  Include comparative information regarding the capabilities of Macs versus high-spec Windows machines for design-related tasks.
+
+
+3. **Explore Software Licensing and Access:** Examine the possibility of providing students with access to cloud-based or subscription-based versions of Adobe software, which could alleviate some storage concerns and provide more flexibility for students.

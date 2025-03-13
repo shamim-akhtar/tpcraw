@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"enrolment\", \"administration\"],\n  \"complaints\": [\"Difficulty converting JPEG to JPG for passport photo\", \"Uncertainty about photo size\"],\n  \"suggestions\": [\"Use online image converters\", \"Use ID photo apps on mobile phone\"]\n}"

@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\", \"CCA\", \"campus facilities\"],\n  \"complaints\": [\"Concerned about GPA impact of MAS module\", \"regretting not scoring well in Y1\"],\n  \"suggestions\": []\n}"

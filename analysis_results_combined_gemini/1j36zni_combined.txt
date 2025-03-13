@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"events\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"refresh the application page frequently (at a specific time), keep pressing submit and ok buttons to avoid glitches\"]\n}"

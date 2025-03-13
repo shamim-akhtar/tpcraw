@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\", \"global studies\"],\n  \"complaints\": [\"Difficulty withdrawing from the Bali Global Studies trip.\"],\n  \"suggestions\": []\n}"

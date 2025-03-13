@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\", \"global studies\"],\n  \"complaints\": [\"Stagnant career growth in Singapore after a few years\"],\n  \"suggestions\": [\"Use Singapore as a launching pad to build skills and experience before moving abroad for better opportunities.\"]\n}"

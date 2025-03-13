@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"tuition grant\", \"financial aid\", \"administration\"],\n  \"complaints\": [\"Concern about not receiving tuition grant due to parents' income.\"],\n  \"suggestions\": []\n}"

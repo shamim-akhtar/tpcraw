@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\", \"administration\"],\n  \"complaints\": [\"Difficulty in registering for the Global Studies (GS) trip to China.  The system required re-registration, resulting in the loss of all available slots.\"],\n  \"suggestions\": []\n}"

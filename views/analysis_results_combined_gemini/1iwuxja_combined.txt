@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"campus facilities\", \"career/internships\"],\n  \"complaints\": [\"unfair marking in some subjects due to subjective grading and teacher dependence.\"],\n  \"suggestions\": []\n}"

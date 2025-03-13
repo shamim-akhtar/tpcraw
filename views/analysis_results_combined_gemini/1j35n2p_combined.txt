@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"gpa calculation\"],\n  \"complaints\": [\"Lack of transparency in GPA calculation\", \"Difficulty in obtaining a precise GPA prediction\"],\n  \"suggestions\": [\"Use online GPA calculators for estimation (e.g., plsgrade.me)\"]\n}"

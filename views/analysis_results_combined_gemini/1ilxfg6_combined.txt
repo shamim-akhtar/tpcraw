@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"assignments\"],\n  \"complaints\": [\"Poorly phrased assignment question\", \"Sample output located at the bottom of the assignment\", \"Difficult to find key elements of the question\"],\n  \"suggestions\": []\n}"

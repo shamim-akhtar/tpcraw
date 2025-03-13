@@ -6,6 +6,7 @@ import google.generativeai as genai
 import os
 import re
 from datetime import datetime
+import view_analysis
 
 # Load environment variables
 load_dotenv()
@@ -287,20 +288,25 @@ def analyse_all_posts_and_comments_combined():
         # Load text and analyze it
         text_content = load_text_from_file(file_path)
         sentiment_json = analyze_sentiment2(text_content)
+        sentiment_json = view_analysis.clean_json_string(sentiment_json)
 
         # Store the result in the dictionary
-        results_dict[filename] = sentiment_json
+        #results_dict[filename] = sentiment_json
+        output_file_path = os.path.join(combined_analysis_folder, filename)
+        # Save the dictionary to a JSON file
+        with open(output_file_path, 'w', encoding='utf-8') as out_f:
+            json.dump(sentiment_json, out_f, indent=2)
 
-    # Build the output filename based on today's date, e.g. "20250310_combined.json"
-    today_str = datetime.now().strftime('%Y%m%d')
-    output_filename = f"{today_str}_combined.json"
-    output_file_path = os.path.join(combined_analysis_folder, output_filename)
+    # # Build the output filename based on today's date, e.g. "20250310_combined.json"
+    # today_str = datetime.now().strftime('%Y%m%d')
+    # output_filename = f"{today_str}_combined.json"
+    # output_file_path = os.path.join(combined_analysis_folder, output_filename)
 
-    # Save the dictionary to a JSON file
-    with open(output_file_path, 'w', encoding='utf-8') as out_f:
-        json.dump(results_dict, out_f, indent=2)
+    # # Save the dictionary to a JSON file
+    # with open(output_file_path, 'w', encoding='utf-8') as out_f:
+    #     json.dump(results_dict, out_f, indent=2)
 
-    print(f"Combined analysis saved to: {output_file_path}")
+    # print(f"Combined analysis saved to: {output_file_path}")
     
 def create_summary_of_a_post_and_associated_comments():
     combined_summary_folder = "analysis_results_combined_summary_gemini"
@@ -332,6 +338,6 @@ if __name__ == "__main__":
 
     #combine_post_and_comments()
     #analyse_all_posts_and_comments()
-    #analyse_all_posts_and_comments_combined()
+    analyse_all_posts_and_comments_combined()
     #compute_sentiment_counts()
-    create_summary_of_a_post_and_associated_comments()
+    #create_summary_of_a_post_and_associated_comments()

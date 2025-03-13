@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"application process\"],\n  \"complaints\": [\"Incorrectly filled application form (Singapore Citizen instead of PR)\"],\n  \"suggestions\": [\"Contact the administration immediately\", \"Resubmit the form if necessary\"]\n}"

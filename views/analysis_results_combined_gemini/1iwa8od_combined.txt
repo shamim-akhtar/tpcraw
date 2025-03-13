@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"ICT\", \"curriculum\"],\n  \"complaints\": [\"Lack of introductory computer skills training in the curriculum for students with no prior computing knowledge.\"],\n  \"suggestions\": [\"Students with no prior computing knowledge should learn basic Windows skills before enrolling.\"]\n}"

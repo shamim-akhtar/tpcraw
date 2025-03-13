@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"sports CCA\", \"campus life\", \"commitment level\", \"selection process\"],\n  \"complaints\": [\"lack of handball CCA for girls\"],\n  \"suggestions\": [\"try out for tchoukball despite lack of experience\", \"consider TP sports club as an alternative\"]\n}"

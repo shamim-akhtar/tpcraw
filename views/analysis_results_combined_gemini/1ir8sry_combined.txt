@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"curriculum\"],\n  \"complaints\": [\"High cost of toolkit and digital trainer used for only one year.\"],\n  \"suggestions\": []\n}"

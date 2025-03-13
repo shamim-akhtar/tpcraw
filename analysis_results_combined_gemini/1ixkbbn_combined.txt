@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrollment\", \"administration\"],\n  \"complaints\": [\"Confusion about enrollment email and the request for an enrolment key.\"],\n  \"suggestions\": []\n}"

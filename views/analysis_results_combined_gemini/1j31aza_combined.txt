@@ -1,0 +1,1 @@
+"{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"BYOD\", \"hardware\", \"campus facilities\", \"financial aid\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Check Temasek Polytechnic's website for recommended devices and BYOD policy\", \"Consider Asus Vivobook TN3402YA as an alternative\", \"Explore financial aid schemes offered by the polytechnic\"]\n}"
