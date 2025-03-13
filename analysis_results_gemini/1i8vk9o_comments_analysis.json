@@ -1,0 +1,32 @@
+[
+  {
+    "author": "Eshuon",
+    "comment": "r/lostredditors",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "DragonDooom",
+    "comment": "What the skibidi",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Titanium_Gold245",
+    "comment": "Bro stop trolling\ud83d\ude02",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Usual_Ad6982",
+    "comment": "Wrong sub... and why is news the tag news?????",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"incorrect subreddit tagging\", \"confusing news tag\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "bricklegos",
+    "comment": "this sub isnt real bruh",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Lack of engagement or activity on the subreddit.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "SJ-JUSTICE",
+    "comment": "Raquel MARTINEZ \ud83d\udc9c",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

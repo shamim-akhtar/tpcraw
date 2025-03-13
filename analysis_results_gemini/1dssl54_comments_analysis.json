@@ -1,0 +1,37 @@
+[
+  {
+    "author": "Obvious-Data1914",
+    "comment": "We're most likely to get our email on Friday since that happened last year. Are you fr that people got their emails already and which course",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "I got mine in July last year.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Sea-Policy1707",
+    "comment": "I got mine on 7 july 2022",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AQiQimain",
+    "comment": "I'm also waiting for HTM to send me smth. Poly don't send out email saying you don't make it to interview tho.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"career/internships\"],\n  \"complaints\": [\"Lack of communication from Temasek Polytechnic regarding interview results.  The polytechnic doesn't send emails to inform applicants that they were not selected for an interview.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Horror_Address_3388",
+    "comment": "idk i saw a comment saying someones friend got the email and has an interview this saturday",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

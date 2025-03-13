@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["academic", "global studies", "events"],  "complaints": ["Limited choices for global studies destinations (Indonesia/Laos only)"],  "suggestions": []}
+{  "sentiment": "positive",  "topics": ["academic", "global studies", "events"],  "complaints": ["Limited global studies options"],  "suggestions": []}

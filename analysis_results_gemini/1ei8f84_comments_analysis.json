@@ -1,0 +1,47 @@
+[
+  {
+    "author": "iamnothingbuta",
+    "comment": "Html and js for adev, sql for the data base thingy, dsag uses python and nect uses some cisco learner lab thing",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "sem 2 is chill asf",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Latter_Special655",
+    "comment": "sem 2 is relatively more chill its the best time out of my 1.5 yrs in poly(as of now), i think its also cos they combined like 2 modules assignment into 1 so like u dun need so rush so much assignments, thrs pros and cons tho, if u r good at it u will do well for both modules if u r bad u will do badly for both modules, but adev and the other one i cant rmb the name is javascript, dsag will continue on python then network will continue on aws",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Baxtonwarls",
+    "comment": "Not from commonict but all IT courses are the same in year one. For sem 2 there\u2019s one less subject but the ADEV project will be tough and take up a lot of time. With sufficient effort and A is attainable for all of the subjects and in my oppinion was way easier than the first sem but it\u2019s much more code based",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"curriculum\"],\n  \"complaints\": [\"ADEV project is tough and time-consuming\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "CornerDry1533",
+    "comment": "TP IT Alumni here. yr 1 is pretty chill. most of the courses are the same across all courses, but that being said. chill doesn't mean you can rest on your laurels. try to get as high as possible now. later into the course (Y2 S2, Y3) things will get faster and tougher bahaha",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Try to get high grades early on\"]\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Baxtonwarls",
+    "comment": "If you have time, you\u2019ll get a rlly good headstart for the AWS subject by studying for cloud practitioner AWS exam in the 6week break. I did my cloud practitioner and year1sem2 and year2sem1 both had AWS and it was all incredibly easy while most ppl were struggling. Go on Udemy or YouTube and search \u201cstudy cloud practitioner\u201d you\u2019ll get your resources required. 2 hours a day for a month and you\u2019ve secured a A for two subjects for the next two sems Edit: I\u2019m from Big data, and for us year2 sem 1 also has a AWS subject, but I\u2019m not sure if thatlll be the case for the common ict course. Anyways still reccoment studying for cloud practitioner exam",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Study for the AWS Cloud Practitioner exam during the 6-week break to gain a head start in AWS subjects for subsequent semesters.\"]\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Baxtonwarls",
+    "comment": "Bought a course on Udemy. Taught me everything I needed to know. Passed the test really easily on the first try.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

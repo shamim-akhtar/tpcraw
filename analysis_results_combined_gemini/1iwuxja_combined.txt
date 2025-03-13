@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["academic", "campus facilities", "career/internships"],  "complaints": ["subjects are marked unfairly if you get bad teachers and it's mostly subjective", "lack of clarity regarding charging ports in classrooms"],  "suggestions": ["get a gaming laptop, preferably with an Nvidia graphic card"]}
+{  "sentiment": "neutral",  "topics": ["academic", "campus facilities", "career/internships"],  "complaints": ["unfair marking in certain subjects due to subjective grading and teacher dependence"],  "suggestions": []}

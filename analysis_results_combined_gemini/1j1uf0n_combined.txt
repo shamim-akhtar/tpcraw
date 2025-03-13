@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["academic", "hardware/technology"],  "complaints": [],  "suggestions": []}
+{  "sentiment": "neutral",  "topics": ["academic", "laptop/hardware"],  "complaints": [],  "suggestions": []}

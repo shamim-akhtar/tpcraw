@@ -1,0 +1,12 @@
+[
+  {
+    "author": "Stayclam1326",
+    "comment": "Ael aeg . Aim as high as possible",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "nevergiveup381",
+    "comment": "Aight but its cuz only got 1 class rite so its highly competitive",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Highly competitive environment due to only one class\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["administration", "events", "career/internships"],  "complaints": ["Difficulty in finding the appropriate contact person for seal points allocation for an external event."],  "suggestions": []}

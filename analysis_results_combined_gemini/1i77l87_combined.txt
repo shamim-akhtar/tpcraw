@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["academic", "career/internships"],  "complaints": ["Uncertainty about when internship GPA is released", "Concern about potential impact of later semesters' grades on university offers"],  "suggestions": []}

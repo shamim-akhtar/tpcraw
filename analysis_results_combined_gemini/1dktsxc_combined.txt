@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "administration"],  "complaints": ["Difficulty obtaining engineering course outline from Temasek Polytechnic.  Repeatedly unsuccessful attempts to contact the engineering hotline."],  "suggestions": []}

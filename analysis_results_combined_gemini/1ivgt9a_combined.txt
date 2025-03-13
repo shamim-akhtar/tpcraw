@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["administration", "visa/immigration"],  "complaints": ["Lack of clear instructions on next steps after enrollment for international students", "Unclear order of steps in enrollment package"],  "suggestions": []}
+{  "sentiment": "neutral",  "topics": ["administration", "visa/immigration", "enrollment"],  "complaints": ["Lack of clear instructions on next steps after enrollment", "Uncertainty about the process of obtaining an IPA letter and Student Pass", "Enrollment package guide lacks clear order of steps"],  "suggestions": []}

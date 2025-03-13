@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "admission"],  "complaints": ["Failed English Language B in IGCSE exam", "Unable to retake the exam"],  "suggestions": ["Retake English Language exam (multiple suggestions)", "Contact Temasek Polytechnic directly to inquire about admission possibilities", "Consider alternative options like ITE"]}

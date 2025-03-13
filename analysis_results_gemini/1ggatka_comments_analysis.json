@@ -1,0 +1,47 @@
+[
+  {
+    "author": "iamnothingbuta",
+    "comment": "Why don't you do it yourself? Just put in effort and ask your teacher",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of student support\", \"Unhelpful response from teacher/instructor\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "I also need guidance from seniors Sia \ud83d\ude2d my teachers just asked us to use chatgpt to get started...",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of guidance from teachers\", \"Reliance on ChatGPT for project initiation\"],\n  \"suggestions\": [\"More guidance from seniors and teachers desired\"]\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Clean-Engine9476",
+    "comment": "Most of the time putting in effort doesn\u2019t get u a good grade",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Grading system is unfair or ineffective; Effort does not always correlate with good grades.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Clean-Engine9476",
+    "comment": "Yeah men life\u2019s hard",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Life is hard\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Clean-Engine9476",
+    "comment": "ppl from same course they went thru same modules n stuff so im just looking for those who have good gpa pay them to help me do assignments with quality or guide me of course prices vary",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Difficulty with assignments\", \"Need for academic help\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "you just don't know where to start",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Feeling lost and overwhelmed\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Clean-Engine9476",
+    "comment": "Um it depends but prices can be discussed based on the difficulty of the assignment or whatever I need help with",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "author": "No_Ninja_8665",
+    "comment": "If u respect urself then dont go",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"general\"],\n  \"complaints\": [\"Overall negative experience implied\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "blackrosethorn3",
+    "comment": "report to the teachers. TP is a public space but it ain't a space for some modeling agency to advertise. Also sounds sus if u r using flyers to advertise nowadays (plus IIT? seriously? not even design sch???)",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"campus facilities\", \"events\"],\n  \"complaints\": [\"Unauthorized advertising on campus by a modeling agency.\", \"Use of flyers for advertising deemed outdated and suspicious.\", \"Questionable choice of advertising partner (IIT instead of Design school)\"],\n  \"suggestions\": [\"Report unauthorized advertising to relevant authorities.\"]\n}\n```"
+  },
+  {
+    "author": "leesj199",
+    "comment": "LOL just try you only live once \ud83d\udc4d",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aiyoowafap",
+    "comment": "oh the flyer was from the ADM students",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"students\", \"events\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

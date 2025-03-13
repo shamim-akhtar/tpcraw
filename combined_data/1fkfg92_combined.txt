@@ -1,0 +1,23 @@
+=== POST CONTENT ===
+Title: Y1S2 IIT notes / study schedule? 
+Author: definitelytroaxx
+Score: 5
+URL: https://www.reddit.com/r/TemasekPoly/comments/1fkfg92/y1s2_iit_notes_study_schedule/
+Created: 2024-09-19 15:48:05
+Body: hihi IIT seniors does anyone have the slides for y1s2 or whatever study schedule yall used to study/practice 🙏🏻🙏🏻 need to lock in next sem thank u 
+
+
+=== COMMENTS ===
+Comment by mount2010: https://tp-itsig.github.io/#/
+
+Check out this website made by the TP ITSIG. Should be applicable to those taking Common ICT as well.
+
+Comment by definitelytroaxx: yooo thank u i have this website alr :p i meant like i wanted to get a head start in certain topics bc my y2 friends told me python we'll be learning stacks and queues and i wanted to know if i could learn any concepts for js/html/css before sch starts
+
+Comment by mount2010: For JS/HTML/CSS, I'd highly recommend trying it yourself (download Visual Studio Code, then you only need a web browser to open the HTML files you wrote) and I like Mozilla Developer Network's guide on those. They're all linked together. 
+
+Regarding stacks and queues you can read/watch about those. They're basically ways to organize data so we can manipulate/store them easily.
+
+Comment by definitelytroaxx: thank you!!
+
+

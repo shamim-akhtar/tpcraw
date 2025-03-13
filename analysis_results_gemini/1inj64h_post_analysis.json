@@ -1,1 +1,1 @@
-"```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"career/internships\"],\n  \"complaints\": [\"Uncertainty about internship location restrictions due to tuition grant conditions.\", \"Uncertainty about the tuition grant's applicability after National Service (NS)\"],\n  \"suggestions\": []\n}\n```"
+"```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"career/internships\"],\n  \"complaints\": [\"Uncertainty about internship and NS obligations in relation to tuition grant.\"],\n  \"suggestions\": []\n}\n```"

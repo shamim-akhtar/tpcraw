@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["academic", "course selection", "administration"],  "complaints": ["Could not get desired course due to lack of points"],  "suggestions": ["Talk to an ECG school counsellor"]}

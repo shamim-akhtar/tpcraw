@@ -1,0 +1,27 @@
+[
+  {
+    "author": "reapertorn",
+    "comment": "pending approval since june, im getting real pissed off. knn go up on stage say come come come apply bursary sch fees expensive, government want to help you then from april do do do until now knn",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"financial aid\"],\n  \"complaints\": [\"Bursary application pending approval since June\", \"Slow processing of bursary application\", \"High school fees\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "no eh, logged into tposs and saw that i was awarded on 15/8 but havent receive an email abt it",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Lack of email notification regarding award.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "IndependentNo6105",
+    "comment": "yes (received an outlook email about it 2 months+ ago)",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "theuselessmastermind",
+    "comment": "yep, approved in june",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Fun-Ratio835",
+    "comment": "same",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

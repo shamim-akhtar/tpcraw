@@ -1,0 +1,67 @@
+[
+  {
+    "author": "iamnothingbuta",
+    "comment": "give location an id and vending machine items have food ids? i am not sure",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": [\"give location an ID\", \"give vending machine items food IDs\"]\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "u gotta make use of the joint table vending_item, what I did was pass the vending machine id in my url, then I the items page I used a loop to print out all the items in that joint table which corresponds to the machine id",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Potential-Donut6922",
+    "comment": "IM SO COOKED",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Overwhelmed/stressed\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ryekleqq",
+    "comment": "yeah but how to implement it in vs code...",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "get element by id",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ryekleqq",
+    "comment": "WAIT SORRY can u dm me ur example? im so confused and cooked rn.. THANK U",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [\"confusion about an example\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "do SQL join",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ryekleqq",
+    "comment": "in server.js right.. then what do i do next lol",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "I am kind of washed in adev so I can't help but you could try postman if you still use that",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"postman\"]\n}\n```"
+  },
+  {
+    "author": "ryekleqq",
+    "comment": "we are supp to use vs code for proj2 tho\ud83d\ude2d\ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Required to use VS Code for Project 2\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "They're different tools - VS code is for writing code, postman is for testing your backend",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "test the sql statement in postman then bring over to vs code using gpt",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ryekleqq",
+    "comment": "the issue isnt joining the tables but like implementing it into the website \ud83e\udd72\ud83e\udd72",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Difficulty implementing database tables into a website\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

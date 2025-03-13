@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic"],  "complaints": ["Significant GPA drop in Early Childhood year 2 this semester."],  "suggestions": []}

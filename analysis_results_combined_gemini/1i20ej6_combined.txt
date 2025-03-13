@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["academic", "campus facilities", "career/internships"],  "complaints": ["IIT syllabus adjustments leading to unprepared students", "Old school architecture", "Poor accessibility (limited lifts)"],  "suggestions": ["Learn Python", "Learn Figma, Microsoft Power BI, Knime"]}

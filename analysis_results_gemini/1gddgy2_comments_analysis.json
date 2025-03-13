@@ -1,0 +1,7 @@
+[
+  {
+    "author": "Clean-Engine9476",
+    "comment": "Chances of being hacked if pressed into malicious link \ud83e\udd2f",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus security\", \"IT security\"],\n  \"complaints\": [\"Concern about potential phishing attacks and malicious links on campus network or through campus communications.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

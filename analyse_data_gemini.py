@@ -333,12 +333,12 @@ def create_summary_of_a_post_and_associated_comments():
 if __name__ == "__main__":
     # Replace with your actual API key and file path
     api_key = GOOGLE_GEMINI_API_KEY
-    ssl._create_default_https_context = ssl._create_unverified_context
+    #ssl._create_default_https_context = ssl._create_unverified_context
     
-    today_str = datetime.now().strftime('%Y%m%d')
+    #today_str = datetime.now().strftime('%Y%m%d')
 
     #combine_post_and_comments()
     #analyse_all_posts_and_comments()
     analyse_all_posts_and_comments_combined()
     #compute_sentiment_counts()
-    #create_summary_of_a_post_and_associated_comments()
+    create_summary_of_a_post_and_associated_comments()

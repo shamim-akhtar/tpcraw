@@ -7,7 +7,7 @@
   {
     "author": "mount2010",
     "comment": "A B+ A here. Honestly I really didn't like the assignment, it was way too much yapping and barely related to data structures at all (more like \"how to draw digital diagram course\"). The only trick was \"stacks are not good to represent a queue\" (duh).",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"assignments\"],\n  \"complaints\": [\"Assignment was excessive and unrelated to data structures\", \"Assignment focused too much on digital diagram creation\", \"The 'trick' in the assignment was considered obvious and trivial.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"assignments\"],\n  \"complaints\": [\"Assignment was excessive and unrelated to data structures\", \"Assignment focused too much on digital diagram drawing\", \"The 'trick' in the assignment was considered obvious.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Low_Nobody_5690",
@@ -17,7 +17,7 @@
   {
     "author": "AtomZones",
     "comment": "Top 25% of the cohort got higher than 77% in terms of grade, the other top 75% of the cohort got 69% and below in terms of grade.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Large grade disparity between top 25% and the rest of the cohort.  Suggests potential issues with curriculum, teaching, or assessment methods.\"],\n  \"suggestions\": [\"Review grading system and curriculum to address the wide grade disparity. Explore additional support for students struggling to achieve higher grades.\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Large grade disparity between top performers and the rest of the cohort.  A significant portion of the cohort (75%) scored below 70%.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Lower_Cantaloupe_477",
@@ -37,7 +37,7 @@
   {
     "author": "Low_Nobody_5690",
     "comment": "i tried comparing my answers to the feedbacks given on politemall; i didnt use stacks and for the validation part, i think mine is not that 'general'. but still, did not get my desired marks. My second quiz was also quite bad. haiizzzzzz",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Received undesired marks on quizzes\", \"Coding approach (lack of stacks and general validation) was insufficient for achieving desired marks\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Did not receive desired marks on quizzes\", \"Code lacked use of stacks and general validation\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "No_Afternoon_3157",
@@ -52,17 +52,17 @@
   {
     "author": "TheoryPatient6067",
     "comment": "Aiyo.. relax bro. Tbh the tests were designed in a way where they had varying mark allocation for harder questions. Example, a qn holds 2.5 marks (worth 5 qns) which can greatly bring down a grade if not answered well. Having 2-3 of the 2.5 marks qns wrong can bring you to a D easily\u2026. Quite unfortunate but thats how it is. Even though it wasnt hard for us, i can understand why one with not much experience would struggle.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Test design with disproportionate mark allocation for difficult questions can easily lead to a lower grade.\", \"A few difficult questions can significantly impact the overall grade.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Test design with disproportionate mark allocation for difficult questions leading to significant grade impact.\", \"A few difficult questions can easily lead to a failing grade (D).\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "BudgetDevv",
     "comment": "Imagine lacking substance, so much so that you decide to flex on Reddit...",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Lack of substance\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Fix-IIT",
     "comment": "the assignment can eat shit",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"assignment workload\", \"difficult assignment\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"assignment workload\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "AtomZones",

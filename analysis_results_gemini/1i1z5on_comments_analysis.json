@@ -1,0 +1,22 @@
+[
+  {
+    "author": "None",
+    "comment": "wouldnt a google form be better ?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Use a Google Form\"]\n}\n```"
+  },
+  {
+    "author": "gunJOusts",
+    "comment": "If I were just collecting the feedback yeah, but I want to then collate it and then make a sort of template for how we write our Tessy feedbacks later. An organised act like this is hard to go unnoticed.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"administration\", \"feedback\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Create a template for writing Tessy feedback\"]\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "well hopefully people contribute",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "gunJOusts",
+    "comment": "Here's to hoping! You can help too by spreading the word or joining if you're an IIT student.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"events\"],\n  \"complaints\": [],\n  \"suggestions\": [\"spread the word\", \"join (if an IIT student)\"]\n}\n```"
+  }
+]

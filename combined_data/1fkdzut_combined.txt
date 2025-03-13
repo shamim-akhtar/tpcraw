@@ -1,0 +1,28 @@
+=== POST CONTENT ===
+Title: Resources for cen y1s2?
+Author: Icy-Tip3135
+Score: 1
+URL: https://www.reddit.com/r/TemasekPoly/comments/1fkdzut/resources_for_cen_y1s2/
+Created: 2024-09-19 13:58:24
+Body: Hi. I am a y1 student going to be in sem 2 next month for computer engineering. Is there anything I should prepare for? And if you have any resources such as some topics, notes or information, I would really appreciate if you don’t mind sharing. Thank you!!
+
+
+
+=== COMMENTS ===
+Comment by Alpha-232: EMATH2 is mostly differentiation, integration and limit functions.
+
+EDEVCKT mainly covers diode, special diode, amplifiers, bipolar junction transistor amplifiers frequency response and operational amplifiers.
+
+DFUND2 covers counters, shift registers, data storages, signal conversions, and integrated circuit technologies
+
+Comment by Icy-Tip3135: Do you mind sharing if you have the files? I just wanted to try seeing some of them prior to school because last sem, I was kind of getting behind with reviewing topics after the teacher explains.
+
+Comment by Alpha-232: Yes, I can share with you the reference books I used
+
+Comment by Icy-Tip3135: Thank you very much! You can send here or in dms or anywhere u want actually. Thank youu
+
+Comment by Icy-Tip3135: Hii, is it okay to share them pls 😭😭. Thank you
+
+Comment by Alpha-232: Sorry, please pm me
+
+

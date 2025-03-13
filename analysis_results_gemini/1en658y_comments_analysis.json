@@ -1,0 +1,12 @@
+[
+  {
+    "author": "EastStunning8079",
+    "comment": "Sits and push ups are counted manually, it's gna be easier gl",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Manual counting of sit-ups and push-ups\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "damusuck",
+    "comment": "Tyvm HAHHA",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

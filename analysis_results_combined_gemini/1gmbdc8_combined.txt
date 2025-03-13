@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["academic", "course information", "application process", "admission requirements"],  "complaints": ["Website error preventing access to course information"],  "suggestions": ["Email TP or JC for application process details", "Check TP website for A-Level entry information"]}

@@ -1,1 +1,1 @@
-{  "sentiment": "positive",  "topics": ["events", "academic", "career/internships"],  "complaints": ["Shenzhen trip cancelled"],  "suggestions": []}
+{  "sentiment": "positive",  "topics": ["events", "academic", "internships"],  "complaints": ["Shenzhen trip cancelled"],  "suggestions": []}

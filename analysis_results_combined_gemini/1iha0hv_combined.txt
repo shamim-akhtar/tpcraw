@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "career/internships"],  "complaints": ["Did not meet the entry requirements for desired course (T20).", "Worried about not getting into the fashion course."],  "suggestions": ["Apply through Phase 2.", "Contact the course chair (foo_jia_wen@tp.edu.sg) to express interest."]}

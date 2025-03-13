@@ -1,0 +1,42 @@
+[
+  {
+    "author": "elijahvawgora",
+    "comment": "Do DAE phase 2 I think u got chance",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ILoveTravel101",
+    "comment": "+ if you guys know anyone to refer my issue/qn too pls let me know like any emails/names or numbers I can contact\ud83d\ude2d\ud83d\ude4fthankuuu",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Issue/question not resolved\", \"Difficulty contacting relevant personnel\"],\n  \"suggestions\": [\"Request for contact information of relevant personnel\"]\n}\n```"
+  },
+  {
+    "author": "ILoveTravel101",
+    "comment": "I will try but I'm really scared cuz I diedie wna goo bruh. Thanks for the advice!",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"anxiety about attending Temasek Polytechnic\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "yohjiscream",
+    "comment": "Can contact course chair: foo_jia_wen@tp.edu.sg Just say you\u2019re very interested in fashion, just a few points away etc. Good case to make if you get into a des related course/ applied for common design",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Contact course chair foo_jia_wen@tp.edu.sg to express interest in fashion design and highlight near-miss situations for admission.\"]\n}\n```"
+  },
+  {
+    "author": "elijahvawgora",
+    "comment": "Btw phase 2 if u get stsrt may so school start liao",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ILoveTravel101",
+    "comment": "Okayy! Thank youu. Is she the head of fmd or overall design?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "yohjiscream",
+    "comment": "Course chair of fmd",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ILoveTravel101",
+    "comment": "Okayy thank uu",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

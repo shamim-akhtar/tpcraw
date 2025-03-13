@@ -1,1 +1,1 @@
-"```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"student email\", \"administration\"],\n  \"complaints\": [\"Unable to access student email\"],\n  \"suggestions\": []\n}\n```"
+"```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"student email\", \"administration\"],\n  \"complaints\": [\"Unable to access student email account.\"],\n  \"suggestions\": []\n}\n```"

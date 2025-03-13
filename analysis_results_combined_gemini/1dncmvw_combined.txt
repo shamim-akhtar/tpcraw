@@ -1,0 +1,1 @@
+{  "sentiment": "positive",  "topics": ["academic", "career/internships"],  "complaints": ["Worried about the interview and questionnaire for EAE Vet Tech application.", "Results aren't good and the vet tech course is competitive."],  "suggestions": []}

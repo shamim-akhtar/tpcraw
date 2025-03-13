@@ -12,7 +12,7 @@
   {
     "author": "trixx488",
     "comment": "knn knn cb",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"The text is incomprehensible and does not provide any information about Temasek Polytechnic.\"],\n  \"suggestions\": [\"More context or clearer language is needed to analyze sentiment and relevant topics.\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"The text 'knn knn cb' is likely Singlish slang expressing frustration or annoyance.  Without more context, the specific complaint is unclear but negative sentiment is evident.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "BlacksmithGloomy9448",

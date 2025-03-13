@@ -1,1 +1,1 @@
-{  "sentiment": "negative",  "topics": ["administration", "application/enrollment"],  "complaints": ["Incorrect information submitted on application form (Singapore Citizen instead of PR)"],  "suggestions": ["Contact the institution immediately to rectify the mistake", "Resubmit the form if necessary"]}
+{  "sentiment": "negative",  "topics": ["administration", "application/registration"],  "complaints": ["Incorrect information submitted on application form (Singapore Citizen instead of PR)"],  "suggestions": []}

@@ -1,0 +1,47 @@
+[
+  {
+    "author": "Disastrous-Western98",
+    "comment": "The rat exterminators took it out man",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BoogaBooga_2000",
+    "comment": "\ud83d\udc80",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Solid-Gas-9602",
+    "comment": "diabolical post",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"The post is considered diabolical.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "Is ur wallet a rat",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "No_Definition_1174",
+    "comment": "Thanks for the meal",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"events\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "sadlittlemochi",
+    "comment": "What in tarnation.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"The statement expresses strong negative emotion but lacks specifics regarding Temasek Polytechnic.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Clarenceratops",
+    "comment": "Whoever found it will definitely sell the contents and the ruby. Prepare to be disowned.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Loss of valuable items (contents and ruby)\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Clean-Engine9476",
+    "comment": "Is there a chance where wild , hdb cats found it and thought was a normal rat but just a little harder on the outside and decides to bring to it\u2019s hideout and slowly chew",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Correct-Food-4439",
+    "comment": "Road kill rat",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"Presence of dead animals on campus\"],\n  \"suggestions\": [\"Improved campus hygiene and pest control\"]\n}\n```"
+  }
+]

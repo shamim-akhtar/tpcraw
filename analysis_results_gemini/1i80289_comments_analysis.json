@@ -1,0 +1,7 @@
+[
+  {
+    "author": "definitelytroaxx",
+    "comment": "if ur other components cannot pass, retest grade will be activated (cap 50% of your grade e.g retest got A will still only give C max for that \"test\" component) and apply it to your existing components to help u pass the module. it's like this for every mod iirc",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

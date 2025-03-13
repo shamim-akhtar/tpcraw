@@ -1,0 +1,12 @@
+[
+  {
+    "author": "OkRow840",
+    "comment": "EW 1A should be east wing, which is near the HSS side. You can either enter via east gate or if you\u2019re coming from mushroom walk through IT sch",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aikawa_Tofu_0240",
+    "comment": "The fourth floor of the HSS building (the one directly in front of east gate) Assuming you're entering from East gate, take the lift outside the kindergarten to the fourth floor and turn left - your room should be there",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

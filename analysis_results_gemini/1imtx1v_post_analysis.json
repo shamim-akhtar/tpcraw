@@ -1,1 +1,1 @@
-"```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"sports\", \"CCA\", \"tchoukball\", \"handball\"],\n  \"complaints\": [\"Lack of girls' handball CCA\"],\n  \"suggestions\": []\n}\n```"
+"```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"sports\", \"CCA\", \"tchoukball\", \"handball\"],\n  \"complaints\": [\"Lack of handball CCA for girls\"],\n  \"suggestions\": []\n}\n```"

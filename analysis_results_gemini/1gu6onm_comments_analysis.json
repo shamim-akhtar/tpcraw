@@ -1,0 +1,42 @@
+[
+  {
+    "author": "ConlangNerd1",
+    "comment": "just continue on and give it your best, its never too late",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "vainspell",
+    "comment": "Work or private/part-time uni",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "_captain_-_obvious_",
+    "comment": "1. Try your best to bring your gpa up, like 4.0 every sem from now onwards 2. Private uni 3. During internship try your best to suck up to everyone, do your best, impress you supervisor... so that when at the end of internship they can offer you full time aft graduating poly",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Maintain a high GPA (4.0 every semester)\", \"Network and impress supervisors during internships to secure full-time employment after graduation\"]\n}\n```"
+  },
+  {
+    "author": "Ok-Engineering143",
+    "comment": "i get you ,same poly, same experience . Terrible curriculum which includes confusing lecture notes and tutorial questions as well as an overload of exams and tests and icqs on a daily basis , with lectures having unexpected expectations to do everything on your own sdl. Its no wonder why some of us do well to go uni. Anyways , theres nothing we can do about it but adapt to the system , try to embrace chatgpt and certain online resources if possible if consultations with lects or friends dont work, im also not sure hkw ima oull my goa up this sem but gd luck",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"curriculum\"],\n  \"complaints\": [\"confusing lecture notes and tutorial questions\", \"overload of exams and tests and ICQs\", \"unexpected expectations to do everything independently\", \"terrible curriculum\"],\n  \"suggestions\": [\"Embrace ChatGPT and online resources\", \"Consultations with lecturers or friends\"]\n}\n```"
+  },
+  {
+    "author": "Lets-huddle",
+    "comment": "Don\u2019t sweat it, my GPA was horrible and as a result I started being more active in CCA. Ended up getting to Uni through discretionary admissions. Most importantly, pursue what you are good at and enjoy the process.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Pursue what you are good at and enjoy the process.\"]\n}\n```"
+  },
+  {
+    "author": "Terrible_Condition24",
+    "comment": "change course / work hard to get 4.0 for this sem / work on yr extracurriculars",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": [\"change course\", \"work hard to get 4.0 GPA this semester\", \"work on extracurricular activities\"]\n}\n```"
+  },
+  {
+    "author": "MathematicianLoud947",
+    "comment": "What year are you, and which diploma?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ddddddddddd22993832",
+    "comment": "I don go CCA , even worse \ud83d\ude13\ud83d\ude13",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"CCA\"],\n  \"complaints\": [\"Doesn't participate in CCA and expresses negative feelings about it.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

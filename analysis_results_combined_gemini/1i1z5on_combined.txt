@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "administration"],  "complaints": ["rushed courses", "poorly planned courses", "course grievances in ADEV, DBAV, and NECT"],  "suggestions": ["organized mass feedback on Tessy to address course issues", "consistent feedback across multiple classes and students to pressure course chairs and organizers into making changes"]}

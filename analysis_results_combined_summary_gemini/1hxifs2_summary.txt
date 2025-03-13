@@ -1,0 +1,15 @@
+The Reddit post and comments center on the struggles faced by first-year students in the Information and Technology (IIT) program at Temasek Polytechnic (TP).  Specifically, students express overwhelming feelings due to a heavy workload, poorly structured teaching materials for the ADEV module, and a perceived lack of support in bridging the gap between secondary school and the demands of polytechnic education.  Several commenters compare their experiences at TP to those at Nanyang Polytechnic (NYP), and there's discussion on the use of AI tools like GPT in completing assignments.
+
+The overall sentiment is one of frustration, stress, and overwhelm.  Students express feelings of being burnt out, unmotivated, and lacking the necessary foundational knowledge.  Negative comments focus on the ADEV module's teaching materials ("low-key don't help much," "kinda suck"),  the timing of crucial information release ("2 weeks before the deadline"), and the perceived mismatch between the assignment's expectations and the students' skill levels.  While some offer advice on time management and self-learning, the prevailing tone reflects significant dissatisfaction with the IIT program's structure and support for first-year students.  The quality of the labsheets and teaching materials is directly criticized, as is the scheduling of crucial information release for an assignment.
+
+**Recommendations for Temasek Polytechnic Senior Management:**
+
+The overwhelmingly negative feedback regarding the ADEV module's teaching materials and the timing of critical information release warrants immediate attention. A review of the ADEV curriculum and teaching methodology is recommended, focusing on:
+
+1. **Improved Teaching Materials:**  The consensus is that the current labsheets and teaching materials are inadequate for first-year students.  A redesign of these materials, possibly incorporating more beginner-friendly explanations and examples, is crucial.
+
+2. **Revised Module Scheduling:** The practice of releasing crucial assignment information only two weeks before the deadline is severely criticized.  Re-evaluating the module's timeline to ensure sufficient time for learning and completing assignments is necessary. This includes providing learning materials *before* assignments are released.
+
+3. **Bridging the Gap:**  The comments highlight the significant transition students face moving from secondary school to polytechnic. Implementing bridging programs or additional introductory resources to help students adapt to the increased independence and workload should be considered.  The current approach seems insufficient in preparing students for the demands of the IIT program.
+
+4. **Instructor Feedback:**  Consider anonymous feedback mechanisms to gather more detailed input on the instructors' teaching approaches and the effectiveness of the curriculum. This will assist in targeted improvements.

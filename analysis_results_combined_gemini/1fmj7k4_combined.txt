@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["academic", "administration"],  "complaints": ["Missed the signup for UPP program"],  "suggestions": ["Email the school office to inquire about late registration for UPP"]}

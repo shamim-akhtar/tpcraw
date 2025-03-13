@@ -1,0 +1,27 @@
+[
+  {
+    "author": "iamnothingbuta",
+    "comment": "You need them to maintain your gpa",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Maintaining GPA is perceived as overly dependent on external factors (implied need for help from unspecified 'them')\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "aminlee9",
+    "comment": "some are pass/fail in a sense it's a waste of time as you simply need to submit something (of minimal quality) to pass the subject that does not affect your gpa at all, but is needed for you to move to the next sem. some are graded that will actually contribute to your gpa. chck ur school's handbook for more details",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Pass/fail system for some subjects is a waste of time as minimal effort is needed to pass, impacting overall learning and potentially delaying students from moving to the next semester.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Street_Musician_580",
+    "comment": "There's this tpfund called ecomms and procomm i believe those are graded. I haven't had procomm yet but ik ecomm is graded",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "NyandaKun",
+    "comment": "Nope.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Low-Rabbit2264",
+    "comment": "Procomm is graded",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

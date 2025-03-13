@@ -1,0 +1,27 @@
+[
+  {
+    "author": "Alpha-232",
+    "comment": "Yes, they are only offered every April academic year intake, and it is not compulsory for everyone.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "PoolZealousideal4421",
+    "comment": "As an engineering university student, I would personally highly recommend you to take it!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "theuselessmastermind",
+    "comment": "you can take it after graduation too so don't worry",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "I forgot to sign up damn",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\", \"administration\"],\n  \"complaints\": [\"Forgot to sign up for an event or program.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "PoolZealousideal4421",
+    "comment": "sch office, email them, they wouldnt say no to receiving another $300 from a student for the course LOL",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"High cost of courses/fees\", \"Implication of unnecessary charges\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

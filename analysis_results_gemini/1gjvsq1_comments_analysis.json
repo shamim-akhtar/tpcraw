@@ -1,0 +1,62 @@
+[
+  {
+    "author": "scams-are-everywhere",
+    "comment": "which scholarship, what's your portfolio and cgpa like?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"scholarship\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "which school are you from? I got lower than you but I got shortlisted",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"admission\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "meop1",
+    "comment": "I said I would like to be considered for all available, including the TP scholarship. My y1s1  gpa is 3.85, but I don't have a portfolio. Am I supposed to have one?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"scholarships\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "meop1",
+    "comment": "hss. which sch r u from?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "I have no portfolio at all like completely 0",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [\"Lack of portfolio\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "for which one?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "scams-are-everywhere",
+    "comment": "I\u2019m sure there was at least a why should you be selected section which is meant for you to include any notable contributions and achievements,, 3.85 may be too low for tp scholarship without portfolio as I had friends who didn\u2019t even get shortlisted with a 4.0 and no portfolio",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"scholarships\"],\n  \"complaints\": [\"3.85 GPA may be too low for a Temasek Polytechnic scholarship without a strong portfolio.\", \"Friends with a 4.0 GPA and no portfolio were not shortlisted for scholarships.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "i have applied also but didnt hear back. I also didnt include any portfolio :(((",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"application process\"],\n  \"complaints\": [\"Did not hear back from Temasek Polytechnic after application.\", \"Did not include a portfolio in the application.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ghost_editz",
+    "comment": "u expect to get scholarship without portfolio?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"scholarship\", \"academic\"],\n  \"complaints\": [\"Implied complaint about the perceived difficulty of obtaining a scholarship without a strong portfolio.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "meop1",
+    "comment": "ohh so the achievements = portfolio? Then, I did include my contributions and achievements.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "meop1",
+    "comment": "I got include...",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "scams-are-everywhere",
+    "comment": "Then it may not have been sufficient for this round of shortlisting,, you can always try again in the future sems",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Try again in future semesters\"]\n}\n```"
+  }
+]

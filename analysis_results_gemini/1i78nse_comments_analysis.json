@@ -1,0 +1,22 @@
+[
+  {
+    "author": "Aikawa_Tofu_0240",
+    "comment": "What is your definition of fun? Do you have any preferences, like cultural clubs or sports? What do you aim to achieve in CCA? Chill or maybe a bit more action-packed?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\", \"CCA\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Mean_Psychology1078",
+    "comment": "looking for events based (not so much commitment like sports/arts), come check out entrepreneurship club! \ud83d\ude09",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"events\", \"clubs\", \"entrepreneurship\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Most_Spring_9825",
+    "comment": "Depends on what u like.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ApocSanma",
+    "comment": "Hi heard theres judo? Any seniors know whats its liks?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

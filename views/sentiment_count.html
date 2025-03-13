@@ -34,7 +34,7 @@
 </head>
 <body>
 
-<h1>Stacked Sentiment Analysis</h1>
+<h1>TemasekPoly Reddit Sentiment Analysis</h1>
 
 <div id="chart-container">
   <canvas id="sentimentChart"></canvas>
@@ -62,48 +62,6 @@ function parsePostText(text) {
 function cleanJsonString(maybeMarkdownJson) {
   // Remove all occurrences of triple backticks and optional "json", then trim the result.
   return maybeMarkdownJson.replace(/```(json)?/gi, '').trim();
-}
-
-// function cleanJsonString(maybeMarkdownJson) {
-//   /**
-//    * Given a string that might contain triple-backtick fences,
-//    * remove them so the remaining content is valid JSON.
-//    */
-//   // Trim leading/trailing whitespace
-//   let cleaned = maybeMarkdownJson.trim();
-
-//   // If it starts with ```json or ``` (some might have just triple backticks without `json`),
-//   // remove that prefix, plus if it ends with triple backticks, remove that too.
-//   // One robust way is a simple regex replacement:
-
-//   // Remove leading ```json (with or without newlines) and trailing ```
-//   cleaned = cleaned.replace(/^```(?:json)?\s*/, '');
-//   cleaned = cleaned.replace(/```$/, '');
-//   return cleaned.trim();
-// }
-function renderCombinedInfo(dataObj) {
-  // Example: Show sentiment, topics, etc. in a styled box
-  const sentiment = dataObj.sentiment || "neutral";
-  const topics = dataObj.topics || [];
-  const complaints = dataObj.complaints || [];
-  const suggestions = dataObj.suggestions || [];
-
-  let topicsHTML = topics.map(t => `<li>${t}</li>`).join("");
-  let complaintsHTML = complaints.map(c => `<li>${c}</li>`).join("");
-  let suggestionsHTML = suggestions.map(s => `<li>${s}</li>`).join("");
-
-  return `
-    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-      <h3 style="margin-top: 0;">Gemini Analysis (Combined)</h3>
-      <p><strong>Sentiment:</strong> ${sentiment}</p>
-      <p><strong>Topics:</strong></p>
-      <ul>${topicsHTML}</ul>
-      <p><strong>Complaints:</strong></p>
-      <ul>${complaintsHTML}</ul>
-      <p><strong>Suggestions:</strong></p>
-      <ul>${suggestionsHTML}</ul>
-    </div>
-  `;
 }
 
 function formatTextAsHtml(text) {
@@ -164,7 +122,7 @@ fetch('sentiment_count.csv')
         plugins: {
           title: {
             display: true,
-            text: 'Stacked Sentiment (Positive vs Negative)',
+            text: 'Sentiment (Positive vs Negative)',
             font: { size: 18 }
           },
           tooltip: {

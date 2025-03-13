@@ -1,1 +1,1 @@
-{  "sentiment": "negative",  "topics": ["academic", "IIT (Institute of Infocomm Technology)"],  "complaints": ["Poorly phrased assignment question", "Sample output placed at the bottom of the assignment", "Difficult to find key information in the assignment"],  "suggestions": []}
+{  "sentiment": "negative",  "topics": ["academic", "IIT"],  "complaints": ["Poorly phrased assignment question", "Sample output placement at the bottom of the assignment", "Difficulty in finding key elements of the assignment"],  "suggestions": []}

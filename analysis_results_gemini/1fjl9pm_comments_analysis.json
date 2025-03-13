@@ -1,0 +1,67 @@
+[
+  {
+    "author": "Ok_Aerie6132",
+    "comment": "Go to the admin building, there will be a counter inside just say u want to appeal results and pay the fee",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "kaedemiyata",
+    "comment": "\ud83e\udd23 i appeal 2 mods that i think i shouldve got A but end up wasted 60+ dollars",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Grade dissatisfaction\", \"Feeling of wasted money\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BunnyGaming1",
+    "comment": "huh must pay how much",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"High fees/costs\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Due-Philosophy1389",
+    "comment": "uh where is the admin building ah",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "I mean I got c+ for this but I think I should have gotten a b or b+ I don't think I messed up any components",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Grade received (C+) is lower than expected, believes a B or B+ is more appropriate despite completing all components.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Ok_Aerie6132",
+    "comment": "Got admin fee. I think around $30, but if really got error in marking then they will refund",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Possible error in marking resulting in admin fee\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BunnyGaming1",
+    "comment": "will we talk directly w the lecturer who marked our work or we just pay the fee & wait for a reply?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Lack of clarity on feedback process\", \"Concern about lack of direct communication with lecturer regarding marked work\"],\n  \"suggestions\": [\"Improved communication regarding feedback process\", \"Provide a clear process for students to address concerns about marked work\"]\n}\n```"
+  },
+  {
+    "author": "Ok_Aerie6132",
+    "comment": "Nope. You don't get to talk to anyone. You will only get the outcome for the appeal.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Lack of communication regarding appeals\", \"Opaque appeal process\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BunnyGaming1",
+    "comment": "sigh thanks",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "do they take the old highest or the new highest?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "like the mark",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Ok_Aerie6132",
+    "comment": "There is no highest, possible to get lower too. They take the correct marks.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "How do they check? They look at marks or look at the work again?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

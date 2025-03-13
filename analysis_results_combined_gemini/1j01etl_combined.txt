@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["career/internships"],  "complaints": ["Singapore market may become stagnant after a few years", "Lower pay in Singapore compared to US and Europe"],  "suggestions": ["Use Singapore as a launching pad to build skills and experience before moving abroad"]}
+{  "sentiment": "neutral",  "topics": ["career/internships"],  "complaints": [],  "suggestions": ["Use Singapore as a launching pad for career growth and consider moving abroad for better opportunities."]}

@@ -1,0 +1,12 @@
+[
+  {
+    "author": "NotHighAchiever",
+    "comment": "okay so\u2026attend the classes pls but 1 in absentia won\u2019t; unless you have a ton like <80/85% attendance",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Attend classes regularly to maintain good attendance\"]\n}\n```"
+  },
+  {
+    "author": "Educational-Photo-77",
+    "comment": "I WILLLLLLL. thanks for the reply !!!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

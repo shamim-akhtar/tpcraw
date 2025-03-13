@@ -1,0 +1,37 @@
+=== POST CONTENT ===
+Title: what bda modules are coming out for y2.1
+Author: DragSufficient6885
+Score: 11
+URL: https://www.reddit.com/r/TemasekPoly/comments/1i7euuc/what_bda_modules_are_coming_out_for_y21/
+Created: 2025-01-23 00:18:43
+Body: hi iit bda seniors, i was from common ict and going into bda. what are the modules that is going to come out since they dont put it in order on the tp website. what do they usually teach/test on those modules too?
+
+
+=== COMMENTS ===
+Comment by Different_Dot_5762: Hi, BDA Senior here about to graduate soon. Honestly it's difficult to tell the subjects that will come out for each semester since I noticed that the workload chart changes for every cohort. However, here's a glimpse of the subjects I did back in my whole Year 2
+
+Quantitative Analysis - Statistics (Linear Regression , ANOVA, Chi-Square). This subject is mainly uses Excel 
+
+Data Warehousing and Business Intelligence - Using Alteryx (a low code software similar to KNIME to do ur Data Cleaning, Joining, Visualisations,  etc) and mySQL to build your Data Warehouse
+
+Data Science Essentials  - Jupyter Notebook (Basically a DSAG 2.0 but instead you will learn the whole Data Science Life Cycle Process from Data Cleaning to Modelling to Visualisations etc)
+
+Data Engineering In the Cloud - This subject covers AWS theory and practical , most probably you will have to building your own Data Pipeline/Architecture using AWS  for your Project
+
+Data Storytelling - Similar to your DAVA in Y1 but instead of Power BI you will use Tableau for Visualisation and learn the basic concepts of Storytelling + the same Data Science Lifecycle
+
+Data Mining and Business Analytics - This subject uses an old software called SAS Enterprise Miner (so again similar Data Science Lifecycle Process just different software)
+
+Machine Learning for Decision Making - Jupyter Notebook (Data Science Essentials 2.0 subject) Where you will again perform the whole Data Science lifecycle but you will focus mode on the modelling and evaluation stage (Different Machine Learning Models such as Random Forest, Decision Tree, SHAP)
+
+Text and Social Media Analytics (this was supposed to be a Year 2 subject but it came in Year 3 for me) - Using SAS EM again but you focus on cleaning and gathering insights from Social Media data Instead and Performing the Social Media Analytics lifecycle (eg Reddit) 
+
+If you notice there may a lot of overlapping subjects (what I mean by that is that you may feel like your almost doing the same thing for certain subjects since their main aim is to apply the whole Data Science Lifecycle Process anyway - but just exposing you to various softwares/tools). 
+
+But yea this is what I learnt so far. I'm not sure if the BDA Course team will decide to change the subject syllabus, but I hope this helps!
+
+Comment by Antique_Childhood489: Hi May I ask if we learn abt businesses in business intelligence? Because a senior told me that we learn a little bit abt how businesses work in this module. And oso is it true that the guy girl ratio in BDA is quite balanced? Like 60-40?
+
+Comment by Antique_Childhood489: Does BDA give you opportunities to work on your portfolio also?(like doing community service, run events etc)
+
+

@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["tuition grant", "internship", "national service (NS)", "enrollment", "course (accountancy and finance)", "eae"],  "complaints": [],  "suggestions": []}
+{  "sentiment": "positive",  "topics": ["tuition grant", "internship", "national service (NS)", "enrollment", "course (Accountancy & Finance)", "eae"],  "complaints": [],  "suggestions": []}

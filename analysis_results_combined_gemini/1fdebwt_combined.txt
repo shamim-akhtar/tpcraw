@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["administration"],  "complaints": ["Difficulty finding the location to get school's admin manager to sign and stamp a form."],  "suggestions": ["Email or call the admin manager (contact details can be found on Google)", "Go to the office located between the entrance of the business block and IIT at the horseshoe area."]}

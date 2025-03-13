@@ -1,0 +1,17 @@
+[
+  {
+    "author": "Accomplished_Desk177",
+    "comment": "I am cooked also I sub in the wrong number. Only realised it after the exam ended.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Submitted exam paper with the wrong number\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "No-Vehicle5275",
+    "comment": "which one? no.1 ?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "No-Vehicle5275",
+    "comment": "I have no hope for my healthy plate\ud83d\ude2d don\u2019t know abt other food items. I only memorize highlighted one \ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [\"Unhealthy food options in the canteen.\", \"Lack of variety in healthy food choices.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

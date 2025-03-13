@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "pharmaceutical science", "CGMP (Current Good Manufacturing Practice)"],  "complaints": ["Struggling to understand CGMP module.", "Doesn't understand tutor's explanations."],  "suggestions": ["Ask the tutor (Mr. Simon) for consultation."]}

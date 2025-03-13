@@ -1,0 +1,17 @@
+[
+  {
+    "author": "mount2010",
+    "comment": "See here: https://www.reddit.com/r/TemasekPoly/comments/1j03bjd/when_will_result_be_release/mf8egbj/ March 26 (check TP Oei)",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Commercial_War_2969",
+    "comment": "how do u check from tp oei? i can\u2019t seem to download the app anymore",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Unable to download the TP OEI app.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "It's just a sharepoint site, the link can be found here under Access via Web: https://www.tp.edu.sg/life-at-tp/tp-students-digital-access-it-matters/students-it-needs.html#tpoei",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"campus facilities\", \"IT\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

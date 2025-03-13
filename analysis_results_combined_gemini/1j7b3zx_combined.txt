@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["academic", "campus facilities", "travel"],  "complaints": ["long travel distance to TP from the west causing potential burnout"],  "suggestions": []}
+{  "sentiment": "positive",  "topics": ["academic", "campus facilities", "travel/commute"],  "complaints": ["long commute from the west", "potential burnout from travel", "5-day school week for PFP"],  "suggestions": []}

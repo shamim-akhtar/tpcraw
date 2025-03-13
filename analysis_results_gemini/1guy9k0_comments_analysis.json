@@ -1,0 +1,17 @@
+[
+  {
+    "author": "blackrosethorn3",
+    "comment": "Hi senior grad here, ask Mr Simon. CGMP is all abt understanding the principles. Memorising gets u so far.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Ask Mr Simon for help with CGMP\"]\n}\n```"
+  },
+  {
+    "author": "Own-Can6471",
+    "comment": "Hes my tutor but honestly I still don't understand what he's saying \ud83d\udc80",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Tutor's teaching style is unclear and ineffective.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "blackrosethorn3",
+    "comment": "You can ask for consult. He usually helps those who sincerely come to him for help.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

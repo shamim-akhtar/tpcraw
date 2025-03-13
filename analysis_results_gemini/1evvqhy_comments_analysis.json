@@ -1,0 +1,12 @@
+[
+  {
+    "author": "Altruistic_Hand3617",
+    "comment": "Your release dates for grades will be delayed by 3 days other than that nothing else will be done so u can just leave it alone.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Delay in grade release dates\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Tofufluffmeh",
+    "comment": "Alright thank you so much!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

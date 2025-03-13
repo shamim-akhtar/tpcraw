@@ -1,0 +1,1 @@
+{  "sentiment": "positive",  "topics": ["campus facilities", "academic"],  "complaints": ["Difficulty setting up school wifi", "High mobile data consumption due to reliance on personal hotspot"],  "suggestions": []}

@@ -50,7 +50,7 @@ last_timestamp = get_last_timestamp()
 new_last_timestamp = last_timestamp
 
 # Crawl new posts and comments incrementally
-for submission in subreddit.new(limit=100):  # Using 'new' to get recent posts
+for submission in subreddit.new(limit=500):  # Using 'new' to get recent posts
     if submission.created_utc <= last_timestamp:
         continue
     

@@ -1,0 +1,42 @@
+[
+  {
+    "author": "Old_Nectarine_1414",
+    "comment": "Nope, you hit the cop so you can definitely put it as your first choice. I would advise you to check out the updated cop if any on 2025.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"check out the updated course information for 2025\"]\n}\n```"
+  },
+  {
+    "author": "Old_Nectarine_1414",
+    "comment": "Nope, if you hit the cop you can put it as your first choice.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"career/internships\"],\n  \"complaints\": [\"Implies a potentially unfair or biased admissions process based on factors unrelated to academic merit.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "SensitiveMail6714",
+    "comment": "ohh but the cop given atm is based off last year\u2019s one i think",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Old_Nectarine_1414",
+    "comment": "Then you're good, you would likely be in the first choice. Congratulations",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "SensitiveMail6714",
+    "comment": "what are the chances of the cop dropping this year? bc i saw that it dropped last yr too",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Old_Nectarine_1414",
+    "comment": "We don't know, low chance?. Even if it changes it would be a point diff. So just apply for it,  you're definitely in a good hand. Maybe put your 2nd and 3rd choice as a safety net too. You don't want to get a course that doesn't interest you at worst.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Apply for desired course\", \"Include safety net choices (2nd and 3rd choice courses)\"]\n}\n```"
+  },
+  {
+    "author": "SensitiveMail6714",
+    "comment": "ohh alright thankss!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Valuable_Image1098",
+    "comment": "hii can ask did u end up getting it?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

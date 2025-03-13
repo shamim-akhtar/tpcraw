@@ -1,0 +1,30 @@
+Comment by iamnothingbuta: nect use cisco and aws
+
+adev uses html css and sql
+
+Ddev uses sql but it's connected to adev
+
+Dsag is python
+
+Comment by Altruistic_Hand3617: Y3 here. 
+Network and Cloud Technology must be new so im not too sure.
+
+If nothing has changed should be mysql for database and html css javascript for Application Dev Project. 
+Both modules are related to one another unless there is any changes.
+
+For data structures should be python
+
+Comment by i_verye_smowt: NECT will be cisco packet tracer
+
+DSAG is python (again) but you won't be making a game
+
+ADEV and DBAV can be lumped into one module, ADEV focuses more on javascript and html, DBAV more on MySQL. For project 1 you'll make an sql database, project 2 will be some sort of website which is linked to a given sql database (not the one from project 1)
+
+ofc some things are subject to change, so take this with a tiny grain of salt
+
+Comment by definitelytroaxx: thanks! 🙏🏻🙏🏻
+
+Comment by definitelytroaxx: from what i read, network and cloud technology will focus on topics from cyfun (ethernet, IP address etc). thank you!!
+
+Comment by definitelytroaxx: tysm!!
+

@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["academic", "CICT (specific module)"],  "complaints": ["Difficulty in passing CICT due to a single assignment", "Lack of clarity in assignment instructions"],  "suggestions": ["Read marking rubrics carefully", "Put in minimal effort to pass, but not lacklustre effort"]}
+{  "sentiment": "neutral",  "topics": ["academic", "CICT (specific module)"],  "complaints": [],  "suggestions": ["Read marking rubrics carefully", "Put in minimal effort to pass"]}

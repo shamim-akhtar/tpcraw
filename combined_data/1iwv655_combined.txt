@@ -1,7 +1,7 @@
 === POST CONTENT ===
 Title: For all students, current and future.
 Author: gunJOusts
-Score: 43
+Score: 40
 URL: https://www.reddit.com/r/TemasekPoly/comments/1iwv655/for_all_students_current_and_future/
 Created: 2025-02-24 14:00:30
 Body: Hello! It has become clear that IIT y1 was way more challenging than most of us anticipated. However, we did not have a reliable resource to turn to back then. We want to change this, which is why a group of friends and I have started up a moderated, community discord server for TP IIT!

@@ -1,0 +1,7 @@
+[
+  {
+    "author": "KarmaSmtg",
+    "comment": "Means action for course manager, you have to msg them or ur teacher to get them to approve the loa",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Inconvenient process for Leave of Absence (LOA) approval. Requires contacting course manager or teacher for approval.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

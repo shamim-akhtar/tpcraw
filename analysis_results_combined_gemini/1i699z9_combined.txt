@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["CCA", "sports", "football", "enrollment", "academic"],  "complaints": ["Difficulty in joining the football CCA due to lack of prior experience.", "High barrier to entry for the football CCA."],  "suggestions": []}

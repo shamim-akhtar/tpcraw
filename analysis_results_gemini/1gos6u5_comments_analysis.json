@@ -1,0 +1,32 @@
+[
+  {
+    "author": "AdAdditional194",
+    "comment": "asap raise issue",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"unspecified issue requiring immediate attention\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Nightsky099",
+    "comment": "Raise issue asap, it's your fyp",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Urgent issue related to FYP (Final Year Project) needs immediate attention.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ProfessionalLime3467",
+    "comment": "Welcome to the real world. In the real world, u may get ostracized for reporting. But I too think u should report them.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"ostracization for reporting\"],\n  \"suggestions\": [\"report wrongdoing\"]\n}\n```"
+  },
+  {
+    "author": "NyandaKun",
+    "comment": "You have to report that matter to your lecturer and have that resolve . It\u2019s your final year project",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Report the matter to the lecturer\"]\n}\n```"
+  },
+  {
+    "author": "Salt-Estimate-1357",
+    "comment": "You can and should raise this issue, but know that in the working world this happens every day\u2026.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AdAdditional194",
+    "comment": "to your fyp teacher in charge",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

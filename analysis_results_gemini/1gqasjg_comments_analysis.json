@@ -1,0 +1,22 @@
+[
+  {
+    "author": "mount2010",
+    "comment": "They really should make a website/info page about this, there's literally no information about the gym at all or some places around the campus (e.g. study areas) Honestly TP's online information is a mess in general, I hope they spend money on a website redesign",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"administration\"],\n  \"complaints\": [\"Lack of information about campus facilities (gym, study areas) on the website\", \"Poorly organized and insufficient online information in general\"],\n  \"suggestions\": [\"Create a website/info page with details about campus facilities\", \"Redesign the website\"]\n}\n```"
+  },
+  {
+    "author": "definitelytroaxx",
+    "comment": "yes open 1030am - 330pm",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Desperate_Wall_6828",
+    "comment": "its probably some whr but i lz find.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Desperate_Wall_6828",
+    "comment": "aight thanks bro",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

@@ -1,0 +1,6 @@
+Title: Applied Artificial Intelligence Y2S2 Modules Question
+Author: iamnothingbuta
+Score: 1
+URL: https://www.reddit.com/r/TemasekPoly/comments/1fu9js4/applied_artificial_intelligence_y2s2_modules/
+Created: 2024-10-02 14:12:36
+Body: For modules like **IoT Application Development**, **AI and Ethics**,**Deep Learning and Object Recognition** And **Natural Language Processing**, what coding languages and what does each modules do like project work etc

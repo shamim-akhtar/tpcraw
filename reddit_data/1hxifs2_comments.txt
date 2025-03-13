@@ -1,0 +1,66 @@
+Comment by Adventurous-Bus-647: Ur not alone on this, I haven't even touched adev dbav and dsag assignments. I have zero motivation and a hard time understanding the materials 😮‍💨, overall I'm cooked
+
+Comment by Resident_Village_645: same 😬
+
+Comment by ZzyuKinz: mood. will try to start on my assignments next week lol.
+
+Comment by None: just use gpt
+
+Comment by MathematicianLoud947: Who ur tutor?
+
+Comment by BudgetDevv: Honestly yeah the labsheets kinda suck. I wanna comment more on that but apparently IIT lecturers lurk here. But it is safe to say that if you want to do well, you need to go beyond labsheets and do self-research. 
+
+As for experience, yeah I would say it is quite a significant advantage. I define experience in terms of trying to figure out what went wrong, doing research, and then understanding the concepts. It can be daunting when your peers have more experience than you, but you will get there eventually if you're really passionate about what you're doing. Good luck, of course
+
+Comment by Crolets: Asking as someone who is debating between TP and NYP, is TP better in terms of like teaching in IT compared to NYP? Cause i read some where they said NYP suck
+
+Comment by Current-Material-339: This subject may feel overwhelming, but it is a fundamental topic (according to the information on the TP website) and should not be too difficult for 18-year-olds. The real challenge arises when students transition from secondary school, where they were given instructions for everything and had limited independence, to a stage where they must manage everything on their own. This shift can be quite overwhelming. It’s a natural part of life at this age. Once you learn time management skills, things should improve.
+
+
+
+At this stage, everyone wants to be treated as an adult, but with that comes responsibilities. It's essential to recognize and understand this. If you look at what polytechnic students worldwide are learning, they often study the same or even more advanced coding at this age. Students need to focus during class and avoid getting overly distracted by gadgets.
+
+
+
+I understand that many of you may not agree with my opinion, but it is a hard truth you will come to realize in a few years.
+
+Comment by mount2010: One thing I want to tell everyone still learning programming in this age of AI, it's still useful - it's like if the AI spoke Chinese and you didn't understand Chinese. Then you're just putting Chinese words into your project without understanding it. Having the basic idea helps.
+
+At it's core, programming is very simple. It's all about data. It's not called **information** technology, where information = data, for no reason.
+
+We take data from an input, we put data to an output. Networking is just shooting data over the internet via many different protocols.
+
+Everything in coding is just manipulating or organizing data one way or another.
+
+- Arithmetic: manipulating number data
+
+- For/while loops: repeating instructions to manipulate data
+
+- etc.
+
+Comment by Potential-Donut6922: Omg SAME I HAVENT TOUCH ANY OF THEM YET AND IM SO COOKED.
+
+Comment by pokkagreentea100: I feel like gpt is only useful for breaking things down for me, I prefer to research on my own on building my foundations
+
+Comment by pokkagreentea100: I mean I definitely can't compare much since I'm not from NYP, but based on the content my friends study in NYP (they are also studying smt in IT) I think tp covers more stuff 
+
+ironically nyp is known for their IT courses
+
+Comment by pokkagreentea100: Based off what you wrote, easily I can infer that either you aren't a student in this module or you are a student that's out of touch. 
+
+Let me explain the situation. (even though this is from so long ago)
+
+So there's this assignment, they released before the EOY holidays and before we learnt the content. Sure, I can see what they want, sure I can do my own research.
+
+Now, here's the problem: they released the most crucial materials about the assignment 2 WEEKS before the due date. Keep in mind, this is a period where assignments are due so it's a lot of pressure which I don't mind, but it turned out to be a disaster for this because how they taught was not exactly beginner friendly, and therefore I had to spend more time to really learn and then implementing the code while on a time crunch. That's not all; they want a polished, clean, professional website like I have done this many times.
+
+Sure, it's fundamental, sure, it's basic. but we aren't talking about ABC or 123. We are talking about coding, a skill that requires lots of time and practice to know how to do it well, and there's no fixed answer to most things in coding. And in this case, that was not exactly taken into consideration that there's beginners like me who just started learning. 
+
+Hell, this is definitely not the case of getting distracted in class because I literally make the effort to learn ahead of class. I literally take my free time to really go understand the materials and dive deeper. Class time has nothing to do with this because I had already started on the assignment even before the teacher went through this. 
+
+Yes, world's harsh. Yes, i need to learn how to adult. But this barely touches anything with regards to what my rant was to begin with.
+
+Comment by None: yeah that works but personally I just use gpt to do the project then understand it after, so much easier, just make sure you understand stuff that will be tested etc
+
+Comment by Crolets: Actually the thing im worried most is i wont get selected 😓 cause from what i heard, its based on who has better grades, gets selected first and my grades arent really that good, just barely makes it to common ICT. So idk if i will be selected
+

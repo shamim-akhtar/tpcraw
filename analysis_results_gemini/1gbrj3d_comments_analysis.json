@@ -1,0 +1,52 @@
+[
+  {
+    "author": "Aikawa_Tofu_0240",
+    "comment": "As a HSS student, Flavours is the go to since I only have 1 hour lunch break during the busiest time of the day... And pray that 21 orders aren't in front of me when I finally make it to the cashier",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"academic\"],\n  \"complaints\": [\"Long queues at Flavours during peak lunch hours.\", \"Insufficient time for lunch break due to long queues.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "IndependentNo6105",
+    "comment": "my group usually prefers either IIT or design, though sometimes we go to breadboard @ engine",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "MusicianEffective244",
+    "comment": "Sounds like a PFP math project",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "MusicianEffective244",
+    "comment": "If you\u2019re doing Venn diagram, suggest to becareful as a lot of students to use that topic failed",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"High failure rate in Venn diagram topic\"],\n  \"suggestions\": [\"Careful approach to Venn diagram topic suggested\"]\n}\n```"
+  },
+  {
+    "author": "Warm-Donut2570",
+    "comment": "Done!",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "SGSweatZ",
+    "comment": "flavours, the canteen got so much halal option",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "No_Astronomer2047",
+    "comment": "I'm from HSS and flavours is my go to. Honestly, I haven't been to any other food places other than design and business. Flavours is so near to my classes. I only go to business in the mornings for light snacks but now business is closed \ud83d\udc94",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [\"Business food court closure\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Wide-Stretch3799",
+    "comment": "it is HAHAHA",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Wide-Stretch3799",
+    "comment": "really? could you tell me more on where they went wrong?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "MusicianEffective244",
+    "comment": "It seems easy to do which is why many chose it. Problem is that when they use variables to explain the separation of entities or the \u201ccommon\u201d variables, it was poorly explained and they never really considered a lot of factors. It was extremely tricky and no one in my class who did Venn diagram actually scored well.. I personally used one of the teacher\u2019s recommended ideas and got an 18/20 for coordinate geometry. If you can\u2019t think of an idea, don\u2019t force it",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Poor explanation of variables and separation of entities in a particular subject (possibly mathematics).\", \"Lack of consideration of various factors in the teaching methodology.\", \"Difficulty of the subject matter, leading to low scores for students using Venn diagrams.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

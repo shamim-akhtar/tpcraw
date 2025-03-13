@@ -2,37 +2,37 @@
   {
     "author": "junhao995",
     "comment": "IPad falls under tablet category and not really a notebook to begin with. For your course that probably be dealing with graphical intense tasks, it's best for you to get a MacBook Pro with an M1 Processor or a high end windows laptop. If one of your core modules happens to use Adobe Premier pro, IPad will not be supported.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"technology\"],\n  \"complaints\": [\"iPad insufficient for graphically intense tasks\", \"iPad not supported by Adobe Premiere Pro\"],\n  \"suggestions\": [\"Get a MacBook Pro with M1 processor or a high-end Windows laptop\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"technology\"],\n  \"complaints\": [\"iPad insufficient for graphically intense tasks\", \"iPad not supported by Adobe Premier Pro\"],\n  \"suggestions\": [\"Get a MacBook Pro with M1 processor or a high-end Windows laptop\"]\n}\n```"
   },
   {
     "author": "okwhatelse",
     "comment": "not sure about design, but some apps might need a laptop to work",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Some apps might need a laptop to work\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"Some apps might need a laptop to work\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "fefemp3",
     "comment": "you need a laptop, preferably a MacBook in CMD course. Im in cmd and we heavily use apps like photoshop, illustrator, after effects and figma",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"technology\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "error_urbitch",
     "comment": "I'm not in CMD but as a person under ADM/FMD I can attest that illustrator barely/doesn't work on your ipad unless you tweak a TON of settings and that doesn't even prevent crashes from just a bit too much shit Especially for a course that relies so heavily on it just get a macbook \ud83d\ude2d it's not worth the crashout",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"Illustrator software crashes frequently on iPads, requiring extensive settings adjustments.\", \"iPad is unsuitable for the demanding graphic design workload.\"],\n  \"suggestions\": [\"Use a MacBook instead of an iPad for graphic design coursework.\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"Illustrator software crashes frequently on iPads, requiring extensive settings adjustments.\", \"iPad is insufficient for the demands of the course.\"],\n  \"suggestions\": [\"Use a Macbook instead of an iPad for the course.\"]\n}\n```"
   },
   {
     "author": "VividConsequence4507",
     "comment": "CMD Y2 here. wouldn't recommend solely on an ipad only as others have said, some softwares can only be ran on a laptop/notebook for ease, you could get yourself a base 14' macbook pro with as much ram as you can afford as it would be better for future proofing if you're on a tight budget, i recommend getting any window laptops release after mid 2024 as they have since become as good as a macbook in terms of specs, performance and battery efficiency but at a lower cost",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"IPad only is not recommended for some softwares\"],\n  \"suggestions\": [\"Get a 14' Macbook Pro with sufficient RAM for future-proofing\", \"Consider Windows laptops released after mid-2024 for cost-effective performance\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"iPad only is not recommended for some software\"],\n  \"suggestions\": [\"Get a 14' MacBook Pro with sufficient RAM for future-proofing\", \"Consider Windows laptops released after mid-2024 for cost-effective performance\"]\n}\n```"
   },
   {
     "author": "Leather_Objective504",
     "comment": "please get a mac!!!!!!!! ipads are good to supplement but you won\u2019t last in design with JUST an ipad",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"Lack of Mac computers for design students.\"],\n  \"suggestions\": [\"Provide Mac computers for design students.\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"Inadequate provision of Mac computers for design students.\"],\n  \"suggestions\": [\"Provide more Mac computers for design students.\"]\n}\n```"
   },
   {
     "author": "None",
     "comment": "hi, y3 in cmd here, pls PLS get a laptop! An Ipad is definitely not gonna be enough :\u201d",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Ipad is insufficient for coursework\"],\n  \"suggestions\": [\"Get a laptop\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Ipad insufficient for coursework\"],\n  \"suggestions\": [\"Get a laptop\"]\n}\n```"
   },
   {
     "author": "cl0rkw0rk",
@@ -42,32 +42,32 @@
   {
     "author": "webbyspidey",
     "comment": "Note book = Keyboard and mainly software. A lot of software that is on macbook isn\u2019t supported on iPad. iPad is a tablet too, not a notebook",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of software support on iPads compared to MacBooks.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of software support on iPads compared to MacBooks.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Miniyi_Reddit",
     "comment": "just get macbook, i mean you could learn something on iPad on year 1 but after that you might need a desktop or MacBook to do ur homework. also, most jobs would be on computer desk anyway, make urself comfortable with it",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Get a MacBook for studies and future career\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Get a MacBook for studies and future career prospects\"]\n}\n```"
   },
   {
     "author": "Caledoniaa",
     "comment": "If you get the MacBook Pro with an M1 you'll be good and it'll last you for quite a long time. Are they expensive yes. Are they somewhat flashy and glamorised, yes. However I would view it as an investment into your future, Apple Education is usually cheaper and you can spread the cost finance free over 12, 24 or 36 months if money is tight. Best of luck!",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Consider financing a MacBook Pro through Apple Education\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Consider a MacBook Pro with an M1 chip as a long-term investment; explore Apple Education pricing and financing options.\"]\n}\n```"
   },
   {
     "author": "Mushroomdonut",
     "comment": "CMD alumni here and iPad is definitely not gonna suffice because you will be using adobe effects and photoshop/illustrator for assignments which is simply not doable on iPad adobe app. Everyone in my class had a laptop too. If you are not looking to get an MacBook I would recommend getting Asus for windows laptop and make sure u are getting 16gb ram min for the best user experience if not your laptop might take really long to load for certain assignments. ATB!",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"iPad insufficient for Adobe software assignments\", \"Slow laptop performance with less than 16GB RAM\"],\n  \"suggestions\": [\"Use a Windows laptop (Asus recommended) with at least 16GB RAM for smoother workflow\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"iPad insufficient for Adobe software assignments\", \"Slow loading times on laptops with insufficient RAM\"],\n  \"suggestions\": [\"Get a laptop with at least 16GB RAM\", \"Consider Asus laptops as a Windows alternative to MacBooks\"]\n}\n```"
   },
   {
     "author": "None",
     "comment": "macbook air M1/M2 13\" 16/24gb RAM + 512gb SSD is actually pretty good, you can get a refurbished model from the official apple store or a brand new one under the student discount (sign up for unidays, you get about $80 off iirc). You don't even need a macbook pro unless you're doing heavy duty video editing (premiere pro or after effects) or 3D stuff (like blender or C4D Lite). Used to work as a designer and used both air/pro models and the air models are much more capable nowdays for adobe. also not sure if they're gonna teach y'all figma or coding (VSCode) - definitely not supported by ipadOS.",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"technology\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Sign up for unidays for student discount on MacBooks\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"technology\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Sign up for Unidays for student discounts on MacBooks\"]\n}\n```"
   },
   {
     "author": "ariTech",
     "comment": "I am in the tech industry for 15 yrs, most professional tools are remotely not there on iPad. Or maybe a toned down version. So if you are going into either tech or even design then a laptop is a must, iPads wont do. For design a lot of tools are exclusively on mac hence for designers mac has become the default choice since u can get both cross platform as well as mac exclusive ones.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [\"Lack of professional-grade software on iPads for tech and design students.\", \"Inadequate iPad support for design software, leading to the necessity of Mac computers.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [\"Lack of professional-grade software on iPads for tech and design students.\", \"Inadequate software support for design students on iPads compared to Macs.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "DaMuchi",
@@ -77,7 +77,7 @@
   {
     "author": "whatsnewdan",
     "comment": "MacBook means.....macbook",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "sageadam",
@@ -97,12 +97,12 @@
   {
     "author": "Longjumping_Leg_8152",
     "comment": "Sorry but I'm not going to recommend windows laptops unless they have a dedicated graphics. Even then OP might still end up with some underpowered laptop with a U cpu and gtx graphics with barely enough vram to feed photoshop. OP, if you are on a tight budget try looking at old 14\"mbp something like a m1 pro, go for higher ram when possible, it's easy to get external ssd when you need more storage. They should go for about 1.5k on Carosell for 16gb ram and 512gb ssd.",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Windows laptops without dedicated graphics are underpowered for certain applications like Photoshop.\"],\n  \"suggestions\": [\"Consider a used 14\\\" MacBook Pro with M1 Pro chip, prioritize higher RAM, and use external SSD for storage.\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Underpowered laptops with integrated graphics are insufficient for demanding applications like Photoshop.\"],\n  \"suggestions\": [\"Consider a used 14\\\" MacBook Pro with M1 Pro chip and higher RAM; prioritize RAM over storage as external SSDs are easily obtained.\"]\n}\n```"
   },
   {
     "author": "None",
     "comment": "in Singapore it's only 12 or 24 months with a approved credit card! but yes there is student discount for the macbooks + ipad.",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "opalnightfall",
@@ -112,7 +112,7 @@
   {
     "author": "error_urbitch",
     "comment": "(Mb for the late reply btw) For the macbook honestly none, just the usual adobe programmes (photoshop,illustrator) when you overload the programme somehow someway :p just seriously remember to save your stuff As for laptop stuff just follow the sch's provided form for specifications \ud83d\ude2d CMD you are allowed to get both macbook and laptops afterall without any specific high end specs. Just follow what's in your budget/factor in if uw to use it for other stuff outside poly Honestly just get stuff with a high storage space paired with decent graphics just so adobe programmes dont explode due to your pc underperforming and u are probably ight",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"campus facilities\", \"computers/laptops\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Remember to save your work frequently\", \"Get a laptop with high storage space and decent graphics\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Remember to save your work frequently when using Adobe programs.\", \"Get a laptop with high storage space and decent graphics for smooth Adobe program performance.\"]\n}\n```"
   },
   {
     "author": "sageadam",
@@ -122,11 +122,11 @@
   {
     "author": "elijahvawgora",
     "comment": "Dam nice Could u recommend any storage like external storage I heard got hard drive or soft drive? Idk i noob. Also usually are the work or project crazy? Can y share what you do for urs? In dm maybe?",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": [\"recommendation for external storage options (hard drive or solid state drive)\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": [\"recommendation for external storage (hard drive or soft drive)\"]\n}\n```"
   },
   {
     "author": "opalnightfall",
     "comment": "i dont see why i should get a macbook if my ipad would have been sufficient, obviously now i know it wont ill get one",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Insufficient equipment initially provided; iPad deemed insufficient for academic needs.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Insufficient technology provided\"],\n  \"suggestions\": []\n}\n```"
   }
 ]

@@ -1,0 +1,22 @@
+[
+  {
+    "author": "pokkagreentea100",
+    "comment": "chapt gpt can create the website but for your info they add in some unnecessary stuff in it",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"website\"],\n  \"complaints\": [\"Unnecessary content added to the website.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "yvonne1298_",
+    "comment": "generated code can be detected. make sure u know how to explain the code",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "This was a common occurrence when I took the subject last semester. My observation is that those who GPTed the entire project had pretty similar-looking UIs, and struggled to explain their code, generally speaking.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Students using GPT to complete projects\", \"Similarity in projects leading to difficulty in explaining code\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "rn I have also been hearing that some AIs can create a website solely based on your drawing...",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

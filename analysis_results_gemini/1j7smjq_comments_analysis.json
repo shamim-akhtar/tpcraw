@@ -2,12 +2,12 @@
   {
     "author": "nothappygooutside",
     "comment": "hi for ur internship they will actually send a list of companies for u to choose from. u can't choose companies from outside that list. they'll send the list in may i think, then you're given one month plus to apply to and interview with those companies",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [\"Limited company choices for internships. Students cannot choose companies outside the provided list.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [\"Limited choice of internship companies; students cannot choose companies outside the provided list.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Sea-Policy1707",
     "comment": "oh but our course head advise us to self secure internship positions. they encourage us to find companies but at the end of the day, still need the school\u2019s approval.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"career/internships\", \"administration\"],\n  \"complaints\": [\"Lack of school support in securing internships despite encouragement from course head.\", \"The process of securing internships requires school approval, adding extra steps and potential delays.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"career/internships\", \"administration\"],\n  \"complaints\": [\"Course head advises students to self-secure internships but requires school approval, creating an extra layer of difficulty and uncertainty.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "nothappygooutside",

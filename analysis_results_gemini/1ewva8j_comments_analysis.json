@@ -1,0 +1,22 @@
+[
+  {
+    "author": "reapertorn",
+    "comment": "i thought poly no bell curve? when i clarified with subject teachers",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Confusion regarding the grading system (bell curve). Discrepancy between understanding and teacher's explanation.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Exact_Ad6736",
+    "comment": "Poly no bell curve la. Don't think so much. Maybe got some moderation only to adjust abit.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "XtremeX9x",
+    "comment": "Hehehehaw",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "MusicianEffective244",
+    "comment": "Typical for them to not accept such claims as bell curve can cause commotions. Bell curve is practiced everywhere regardless of diploma",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Temasek Polytechnic's rejection of claims regarding bell curve grading practices.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "author": "pokkagreentea100",
+    "comment": "Hi, before I continue, here's a link to the school's academic calendar if you want. https://www.tp.edu.sg/schools-and-courses/for-current-students/academic-calendar.html Anyway, as Sem 1 starts on 21 April, and based on what I experienced last year, orientation is usually held the week before school starts. 14-17 April, 18 is good Friday. You may want to block out that week if you intend to go orientation.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"events\", \"orientation\"],\n  \"complaints\": [],\n  \"suggestions\": [\"block out the week of 14-17 April for orientation\"]\n}\n```"
+  },
+  {
+    "author": "PersonalAd3618",
+    "comment": "Just checked tp oei and they say freshmen ori is on 15-17 April",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Obvious-Scarcity9699",
+    "comment": "omg I\u2019m in the same course and also planning to go overseas HAHA",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "CreativeEquivalent49",
+    "comment": "okayy! Thank you so much!!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "CreativeEquivalent49",
+    "comment": "oh wow thanks so much!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "CreativeEquivalent49",
+    "comment": "oh omg \ud83d\ude2d\ud83d\ude2d wanna be friendss",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"social\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "np, any questions just drop me a message",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

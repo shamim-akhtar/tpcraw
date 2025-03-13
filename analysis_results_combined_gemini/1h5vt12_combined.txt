@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "career/internships"],  "complaints": ["Use of ChatGPT/AI to create websites for academic projects", "Generated code can be detected", "Similar-looking UIs from GPT-generated projects", "Difficulty explaining GPT-generated code"],  "suggestions": []}

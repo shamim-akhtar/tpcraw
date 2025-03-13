@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "campus facilities"],  "complaints": ["Unable to access Statista database using TP account", "Requires payment to access Statista reports and data despite having a TP account"],  "suggestions": []}

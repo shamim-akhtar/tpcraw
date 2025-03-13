@@ -1,0 +1,17 @@
+[
+  {
+    "author": "Vinhunter666",
+    "comment": "Typically in the next 3-4weeks, they will pay hopefully. This year's approval was slower.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"finance\"],\n  \"complaints\": [\"Slower approval process for payments this year\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[removed]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Vinhunter666",
+    "comment": "If household income is higher u take lesser , vise versa. household income lower takes higher. The most is 2.6k and the least is $900. Depends on the tier also.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"financial aid\", \"tuition fees\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

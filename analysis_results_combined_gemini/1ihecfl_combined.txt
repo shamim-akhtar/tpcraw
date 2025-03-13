@@ -1,0 +1,1 @@
+{  "sentiment": "positive",  "topics": ["academic", "Common Design Programme (CDP)", "Interior Architecture and Design (IAD)", "course selection", "programme structure"],  "complaints": [],  "suggestions": []}

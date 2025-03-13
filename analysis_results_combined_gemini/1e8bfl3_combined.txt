@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["admission", "academic", "events"],  "complaints": ["Slow interview process", "Uncertainty about application status"],  "suggestions": []}

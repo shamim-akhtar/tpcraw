@@ -1,0 +1,87 @@
+[
+  {
+    "author": "SnowUnlikely",
+    "comment": "School of iit western stall",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "nothappygooutside",
+    "comment": "dont go bizpark it sucks and not halal - go design pad instead. out of my 3 years in poly i've only eaten at bizpark like 3 times",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [\"BizPark food is not halal\", \"BizPark food options are unappealing\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Great_Dimension3606",
+    "comment": "school of design western stall and japanese stall, the chicken rice at iit is also not bad. if anything theres macs and subway, theres also a cafe and fine dining restaurant run by students (not bistrolab) and its rly rly cheap compared to outside prices.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Constant-Education19",
+    "comment": "Breadboard/school of engineering chicken rice",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "No_Astronomer2047",
+    "comment": "if you ever go to flavours, be mindful of buying from the nasi padang stall - always overpriced. the ayam penyet stall beside this stall is damn good 10/10 recommend.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [\"Nasi Padang stall at Flavours is overpriced\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ConlangNerd1",
+    "comment": "Al Hussein across the road is the best",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "jeffeen_NS",
+    "comment": "design canteen japanese stall or engine western",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Lukazonkx",
+    "comment": "IIT loklok is nice. Engine 2 is not bad. Engine 1 also good, their mala is relatively okay priced and it's quite good. Unfortunately bum park(bizpark) is hot garbage but at least we have instantchef",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [\"BizPark (Bum Park) is bad\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Issa3_kun",
+    "comment": "There are a lot of good food places around campus but ig only halal food would be the problem. I'm frm school of IIT and there is only 3 Halal stalls. Qe also do have fast food options like Macdonalds and subway. Food won't be a issue ngl it's the studying part \ud83d\udc80",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"academic\"],\n  \"complaints\": [\"limited halal food options at School of IIT\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Great_Dimension3606",
+    "comment": "bizpark is closed until further notice alr but the banmian and salad stalls have moved to iit",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [\"BizPark closure\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "TreatOk4688",
+    "comment": "Where's the fine dining restaurant?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Issa3_kun",
+    "comment": "That's the only halal chicken rice that I know of. The one in IIT isn't halal and it pissess me off",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [\"Lack of halal chicken rice options besides the one mentioned.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "yourmomsalovelylady",
+    "comment": "real shit",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "No-Scene-2942",
+    "comment": "wait wdym by studying will be an issue",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "nothappygooutside",
+    "comment": "i'm from school of business and this is news to me \ud83d\ude2d\ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Lack of communication regarding important news.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "h0tlatte",
+    "comment": "say WHAT??? im on intern so i haven't stepped foot in TP... is this how i found out \ud83e\udd72",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"internships\"],\n  \"complaints\": [\"Lack of information about campus changes during internship.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Great_Dimension3606",
+    "comment": "its at the temasek culinary academy!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

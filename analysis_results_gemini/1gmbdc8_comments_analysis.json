@@ -1,0 +1,22 @@
+[
+  {
+    "author": "pug_boi-1",
+    "comment": "Internal server error because there is no such thing as 'Diploma in Air Management'. It's called Diploma in Aviation Management (T04). Yes the course is available, I have a few friends currently studying the diploma, and it was originally my first choice. Not sure about the application process, you'd probably have better luck emailing TP/ your JC and asking them directly. From what I understand based off your question, you've already completed your A levels? You will have to do the full 3 years, so it depends whether the time spent is of any concern to you. You'll have to take part in the admissions exercise next year and use your O level results. On a different note, don't know which subjects you flunked in your As, but Aviation Management is an engineering course, so you'll be doing a lot of engineering maths and science in your first year. If you're not strong in those subjects, you should still apply if you want, but just note that your first year might be a bit tough if you can't cope.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"application process\", \"course availability\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Email TP or JC for application process inquiries\", \"Assess math and science strengths before applying to Aviation Management\"]\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "Aviation management, you mean? you will participate in JAE next year. might have to ask Moe about it, but you will use your Os results for admission. I think you still have to do all 3 years.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"admission\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Desperate-Season-967",
+    "comment": "hi you can check the poly website for entry via A Level results. you can enter the 2 year course for A Level students. no need to take the 3 year route like what others are saying.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Why_salty69",
+    "comment": "Eng student here, y1 eng maths is basically O lvls A Math + a tiny bit of A lvl math. U shld be able to cope if u took H2 maths.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

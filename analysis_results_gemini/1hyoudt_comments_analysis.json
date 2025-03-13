@@ -1,0 +1,22 @@
+[
+  {
+    "author": "Great_Dimension3606",
+    "comment": "there are 3 lead core events: induction, summit and heart, not sure how it is now because i was a covid batch but induction and summit were mostly group based workshops/activities etc. heart is usually volunteering activities, more on the ground. lead electives are the ones that are sent to ur email more often, things like workshops, dialogues, experiences etc. to graduate as a lead student you have to complete all 3 core events.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\", \"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "yq27",
+    "comment": "alright. They did state that y1 student need to conplete at least 1 core and 1 elective. But if I have not joined any lead electives, is there a chance that they'll accept me in the OEP programme?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Great_Dimension3606",
+    "comment": "i mean if they have specified that its a must, i highly doubt so (i\u2019m assuming ur referring to the tokyo trip)",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "yq27",
+    "comment": "ooo okiess :( thanks!",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

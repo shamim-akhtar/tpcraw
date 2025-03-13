@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["academic", "gpa calculation"],  "complaints": ["Lack of transparency in GPA calculation method", "Difficulty in obtaining a precise GPA prediction"],  "suggestions": ["Use online GPA calculators (e.g., https://www.plsgrade.me/) for estimation"]}
+{  "sentiment": "neutral",  "topics": ["academic", "gpa calculation"],  "complaints": ["Lack of transparency in GPA calculation", "Difficulty in obtaining a precise GPA prediction"],  "suggestions": ["Use online GPA calculators for estimation (plsgrade.me)"]}

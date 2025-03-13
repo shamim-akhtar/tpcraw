@@ -1,0 +1,1 @@
+{  "sentiment": "positive",  "topics": ["academic", "career/internships"],  "complaints": [],  "suggestions": ["Check the updated cut-off point (COP) for 2025.", "Put 2nd and 3rd choice courses as a safety net."]}

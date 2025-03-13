@@ -1,0 +1,47 @@
+[
+  {
+    "author": "SuitFinancial2209",
+    "comment": "fail even by 1 mark in pfp = gg on politemall under each subject there should be something showing the weightage of all the things you've done over the semester like term test, class part, etc just take a look at that, then add up all the percentages you've got so far and use that as a rough estimation of how many marks you need to score for the sem test",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of transparency in grading system\", \"Difficulty in estimating final grade\"],\n  \"suggestions\": [\"Display weightage of assessment components (term tests, class participation, etc.) on politemall for each subject\", \"Provide a clearer way to estimate required marks for the semester test\"]\n}\n```"
+  },
+  {
+    "author": "Wide-Stretch3799",
+    "comment": "ur cooked",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"General dissatisfaction or feeling of being overwhelmed/defeated\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Alarmed-Elk5912",
+    "comment": "I FVCKED U IN THE BATHROOM WHILE WWRE HAVING DINNER",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "how bad did u do-",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "trippycrisis",
+    "comment": "FOR REAL",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "trippycrisis",
+    "comment": "YOUR PARENTS AT THE TABLE YOU WONDER WHY I\u2019M BITTER",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"The text expresses bitterness, but doesn't directly relate to Temasek Polytechnic.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "trippycrisis",
+    "comment": "i mean, currently i\u2019m not really at a risk of failing finance (hopefully) and math i need 55% for my final paper to pass",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "what in the actual !",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "MusicianEffective244",
+    "comment": "Ex pfp student. Math finals are easier than term test just saying. 2 hours is a lot of time to think so just fully utilize it. My term test was a B and Final was a high A",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"fully utilize the time given for exams\"]\n}\n```"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "author": "Temasek_Polytechnic",
+    "comment": "1 week before semester starts",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pawsies7rae18",
+    "comment": "If i rmb correctly the Friday b4 school start...\ud83d\ude2a",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Reluctance to return to school\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Upper_Yak_2856",
+    "comment": "sometimes it\u2019s the Wednesday prior to the semester starting",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pawsies7rae18",
+    "comment": "That would be amazing LOL",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

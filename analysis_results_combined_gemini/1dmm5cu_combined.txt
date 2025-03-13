@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "timetable"],  "complaints": ["Inability to access timetable online", "Timetable appearing 'weird' or unusual"],  "suggestions": []}

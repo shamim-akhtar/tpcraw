@@ -1,0 +1,12 @@
+[
+  {
+    "author": "Mean_Psychology1078",
+    "comment": "u can check out tp archives",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "hyperbookworm",
+    "comment": "checked there before making this post, nothing :(",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Lack of information/resources\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

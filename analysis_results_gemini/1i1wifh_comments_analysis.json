@@ -1,0 +1,262 @@
+[
+  {
+    "author": "yvonne1298_",
+    "comment": "Someone had to say it, thank you very much. currently trying to balance the workload rn. if its safe to say, chatgpt/youtube/online resources are helping me more than the school right now. from what i know, the SLs for each individual module are appointed a few weeks before the sem starts. so they themselves would also have to throw out everything in a messy order to meet the deadline before the new sem starts. that is why you would see your lessons/practicals/labs/subject teching plan all being released on the first day of the sem when u boot up lms. though the teachers have adapted to this by slowly releasing them while the respective weeks approach. i still feel that this approach is very disorganized since it also creates this sense of urgency for them. to put ourselves in the SLs shoes, they are also struggling with this problem of meeting ridiculous deadlines so we cant blame them too much. Can also see from their facial expressions that they too want to change this systematic approach of IIT. however im sure most of you have seen from previous IIT related posts, majority of the time alumnis from many years back also complain of this approach. I am confident to say that this problem does not only occur due to the lecturers's ignorance, but also due to the upper-management not really giving a fuck about IIT. shoutout to Mr Eric from IT course tho. hes really carrying adev/dbav classes he teaches rn. He never fails to help his students understand problems and is also really helpful during consultations.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Disorganized release of lesson materials and practical schedules at the start of the semester.\", \"Lack of planning and preparation time for Subject Leaders (SLs) leading to rushed and disorganized teaching.\", \"Systemic issue with IIT (Integrated Instructional Technology) approach, persisting for many years.\", \"Upper management's perceived lack of concern regarding IIT issues.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "Literally this! It's like they don't understand how to teach students. As someone who started learning most of the things from scratch in IIT like JavaScript, it feels so rushed and they expect us to produce good quality work, when like some of these things are outdated? and projects, how do we know what to improve on if we just receive a grade? why can't we see what's wrong with our work? I'm literally struggling so much because idk what's going on half the time. It's like they dump everything on us and hope we actually learn. Most of the teachers are good at their skills but can't teach at a beginner level.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"teaching methods\"],\n  \"complaints\": [\n    \"Teaching methods are ineffective and rushed.\",\n    \"Curriculum is outdated.\",\n    \"Lack of feedback on projects and assignments.\",\n    \"Insufficient support for beginner-level students.\",\n    \"Teachers are skilled in their field but lack teaching skills for beginners.\",\n    \"Students are overwhelmed with the amount of work.\"\n  ],\n  \"suggestions\": [\n    \"Provide more detailed feedback on student work.\",\n    \"Improve teaching methods to better cater to beginner-level students.\",\n    \"Update the curriculum to reflect current industry standards.\"\n  ]\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "Hey OP, I agree with much of these points you brought up. Especially for the last one, e.g. for DSAG, where most of the content is \"watch this Youtube video\". I remember one big part of COMT being requiring us to watch through a few Linkedin Learning courses about generative AI without any real point... the things in there weren't even tested. It feels like IIT lacks central coordination and quality control. I wonder what's going on in course planning. Perhaps the lecturers' decision making is too distributed? It feels like all the subject heads are doing their own things without a central plan or idea. Maybe they need to appoint someone or a committee to oversee the other subjects. Hopefully they can improve the school before we graduate lol... Ngl it feels hopeless - I don't feel like I'm being prepared for an industry which is being quickly shaken up by generative AI. We didn't pay school fees for the lecturers to teach us about methods that are 6 years old at best, so yeah... It's crazy too, the other schools seem fine, so I wonder what's going on in IIT.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"course content\", \"administration\", \"curriculum planning\"],\n  \"complaints\": [\n    \"Over-reliance on YouTube videos and LinkedIn Learning courses as primary learning resources in DSAG and COMT.\",\n    \"Lack of relevance of course content, with outdated methods (6+ years old) being taught.\",\n    \"Insufficient testing on content from LinkedIn Learning courses.\",\n    \"Lack of central coordination and quality control in IIT (Institute of Information Technology).\",\n    \"Feeling unprepared for the industry due to outdated teaching methods and the rapid advancement of generative AI.\",\n    \"Perceived lack of a central plan or idea in subject planning, with subject heads working independently.\"\n  ],\n  \"suggestions\": [\n    \"Appoint someone or a committee to oversee and coordinate subject planning across IIT.\",\n    \"Improve the curriculum to reflect current industry standards and incorporate advancements like generative AI.\",\n    \"Reduce reliance on external platforms (YouTube, LinkedIn Learning) for core course content and ensure quality control.\"\n  ]\n}\n```"
+  },
+  {
+    "author": "Wild-Lengthiness7600",
+    "comment": "I rmb when i did comt in 2021, alot of the impt marks u score on the app u had to watch youtube to do Seems like some things never change hahaha",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"reliance on YouTube tutorials for assessment\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "honestly, at this rate with the amount of help that the lecturers is giving, I\u2019m better off self studying for A levels \ud83d\udc80( at least the syllabus is fixed )",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of lecturer support\", \"Insufficient help from lecturers\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Comfortable-Net-5126",
+    "comment": "+ the teachers are so unorganised as a whole! why are different classes getting different instructions for the same project! recently one of the teachers posted their class instructions for the NECT project to the whole IIT (instead of just his class) and the instructions were completely different from what my teacher had said and when we asked the teacher about it, he said he's marking so do what he says. if they truly want to grade everyone fairly how is giving different instructions for the supposedly same project even fair. not only for NECT, many other times also. and HEAVY on the unfair treatment because this sem NO teacher allowed project consultations",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Inconsistent instructions for the same project across different classes.\", \"Unfair grading practices due to differing project instructions.\", \"Lack of teacher availability for project consultations.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ryekleqq",
+    "comment": "100% agreed... especially when some of us have zero background/experience in coding n shit so its way harder for us when the lecturer doesnt explain shit bro\ud83d\ude2d\ud83d\ude2d\ud83d\ude2d im not a genius u cant expect me to code a whole ahh website by myself through research",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"lecturer\"],\n  \"complaints\": [\"Lack of explanation from lecturer\", \"Difficult coding assignments for students with no prior experience\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Thin-Definition2541",
+    "comment": "Well presented. That being said, it would have been more productive to post this on their open house social media instead a few days ago. \ud83e\udd2d - A passing-by alumni",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\", \"administration\"],\n  \"complaints\": [\"Post was not made on the appropriate platform (open house social media) and timing was not optimal.\"],\n  \"suggestions\": [\"Post similar content on open house social media in the future.\"]\n}\n```"
+  },
+  {
+    "author": "Gwenlover3000",
+    "comment": "Welcome to TP. Can't wait to graduate from this fucking mess of an institution. Money from students going to shit that is not supporting students at all.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Money from students is not supporting students\", \"Institution described as a 'mess'\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "PieExciting1801",
+    "comment": "It's really crazy how I've seen labs that came from 2016 before. 9 years ago, really? How much has technology advanced over the course of that time? Can the lecturers really look us in the eye and tell us that technology is the same as it was 9 years ago? It also off putting at how some of the lecturers get annoyed when we don't understand the lessons they taught. They take such long times to teach topics that are simpler, and little to no time teaching the harder ones. If we can't understand it, doesn't that tell you that you should try changing your teaching methods? Not only that but when we come up to them to ask for comments, and they sigh in distress due to us getting that area wrong, it really makes the students disheartened. Adding on with them telling us they've taught this and asking why we don't understand it, it just makes the students not feel like going to them for help the next time they encounter problems, and go to YouTube tutorials and chatgpt instead. I really hoped that they would\u2019ve done sem 2 better after what most people have definitely complained/ given feedback on in the Tessy from the end of sem 1. However, I\u2019m sure they planned ahead for the whole year already from the beginning, so I guess I can\u2019t pray for much to be done. I do still hope that after this semester, that the heads actually look through the comments given and work on improving the schedule for the future years and new batches of students coming in soon.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"lecturers\", \"facilities\", \"teaching methods\"],\n  \"complaints\": [\n    \"Outdated laboratory equipment (9 years old)\",\n    \"Lecturers' annoyance at students' lack of understanding\",\n    \"Inefficient teaching methods: too much time on easy topics, insufficient time on difficult ones\",\n    \"Lecturers' unhelpful responses to student questions and requests for clarification\",\n    \"Lack of improvement in Semester 2 despite feedback from Semester 1\"\n  ],\n  \"suggestions\": [\n    \"Update laboratory equipment\",\n    \"Improve teaching methods to better cater to students' understanding\",\n    \"Encourage lecturers to provide more supportive and helpful feedback to students\",\n    \"Review and improve the course schedule based on student feedback\"\n  ]\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "REAL i agree omg, IIT sucks",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"IIT sucks\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "welcome to iit",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "Btw, this isn't the worst part. Personally, I feel that there's still some form of learning and thought process going on when referencing YT videos. However, it seems that their present approach is \"debugging\" with ChatGPT. I mean, ChatGPT is really useful, but it is severely misused. Rather, they should teach how to step through code with the debugger, it is much more useful when it comes to debugging code. There seem to be some form of expectation that now with generative tools, people can learn at a faster rate, when in reality, most of them just copy and paste code without understanding them.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Over-reliance on ChatGPT for debugging instead of teaching proper debugging techniques.\", \"Students copy-pasting code without understanding.\"],\n  \"suggestions\": [\"Teach students how to use debuggers effectively.\", \"Focus less on the speed of learning enabled by generative tools and more on fostering genuine understanding.\"]\n}\n```"
+  },
+  {
+    "author": "loweshaan",
+    "comment": "Goddamn this is crazy\ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "You should post this on r/sgexams and spread the word",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": [\"Post on r/sgexams to spread the word\"]\n}\n```"
+  },
+  {
+    "author": "Initial-Cat2582",
+    "comment": "preach.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Straight-Sky-311",
+    "comment": "All polytechnics now are running like businesses to maximise their profits. That\u2019s why principals are also called \u2018P/CEO\u2019 in their job titles. I suspect that there is some smart Alex who came up with this suggestion to reduce lecturer headcount and to replace live lectures with pre recorded videos. All for hitting his KPI and getting his bonus while kicking the can down the road. P/CEO supported this idea as it maximises their profits. This is what people voted PAP in for. The majority seem to like the way the PAP is running the country like a major corporation.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Reduction in lecturer headcount\", \"Replacement of live lectures with pre-recorded videos\", \"Polytechnics running like businesses prioritizing profits over education\", \"Use of pre-recorded videos negatively impacting education\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Initial-Cat2582",
+    "comment": "bro the project we are doing now are all important as they will be used in our y2/3 projects as i have heard from my seniors. if feedback isnt provided and we dont understand what is going on how the hell are we gonna do our projects?? furthermore the past few labs, of elearning and whatever we need to know to do for the project are all videos, and these videos guess what? combined time of 8 hours. who has the attention span of 8 hours to absorb all the information, and what am i paying for? 1.5k for us to code a vending machine website for them? they should be paying me instead like the fuck?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [\n    \"Lack of timely and helpful feedback on projects.\",\n    \"Excessive reliance on lengthy video tutorials (8 hours total) for project instruction.\",\n    \"Perception of low value for the project in relation to tuition fees.\",\n    \"Feeling of being exploited rather than compensated for project work.\"\n  ],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "cactrusjrack",
+    "comment": "Yeah fuck TP IIT, I'm a Y3 student and they couldn't find an internship for 20students. All of the lecturers just getting paid to sit around and do nothing.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"career/internships\", \"administration\", \"academic\"],\n  \"complaints\": [\"Lack of internship placements for students (20 students without internships)\", \"Lecturers perceived as unproductive\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "NyandaKun",
+    "comment": "Hi, I\u2019m from school of applied science here. Thanks for sharing more about your experience in IIT. I just want to comment on 3 points: 1.  ADEV consultation - I do agree that everyone in every class gets equal opportunity or rights to ask questions that they feel concern about in the project. Lecturers should be practiced to be open than to practice favourism. 2. No Feedback on projects - I agree and disagree on certain extend. If the project does not affect you in the future modules e.g. if you are doing global studies project , you wouldn\u2019t need to receive feedback because all you have to do is to have a basic understanding. But if the project does affect you in the future modules . For example , if you study a fundamental core module in year 1 which would carry in year 2, then yes you would definitely need feedback to improve your skills. 3. YouTube as a Teacher. I have to 100% agree with your statement for the fact that you are attending an institution to be lectured by your lecturer on the topics that you guys learn and if you come to class just being told by your lecturer to watch a YouTube video by a random user , it\u2019s absolutely bullshit. I just want to support your reasoning that what if the content that is provided by YouTube is unreliable and cause misinformation ? What if the things that is being learnt through YouTube would cause potential hazards e.g. typing a code that would cause your computer to blackout . Though I must say that I am of different school than the people in IIT, I am really proud that you people of IIT have a forward mindset and passion driven. I hope that your school really take your feedback seriously and Improve the condition.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"lecturers\", \"project feedback\", \"teaching methods\"],\n  \"complaints\": [\n    \"Unequal opportunities for students to consult with lecturers (favoritism)\",\n    \"Lack of feedback on projects, especially those relevant to future modules\",\n    \"Over-reliance on YouTube videos as a teaching method, raising concerns about reliability and potential misinformation/hazards\"\n  ],\n  \"suggestions\": [\n    \"Lecturers should be trained to be more open and avoid favoritism.\",\n    \"Provide feedback on projects, especially those impacting future modules.\",\n    \"Reduce reliance on YouTube videos as a primary teaching tool and ensure reliable learning resources.\"\n  ]\n}\n```"
+  },
+  {
+    "author": "definitelytroaxx",
+    "comment": "omg yes preach mr eric even though he doesn't teach me i've worked w him before on hackathons and he is a godsend \ud83e\uddd8\u200d\u2640\ufe0f",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"events\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "Exactly! It feels like they\u2019re throwing us into the deep end without even teaching us how to swim. For many of us who didn\u2019t come from ITE, this is our first time coding. Starting from scratch with something as complex as JavaScript is hard enough, but add the rushed pacing and outdated content, and it feels impossible. How do they expect us to produce good-quality work lol",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"curriculum\"],\n  \"complaints\": [\"rushed pacing of the course\", \"outdated course content\", \"difficulty of the JavaScript curriculum for students without prior coding experience\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "If this doesn\u2019t change soon, we\u2019ll be leaving here with outdated knowledge, totally unprepared for a rapidly changing industry. And the worst part is, we\u2019re paying for this. It\u2019s frustrating to think about, but I really hope the school starts listening to these concerns before we\u2019re all out the door",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Outdated knowledge\", \"Unprepared for industry\", \"School not listening to concerns\"],\n  \"suggestions\": [\"School should address concerns before students graduate\"]\n}\n```"
+  },
+  {
+    "author": "MathematicianLoud947",
+    "comment": "What outdated methods are you talking about?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Comfortable-Net-5126",
+    "comment": "oh and how could i forget, LAST SEM THEY DIDNT EVEN GIVE BACK OUR GRADES FOR SOME OF THE PROJECTS??? like hello whats the point of doing it if im not going to know even ROUGHLY how well i did for the frking proj omfg they just added it to the gpa and called it a sem",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Late grade release for projects\", \"Lack of feedback on project performance before GPA calculation\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Current-Material-339",
+    "comment": "The sample project was given right, i think every year they give, You should have taken it as a reference.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "wouldnt wanna get suspended or anything \ud83d\ude2d\ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Fear of suspension\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "omg, js curious for which mods have they been teaching us outdated stuff \ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Outdated teaching materials/modules\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "lol fr",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "I always say this but use ChatGPT and other generative AI tools is for fishing rod, not fish, i.e. use it to guide you to understanding, not use it as a replacement for your work. A lot of students use it \"to get the fish\" immediately and end up not understanding what they're doing. This is made even worse by the cramped syllabus that encourages this. It's similar in the real world: you can always just use the AI's output directly. Or you can use the AI to help you make better human outputs. The latter results in better quality results. It's an AI *assistant* in the end.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Cramped syllabus encourages students to use AI to get answers directly instead of understanding the material.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "may I ask what course you're in?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "literally, I had to have friends and peers who are much more experienced to tell me that 'oh this____ is outdated' or 'we don't usually do this' like what's the point of learning these all? And then ADEV expects us to add additional features like we are pros. It's so exhausting to deal with this. I don't know why I'm even still here. I hope O level students see this.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Outdated teaching methods and materials\", \"Unrealistic expectations from ADEV (likely referring to a specific module or department)\", \"Lack of guidance and support from instructors\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "The hilarious thing is that they basically threw JS at you guys in the span of 3 weeks lol... and the first time was right before a holiday... Ngl it was kinda sad to see yall struggle with COMT quiz question 2... at the end of the first semester I'd have expected that students would have enough knowledge to do it. Instead they wasted so much time on useless stuff that didn't help yall understand better and then spent all of semester 2 teaching the same things again in DSAG lol, then suddenly curve up to your first major program and writing huge 200-liner files... The pacing in these courses, at least the year 1 common ICT programme that everyone takes, is all off lol Wonder if they adjusted it waaaayyy too much from the last batch",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"curriculum\"],\n  \"complaints\": [\"Fast-paced and rushed JS curriculum (3 weeks before a holiday)\", \"Insufficient knowledge at the end of the first semester\", \"Repetitive teaching of the same concepts in different modules (COMT and DSAG)\", \"Steep learning curve with large programming assignments (200-line files)\", \"Poor pacing in Year 1 common ICT programme\"],\n  \"suggestions\": [\"Review and adjust the pacing of the Year 1 common ICT programme\", \"Ensure students have sufficient foundational knowledge before introducing advanced topics\", \"Improve the curriculum to avoid repetition and better prepare students for future modules\"]\n}\n```"
+  },
+  {
+    "author": "Cartographer-Similar",
+    "comment": "As an alumni who graduated from poly like last year, even I that came from ite, struggled with the coding modules due to how rushed it is at times\ud83d\udc80 Hell even if they teach us properly, the shit that we have to do is just a massive curveball (cough, dsag, cough cough). Struggled y1 due to how \u201cunfriendly\u201d the approach for handling new concept is.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"coding modules\"],\n  \"complaints\": [\"Rushed coding modules\", \"Poor teaching approach to new concepts\", \"Difficult and challenging curriculum (DSAG specifically mentioned)\", \"Unfriendly approach to handling new concepts\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "Even the building needs major renovation ngl, can't be only me wondering why DES and BUS look so good meanwhile IIT But ye as someone with experience, I can say they're doing yall a disservice... Like it's correct that the technology industry needs some amount of self-teaching (it's one of those fields where you will never finish learning, since new things come out every day), but they're not encouraging or helping with that either.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"academic\"],\n  \"complaints\": [\"Building needs major renovation\", \"Lack of support for self-teaching in technology industry despite its necessity\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "At least for ADEV, - Using .then() and .catch() instead of async/await for Promises - Not teaching CSS Grid/Flexbox - Using callbacks instead of promise APIs - Using an outdated version of MySQL (8.0 rather than the 9.0 available on the website) - Using var instead of let/const",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Using .then() and .catch() instead of async/await for Promises\", \"Not teaching CSS Grid/Flexbox\", \"Using callbacks instead of promise APIs\", \"Using an outdated version of MySQL (8.0 rather than the 9.0 available on the website)\", \"Using var instead of let/const\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "??? there's no samples. The only thing we had reference to was this one lesson and even then it didn't touch a lot of what the assignment demanded.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of samples for assignment reference\", \"Insufficient lesson coverage of assignment requirements\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ryekleqq",
+    "comment": "there were no samples \ud83d\udc80\ud83d\udc80 we wldnt complain this much if samples were given",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of samples provided for a task or assignment.\"],\n  \"suggestions\": [\"Provide samples for assignments to reduce student complaints.\"]\n}\n```"
+  },
+  {
+    "author": "PieExciting1801",
+    "comment": "I can't quite recall the exact mod because I remember seeing it weeks/months ago and gawked but it was either COMPT/DSAG/CYFUN I believe, like there was the date on the word doc and it was like 2016",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "yeah i agree! but the teaching methods and materials are so ass and the fact that the time given is so little, many people js turn to chat GPT :( really wish the school improves on this bruh, they really need to start teaching us properly",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"teaching methods\", \"materials\"],\n  \"complaints\": [\"inadequate teaching methods\", \"insufficient teaching materials\", \"insufficient time allocated for assignments\", \"over-reliance on ChatGPT due to lack of support\"],\n  \"suggestions\": [\"improve teaching methods\", \"improve teaching materials\", \"increase time allocated for assignments\"]\n}\n```"
+  },
+  {
+    "author": "cactrusjrack",
+    "comment": "CDF",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "the specification is confusing asf. It says the additional feature can improve usability and aesthetics but they want apis for it ? how does aesthics ( which can be done using css) have an api",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Confusing specifications for additional features\", \"Requirement of APIs for aesthetic improvements (which can be done with CSS)\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "it's like they teach a baby ABC and then expect the baby to resolve world peace, I honestly have no idea what's going on in class because of how random some lessons are",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of coherence in lessons\", \"Lessons are too random and disjointed\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "Yup, self-learning is definitely important. Typically, those who excel in this course do some form of self-learning, and learn what is beyond the syllabus. FWIW, they always claim to deliver and teach the most up to date content, but they be using tech born before me",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Outdated technology used in teaching\", \"Discrepancy between claimed and actual curriculum update\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "omg the buildings look like a run down factory. I agree with the self-learning path but for that they need to guide us to it . not expect industry level end product after teaching a basic function like how to insert pics and change color in css",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"academic\"],\n  \"complaints\": [\"Buildings look like a run-down factory\", \"Lack of guidance on self-learning path\", \"Expectation of industry-level end product after basic instruction\"],\n  \"suggestions\": [\"Provide more guidance on the self-learning path\"]\n}\n```"
+  },
+  {
+    "author": "br0liersWantsHisCash",
+    "comment": "des got new block and old block, we got insane asylum",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"Reference to 'insane asylum' suggests negative perception of at least one building or campus area.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "ohhhhhhhh, its probably cyfun \ud83d\ude2d\ud83d\ude2d\ud83d\ude2d\ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"events\"],\n  \"complaints\": [\"Cyfun (presumably an event or facility) is causing negative emotions.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "bro I also but y1 eh, how come can't find?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Difficulty finding something (unspecified) in Year 1.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "I'm so confused too... everything is confusing.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"general\"],\n  \"complaints\": [\"Confusion about various aspects of Temasek Polytechnic\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "more like spend half the year teaching primary 1 kids 1+1=2 and then suddenly throw algebra",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Sudden jump in difficulty level from basic arithmetic to algebra without proper transition.\", \"Insufficient preparation for algebra after spending significant time on basic arithmetic.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "cactrusjrack",
+    "comment": "They couldn't find a company for me all the way until Sep. And when I got matched with the company the company MIA after interview. Turns out alot of companies backed our on hiring us as interns. School keep saying trying their best to continue searching for companies, but end up until Dec still cannot match me with one so I had to personally email companies and get an internship myself.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [\"Late internship placement (until September)\", \"Company disappeared after interview\", \"Many companies backed out on hiring interns\", \"School's efforts to find internships were insufficient, resulting in the student having to find an internship independently\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "WTF oh my days iit is done for",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Unknown issue causing distress.  The statement 'iit is done for' suggests a significant problem, but lacks specifics.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

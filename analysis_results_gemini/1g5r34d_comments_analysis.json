@@ -1,0 +1,12 @@
+[
+  {
+    "author": "Aiyoowafap",
+    "comment": "whats the ost ??",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "davegrohlsbae",
+    "comment": "the study trip to kuching hehe",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"events\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["academic", "administration"],  "complaints": [],  "suggestions": ["Regularly check the TP application portal for updates"]}
+{  "sentiment": "neutral",  "topics": ["academic", "admission"],  "complaints": [],  "suggestions": ["Regularly check the TP application portal for updates."]}

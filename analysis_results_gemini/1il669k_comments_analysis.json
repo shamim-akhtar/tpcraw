@@ -2,7 +2,7 @@
   {
     "author": "Which_Action_5554",
     "comment": "There will be a list of recommended laptops and hardware to purchase for different courses, please try to follow that list to avoid getting wrong or incompatible stuffs. Thanks.",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"hardware\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Follow the recommended laptop and hardware list to avoid incompatibility issues.\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Follow the recommended laptop and hardware list to avoid compatibility issues.\"]\n}\n```"
   },
   {
     "author": "iamnothingbuta",
@@ -52,7 +52,7 @@
   {
     "author": "iamnothingbuta",
     "comment": "tbf not sure but seen a lot of people complaining about tuf build quality, i am using rog laptop which is fine but quite ex, not sure about victus but legion is quite popular, your course also looks like you are doing very heavy gpu or cpu work so better to see which option you want, but best if you get one with a lot of space too",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"TUF build quality\"],\n  \"suggestions\": [\"Consider laptop with high storage\", \"Consider ROG, Legion, or Victus laptops based on budget and workload\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"TUF laptop build quality\"],\n  \"suggestions\": [\"Consider laptop with high storage and powerful CPU/GPU based on course needs\", \"Consider ROG laptops (expensive but good quality)\", \"Consider Legion laptops (popular)\"]\n}\n```"
   },
   {
     "author": "Glad-Lynx-5007",
