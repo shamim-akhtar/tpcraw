@@ -1,0 +1,37 @@
+[
+  {
+    "author": "BudgetDevv",
+    "comment": ">so yea, tp iit, it's genuinely trash, might just send this post to the subject heads cause idrc atp No point, some of them already lurk on here :p But yeah, fuck IIT, it is garbage. I love some of my lecturers, but as a whole it is dysfunctional",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"IIT (Information and IT) is trash and garbage\", \"IIT is dysfunctional\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "Btw, I don't know if NECT is still the same. But back then, they were such a lazy swine they just copied the questions wholesale from the Cisco site. So those who did study the questions on the site had a huge advantage",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"NECT (Network Engineering and Computer Technology) copied exam questions directly from the Cisco website, giving students who studied those questions an unfair advantage.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "bricklegos",
+    "comment": "true that im in BDA and the ppl here are siao",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"student life\"],\n  \"complaints\": [\"Unpleasant classmates in BDA (Business Development and Administration)\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "why cant TP have their own notes ? why are they copy pasting the exact same notes from cisco lol",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"TP using copied Cisco notes\"],\n  \"suggestions\": [\"TP should create their own original notes\"]\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "YEAH omg, i was so fucking shocked when i saw that the questions were the same. LIKE COME ON, YOU COULD HV AT LEAST CHANGED THE SENTENCE! NOT LIFT IT STRAIGHT FROM THE WEBSITE",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Questions from the website were used without changes in assessment.\"],\n  \"suggestions\": [\"Change the wording of questions from the website when using them in assessments.\"]\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "atp the goal is to become a TP lecturer after retirement as a hobby for free money",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

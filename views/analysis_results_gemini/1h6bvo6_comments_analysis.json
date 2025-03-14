@@ -1,0 +1,97 @@
+[
+  {
+    "author": "mount2010",
+    "comment": "Too fast on the hard parts and too slow on the easy parts. Can confirm as someone who learnt all of this before - some of the easy things could be covered in as short as a week. DSAG taking three whole weeks to go through variables logic and functions again is hilarious Tbh the timetable needs to be tighter at the start of sems and lighter at the end of sems during assignment periods",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"timetable\"],\n  \"complaints\": [\"Pace of teaching is uneven. Too slow on easy topics, too fast on difficult ones.\", \"DSAG module spends too much time on basic concepts.\"],\n  \"suggestions\": [\"Tighter timetable at the start of semesters.\", \"Lighter timetable at the end of semesters during assignment periods.\"]\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "bruh this happened last year as well, we werent even taught the 'good' css style techniques and we were expected to make a really nice website",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of instruction in 'good' CSS style techniques\", \"Expectation of high-quality website creation without adequate training\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Small-Ad-5448",
+    "comment": "I was in IT before and I need to do up a website in six weeks.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "it's refreshing to see so many people having the same thoughts as me.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "Usually you can get a pretty decent looking website with CSS and / or UI libraries",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "TP fun is a complete waste of time, it is a good change",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\"],\n  \"complaints\": [\"TP fun is a waste of time\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "Green tea can be refreshing :O",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "Yes i agree however my lecturer back then kinda sucked, she didnt even go through the material properly",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lecturer did not go through the material properly\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "I heard from my lecturers that once upon a time TPFun was electives you could pick, for example psychology modules and such. They really should bring that back. At least we should be able to pick what we are interested in.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"events\"],\n  \"complaints\": [\"TPFun electives are no longer available.\"],\n  \"suggestions\": [\"Bring back TPFun electives.\", \"Allow students to pick electives based on their interests.\"]\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "Definitely don't disagree with you, met my fair share of bad lecturers as well. It seems like my response could have been better framed. The point I was trying to articulate is, perhaps their expectation stem from the fact that decent looking sites can be achieved with readily available CSS / UI libs. The labsheets seem to support the sentiment, with the better looking ones leveraging bootstrap with very minimal handwritten CSS. They do not seem to dive in-depth with CSS as well, at least in my current course of study.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"lecturers\"],\n  \"complaints\": [\"Bad lecturers\", \"Lack of in-depth CSS instruction\", \"Labsheets focus on readily available CSS/UI libs rather than in-depth CSS knowledge\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "Yup, that would be interesting. I think the closest equivalent is the guided learning in Y2, where climate and sustainability ( TPfun module ) could be replaced with a proposed project",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Replace the TPfun module (climate and sustainability) in Year 2 with a proposed project.\"]\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "They should have at least covered how to use flexbox. I managed to make my website look good because of it, but many of my classmates were still using absolute/relative positioning and they suffered for it. Though I feel like I ended up reimplementing a lot of clearfix/bootstrap/tailwind stuff from scratch. Also no fontawesome/icon library use is wild, I ended up using unicode emojis lol",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of flexbox instruction in curriculum\", \"Need for more comprehensive instruction on responsive web design frameworks (Bootstrap, Tailwind)\", \"Absence of instruction on using icon libraries like Font Awesome\"],\n  \"suggestions\": [\"Include flexbox in curriculum\", \"Introduce Bootstrap or Tailwind CSS in the curriculum\", \"Incorporate the use of icon libraries (e.g., Font Awesome) into the curriculum\"]\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "Yeah! Flexbox is the basic CSS skill they need to teach. I had to learn it myself. I mean you cannot really make a website without knowing anything about the flex things. Teaching team really sucked at that part imo Even for the test, we only had 1 week to learn and the test was not easy.....",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Inadequate teaching of Flexbox (a fundamental CSS skill)\", \"Insufficient time (1 week) given to learn Flexbox before a difficult test\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "Yeah, that is kinda fucked up. In my case, they banned TS and frontend libs like React in Y1 S2, but still allowed CSS / UI libs. Which leaves me to conclude that these restrictions depend on the lecturer. Towards the end of the same semester, I found out that my peer from another class used TS and React for the same project, without any consequences. The good news is that such restrictions are typically relaxed Y2 onwards.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Inconsistent application of technology restrictions across different classes and lecturers.\", \"Ban on TypeScript and React frontend libraries in Year 1 Semester 2, while allowing CSS/UI libraries.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "Not just lackluster, but downright stupid. See: [https://imgur.com/a/JRR7rLY](https://imgur.com/a/JRR7rLY) They also tend to use ancient stuff like XMLHttpRequest",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Use of outdated technology (XMLHttpRequest)\", \"Lackluster and stupid teaching methods (implied by 'downright stupid')\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "hadessg",
+    "comment": "great to know, tbh i wasn't too concerned from it, i definitely do understand why they wouldn't allow bootstraps/libraries; i suppose it'd be to help us understand the fundamentals more. overall i actually think sem 2 is way better paced than sem1. only issue would be tbh in DSAG, with how ridicolous time was spent week 1-4 (week1-2 on turtle; completely irrelevant to the curriculum, week2-4 was just a repeat of SEM1's COMT.. NECT really varies from lecturer based on what i've observed anyway. but the workload is pretty manageable and studying the content helps a lot lol",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"curriculum\"],\n  \"complaints\": [\"Irrelevant content in DSAG (weeks 1-4): Time spent on turtle graphics (week 1-2) and repetition of COMT from semester 1 (weeks 2-4).\", \"Inconsistent teaching quality in Nect across different lecturers.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

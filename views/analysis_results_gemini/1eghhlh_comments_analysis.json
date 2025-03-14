@@ -1,0 +1,22 @@
+[
+  {
+    "author": "wank_for_peace",
+    "comment": "Find it hard to believe that in 2024, they only accept AXS. What they teach in poly? Year 2000 stuff?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Only accepting AXS payments in 2024\", \"Outdated curriculum/teaching methods\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "grandmasterlau",
+    "comment": "The AXS payment is available through their app or eService which is linked with Nets, VISA/Master, PayNow. [https://e-station.axs.com.sg/wSDK/core/home.php](https://e-station.axs.com.sg/wSDK/core/home.php) Otherwise you could try calling the student centre, but I suspect they are not keen on cash or nets payment.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"payment\"],\n  \"complaints\": [\"Lack of cash or Nets payment options at the student centre.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "IndependentNo6105",
+    "comment": "if you dont have matric you could use ezlink but sometimes if your examiner is fierce they wont allow so worse come to worse just try",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Inconsistent enforcement of EZ-Link card usage for students without matriculation cards.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "When did u lost it?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

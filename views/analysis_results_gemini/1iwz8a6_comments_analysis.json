@@ -2,7 +2,7 @@
   {
     "author": "kisushle",
     "comment": "I had to check the cover page twice to be sure it wasnt an em3 paper given to us Thought i was gonna cook, but got cooked, and suffered from 4th degree burns",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Difficulty of assignment\", \"Unexpectedly challenging assignment\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Difficulty of assignment\", \"Unexpected difficulty level of assignment\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "reapertorn",

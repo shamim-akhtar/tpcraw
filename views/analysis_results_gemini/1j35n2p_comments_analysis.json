@@ -2,7 +2,7 @@
   {
     "author": "BudgetDevv",
     "comment": "Hmm, I think the problem is that you will never know the raw score - They deliberately hide some components",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of transparency in grading system\", \"Hidden components in scoring\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of transparency in grading system; Hiding of some components of raw score.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "lostclip",

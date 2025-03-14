@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["student life", "career/internships"],  "complaints": [],  "suggestions": ["finding a part-time job during holidays to gain experience or income"]}

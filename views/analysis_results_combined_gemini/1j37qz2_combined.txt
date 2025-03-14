@@ -1,1 +1,1 @@
-{  "sentiment": "positive",  "topics": ["academic", "career/internships", "events"],  "complaints": [],  "suggestions": []}
+{  "sentiment": "positive",  "topics": ["academic", "events", "career/internships", "global studies"],  "complaints": [],  "suggestions": []}

@@ -1,0 +1,6 @@
+Title: ADEV/DBAV Assignment 2
+Author: yvonne1298_
+Score: 15
+URL: https://www.reddit.com/r/TemasekPoly/comments/1hh0fzy/adevdbav_assignment_2/
+Created: 2024-12-18 20:24:25
+Body: Hi, im trying to start assignment 2 for adev dbav where i have to make a full stack website. anyone feeling overwhelmed by the amount of instructions there are? The lecturers went through creating the APIs and server side scripting very briefly and covered it in about a week and now we are supposed to make a full stack website. we just touched the introduction to javascript 2-3 weeks ago and now we are expected to create a full stack website. lab demo videos were provided but the questions in the lab are not correlated to the assignment specs at all. help???

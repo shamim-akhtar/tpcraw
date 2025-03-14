@@ -1,0 +1,12 @@
+[
+  {
+    "author": "Altruistic_Hand3617",
+    "comment": "Weird way to say you won a competition but ok",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\", \"competitions\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "I did not have much time to study, so I thought they sent quite a lot of ppl \ud83d\udc80",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"High workload\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

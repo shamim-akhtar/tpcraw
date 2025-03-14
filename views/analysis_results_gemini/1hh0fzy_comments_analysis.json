@@ -1,0 +1,47 @@
+[
+  {
+    "author": "pokkagreentea100",
+    "comment": "I'm not too sure, but I suppose that it will be covered the next term. Right now, I have asked my teacher regarding it, but I don't expect a fast reply since it's the term break. Right now, all I did was to download the necessary stuff & create the website design. maybe you can get started on the design.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "Good luck folks",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "yvonne1298_",
+    "comment": "dont start the design first!! if u start the design then there would be alot of deletion later needed on as ur design is hard coded. start on backend like inserting mock data and verifying them.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Start with backend development (inserting and verifying mock data) before designing the frontend to avoid significant design deletions later.\"]\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "Probably not as their focus is on testing html/css ability + year 1 students don't learn React. Only Information Technology students learn React in Y2 IIRC. (Sad since I know react and all that already but I'm still stuck in poly, help)",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [\"Lack of ReactJS in Year 1 curriculum for all students\", \"Feeling stuck in poly despite prior ReactJS knowledge\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "when I talk about design I mean like the background colours and all. all the static stuff.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "By design they mean the same thing as assignment 1, come up with a frontend. This is just HTML/CSS. You should be able to do this. Refer to the lab sheet for the last week before the term break for how to make the CRUD API backend.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Assignment perceived as repetitive and overly simplistic\", \"Lack of clarity or sufficient guidance in assignment instructions\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "they focused on killing us first \ud83d\ude2d teaching all of these just weeks before assignment is due",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Teaching material delivered too close to assignment deadline\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "yvonne1298_",
+    "comment": "oh yeah yeah makes sense",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

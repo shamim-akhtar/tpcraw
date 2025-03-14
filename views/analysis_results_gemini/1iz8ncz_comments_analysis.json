@@ -7,12 +7,12 @@
   {
     "author": "smellypotato_",
     "comment": "There's a link in page 15 of the enrolment guide under submission of supporting documents",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrolment\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrollment\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Holiday_Stick3341",
     "comment": "does anyone know when is the due date \ud83d\ude2d",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Unknown deadline causing stress\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Unknown due date causing stress\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Sufficient_Pie651",
@@ -22,7 +22,7 @@
   {
     "author": "ApocSanma",
     "comment": "When u accept the course 3 days from then for ur pic n parents form 5 days for medical forms",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Short deadlines for course acceptance paperwork and medical forms.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Short deadlines for submission of forms (picture, parents' form, medical forms)\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Holiday_Stick3341",
@@ -32,17 +32,17 @@
   {
     "author": "Gamer_dude12341",
     "comment": "What if I send after 3/5 days? I genuinely worried \ud83d\ude41",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Worry about late submission\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Worried about late submission\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "ApocSanma",
     "comment": "Js take pic? Got link one check enrollment package there got somewhere... or join tp tele grp ppl sent the link bef",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrollment\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrollment\", \"student communication\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "ApocSanma",
     "comment": "U auto withdrawn frm ur course. Unless u email/call the sch n tell them",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Auto-withdrawal from course without prior notification\"],\n  \"suggestions\": [\"Improved communication regarding course withdrawal\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Automatic course withdrawal without prior notification\"],\n  \"suggestions\": [\"Improved communication regarding course withdrawal\"]\n}\n```"
   },
   {
     "author": "FATTOMATOES7098",
@@ -57,12 +57,12 @@
   {
     "author": "Wonderful-Two8209",
     "comment": "nahhhhh no way this stressing me out rn",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Stressful\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Stress\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "RaspberryOk3853",
     "comment": "What if the school hasnt been responding to my emails \ud83d\ude2d\ud83d\ude2d i literally need an extension but they havent replied yet will i still get withdrawn",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Lack of response to emails\", \"Fear of withdrawal due to lack of extension\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Lack of response to emails\", \"Fear of withdrawal due to lack of response\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "orekiflare",

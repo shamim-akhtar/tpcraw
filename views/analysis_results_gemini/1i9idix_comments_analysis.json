@@ -1,0 +1,17 @@
+[
+  {
+    "author": "InternationalArmy175",
+    "comment": "It\u2019s from the max score. So if 50 is full marks, then minus 5.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "zzzz_ee",
+    "comment": "It's from max score: if you get 30/50, it'll be 25/50 after penalty. To be sure, read the student handbook or assessment doc very carefully.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"assessment\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Read the student handbook or assessment document carefully\"]\n}\n```"
+  },
+  {
+    "author": "randommuserrs",
+    "comment": "im pretty sure is take ur score and minus 10%",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Grade deduction of 10%\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

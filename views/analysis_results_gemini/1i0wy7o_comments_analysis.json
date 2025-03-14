@@ -1,0 +1,27 @@
+[
+  {
+    "author": "DragonDooom",
+    "comment": "Bread",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Able-Wealth-2504",
+    "comment": "Board",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "vainspell",
+    "comment": "Resistor",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "Non joke comment, the economy rice/cai png there is quite nice. Heard it used to be famous but the current one is a new owner. Other than that just try around I guess. Most of the stalls there look legit.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [],\n  \"suggestions\": [\"try different food stalls\"]\n}\n```"
+  },
+  {
+    "author": "Equivalent-Proof-917",
+    "comment": "mac and cheese from the korean store",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

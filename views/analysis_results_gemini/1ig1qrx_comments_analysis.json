@@ -1,0 +1,27 @@
+[
+  {
+    "author": "xRhyxe",
+    "comment": "you basically need a laptop for almost everything, using a ipad is possible too depending on your course but it\u2019ll make your life much harder.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of flexibility in device usage; reliance on laptops makes it difficult for iPad users.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "akinowo",
+    "comment": "depends on what your course is, some classes maybe dn laptop as much but essentially all your materials are made online so yes",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aiyoowafap",
+    "comment": "Yes. All the communication and materials are posted online. You can find the specs of the laptop needed for the course you go into on the school website",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BlacksmithGloomy9448",
+    "comment": "Bro u think leh ? What a stupid question . Can't believe you'd even ask this",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"The commenter finds the question asked of them to be stupid and unbelievable.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "clxudy_drops",
+    "comment": "Why so serious \ud83d\ude1e",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

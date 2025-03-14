@@ -1,0 +1,17 @@
+[
+  {
+    "author": "jasminebubblegum",
+    "comment": "no it doesnt, for common programmes its usually looking at your sem 1 results if im not wrong",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Famous_Inspector_687",
+    "comment": "Technically attendance warning letters alone won\u2019t impede your course progression unless your attendance is below 85% for Pass/Fail subs, which would cause you to retake the subject in the next semester. I got almost 20 warning letters of all kinds (academic, first/second attendance warning) but managed to complete the course too.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"attendance\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Bright-Local7759",
+    "comment": "Oh pheww thx for ur reply \ud83d\ude0a",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

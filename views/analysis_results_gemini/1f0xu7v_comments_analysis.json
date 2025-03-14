@@ -1,0 +1,62 @@
+[
+  {
+    "author": "hello1234jellojelly",
+    "comment": "Anyone got notes for \"Counselling Psychology in Workplace\" and \"Employment Law\"?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "smoneee",
+    "comment": "Anyone got notes for the modules below? Business Accounting Business Psychology & Management Business Economics",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "smoneee",
+    "comment": "Stats as in statistics? Business module?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "alts013",
+    "comment": "Is this a roundabout way to ask for assignment answers?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Suspicion of academic dishonesty\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Warm-Donut2570",
+    "comment": "Ooo wow you\u2019re so hardworking haha! Admire the studying spirit! \ud83d\udcaa I\u2019m asc y1 too! What\u2019s your diploma?",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pawsies7rae18",
+    "comment": "Hey..I'm in asc y1 too n looking for notes too haha. Did u ask some seniors?? I've asked for notes from them too",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "lkrhs",
+    "comment": "stats for applied science",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "lkrhs",
+    "comment": "no i literally wanna study cuz i heard the content is so so much but i mean if ppl wanna share then idm \ud83d\ude0b",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "lkrhs",
+    "comment": "haha im in pharm sci :)",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "lkrhs",
+    "comment": "im not close to my seniors \ud83e\udd13",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "smoneee",
+    "comment": "Oh, sorry i dont\ud83e\udd72",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Warm-Donut2570",
+    "comment": "Oo nice! I\u2019m in FNC \ud83d\ude06 good luck with studying!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["academic", "programming languages", "modules", "career/internships"],  "complaints": ["Boring modules", "Crappy mobile app project", "Unhelpful Global Studies teacher"],  "suggestions": []}

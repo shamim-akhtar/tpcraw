@@ -1,0 +1,17 @@
+[
+  {
+    "author": "mount2010",
+    "comment": "btw, another plugin that would help a lot for JS projects is prettier, but it will edit your code to format it so make a backup of your code/use git (seriously, why do they not teach git?) before using it this was also approved by the SL might help other Information Technology students who will be doing more js in y2",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"Information Technology\", \"JavaScript\", \"software tools\", \"Git\"],\n  \"complaints\": [\"Lack of Git instruction in the curriculum\"],\n  \"suggestions\": [\"Teaching Git to Information Technology students\"]\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "if you used this already please check the updated config so that it doesn't give you \"window is not defined errors\" eslint updated and changed it's config file format so it's confusing :sweat_smile:",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"eslint config file format change caused \\\"window is not defined\\\" errors\"],\n  \"suggestions\": [\"check updated config file\"]\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "edit: the config file wouldn't work for your projects because I am using a newer version of Javascript, updated to use your version",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"update to the newer Javascript version\"]\n}\n```"
+  }
+]

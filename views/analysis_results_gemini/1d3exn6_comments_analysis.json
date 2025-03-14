@@ -1,0 +1,7 @@
+[
+  {
+    "author": "theuselessmastermind",
+    "comment": "you're not gonna get seal points just going to a CCA",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"events\", \"CCA\"],\n  \"complaints\": [\"Difficulty in obtaining seal points despite CCA participation.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

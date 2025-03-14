@@ -2,7 +2,7 @@
   {
     "author": "Low_Nobody_5690",
     "comment": "How did you find your results? I got lower than what I expected =(",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lower than expected results\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Received lower than expected results.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "IndependentNo6105",

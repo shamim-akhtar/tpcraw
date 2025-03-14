@@ -1,0 +1,17 @@
+[
+  {
+    "author": "TheoryPatient6067",
+    "comment": "Hasnt your teacher gone through it? Never listen is it?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Teacher did not explain clearly\", \"Lack of listening in class\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "XxSxepticalxX",
+    "comment": "Modules that are covered in the labs like deque",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BlacksmithGloomy9448",
+    "comment": "Bro this shit so easy bro",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

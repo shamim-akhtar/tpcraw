@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "administration"],  "complaints": ["Unable to check GPA due to website login issues.", "Session expired error on TP website."],  "suggestions": ["Try reloading the page.", "Use a different device.", "Check for software updates.", "Ensure correct password entry."]}

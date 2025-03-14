@@ -2,7 +2,7 @@
   {
     "author": "nothappygooutside",
     "comment": "all TP sports CCAs require experience to get in. its very competitive to get in because a lot of people want the CCA but not everyone can pass the trials. and yes, it's pretty high commitment because training usually starts at 6pm and can end as late as 11pm. you may also be called to come for training during term and semester breaks",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\", \"CCAs\"],\n  \"complaints\": [\"High barrier to entry for sports CCAs due to experience requirement and competitive trials\", \"High commitment with late training hours (6pm-11pm)\", \"Training during term and semester breaks\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\", \"CCAs\"],\n  \"complaints\": [\"High barrier to entry for sports CCAs due to experience requirement and competitive trials.\", \"High commitment level with late training hours.\", \"Training during term and semester breaks.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "nothappygooutside",

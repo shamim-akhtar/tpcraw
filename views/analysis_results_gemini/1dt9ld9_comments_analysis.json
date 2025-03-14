@@ -1,0 +1,27 @@
+[
+  {
+    "author": "Sea-Policy1707",
+    "comment": "MC doesn\u2019t affect ur attendance. but if u r absent without LOA or MC, then it does affect ur attendance lah. I think at most u can only be absent for 2 times per subject every sem. cuz after two times, they start giving warnings already.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "Thanks! I just want to clarify that with valid MC my attendance should be fine? Like for example I took MC for a day, is my attendance still going to 100%? Since I've submitted a valid MC.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Downtown-Monk9397",
+    "comment": "yes it will still be 100% but after 5mc,the next one will count as absent",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Attendance policy is strict; after 5 missed classes, subsequent absences are counted as absent.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Sea-Policy1707",
+    "comment": "try not to get too many MCs if can, cuz tp is being more strict on attendance this year. and they are actually monitoring and investigating people with too many MCs (heard from my cher)",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Stricter attendance policy\", \"Investigation of students with many MCs\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "W4773N",
+    "comment": "Yea, they started to deduct CP marks from being absent for more than 5 classes (regardless of LOA, MC) from last sem onwards",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Deduction of CP marks for more than 5 absences regardless of LOA or MC\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

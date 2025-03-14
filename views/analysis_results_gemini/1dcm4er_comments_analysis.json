@@ -1,0 +1,17 @@
+[
+  {
+    "author": "Apprehensive-Trip667",
+    "comment": "hey i did my eae aptitude test last year it was a series of 30 question to be completed in 20minutes it consist of questions like pattern recognition and some basic math questions",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"eae\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Necessary_Song1056",
+    "comment": "this year was 37 qns in 45 mins i couldnt finish them but still got interview and got in to ams so thats good for me",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Time constraint for the exam (37 questions in 45 minutes)\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Dry-Comb4426",
+    "comment": "Hi dude, what were the type of questions they asked in the test and interview",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

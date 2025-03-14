@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["academic", "administration", "enrolment"],  "complaints": ["Confusion regarding the necessity of a medical examination for enrolment in Diploma in Psychology.", "Lack of clarity in the enrolment instructions regarding medical forms."],  "suggestions": []}
+{  "sentiment": "neutral",  "topics": ["academic", "administration", "medical"],  "complaints": ["Confusion regarding the requirement of a medical examination for Diploma in Psychology.", "Lack of clarity in enrollment instructions regarding medical forms."],  "suggestions": []}

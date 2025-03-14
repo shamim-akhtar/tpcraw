@@ -1,0 +1,32 @@
+[
+  {
+    "author": "Lynne_yeo",
+    "comment": "so fast you got to go for apititute test? is it for ITE student firs? O level student still not yet got any reply",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"application process\", \"administration\"],\n  \"complaints\": [\"Unequal or unclear application process for ITE and O level students.\", \"Lack of communication regarding application status for O level students.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Wise_South_2876",
+    "comment": "hi can i ask what was tested last year? i\u2019m taking the test tomorrow",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "depressionatfinest",
+    "comment": "That depends you should be recieving the email today! This goes out to both ITE Students and O Level Graduates.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "depressionatfinest",
+    "comment": "Also the Aptitute test is tomorrow 6th July!",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "depressionatfinest",
+    "comment": "Hi to be honest I cant remember a thing just expect the unexpected tomorrow \ud83d\ude05",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Lynne_yeo",
+    "comment": "oic. do they also send by batches?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

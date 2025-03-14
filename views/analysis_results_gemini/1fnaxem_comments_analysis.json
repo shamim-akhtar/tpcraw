@@ -1,0 +1,32 @@
+[
+  {
+    "author": "Due-Philosophy1389",
+    "comment": "I think if it\u2019s only offered for y1s1 then that means s1 must do well idt it\u2019ll be offered again during s2 :/",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Limited offering of a program/opportunity to only one semester.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Alpha-232",
+    "comment": "You can try to apply for other scholarships when you are in your year 2, given that you do well for the subsequent semester and participate in CCAs.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Apply for other scholarships in Year 2 if academic performance is good and CCA participation is active.\"]\n}\n```"
+  },
+  {
+    "author": "Exact_Ad6736",
+    "comment": "Cumulative don't have >3.8 and above don't bother wasting your time \ud83e\udd23\ud83e\udd23",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Difficulty in achieving a high GPA (above 3.8)\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Dizdieek",
+    "comment": "I tried it once when I was in the director List at one point in the semester but I got rejected",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Rejection from a program or opportunity despite being on the director's list\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Spartan_117_YJR",
+    "comment": "Next year lorh",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "butteryink_2007",
+    "comment": "Not sure if this helps, but I am applying for the NTUC Starter Awards because apparently\u00a0the GPA requirement on their website is just 3.0. It seems this scholarship focuses more on CCAs and leadership experience.\u00a0This is the link that I applied with:\u00a0https://www.lit.sg/ntuc-starter-awards",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"scholarships\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

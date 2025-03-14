@@ -1,0 +1,32 @@
+[
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "study the sorting algos",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "Do the mock quiz, COMT quiz questions were variations of questions from the mock quiz and same for DAVA. So it's very very important to do the mock quiz. Like the COMT quiz question 2 was a variation of the mock quiz question 2 and had similar idea (create a list, search through it, multiple functions etc.) It was hotel booking verus the actual quiz's airplane booking",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"assessment\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Do the mock quiz before COMT and DAVA quizzes.\"]\n}\n```"
+  },
+  {
+    "author": "ZeeTEXAS",
+    "comment": "Come on",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "mount2010",
+    "comment": "Btw I did the mock quiz, here's some tips for what to study: - String splits, the str[a:b:c] things, especially understand how to do the negative indexes. - Type conversion in python (str -> int, int -> str) - Sorting algorithms. - Difference between linear and binary search. - At least memorize the big O from fastest to slowest.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Study string splits, especially negative indexes\", \"Study Python type conversion (str -> int, int -> str)\", \"Study sorting algorithms\", \"Understand the difference between linear and binary search\", \"Memorize Big O notation from fastest to slowest\"]\n}\n```"
+  },
+  {
+    "author": "Potential-Donut6922",
+    "comment": "MB HAHAHAHA",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

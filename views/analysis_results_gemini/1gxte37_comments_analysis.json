@@ -1,0 +1,42 @@
+[
+  {
+    "author": "AtomZones",
+    "comment": "They claim that it\u2019s not about recruiting but here\u2019s how it works, a friend who u have never talked to will start talking to you on like ur studies, ur life, ur goals, then they offer you this \u2018business opportunity\u2019, if u actually followed thru, then you\u2019ll have to pay 30 dollars for an independent business owner (IBO) account, in which if u recruit more u get a portion of their sales too, 1 person recruits 4 The 4 recruits 16 16 recruits 64 Forming the so called pyramid scheme, as u earn more money from recruiting than actually selling, but the thing is you\u2019ll barely earn money unless you\u2019re at the top of this scheme where as the majority of people lose money and barely even know their own products In the end u gonna start seeing everyone as a business opportunity, when in reality you\u2019re just helping the company make even more money rather than starting your own business.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [\"Pyramid scheme recruitment tactics by a company associated with Temasek Polytechnic (implied, not explicitly stated as TP itself)\", \"Misleading recruitment practices focusing on recruitment rather than genuine business opportunity\", \"High cost of IBO account ($30)\", \"Unlikely to earn money unless at the top of the pyramid scheme\", \"Focus on recruitment over actual product knowledge or sales\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "beehoon23",
+    "comment": "Yeah, I received it twice and they all come from the same university as well. My friend was invited to join a session and realised it was MLM. Another secondary school randomly messaged me one dayand asked if I am interested to help his father run his business. I told him not interested",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Received unsolicited messages promoting MLM schemes\", \"Received unsolicited business propositions from strangers\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Vinhunter666",
+    "comment": "There\u2019s a few in tp I went for their talks before, they are from Amway. So be careful",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\"],\n  \"complaints\": [\"Presence of Amway representatives on campus giving talks.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Bubbly_Accident_2718",
+    "comment": "I have a first meeting scheduled on Saturday 30th Nov, 11am at TampinesOne for a $8M project. If you are keen to invest, come lend your ears",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Vinhunter666",
+    "comment": "Ye so right , once u done the calculations spending $250 barely makes you $4. And they call this investing in your own business which is BS. Moreover, they call it network marketing which also means using your friends and family to make money.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [\"Spending $250 yields very little return ($4).\", \"The program is falsely advertised as 'investing in your own business'.\", \"The program uses network marketing, implying reliance on friends and family for profits.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "It\u2019s very cult like and they ask u to advertise their products to families and friends",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"events\"],\n  \"complaints\": [\"Cult-like environment\", \"Forced advertisement of products to family and friends\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "bro trying to scam LOL",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"scam attempt\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Bubbly_Accident_2718",
+    "comment": "Never ask you for money, what? Come only to listen?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Implies a lack of responsiveness or helpfulness from the administration.  Suggests that the administration is only interested in listening and not taking action.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

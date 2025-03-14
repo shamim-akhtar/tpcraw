@@ -1,0 +1,52 @@
+[
+  {
+    "author": "aminlee9",
+    "comment": "Shld have arrived by now. Mine came in tdy (albeit was shocked that it was half the amount). Weird that they broke the distribution into two batches spread out across the year. Must be because many applied for it this year.. o wells..",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"financial aid\", \"administration\"],\n  \"complaints\": [\"Smaller than expected financial aid amount.\", \"Distribution of financial aid split into two batches.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Vinhunter666",
+    "comment": "Last year was around this time, maybe this year too many people, so the process is much stricter and they might be more stingy and give you guys less. Check your tposs if the bursary is approved also.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"financial aid\", \"administration\"],\n  \"complaints\": [\"Stricter bursary application process\", \"Reduced bursary amounts\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Drdeeznutsonyourface",
+    "comment": "Yo if you forgot to apply for busary can apply next semester or cannot?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"financial aid\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Resident-Client-6327",
+    "comment": "I've been waiting for mine too, it did say it will take approximately 3 weeks maybe ours will come this week",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "whwh0812",
+    "comment": "have yall received it yet",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Downtown-Monk9397",
+    "comment": "my bursary were already approved like 2-3 weeks ago though",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"financial aid\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Resident-Client-6327",
+    "comment": "yeah, but you need to see the application period in the TP website",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"application process\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "_potatostick",
+    "comment": "ya u can apply now also term 2 application is still open until 11 july",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"application\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Downtown-Monk9397",
+    "comment": "yea i got it",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Accomplished_Desk177",
+    "comment": "For me it will still take me about a month or so to get it. I guess you have to wait",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

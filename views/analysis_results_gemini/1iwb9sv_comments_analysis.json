@@ -2,12 +2,12 @@
   {
     "author": "nothappygooutside",
     "comment": "community service club!! everything is on an adhoc basis and the events can actually be fun, you will receive SEAL points for each event you go for :) no commitments! CCAs with fixed commitments are usually like arts and sports. but those CCAs generally quite hard to get in unless you have prior experience. most clubs are adhoc, some are fixed commitment like debate. but you can still get leadership positions in clubs (provided that you are very active and have the desired qualities) which is beneficial to your portfolio. either way i think being active in a cca, regardless of what cca it is, will look good on your portfolio. if you really wanna strive high then go for a leadership position! in TP you get SEAL points for being class rep as well, so dont be afraid to go for that",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"CCAs\", \"Extracurricular Activities\", \"Leadership\", \"Student Life\", \"Events\", \"Academic (indirectly, mentions portfolio building)\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"CCAs\", \"clubs\", \"events\", \"leadership\", \"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "pokkagreentea100",
     "comment": "hi, you may be looking for ad hod/ event based CCAs. as what someone mentioned, Community service club is an example. Of course, there are many more, like TP lionhearters, TP sport club, there's also your course interest group and school's studies club. how these works is that once in a while, there are events. each event you attend, you earn seal points. 1 event 5 service points, max 120 service points.",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"events\", \"CCAs\", \"student life\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"events\", \"CCAs\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "None",
@@ -17,7 +17,7 @@
   {
     "author": "canismajoris111",
     "comment": "im gonna be honest; ccas are great for boosting your portfolio, but dont get too caught up with them. if there was a cca I would have to recommend, it would definitely be tpsustig (sustainability interest group). it\u2019s all event based, the work is not too strenuous either, they have an amazing community, and there are many amazing opportunities for building up your portfolio. the great thing is, there isn\u2019t a limit to how many ccas you can join, which means for event based ccas (if you are not signing up to be part of a subcommittee which is a different thing), you essentially can join as many as you wish since joining the cca is basically signing up for a newsletter for events. however, I must note that dont get too caught up with it, as there are plenty of opportunities to build it up in TP, and boosting your portfolio comes in different ways, which you will learn more in regards to the seal point system, and how each type of event contributes to a different area in your portfolio (some areas are harder to get!) all the best, and hope you enjoy TP!",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"CCAs\", \"Extracurricular Activities\", \"Student Life\", \"Portfolio Building\", \"Sustainability\", \"TPsustig\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Don't get too caught up with CCAs\", \"Explore diverse ways to build your portfolio beyond CCAs\", \"Understand the Seal Point System and its impact on portfolio building\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"CCAs\", \"Student Activities\", \"Portfolio Building\", \"Events\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Don't get too caught up with CCAs; balance CCA involvement with other portfolio-building activities.\"]\n}\n```"
   },
   {
     "author": "yohjiscream",
@@ -27,7 +27,7 @@
   {
     "author": "scams-are-everywhere",
     "comment": "You don\u2019t need a portfolio to enter uni, please pick things you\u2019re interested in rather than going just for the portfolio",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Consider personal interests when choosing courses over portfolio requirements.\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Pick courses based on interest, not portfolio requirements for university admission.\"]\n}\n```"
   },
   {
     "author": "ActComprehensive9319",
@@ -47,7 +47,7 @@
   {
     "author": "ActComprehensive9319",
     "comment": "Yes but a strong portfolio along with a good GPA would significantly increase my chances to get into uni, no?",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "yohjiscream",
@@ -57,7 +57,7 @@
   {
     "author": "scams-are-everywhere",
     "comment": "No it does not, for entrance into uni all you need is a good gpa,, you only need your portfolio if your grades make the cut for scholarship application",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"scholarships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "ActComprehensive9319",
@@ -72,7 +72,7 @@
   {
     "author": "ActComprehensive9319",
     "comment": "Yes 4.0 overall hahahah i was shocked too that she got rejected",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Rejection from a program (implied, based on context of 'shocked')\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Rejection from a program (implied, based on context of a low GPA and unexpected rejection)\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "ActComprehensive9319",

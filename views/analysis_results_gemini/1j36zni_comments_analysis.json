@@ -2,11 +2,11 @@
   {
     "author": "xRhyxe",
     "comment": "got filled 2 mins in\u2026 i also wanna go \ud83e\udd72",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\", \"administration\"],\n  \"complaints\": [\"Unable to attend an event due to it filling up quickly.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\"],\n  \"complaints\": [\"Unable to attend an event due to it filling up quickly.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "lovstrucked",
     "comment": "refresh at 1.59pm 57sec! when u first refresh it might load slowly/not appear at first but jus keep on refreshing until u see the countries then scroll to the bottom immediately! (because mine was gz and it was at the bottom) afterwards jus keep pressing the submit and ok button because sometimes will hv glitch. jiayouz!",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"administration\", \"events\"],\n  \"complaints\": [\"website loading slowly\", \"website glitches\"],\n  \"suggestions\": [\"keep refreshing the website until the content appears\", \"keep pressing submit and OK buttons to overcome glitches\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"administration\", \"events\"],\n  \"complaints\": [\"Website loading slowly\", \"Glitches in the submission process\"],\n  \"suggestions\": [\"Keep refreshing the page until the content loads\", \"Keep pressing the submit and OK buttons to overcome glitches\"]\n}\n```"
   }
 ]

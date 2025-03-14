@@ -2,7 +2,7 @@
   {
     "author": "yq27",
     "comment": "most of it is either pass or fail, except for ecomm and procomm which will affect ur gpa",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Pass/fail grading system for most modules\", \"Ecomm and Procomm modules affecting GPA\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Pass/fail grading system for most modules limits GPA calculation\", \"Only Ecomm and Procomm affect GPA\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "BJ-MD",
@@ -12,7 +12,7 @@
   {
     "author": "Dangerous_Elk_8716",
     "comment": "everything except for career readiness, career management, leap and sports and wellness is graded those i listed are pass fail i have no idea about leadership fundamentals i did not have that during my course of study (i grad last year) those grades are based on individual and group for the most part innovation and entrepreneurship (innova) was a nightmare if you happen to see startup launch pad in the future it\u2019s like innova but worse",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"career/internships\", \"academic\", \"events\"],\n  \"complaints\": [\"Career readiness, career management, LEAP, and sports and wellness are pass/fail, not graded.\", \"Lack of information about Leadership Fundamentals module.\", \"Negative experience with Innovation and Entrepreneurship (Innova) module.\", \"Anticipation that Startup Launch Pad will be worse than Innova.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"career/internships\", \"academic\", \"events\"],\n  \"complaints\": [\"Career readiness, career management, LEAP, and sports and wellness are pass/fail, not graded.\", \"Lack of information about Leadership Fundamentals.\", \"Negative experience with Innovation and Entrepreneurship (Innova) module.\", \"Anticipation of a similarly negative experience with Startup Launch Pad.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Middle-Complaint9127",
@@ -52,12 +52,12 @@
   {
     "author": "nothappygooutside",
     "comment": "no. after visiting the country, you will be given ONE WEEK to do a graded video presentation on one aspect of culture of the country you visited. however, your presentation can also be on another country. you are given a list of countries to choose from so most students do not choose the country they visited, they just choose the \"easiest\" country. but i think it's better to do the country you visited because you can include your own photos and videos in your presentation. at the end of the semester, you have to do a 1200-word essay on cultural differences. i was supposed to go to india for GS as i already visited all the other countries offered, and i was looking forward to it. i was so upset when the trip to india got cancelled and i didn't get to go overseas. for my presentation, i ended up doing one on myanmar LOL",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"events\", \"travel\"],\n  \"complaints\": [\"Cancellation of India trip\", \"Unfair assignment structure leading students to choose 'easiest' country rather than their actual travel experience.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"events\", \"travel\"],\n  \"complaints\": [\"The cancellation of the India trip\", \"The perceived ease of choosing an alternative country for the assignment rather than the one actually visited.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Most_Spring_9825",
     "comment": "My global studies was just pass or fail.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of grading scale in Global Studies module; only pass/fail\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of grading scale in Global Studies module.  Only pass/fail grading system.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "BudgetDevv",

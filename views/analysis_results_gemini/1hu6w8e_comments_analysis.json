@@ -1,0 +1,22 @@
+[
+  {
+    "author": "Cute-Conversation377",
+    "comment": "Nope, you just will not be able to get the amount for the subsequent years Don't need to backpay irrc ATB and don't worry to much! You got this :)",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"administration\", \"financial aid\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "smoneee",
+    "comment": "If i apply for the scholarship, will they not inform if i dont get it?\ud83e\udd72\ud83e\udd72 Cause i heard from a friend who got the scholarship but i didnt get any email saying i received/rejected so was just wondering",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"scholarship\", \"administration\"],\n  \"complaints\": [\"Lack of communication regarding scholarship application results.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "NewEntrepreneur3909",
+    "comment": "Thanks bro! Haha i dont have dfund, edev for my course :). But for ur scholarship trip where did you go? And thanks for the reply!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"scholarships\", \"financial aid\"],\n  \"complaints\": [\"Lack of funding for specific courses (dfund, edev)\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

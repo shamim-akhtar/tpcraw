@@ -2,6 +2,6 @@
   {
     "author": "AtomZones",
     "comment": "bros so patriotic for china \ud83e\udd23",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Perceived pro-China bias among students\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Implies potential bias or lack of neutrality in teaching or student body related to China.\"],\n  \"suggestions\": []\n}\n```"
   }
 ]

@@ -7,7 +7,7 @@
   {
     "author": "smellypotato_",
     "comment": "omg I'm in the same course as you and I'm also v confused \ud83d\ude13",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"confusion about course material\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"confusion about the course\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Content_DeletERROR",
@@ -27,7 +27,7 @@
   {
     "author": "djnr5",
     "comment": "But they didn't attach a medical form, for me it's only the colour vision test form",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Missing medical form\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Missing medical form. Only received color vision test form.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "CreativeEquivalent49",
@@ -37,7 +37,7 @@
   {
     "author": "CreativeEquivalent49",
     "comment": "i only see a \u2018medical background\u2019 section in the enrolment form.. but no other forms attached. Does that mean i don\u2019t need a medical exam?",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrolment\", \"administration\"],\n  \"complaints\": [\"Lack of clarity regarding medical examination requirements during enrolment.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrollment\", \"administration\"],\n  \"complaints\": [\"Lack of clarity regarding medical examination requirements during enrollment.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "CreativeEquivalent49",
@@ -67,12 +67,12 @@
   {
     "author": "CreativeEquivalent49",
     "comment": "thn the medical background part needs a medical professional to verify it for you.. so how haha",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Seek verification from a medical professional regarding medical background information.\"]\n}\n```"
   },
   {
     "author": "Useful-Way-6000",
     "comment": "omg i also enrolled for geron anyways i didn\u2019t submit any medical report so if it does require I might be cooked \ud83d\ude2d",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"May not have submitted required medical report for GERON module.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"May not have submitted required medical report for a course (GERON)\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Horror-Succotash-719",
@@ -82,7 +82,7 @@
   {
     "author": "Horror-Succotash-719",
     "comment": "Huuh need meh? Have u accepted the enrolment yet? After that just have to submit passport photo, parents signature n medical form in the form. (Medical form not necessary to submit)",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrolment\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrolment\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Horror-Succotash-719",
@@ -102,7 +102,7 @@
   {
     "author": "CreativeEquivalent49",
     "comment": "it says like \u201cedit enrolment\u201d and there\u2019s like a form",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"enrolment\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "CreativeEquivalent49",

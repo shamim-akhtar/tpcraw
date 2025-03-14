@@ -1,0 +1,12 @@
+[
+  {
+    "author": "None",
+    "comment": "I agree with you, The AI-generated designs, while interesting, can be a bit of an eyesore when you see them every day. I\u2019m sure there are many talented artists within the school who would be more than willing to contribute their work to make the spaces more visually appealing. Not only would it add a personal touch, but it would also give credit to those students, showcasing their talent. It could be a great way for TP to highlight its creative students, instead of relying on generic, soulless AI prompts.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"administration\", \"events\"],\n  \"complaints\": [\"AI-generated designs are visually unappealing\", \"Lack of student art in campus spaces\"],\n  \"suggestions\": [\"Utilize student artwork to decorate campus spaces\", \"Showcase student talent instead of relying on AI-generated designs\"]\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "AGREEEEE, i have lessons everyday at block 4 and block 1. OMGGGG THEY LOOK LIKE SOME CORRIDORS OF A MENTAL HOSPITAL. The classrooms are way to cold and small it really sucks. About the study area, I AGREE also! I wish we were given a specific area too. It would be more private for us IIT students and more accessible.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"academic\"],\n  \"complaints\": [\"Classrooms are too cold and small\", \"Lack of a designated, private study area for IIT students\", \"Building corridors resemble a mental hospital\"],\n  \"suggestions\": [\"Allocate a specific, private study area for IIT students\"]\n}\n```"
+  }
+]

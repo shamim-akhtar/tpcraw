@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["student email access", "enrollment"],  "complaints": ["Inability to access student email before the start of the semester."],  "suggestions": []}
+{  "sentiment": "neutral",  "topics": ["student email access", "enrollment"],  "complaints": ["Inability to access student email before the start of the semester"],  "suggestions": []}

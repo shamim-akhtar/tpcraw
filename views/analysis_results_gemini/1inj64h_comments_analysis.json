@@ -2,12 +2,12 @@
   {
     "author": "Altruistic_Hand3617",
     "comment": "You can go overseas for internship if you are given the opportunities to do so. it does not take the internship into consideration iirc since you are still studying. It continues after NS, unless u become a citizen as the 3 year bond is waived.",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Fearless_Sky1016",
     "comment": "hi when did u get ur enrolment email? did u eae and which course r u in",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrolment\", \"application\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"enrollment\", \"application process\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Obvious-Data1914",

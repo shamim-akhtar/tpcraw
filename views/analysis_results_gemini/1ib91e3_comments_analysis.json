@@ -1,0 +1,32 @@
+[
+  {
+    "author": "pokkagreentea100",
+    "comment": "flex week is a week where there is no lessons and takes places about every 4 weeks. Up to you to interpret it once you are a student, but it's either a holiday week or a week where you finish up your assignments.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"events\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "[deleted]",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Dry_Bar_5847",
+    "comment": "hi may i know where u found the this calendar??",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"events\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "okwhatelse",
+    "comment": "if only",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "blackrosethorn3",
+    "comment": "it should be in your module schedule for the semester. It should also be on tp's website somewhere",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Lack of clear information regarding module schedule\"],\n  \"suggestions\": [\"Include module schedule in module schedule for the semester\", \"Post module schedule on TP's website\"]\n}\n```"
+  },
+  {
+    "author": "PersonalAd3618",
+    "comment": "[https://www.tp.edu.sg/content/dam/tp-web/files/schools-n-courses/for-prospective-students/school-of-engineering/about-school-of-engineering/EngCal2025.pdf](https://www.tp.edu.sg/content/dam/tp-web/files/schools-n-courses/for-prospective-students/school-of-engineering/about-school-of-engineering/EngCal2025.pdf)",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

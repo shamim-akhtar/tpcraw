@@ -1,0 +1,26 @@
+Comment by iamnothingbuta: give location an id and vending machine items have food ids? i am not sure
+
+Comment by None: u gotta make use of the joint table vending_item, what I did was pass the vending machine id in my url, then I the items page I used a loop to print out all the items in that joint table which corresponds to the machine id
+
+Comment by Potential-Donut6922: IM SO COOKED
+
+Comment by ryekleqq: yeah but how to implement it in vs code...
+
+Comment by Aggravating-Tie832: get element by id
+
+Comment by ryekleqq: WAIT SORRY can u dm me ur example? im so confused and cooked rn.. THANK U
+
+Comment by pokkagreentea100: do SQL join
+
+Comment by ryekleqq: in server.js right.. then what do i do next lol
+
+Comment by iamnothingbuta: I am kind of washed in adev so I can't help but you could try postman if you still use that
+
+Comment by ryekleqq: we are supp to use vs code for proj2 tho😭😭
+
+Comment by BudgetDevv: They're different tools - VS code is for writing code, postman is for testing your backend
+
+Comment by iamnothingbuta: test the sql statement in postman then bring over to vs code using gpt
+
+Comment by ryekleqq: the issue isnt joining the tables but like implementing it into the website 🥲🥲
+

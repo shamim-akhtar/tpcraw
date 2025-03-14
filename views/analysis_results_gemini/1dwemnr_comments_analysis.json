@@ -1,0 +1,62 @@
+[
+  {
+    "author": "AQiQimain",
+    "comment": "Can't say for sure because my friend who applied for AM got their email yesterday. They are O lvl stream tho. Note that if ur not shortlisted, they wouldn't tell you.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"application process\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "SJ-JUSTICE",
+    "comment": "Same here, did they ever mention the date of when they would stop issuing out emails? Does it take time or is it more or less a week after?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Lack of clarity on email communication cessation date.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Apprehensive-Trip667",
+    "comment": "hi from what i know most people that applied for aviation management from o level have already gotten a reply to go for their aptitude test idk if ite has a different email timing then o level tho",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "LividOrdinary9644",
+    "comment": "yea same. i seen a lot of people saying they got their emails but most of them are O levels. actually panicking rn",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Delay in receiving emails regarding admission/applications.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Applego12345",
+    "comment": "\ud83e\udd79\ud83d\ude29",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Applego12345",
+    "comment": "Shag man, if you are not shortlisted, they wouldn't email you or anything. I think I will just monitor my email for this week.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"career/internships\"],\n  \"complaints\": [\"Lack of communication regarding application status.  No email notification for unsuccessful applicants.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "SJ-JUSTICE",
+    "comment": "I just received mine! I think for design and humans school applications you get the email this week. Hope you get yours too!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"applications\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Applego12345",
+    "comment": "What course did u apply for?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "SJ-JUSTICE",
+    "comment": "Digital Film and Television. Praying i get in as ive been eyeing it for years",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "LividOrdinary9644",
+    "comment": "have u receive ur email? i\u2019m also waiting for mine",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Applego12345",
+    "comment": "Nope. Still no email from my side. All I received was Temasek poly school of engineering asking for my GPA grades in ite that's all",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Lack of email communication regarding application status\", \"Only GPA request received, no other communication\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "LividOrdinary9644",
+    "comment": "all they sent me was an email about survey in june \ud83d\udc80 still hoping there\u2019s a chance tho",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"events\"],\n  \"complaints\": [\"Lack of communication regarding surveys and opportunities.  The author feels ignored despite hoping for a chance (likely for an event or program).\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

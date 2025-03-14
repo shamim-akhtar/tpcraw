@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["events", "personal_life", "academics"],  "complaints": ["broke and working during break", "needing to make more friends", "school project workload"],  "suggestions": []}

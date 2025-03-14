@@ -1,0 +1,31 @@
+=== POST CONTENT ===
+Title: HELP DSAG QUIZ TMR
+Author: Potential-Donut6922
+Score: 0
+URL: https://www.reddit.com/r/TemasekPoly/comments/1h6cs0m/help_dsag_quiz_tmr/
+Created: 2024-12-04 18:12:34
+Body: what do i need to study. I WANT TO PASS IT ! MONDAY I MEAN
+
+
+=== COMMENTS ===
+Comment by None: [deleted]
+
+Comment by iamnothingbuta: study the sorting algos
+
+Comment by mount2010: Do the mock quiz, COMT quiz questions were variations of questions from the mock quiz and same for DAVA. So it's very very important to do the mock quiz.
+
+Like the COMT quiz question 2 was a variation of the mock quiz question 2 and had similar idea (create a list, search through it, multiple functions etc.) It was hotel booking verus the actual quiz's airplane booking
+
+Comment by ZeeTEXAS: Come on
+
+Comment by mount2010: Btw I did the mock quiz, here's some tips for what to study:
+
+- String splits, the str[a:b:c] things, especially understand how to do the negative indexes.
+- Type conversion in python (str -> int, int -> str)
+- Sorting algorithms.
+- Difference between linear and binary search.
+- At least memorize the big O from fastest to slowest.
+
+Comment by Potential-Donut6922: MB HAHAHAHA
+
+

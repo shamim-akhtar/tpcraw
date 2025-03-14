@@ -1,0 +1,12 @@
+[
+  {
+    "author": "strwberri111",
+    "comment": "u need to reapply each year",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Need to reapply each year for scholarships or other programs.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "_potatostick",
+    "comment": "nope you hv to apply all over again every year",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"career/internships\"],\n  \"complaints\": [\"Having to reapply for internships or similar opportunities every year is cumbersome and inefficient.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

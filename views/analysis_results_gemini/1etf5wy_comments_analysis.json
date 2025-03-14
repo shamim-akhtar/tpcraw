@@ -1,0 +1,32 @@
+[
+  {
+    "author": "iamnothingbuta",
+    "comment": "nect use cisco and aws adev uses html css and sql Ddev uses sql but it's connected to adev Dsag is python",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Altruistic_Hand3617",
+    "comment": "Y3 here. Network and Cloud Technology must be new so im not too sure. If nothing has changed should be mysql for database and html css javascript for Application Dev Project. Both modules are related to one another unless there is any changes. For data structures should be python",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"Network and Cloud Technology\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "i_verye_smowt",
+    "comment": "NECT will be cisco packet tracer DSAG is python (again) but you won't be making a game ADEV and DBAV can be lumped into one module, ADEV focuses more on javascript and html, DBAV more on MySQL. For project 1 you'll make an sql database, project 2 will be some sort of website which is linked to a given sql database (not the one from project 1) ofc some things are subject to change, so take this with a tiny grain of salt",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"curriculum\"],\n  \"complaints\": [\"ADEV and DBAV could be combined into one module\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "definitelytroaxx",
+    "comment": "thanks! \ud83d\ude4f\ud83c\udffb\ud83d\ude4f\ud83c\udffb",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "definitelytroaxx",
+    "comment": "from what i read, network and cloud technology will focus on topics from cyfun (ethernet, IP address etc). thank you!!",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"network and cloud technology\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "definitelytroaxx",
+    "comment": "tysm!!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

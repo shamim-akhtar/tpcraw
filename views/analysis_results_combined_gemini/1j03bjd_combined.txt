@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["academic", "administration"],  "complaints": ["Uncertainty regarding GPA release date"],  "suggestions": []}
+{  "sentiment": "neutral",  "topics": ["academic", "administration"],  "complaints": ["Inconsistency in information regarding GPA release date."],  "suggestions": []}

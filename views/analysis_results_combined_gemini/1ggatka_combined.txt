@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "career/internships"],  "complaints": ["Low GPA (3.0)", "Difficulty in assignments", "Lack of effective guidance from teachers", "Feeling of needing to pay for help to achieve good grades"],  "suggestions": []}

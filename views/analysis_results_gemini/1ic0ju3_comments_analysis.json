@@ -1,0 +1,22 @@
+[
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "nooooo i wanted to read more rants",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Lack of rants about Temasek Polytechnic\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "TheoryPatient6067",
+    "comment": "Its not that hard though? Idk just dont overthink it ig",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aggravating-Tie832",
+    "comment": "my dsag experience was ass, my tutor would scold me if i asked her any qns \ud83d\ude2a\ud83d\ude2a\ud83d\ude2a\ud83d\ude2a",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Unhelpful and scolding tutor during DSAG (Diploma in Software Applications and Games Development, assumed from context) experience\", \"Tutor's response to questions was negative\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BlacksmithGloomy9448",
+    "comment": "fr icl ts pmo",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

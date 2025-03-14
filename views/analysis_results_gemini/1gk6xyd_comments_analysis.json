@@ -1,0 +1,17 @@
+[
+  {
+    "author": "W4773N",
+    "comment": "As a LEAD student, to complete the TP LEAD programme, you\u2019ll need to complete all 3 LEAD cores",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Independent-Pop-7810",
+    "comment": "complete lead induction, lead summit and lead heart.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"events\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "scams-are-everywhere",
+    "comment": "Just complete the 3 cores and you\u2019ll be done,, other stuff all optional if you wanna attend",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

@@ -1,1 +1,1 @@
-{  "sentiment": "positive",  "topics": ["academic", "career/internships", "campus facilities", "events"],  "complaints": ["Regretting low Y1 GPA due to MAS module"],  "suggestions": []}
+{  "sentiment": "neutral",  "topics": ["academic", "CCA", "career/internships"],  "complaints": ["Concerns about the weight of exams and projects in GPA calculation", "Regret about low GPA in the MAS module"],  "suggestions": []}

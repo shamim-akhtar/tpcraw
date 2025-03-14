@@ -1,0 +1,47 @@
+[
+  {
+    "author": "NyandaKun",
+    "comment": "Try to forget the WiFi and log in again .",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"WiFi issues\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Upper_Yak_2856",
+    "comment": "Yeah the school wifi wasn't working during that time; shld be working now.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"school wifi wasn't working\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ilovetehc",
+    "comment": "yea i tried tht several times but it still doesnt work :(",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"IT\"],\n  \"complaints\": [\"System not working despite multiple attempts\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "NyandaKun",
+    "comment": "Can I ask which area is the WiFi being affected ?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ilovetehc",
+    "comment": "i use my laptop in the engineering block and library , the wifi doesnt work at both areas ,, but the wifi still works on my phone tho , does it have smt to do w my laptop instead ?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"academic\"],\n  \"complaints\": [\"WiFi not working in engineering block and library\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "NyandaKun",
+    "comment": "Not necessarily to do with your laptop fault . Based on my experience in that issue , what I do is that I would check the WiFi on why is it unable to give me connection, is it because I need to re log in . If attempt to re log in and unable to receive connection, meaning I would restart the laptop just to reboot the system .",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": [\"check WiFi connection\", \"re-login to WiFi\", \"restart laptop\"]\n}\n```"
+  },
+  {
+    "author": "ilovetehc",
+    "comment": "i did all that already and restarted my laptop too , still doesnt work , unfortunately :( it connects fine with my hotspot data but it just has problems with the sch wifi .. ive tried to : forget the wifi n re login 1.restart my laptop 2.troubleshoot the problem in settings 3.forget the wifi n shut down my laptop n power it on awhile after and re connect ,, but it still doesnt work \ud83d\ude1e i think it might just be my laptop atp ,,",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"TP Wifi connectivity issues\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "NyandaKun",
+    "comment": "Can you try this ? I am not a tech expert but I found this in google . And also please do with caution . https://answers.microsoft.com/en-us/windows/forum/all/default-gateway-repeatedly-isnt-available/d7bdf938-fbf6-460d-918c-00b4ebd5da23",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ilovetehc",
+    "comment": "okayy will try it out , thanks so much !! :D",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

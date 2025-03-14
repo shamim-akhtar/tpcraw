@@ -2,12 +2,12 @@
   {
     "author": "nothappygooutside",
     "comment": "i've explained in-depth how the schedules and culture of BUS students are like in previous posts. In short: 1. it is competitive and there are a lot of snakes. 2. there will be many groupmates who do absolutely nothing in group projects, or groupmates who micromanage just to outperform you. 3. the workload is much easier compared to ENG or ASC. 4. bizpark is completely closed now which means BUS doesnt have a canteen. 5. there is pressure to dress well in BUS. enjoy y1 when you actually have motivation to dress up.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"campus facilities\", \"culture\"],\n  \"complaints\": [\"competitive and negative culture ('snakes')\", \"unhelpful groupmates in group projects\", \"closure of BizPark and lack of canteen\", \"pressure to dress well\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"campus facilities\", \"culture\"],\n  \"complaints\": [\"competitive and negative culture ('snakes')\", \"uncooperative groupmates\", \"BizPark closure and lack of canteen\", \"pressure to dress well\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "nothappygooutside",
     "comment": "the percentage of BUS students getting into local unis is about 10-20%. it is generally the director's list students who get in, as most uni degrees require MINIMALLY a GPA of 3.6 and above (depending on the degree). for a degree in business, your GPA should be 3.8 and above. if you want to know what are the GPAs of poly students getting into local unis, check the indicative grade profiles (IGPs) of the degree you are aiming for by visiting the university's website. it will give you a rough \"cut-off point\" for that degree. and yes, you will see that most IGPs of local degrees are 3.7-3.9. it is MUCH EASIER SAID THAN DONE to get a GPA above 3.5, so work hard and DO WELL IN Y1, because once you fuck up your GPA in Y1 it is almost impossible to pull it up in Y2 and Y3. for BUS, avoid getting macbooks as microsoft 365 is difficult to operate on IOS, especially as you will be taking BTA in sem 1. those of us with windows software find it much easier to navigate. i'm a Y3 student here.",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [\"Difficulty using Microsoft 365 on macOS for BTA in Semester 1.\"],\n  \"suggestions\": [\"Work hard in Year 1 to achieve a high GPA\", \"Avoid MacBooks for Business students due to Microsoft 365 compatibility issues.\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [\"Difficulty using Microsoft 365 on macOS for Business Technology Applications (BTA) course.\"],\n  \"suggestions\": [\"Work hard in Year 1 to maintain a high GPA\", \"Avoid MacBooks for BUS students due to Microsoft 365 compatibility issues.\"]\n}\n```"
   },
   {
     "author": "Due-Philosophy1389",
@@ -32,7 +32,7 @@
   {
     "author": "finaledance",
     "comment": "Hi! What about marketing course if you know anything about it? Like can be general or anything! How you described it is it similar to business or?",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"marketing\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "No-Ladder7396",
@@ -47,7 +47,7 @@
   {
     "author": "nothappygooutside",
     "comment": "hi i only have one friend in marketing who's in the director's list, so the experience she described to me might not be as universal as the \"average\" student. she's also from a sports cca. i know that it's very busy for her, but a high gpa can be acquired if you're competitive and committed enough. the environment is roughly the same as diploma in business, of course you will be taking more specialised modules in marketing (idk the modules sorry). the number of modules you take is roughly the same as the rest of BUS, 4-5 per semester. every diploma in BUS has its own special \"room\" in block 26. for marketing, i think it's marketing hub. which is quite lame because it's just a normal classroom with transparent walls \ud83d\ude02 internship wise the companies you apply to is quite diverse as the diploma itself has a wide scope of application, as compared to law diploma where you are mostly limited to law firms. the internship is 20 weeks in sem 3.2 btw. people-wise i can't speak for marketing but the general consensus in BUS is snakey, that's all i can say",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\", \"campus facilities\", \"student life\"],\n  \"complaints\": [\"Marketing Hub is underwhelming ('just a normal classroom with transparent walls')\", \"General consensus in the Business school is that the student body is 'snakey'\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\", \"campus facilities\", \"student life\"],\n  \"complaints\": [\"Marketing Hub is described as 'lame' due to its design (a normal classroom with transparent walls)\", \"General consensus in the Business school is described as 'snakey'\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "finaledance",

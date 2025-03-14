@@ -1,1 +1,7 @@
-[]
+[
+  {
+    "author": "Poppisickle",
+    "comment": "-1000000000 social credit",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Unclear complaint, possibly referencing a negative experience or dissatisfaction related to an unspecified aspect of Temasek Polytechnic.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

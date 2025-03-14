@@ -1,0 +1,52 @@
+[
+  {
+    "author": "AtomZones",
+    "comment": "do u look completely diff from ur matric card?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "truck-kun_onegaii",
+    "comment": "I had to take 3 different photos before the shit recognised me. \u2620\ufe0f\u2620\ufe0f",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"Facial recognition system is unreliable\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Which_Action_5554",
+    "comment": "Maybe lately you lost weight due to sch System can't recognised you anymore ?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"System malfunction preventing student recognition\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "meowzy19",
+    "comment": "i had to smile so that the system recognise me. i wasnt smiling in my matric card\u2026",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Facial recognition system is too strict and requires unnatural smiling for identification.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "blackrosethorn3",
+    "comment": "forehead. or height. or both.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aiyoowafap",
+    "comment": "i havent lost weight or dyed my hair, or anything like that. so no?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Aiyoowafap",
+    "comment": "I havent lost or gained weight..  (sadly)",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "blackrosethorn3",
+    "comment": "robot just wants u to smile more lol",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "glow up went too hard, cannot recognise liao",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Evening_Attorney9858",
+    "comment": "lmao",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

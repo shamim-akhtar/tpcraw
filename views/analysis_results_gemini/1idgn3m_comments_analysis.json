@@ -1,0 +1,37 @@
+[
+  {
+    "author": "hello_I_am_unknown",
+    "comment": "Based on my lecturer, you can discuss with ur group mates about ur company size, so u can choose how big or small the company is.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "4nn4hahaha",
+    "comment": "do yk for part 2 network security is it for wireless or for wired network or both",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "4nn4hahaha",
+    "comment": "oh thank you how about the company business?? is it everything we can customise\u2026",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\", \"business\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "hello_I_am_unknown",
+    "comment": "If I am not wrong, just wireless, but confirm with ur lecturer?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "hello_I_am_unknown",
+    "comment": "Sorry for the late reply lol, yes u can customize",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "MusicianEffective244",
+    "comment": "Yes.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Issa3_kun",
+    "comment": "Jus youtube search building network in packet tracer got loads of examples bro",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

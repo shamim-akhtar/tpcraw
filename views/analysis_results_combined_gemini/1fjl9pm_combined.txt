@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "administration"],  "complaints": ["Unfair grading in a subject", "High appeal fee ($30-$60)", "Lack of transparency in the appeal process (no direct communication with lecturer, possibility of lower grade after appeal)"],  "suggestions": []}

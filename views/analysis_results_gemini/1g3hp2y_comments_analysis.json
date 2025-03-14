@@ -1,0 +1,17 @@
+[
+  {
+    "author": "DragonDooom",
+    "comment": "Gone, reduced to atoms",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"General dissatisfaction, unspecified issue\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "CocaColastic0000",
+    "comment": "There is 2 at sprouts, but its at level 2 of hss building",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "swastik_kr",
+    "comment": "I think he\u2019s asking about engineering Humanities and social sciences is on the whole other side",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

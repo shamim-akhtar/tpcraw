@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "administration"],  "complaints": ["Fear of failing math and finance and being expelled from Temasek Polytechnic.", "Concern about the strictness of the academic probation policy."],  "suggestions": ["Rough estimation of needed marks based on weightage of assignments."]}

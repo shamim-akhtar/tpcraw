@@ -1,0 +1,12 @@
+[
+  {
+    "author": "mount2010",
+    "comment": "I'm pretty sure it's still 8pm. It's only 6pm during term breaks and holidays.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Powerful_Cycle_5678",
+    "comment": "okay thank you so much!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

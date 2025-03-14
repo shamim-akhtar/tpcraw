@@ -7,7 +7,7 @@
   {
     "author": "Southern-Cry-8020",
     "comment": "i think if u can run the required stuff on parallels then you shld be fine? idk this was what i heard ah, cuz im in comp eng and im thinking of getting a macbook pro too",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"computers/technology\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "TurtleRiskyBoi",
@@ -17,7 +17,7 @@
   {
     "author": "Asleep_Market1202",
     "comment": "They won\u2019t *force* you to buy a Windows laptop, but they\u2019ll probably strongly recommend it, especially if certain software isn\u2019t Mac-compatible. Most lecturers just care that you can run the required programs\u2014if you can find workarounds (Boot Camp, Parallels, cloud alternatives), they\u2019ll likely close one eye. Worst case, you might have to use school lab PCs for some tasks. If you're worried, just email them and check.",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"Strong recommendation for Windows laptops, potential incompatibility issues with Mac\"],\n  \"suggestions\": [\"Email lecturers to check compatibility before purchasing a laptop\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"Strong recommendation of Windows laptops, potential incompatibility issues with Mac.\"],\n  \"suggestions\": [\"Email lecturers to check compatibility before purchasing a laptop.\"]\n}\n```"
   },
   {
     "author": "DivoKing69",

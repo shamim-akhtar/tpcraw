@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "admission"],  "complaints": ["Concern about failing a Math requirement for EAE and potential rejection from the course."],  "suggestions": []}

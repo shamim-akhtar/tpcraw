@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["campus facilities", "administration"],  "complaints": ["Lost laptop in school bathroom", "No response from school after reporting the lost laptop"],  "suggestions": ["Check CCTV footage"]}

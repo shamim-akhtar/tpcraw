@@ -1,1 +1,1 @@
-{  "sentiment": "positive",  "topics": ["academic"],  "complaints": [],  "suggestions": ["seeking notes for year 2 semester 1 business diploma modules: Business Finance, People and Culture, Computational Thinking for Business, and Intro to Process and Systems"]}
+{  "sentiment": "neutral",  "topics": ["academic", "notes/study materials"],  "complaints": [],  "suggestions": []}

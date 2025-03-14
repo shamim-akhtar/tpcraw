@@ -2,11 +2,26 @@
   {
     "author": "Old_Nectarine_1414",
     "comment": "Hi OP, the distance is in fact a factor that can cause burnt out over time. But if you're interested in the course you're doing I'm sure you will be fine. So atb!",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"distance from home\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "No-Philosopher4554",
     "comment": "I think it might be tiring to travel all the way to tp especially for morning lessons? But if u genuinely enjoy the course you\u2019ll be ok I think",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"academic\"],\n  \"complaints\": [\"long travel time to campus, especially for morning lessons\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"academic\"],\n  \"complaints\": [\"long travel distance to morning lessons\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "TheoryPatient6067",
+    "comment": "Workload is alright. Dw",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "TheoryPatient6067",
+    "comment": "Its 5 days of sch. But thats just for pfp only",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Short school week (5 days) is only for profile picture (implying it's not a true reflection of workload)\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "SquidwardBoobies",
+    "comment": "hi! i was a cbp pfp student at tp too! the schedule in pfp is way worse than actual y1-3 imo since theres sch on all 5 days. most of my lessons in sem 1 were 9-6 except fridays but it got more relaxed in sem 2 where most were 9-1 or 9-2. as for the commute, i live terribly far from school as well but ive learnt to suck it up since i like actually my course and my classes",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"schedule\"],\n  \"complaints\": [\"long school hours in Semester 1 (9-6 except Fridays)\", \"long commute\"],\n  \"suggestions\": []\n}\n```"
   }
 ]

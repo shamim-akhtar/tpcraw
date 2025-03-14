@@ -1,0 +1,32 @@
+[
+  {
+    "author": "No-Philosopher4554",
+    "comment": "They asked stuff like what elective programme am I interested in, what can I contribute, if I have experience starting a business for last year",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Sea-Policy1707",
+    "comment": "I went for A&F interview two years ago. Questions asked were: - introduce urself - why r u interested in the course and where u see urself in the future (as in what industry) - wat u know about the current economic conditions or just anything global wide. - ur leadership skills and CCA  and how u think it might help u in the course",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Fearless_Sky1016",
+    "comment": "hi wat course r u gg for",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "PlasticHistory323",
+    "comment": "do you have any tips on what should i do or dont do? js in general",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "PlasticHistory323",
+    "comment": "do u hv any tips whn in interview!!?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "No-Philosopher4554",
+    "comment": "Just like be prepared, learn like some of the things that are specific to the course and Temasek poly. How I prepared for my interview was by searching up like sample interview questions and answers for university entrances ^_^",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

@@ -7,12 +7,12 @@
   {
     "author": "PalpitationLate7376",
     "comment": "how to fail cict \ud83d\ude2d js don't be a clown wadafak",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Difficulty in CICT module (likely refers to a specific course in the School of Computing & Information Technology)\", \"Frustration with JavaScript\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Difficulty in CICT (Computing and Information Communication Technology) module\", \"Concerns about failing the course\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "nothappygooutside",
     "comment": "yes i've seen it before. someone failed the entire thing because of one assignment, he didn't read the instructions properly and wrote something completely irrelevant. CICT is usually non-graded so just put minimal effort in it to pass. but the keyword is minimal effort, not lacklustre effort, so make sure to read the marking rubrics before each assignment.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Failed entire module due to one assignment and misunderstanding instructions\", \"Irrelevant work submitted due to not reading instructions\"],\n  \"suggestions\": [\"Read marking rubrics carefully before each assignment\", \"Put minimal but sufficient effort, not lackluster effort\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Failure due to a single assignment and not reading instructions\", \"Irrelevant work submitted\"],\n  \"suggestions\": [\"Read marking rubrics before each assignment\", \"Put in minimal effort but not lackluster effort\"]\n}\n```"
   },
   {
     "author": "Hopeful_Sea78",
@@ -37,12 +37,12 @@
   {
     "author": "diorlysa",
     "comment": "wait why? isit bc attendance or the assignment",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Possible deduction of marks due to attendance or assignment issues.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Possible concerns about attendance or assignment issues.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "nothappygooutside",
     "comment": "um... we actually had a falling out and cut contact so i don't know how he performed for his remod, but he did post on his story his grades for sem 1.1 and his CICT was a \"Fail\". i assume he did remod as i continued seeing him in school. if you fail any subject then you'll have to remod! thankfully CICT is not graded, so you really just need to put in the bare minimum to pass next time. and this won't affect your gpa but you are no longer eligible to get a diploma with merit or be in the director's list.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"grades\"],\n  \"complaints\": [\"Student failed a subject (CICT) and had to remediate.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"grades\"],\n  \"complaints\": [\"Failing a subject (CICT) requires re-taking the module.\", \"Failing a subject impacts eligibility for merit and director's list.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "diorlysa",

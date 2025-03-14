@@ -1,0 +1,57 @@
+[
+  {
+    "author": "definitelytroaxx",
+    "comment": "if i'm not wrong eae can't transfer course so if u wanna change u need to re apply for that poly course, also u can just remod next year bc u already went thru 1 sem of iit, jiayous !",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"course transfer\"],\n  \"complaints\": [\"Inability to directly transfer courses within Temasek Polytechnic (TP)\"],\n  \"suggestions\": [\"Consider retaking modules next year instead of reapplying for the course\"]\n}\n```"
+  },
+  {
+    "author": "MusicianEffective244",
+    "comment": "Going to science isn\u2019t any easier.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Science courses at Temasek Polytechnic are difficult.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Latter_Special655",
+    "comment": "wait how u know u fail sia gpa come out liao meh",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Concern about failing grades\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ryekleqq",
+    "comment": "why u nvr hand in da assignment bro\ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Late submission of assignment\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "IndependentNo6105",
+    "comment": "my science is always pretty solid actually, way better than my data",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "IndependentNo6105",
+    "comment": "dava for IIT come out alr, i just calculate roughly (i need 37.2% for my DA assignment to pass probably im not too sure)",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Worried about failing a DA assignment.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "IndependentNo6105",
+    "comment": "brother i did, alice hartono just said the system recorded it based on submission date, hence submitting late is also considered unsubmitted",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Late submissions are considered unsubmitted, despite being recorded by the system.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "MusicianEffective244",
+    "comment": "Ohhh no wonder.. well from what I\u2019ve heard it\u2019s only possible to switch courses in ur school and not switch schools :(",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Difficulty switching courses between schools\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ryekleqq",
+    "comment": "how many pages was ur da assignment bro how did u fail",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"failed assignment\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "IndependentNo6105",
+    "comment": "bruh so either way i still have to endure this dava if i fail wts",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Having to endure a difficult situation ('dava') if failing a module.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "IndependentNo6105",
+    "comment": "ive 17 pages lowkey i prolly failed bc of late penalty + ive never been good at data stuff heck i can even F9 geography",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"late penalty\", \"struggling with data analysis\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["academic", "BME (Biomedical Engineering)", "course materials", "expenses"],  "complaints": ["High cost of toolkit and digital trainer, used only for one year."],  "suggestions": []}
+{  "sentiment": "neutral",  "topics": ["academic", "expenses"],  "complaints": ["The cost of the toolkit and digital trainer seems high for only one year of use."],  "suggestions": []}

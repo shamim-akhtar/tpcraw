@@ -1,0 +1,32 @@
+[
+  {
+    "author": "nothappygooutside",
+    "comment": "if you have to remod, the school will take the better attempt (i.e. the better grade) into consideration for your GPA. however, failing a mod means you are no longer entitled to graduate with a \"diploma with merit\" and neither are you allowed on the director's list. i've never failed any mods before but those \"consequences\" i listed above aren't a dealbreaker imo unless ur GPA is very high or you are aiming for the director's list. make sure you pass the 2nd time though, if you fail you will be removed from course",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "strwberri111",
+    "comment": "global studies graded for yall? not pass/fail?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Global Studies grading system is not pass/fail\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BudgetDevv",
+    "comment": "The good news is that it is apparently not capped at D if you remod. From what I was told by my careperson, it will be displayed as a F followed by the new grade on the academic transcript. Not too sure about director's list , but as the other user have pointed out, you will no longer be eligible for DWM.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "NyandaKun",
+    "comment": "Global studies is a TP FUN module, not a core module. So if you remod, there are no consequences - you can attempt as many as you want till you are about to graduate .",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "MatterStunning1781",
+    "comment": "thank you so much man",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "nothappygooutside",
+    "comment": "no bro, if you fail more than once you will get expelled \ud83d\ude2d\ud83d\ude2d",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Strict expulsion policy for failing multiple times.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

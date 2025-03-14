@@ -2,7 +2,7 @@
   {
     "author": "Ok-Engineering143",
     "comment": "-Ah shi here we go again , -Don't worry its normal. -In fact , it may be unavailable to students till sch begins or even several weeks into the semester (situational) -The system is pretty weird; don't overthink it. -When the time comes, it'll be made available to you -Stay Cool & Patient",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"system is weird\", \"unavailability of resources before/during semester start\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"System is weird\", \"Unavailability of system before/during semester\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Gamer_dude12341",
@@ -12,7 +12,7 @@
   {
     "author": "Holiday_Stick3341",
     "comment": "same \ud83d\ude2d",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Issa3_kun",

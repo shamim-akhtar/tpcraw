@@ -1,1 +1,1 @@
-{  "sentiment": "negative",  "topics": ["academic", "career/internships", "application process"],  "complaints": ["Low GPA (2.84) hindering university application"],  "suggestions": []}
+{  "sentiment": "negative",  "topics": ["academic", "career/internships", "application process"],  "complaints": ["Low GPA (2.84) might hinder university application"],  "suggestions": []}

@@ -1,0 +1,47 @@
+[
+  {
+    "author": "nothappygooutside",
+    "comment": "Generally 3.6-3.8 I highly discourage you from going to A&F though. Business is a better choice.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"A&F (Arts & Design) is discouraged\"],\n  \"suggestions\": [\"Consider Business instead of A&F\"]\n}\n```"
+  },
+  {
+    "author": "nothappygooutside",
+    "comment": "There's no fixed GPA as it depends on how well you performed compared to your peers as well. If overall performance is poor then the treshold will be lower as well and vice versa",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "resolxxhs",
+    "comment": "Honestly getting at least 2.5 would be sufficient, seen multiple people with around such scores getting into those two courses",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Affectionate_Row5262",
+    "comment": "Thanks for the advice. \ud83d\ude00",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "resolxxhs",
+    "comment": "Yup true",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "orekiflare",
+    "comment": "if i got nett 12 shld i appeal for business if i got into cbp?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "resolxxhs",
+    "comment": "Imo no need, I personally went to cbp first and I didn't regret my decision as we got exposed to modules covering a bit of almost every biz specialisation, so I would say no harm going into cbp first and who knows, you might find another specialisation more interesting and indicate your interest in y1s2.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Consider the Common Business Programme (CBP) first before deciding on a specialization.\"]\n}\n```"
+  },
+  {
+    "author": "orekiflare",
+    "comment": "im scared that the first year will be very competitive and i may make it into a course i wont like if i do worse than others in the cohort",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Fear of intense competition in the first year\", \"Concern about being placed in an undesirable course due to performance\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "resolxxhs",
+    "comment": "It's true it can be quite competitive especially in y1s1 but as mentioned, the min gpa requirement is not high when it comes to streaming into your respective specialisations",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

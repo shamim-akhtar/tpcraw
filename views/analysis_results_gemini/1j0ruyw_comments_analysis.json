@@ -2,7 +2,7 @@
   {
     "author": "ASeagullAteMyCamera",
     "comment": "I assume you applied through the Direct Admission Exercise using a foreign education certificate. Either way, you should regularly check the TP application portal to check the application status. They should also send you an email if it is updated, but it's better to check the portal. If you have been offered a course, they will send you the enrolment package with your enrolment key, details on the enrolment process and forms you need to do. You should settle this quickly as the enrolment window is just a few days.",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"application process\", \"administration\", \"enrolment\"],\n  \"complaints\": [],\n  \"suggestions\": [\"regularly check the TP application portal\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"application process\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Regularly check the TP application portal\"]\n}\n```"
   },
   {
     "author": "None",
@@ -12,6 +12,6 @@
   {
     "author": "ASeagullAteMyCamera",
     "comment": "Ah, my bad for the assumption. As far as I know, foreign certificates usually apply through DAE. Anyway, glad I was of help.",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   }
 ]

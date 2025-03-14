@@ -1,0 +1,9 @@
+Title: tp student wifi
+Author: ilovetehc
+Score: 3
+URL: https://www.reddit.com/gallery/1dzlrqr
+Created: 2024-07-10 11:25:53
+Body: hi guys i have this problem w the sch wifi where i can connect to it normally on my phone but suddenly cant connect to my laptop ?? it was working perfectly fine for the past few months but i jst suddenly had problems w it ,, like im able to connect to it but there's no internet ..
+i didnt change my sch email's pass or anyt and i tried searching online too but i cant seem to fix it :" 
+i tried troubleshooting on my laptop too but it just says tht "the default gateway is not available" and it asks to investigate the router ..
+does anyone know how to fix this or is there anywhr/anyone i can go to to fix it ? thanks !

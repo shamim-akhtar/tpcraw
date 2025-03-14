@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["academic", "career/internships"],  "complaints": [],  "suggestions": ["Consider the Common Business Programme (CBP) first and explore different specializations before choosing a specific stream."]}

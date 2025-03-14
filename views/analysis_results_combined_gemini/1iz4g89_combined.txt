@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["financial matters", "tuition fees", "CPF", "GIRO"],  "complaints": [],  "suggestions": []}
+{  "sentiment": "neutral",  "topics": ["financial", "tuition", "CPF", "GIRO"],  "complaints": [],  "suggestions": []}

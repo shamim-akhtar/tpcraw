@@ -1,0 +1,17 @@
+[
+  {
+    "author": "SuitFinancial2209",
+    "comment": "why mc illegal?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Questioning the legality of MC (Medical Certificate) usage, implying a restrictive policy.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "hopefvll",
+    "comment": "cant get mc for day before iirc, since can be used as \u201cfalse alibi\u201d or smt similar. idk why they said ytd since they said at the start its tdy",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Strict MC policy regarding day before absence, perceived as unreasonable and inconsistently applied.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "SuitFinancial2209",
+    "comment": "orh yea, standard is that clinics and such cant give mc for previous days, only the current day and onwards if you missed lab test yesterday, that one legit gg, but if the same day you manage to get mc coverage for, then by right should be fine what",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Strict policy on MCs (medical certificates), only allowing MCs for the current day and onward, impacting students who miss lab tests.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

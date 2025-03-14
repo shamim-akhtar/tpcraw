@@ -17,6 +17,6 @@
   {
     "author": "Fair_Instance_8065",
     "comment": "for me in cen in 1.1 they forced us to get the physical notes but they are HEAVY so i really recommend getting a tablet to access the notes as its more convenient. pretty sure you are able to download lockdown browser on the tablets too to do icqs so yeah a tablet wld be a good choice.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"Heavy physical notes provided by the institution.\"],\n  \"suggestions\": [\"Using a tablet for accessing notes and completing ICQs (In-class quizzes) due to the weight and convenience of a tablet.\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"campus facilities\"],\n  \"complaints\": [\"Heavy physical notes are mandatory in CEN 1.1\"],\n  \"suggestions\": [\"Use a tablet instead of physical notes for convenience and to access lockdown browser for ICQs\"]\n}\n```"
   }
 ]

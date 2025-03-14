@@ -1,0 +1,12 @@
+[
+  {
+    "author": "NotHighAchiever",
+    "comment": "600-1000",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Vinhunter666",
+    "comment": "Mostly around 600-1000 some don\u2019t include leave. I have who received 1k+ for 1year internship with paid leave.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

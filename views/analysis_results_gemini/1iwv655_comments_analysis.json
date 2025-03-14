@@ -2,7 +2,7 @@
   {
     "author": "No_Morning6385",
     "comment": "hi! i graduated with a degree in comp sci and would love to help out! \ud83d\ude00",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"career/internships\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Aikawa_Tofu_0240",
@@ -12,12 +12,12 @@
   {
     "author": "Healthy-Law-5803",
     "comment": "Has there been any improvements changes or anything done to lessons across the IT school to fix and address the issues and concerns?",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"IT school\"],\n  \"complaints\": [\"issues and concerns (unspecified)\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"IT school\"],\n  \"complaints\": [\"issues and concerns in IT school lessons\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Minseous",
     "comment": "When the school is useless",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"School is useless\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"school is useless\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "gunJOusts",
@@ -42,7 +42,7 @@
   {
     "author": "never_supernova",
     "comment": "The poly really tries their best to help the weaker students. If students struggle but want to learn, come to class, do the work, and submit assignments, the lecturers will help them as much as possible. Most lecturers will go all out to support them, and most students do appreciate it. Even if one or two lecturers don\u2019t there are others who will help or they can talk to their care person. But quite a few students just skip class, sleep or play phone during lesson, don\u2019t submit assignments, or always hand in late. Some just leech off their group mates for projects. You won\u2019t believe the attitude for these types. The lecturers will still try to encourage them, guide them, and give chances to improve. But if they don\u2019t change, sooner or later, they have to face the consequences. And when that happens, some will end up here just to complain about school, their lecturers, assignments, or even their classmates. Like I said, it takes two hands to clap. Poly isn't just anyhow pass, or the diploma becomes worthless and affects all the students badly.",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"lecturers\", \"students\", \"assignments\"],\n  \"complaints\": [\"Some students skip class, sleep or play phone during lessons\", \"Some students don't submit assignments or hand them in late\", \"Some students leech off groupmates for projects\", \"Some students complain about school, lecturers, assignments, or classmates after facing consequences for poor performance.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"administration\", \"lecturers\", \"students\"],\n  \"complaints\": [\"Some students skip class, sleep or play phone during lessons, don't submit assignments, or always hand in late.\", \"Some students leech off their group mates for projects.\", \"Some students complain about school, lecturers, assignments, or classmates after facing consequences for their actions.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "gunJOusts",
@@ -52,6 +52,6 @@
   {
     "author": "never_supernova",
     "comment": "Students are supposed to find their own internships, just like when looking for a job. And even if the school finds for them, most companies will have an interview which students can still mess up (of course they will often blame everyone else). If they really can't get, then they can do in the school. Of course they complain no allowance, but they are free to find their own. But internship isn't just about the money, which is a short sighted view some students have. At some point in year 3 especially they have to start less hand holding. Poly gives a lot of support but isn't Harry Potter school of magic lol. Most students do ok, except for the few who like to  grumble online here and blame everyone but themselves for their academic problems which could have been helped right from the start in year 1 if they had a more positive attitude.",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"career/internships\", \"academic\"],\n  \"complaints\": [\"Lack of internship allowance\", \"School doesn't guarantee internships\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"career/internships\", \"academic\"],\n  \"complaints\": [\"Lack of internship allowance\", \"Insufficient hand-holding in later years\", \"Students blaming others for academic problems\"],\n  \"suggestions\": []\n}\n```"
   }
 ]

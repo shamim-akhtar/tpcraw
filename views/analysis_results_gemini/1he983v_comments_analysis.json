@@ -1,0 +1,32 @@
+[
+  {
+    "author": "okwhatelse",
+    "comment": "you didn't bother to check her age BEFORE you did \"it\"? this one's on you bro",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Implies inappropriate behavior\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "tekkichickenbreast",
+    "comment": "least deranged post-mst engineering student",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AtomZones",
+    "comment": "u better be trolling cause wth did I just read",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Unclear what the user is reacting to.  The statement implies a negative experience or perception of something related to Temasek Polytechnic but lacks specifics.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "neko_maritozzo",
+    "comment": "If I'm not wrong there is a chance of suspension from school? Not too sure, just make suer u don't do that in the future and also to make sure she isn't pregnant. If she is, please take responsibility.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [\"Possible suspension from school\"],\n  \"suggestions\": [\"Don't repeat the action\", \"Take responsibility if pregnancy occurs\"]\n}\n```"
+  },
+  {
+    "author": "loweshaan",
+    "comment": "AW HELL NAH BRUH WHAT DID I JUST READ",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Cartographer-Similar",
+    "comment": "Da hell is this bruh \ud83d\udc80",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Unspecified complaint.  The expression 'Da hell is this bruh \ud83d\udc80' indicates strong negative emotion but lacks specifics.\"],\n  \"suggestions\": []\n}\n```"
+  }
+]

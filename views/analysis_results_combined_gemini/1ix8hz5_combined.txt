@@ -1,1 +1,1 @@
-{  "sentiment": "positive",  "topics": ["academic"],  "complaints": ["Emath2 paper was difficult"],  "suggestions": []}
+{  "sentiment": "positive",  "topics": ["academic", "career/internships"],  "complaints": ["eMath2 paper was difficult"],  "suggestions": []}

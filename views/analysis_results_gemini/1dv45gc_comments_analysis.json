@@ -1,0 +1,32 @@
+[
+  {
+    "author": "definitelytroaxx",
+    "comment": "u need to wear dri fit pants and shirt, sports shoe and mini towel. dn to book but u need matrix card and do the gym test thingy before they allow u to enter",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"sports/fitness\"],\n  \"complaints\": [\"Requires booking\", \"Need matrix card\", \"Gym test required before entry\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Baxtonwarls",
+    "comment": "Just wear something that\u2019s considered sporty, eg no jeans or chino pants. Also note BRING A TOWEL. You will not be able to enter without a towel. Hope this helps",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\"],\n  \"complaints\": [],\n  \"suggestions\": [\"wear sporty attire\", \"bring a towel\"]\n}\n```"
+  },
+  {
+    "author": "Drdeeznutsonyourface",
+    "comment": "Wait does the gym sonetime closes for cca?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Drdeeznutsonyourface",
+    "comment": "I see thanks! Do you perhaps know of any timing when the gym is not crowded?\ud83d\ude05",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "definitelytroaxx",
+    "comment": "ya will close after 6pm mon-thurs, fri after 5pm for cca",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"events\", \"administration\"],\n  \"complaints\": [\"Limited opening hours for CCA activities.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Baxtonwarls",
+    "comment": "I don\u2019t go there too often but you can almost always find a empty rack so just go whenever you\u2019ve got the time. It doesn\u2019t get too crowded from my experience and I always go during lunch",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

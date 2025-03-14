@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "career/internships"],  "complaints": ["Worried about keeping up with peers in CDP due to perceived lack of artistic ability", "Fear of low GPA due to perceived lack of creativity"],  "suggestions": ["Research everything", "Keep inspirations near", "Go overboard in projects (if confident)", "Be confident in presentations"]}

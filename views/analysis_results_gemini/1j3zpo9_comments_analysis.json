@@ -7,7 +7,7 @@
   {
     "author": "Vinhunter666",
     "comment": "Yea python , but the project sucks",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"project\"],\n  \"complaints\": [\"The project sucks\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Project is unsatisfactory\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Unlucky-Earth-3640",

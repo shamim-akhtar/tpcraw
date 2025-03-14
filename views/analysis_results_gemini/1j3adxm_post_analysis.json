@@ -1,1 +1,1 @@
-"```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Poor grade in CRM subject\", \"CRM subject is the worst\"],\n  \"suggestions\": []\n}\n```"
+"```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Poor grade in CRM subject\", \"CRM subject considered worst subject in Engineering diploma\"],\n  \"suggestions\": []\n}\n```"

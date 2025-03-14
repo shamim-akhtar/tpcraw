@@ -1,1 +1,1 @@
-{  "sentiment": "neutral",  "topics": ["events", "sports", "cca", "basketball"],  "complaints": [],  "suggestions": []}
+{  "sentiment": "neutral",  "topics": ["sports", "CCA", "basketball", "trials", "competitions"],  "complaints": [],  "suggestions": []}

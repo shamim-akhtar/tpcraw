@@ -7,27 +7,27 @@
   {
     "author": "iamnothingbuta",
     "comment": "Op you are cooked",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"This phrase is not constructive feedback and does not relate to Temasek Polytechnic.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "davegrohlsbae",
     "comment": "OKAY UPDATE UM i asked my cp and he say cannot so...\ud83d\ude2d\ud83d\ude2d\ud83d\ude2d\ud83d\ude2d just so yall can clear up whatever\ud83d\ude2d\ud83d\ude2d\ud83d\ude2d",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Request denied by course planner (CP)\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Request denied by course coordinator (CP)\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Mystical_Unicorn_09",
     "comment": "if ur overall is below 50 then i think u js dont go exam and then remod but if above 50 alr gl ah...",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"retake modules if overall grade is below 50\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Retake modules (remod) if overall grade is below 50\"]\n}\n```"
   },
   {
     "author": "nothappygooutside",
     "comment": "non-graded pass does not mean you passed the subject. if that were the case, everyone can graduate from poly. everyone must MINIMALLY have a cGPA of 1.0 to graduate. non-graded pass means your GPA is 1.0 no matter how badly or how well you do. if non-graded pass means pass, then i might as well be absent for all my classes and automatically get 1.0 without trying. so i can get a diploma without attending school at all? that doesn't make sense. this is briefed during every orientation AND at the start of every semester. you MUST re-take to meet attendance requirements.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Misunderstanding of 'non-graded pass' leading to frustration.\", \"Belief that the system allows for graduation without sufficient effort or attendance.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Misunderstanding of 'non-graded pass' leading to frustration.  The author believes the system is flawed and allows for graduation without sufficient effort.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "nothappygooutside",
     "comment": "no, if you get a non-graded pass, it is compulsory to re-take the subject. as long as you do not meet your attendance requirements, you cannot be said to have passed the subject. if you do not meet your attendance requirements on the 2nd try, you will be removed from your course.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Compulsory retake for non-graded pass\", \"Strict attendance requirements leading to course removal\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Compulsory retake for non-graded pass\", \"Strict attendance requirements leading to course removal\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "davegrohlsbae",
@@ -37,12 +37,12 @@
   {
     "author": "Ok-You-1212",
     "comment": "Nooo so wasted siaaa \ud83d\ude2d",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Wasted opportunity\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Wasted opportunity/time\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "davegrohlsbae",
     "comment": "NO BC i wanted to purposely fail but my teacher say even if i leave the paper blank ill still pass so there's nothing i can do alr\ud83d\ude2d\ud83d\ude2d",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Unintentionally passed a subject despite wanting to fail.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Unable to fail a subject despite wanting to.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "MilkTeaRamen",
@@ -52,7 +52,7 @@
   {
     "author": "BudgetDevv",
     "comment": "It depends - For a subject that is non-graded to begin with, you do fail said subject should you fall under its attendance requirement ( NGP doesn't make sense as a penalty for a subject that is already non-graded ). But for a graded subject, falling under the attendance requirements would mean that the highest achievable grade becomes D. That is not to dismiss the possibility of entirely failing the subject, however. So yes, I believe that remodding is not an option if you happen to pass the subject, even if it is a NGP",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Inconsistency in grading and attendance policies for graded and non-graded subjects (NGP).  The penalty for failing attendance in a non-graded subject doesn't make logical sense.  The system of failing a non-graded subject due to attendance is considered illogical.\"],\n  \"suggestions\": [\"Review and potentially revise the attendance policies for both graded and non-graded subjects to ensure consistency and fairness.  Consider alternative penalties for attendance issues in non-graded subjects instead of failing the subject.\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Inconsistency in grading and attendance policies for graded and non-graded subjects.  The penalty for failing attendance in a non-graded subject (NGP) is illogical.  The inability to re-mod (presumably re-take or retake a module) even after passing a subject with attendance issues is also problematic.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Mystical_Unicorn_09",
@@ -62,7 +62,7 @@
   {
     "author": "BudgetDevv",
     "comment": "Suffering from success haha",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"general\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "MilkTeaRamen",
@@ -72,12 +72,12 @@
   {
     "author": "nothappygooutside",
     "comment": "it is a requirement to have 85% attendance to pass every subject, graded or non-graded. this is constantly re-iterated at the start of the semester. you must still re-take the subject but your GPA for that subject will remain at 1.0. once again, the system you described does not make sense. people can basically graduate from poly without attending school at all.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"85% attendance requirement for all subjects, including non-graded ones\", \"Unfair GPA system where failing attendance results in a 1.0 GPA even with retakes\", \"System allows graduation without significant school attendance\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"85% attendance requirement for all subjects, including non-graded ones\", \"Unfair GPA system where failing due to attendance results in a 1.0 GPA but allows for retakes and eventual graduation\", \"System allows graduation without significant class attendance\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "nothappygooutside",
     "comment": "PLEASE read the student handbook bro \ud83d\ude4f\ud83d\ude4f",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Read the student handbook\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Read the student handbook\"]\n}\n```"
   },
   {
     "author": "Fit-Perception9449",
@@ -87,27 +87,27 @@
   {
     "author": "BudgetDevv",
     "comment": "Guy's dissing himself with an alt, take no notice of him. Your question is an interesting one, I thought about it too, but no idea. From what I was told by higher ups, remodding due to failure isn't capped. But this scenario is sorta different",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "BudgetDevv",
     "comment": "\"Attendance There is an 85% attendance requirement. If you arrive late in class, your attendance will be computed as ABSENT even though it will be reflected as LATE in the attendance system. A student who attains below 85% attendance in a subject will be graded as \u2018P\u2019 (if he/she passes the subject) and \u2018F\u2019 (if he/she fails the subject). The P grade has a Grade point average of 1. A student who obtains a \u2018P\u2019 grade will not be eligible for the Diploma with Merit and the Director\u2019s Lists award (refer to Section on \u201cCriteria for Freshmen and Junior Director\u2019s Lists).\"",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Strict 85% attendance requirement\", \"Late arrival counted as absent despite being marked as late in the system\", \"Failing grade ('F') and reduced GPA ('P') for attendance below 85%\", \"Ineligibility for awards with 'P' grade\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Strict 85% attendance requirement\", \"Late arrival counts as absent despite being marked as late in the system\", \"Failing to meet attendance requirement results in a 'P' grade with GPA of 1, impacting awards and merit\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "BudgetDevv",
     "comment": "I recommend you take your own advice, it appears that the prevalence of LLMs have instilled a personality of \"confidently wrong\" in individuals such as yourself...what a sad sight to behold",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"The commenter believes the AI's previous response was incorrect and displays overconfidence.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"The commenter believes the AI is confidently incorrect.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "MilkTeaRamen",
     "comment": "Oh that\u2019s sad. Guess the moment you hit 82% that\u2019s it already. Can just give up and just pass already.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Grading system perceived as inflexible and discouraging\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Grading system perceived as inflexible; achieving 82% deemed insufficient for further effort.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "MilkTeaRamen",
     "comment": "Which one is his alt haha. Idk how can someone sound so wrong and confident.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Someone sounds wrong and confident\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"The commenter expresses disapproval of someone's statement, finding it both wrong and confidently asserted.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Fit-Perception9449",
@@ -117,7 +117,7 @@
   {
     "author": "BudgetDevv",
     "comment": "You also seem to make the assumption that people who fall under the attendance requirements do not submit their work - It is very possible to fall under the requirements just from being late",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Attendance policy is unfair; it doesn't differentiate between late students who submit work and those who don't.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Attendance policy is unfair;  students can fall under attendance requirements simply from being late, regardless of coursework submission.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "nothappygooutside",
@@ -127,12 +127,12 @@
   {
     "author": "nothappygooutside",
     "comment": "once again, i was told since y1 (and it is quite common sense) that attendance is compulsory in poly. i can pass a subject easily by doing all my self-learning at home without going to school at all. it's doable for many people. then i can just get a 1.0 for every subject and that is sufficient for me to graduate from poly. obviously the school knows about this loophole so that's the reason why there are attendance requirements in the first place.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Compulsory attendance policy perceived as unnecessary and hindering self-learners.\", \"Attendance requirement seen as a way to close a perceived loophole rather than a genuine pedagogical approach.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Compulsory attendance policy perceived as unnecessary and hindering self-learners.\", \"Attendance requirements seen as a way to address a loophole rather than promoting genuine learning.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Fit-Perception9449",
     "comment": "I think it's a sadder sight to see two fragile people here with inflated egos making a mountain out of a molehill. Do what suits you best, though. I'm just stating the observations of most people reading the comments.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Inflated egos of individuals in administration\", \"Making a mountain out of a molehill (implying poor handling of a situation)\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Inflated egos of individuals in positions of authority\", \"Poor handling of a situation (implied)\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "nothappygooutside",
@@ -157,7 +157,7 @@
   {
     "author": "BudgetDevv",
     "comment": "> i can pass a subject easily by doing all my self-learning at home without going to school at all. it's doable for many people. then i can just I don't think you're reading my replies at all, for a non-graded subject this approach will not work out...and it is mandatory to pass all of them That being said, downvoting my comments over a bruised ego reflect poorly on yourself. If the student handbook didn't support my view, I would have edited my comment to reflect the truth",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Mandatory passing of non-graded subjects makes self-learning ineffective\", \"Downvoting of comments due to bruised ego\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Mandatory passing of non-graded subjects makes self-learning approach ineffective\", \"Downvoting of comments due to bruised ego\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Fit-Perception9449",
@@ -177,7 +177,7 @@
   {
     "author": "davegrohlsbae",
     "comment": "SAY SIKE RN\ud83d\ude2d\ud83d\ude2d i actually like this subj and its prob one of the only subjs i can get a for\ud83d\ude2d\ud83d\ude2d\ud83d\ude2d its just all of the classes for this subj are at 9am and i cannot wakeup on time\ud83d\ude2d\ud83d\ude2d\ud83d\ude2d\ud83d\ude2d\ud83d\ude2d",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Early morning classes (9am) make it difficult to attend.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Early morning classes (9am)\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "MilkTeaRamen",
@@ -197,7 +197,7 @@
   {
     "author": "nothappygooutside",
     "comment": "your assumption that i'm downvoting you shows how poorly you react to dissenting views. i never once resorted to personal insults to prove a point. that may be the reason why you are being downvoted. for all i know, other people are downvoting my comments too. they are entitled to disagree with me and i do not assume that you are the ONLY ONE disagreeing with me because you are currently the only person engaging with me. you should also know people are entitled to disagree with you and may choose not to respond to your comments. i respect that you have a differing opinion, but there is no need to blindly accuse people. your assumption is complacent.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Accusation of blindly accusing people\", \"Poor reaction to dissenting views\", \"Assumption of being the only one disagreeing\"],\n  \"suggestions\": [\"Consider the possibility of multiple dissenting opinions\", \"Avoid making assumptions about downvotes\", \"Engage with differing views without resorting to accusations\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Accusation of poorly reacting to dissenting views\", \"Blindly accusing people of downvoting without proof\", \"Complacent assumption about downvotes\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Fit-Perception9449",
@@ -207,7 +207,7 @@
   {
     "author": "Fit-Perception9449",
     "comment": "That is why it is important to keep track of your attendance. The best practice is just to be present and punctual for all classes so you don't have to worry about all this.",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Maintain good attendance and punctuality\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"maintain good attendance\"]\n}\n```"
   },
   {
     "author": "Fit-Perception9449",
@@ -222,6 +222,6 @@
   {
     "author": "MilkTeaRamen",
     "comment": "It\u2019s course dependable. But my course doesn\u2019t have attendance requirement in the sense that you\u2019ll get a non-graded or fail. Some modules do however allocate 5% overall for attendance. For those where attendance don\u2019t even add to class part, you\u2019ll notice half the class will be empty halfway thru the sem, and the last lesson is almost empty.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\", \"attendance policy\"],\n  \"complaints\": [\"Inconsistent attendance policies across modules.\", \"Low attendance rates in some modules due to lack of attendance requirements or minimal weighting.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Lack of mandatory attendance in some modules leads to poor class participation and declining attendance throughout the semester.\"],\n  \"suggestions\": []\n}\n```"
   }
 ]

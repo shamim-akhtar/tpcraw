@@ -1,0 +1,12 @@
+[
+  {
+    "author": "MilkTeaRamen",
+    "comment": "APA7? IEEE?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "meowzy19",
+    "comment": "can go tplibrary website to find the citation format",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

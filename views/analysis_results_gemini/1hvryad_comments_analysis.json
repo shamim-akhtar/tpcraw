@@ -1,0 +1,12 @@
+[
+  {
+    "author": "Mammoth_Cattle9284",
+    "comment": "Yes I am",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Single_Meringue1126",
+    "comment": "can always branch out to other degrees in healthcare / sciences as well",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"career/internships\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

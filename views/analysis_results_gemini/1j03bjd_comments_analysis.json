@@ -2,7 +2,7 @@
   {
     "author": "pokkagreentea100",
     "comment": "why everyone's date so different lol, if it's the same day as the exam results release date it's 26 march as stated in TP oei",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"events\"],\n  \"complaints\": [\"Inconsistency or confusion regarding dates for exam results release.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"events\"],\n  \"complaints\": [\"Inconsistent date information regarding exam results release.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "None",
@@ -22,6 +22,6 @@
   {
     "author": "pokkagreentea100",
     "comment": "hi, please refer to the announcement with the title ' SEMESTRAL EXAMINATION NOTICE [24 Feb (Mon) - 7 Mar 2025 (Fri)]' , you have to scroll down a bit. to find the exam results release date you scroll all the way below under the section 'Release of Examination Results' in the announcement post.",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"events\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   }
 ]

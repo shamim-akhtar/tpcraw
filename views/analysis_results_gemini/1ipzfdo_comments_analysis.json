@@ -7,12 +7,12 @@
   {
     "author": "Low-Late",
     "comment": "hi i want to ask , if you cant get the colour vision test within 5 working days do i call tp to let them know then submit whatever document i have or what.. i tried calling and emailing them but didnt get any reply so far",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Lack of response from Temasek Polytechnic (TP) to phone calls and emails regarding a colour vision test.\", \"Difficulty in getting a timely response regarding required documentation.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Lack of response from Temasek Polytechnic to phone calls and emails regarding colour vision test.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "mount2010",
     "comment": "Yeah I remember the medical test, that was annoying lol, such a short time to get it done too I think yes, SATA accepts walk-in, call them first",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"medical\"],\n  \"complaints\": [\"Short time allotted for medical test\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"medical\", \"administration\"],\n  \"complaints\": [\"Short time allotted for medical test\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Fancy-Aardvark7650",
@@ -22,7 +22,7 @@
   {
     "author": "gisa_As748",
     "comment": "Anyone know where to get a colour blind test at woodlands? Struggling to find a place ;( called a few places and they said they don\u2019t provide that service :( It is getting a bit frustrating because some of the wait time is like 20mins just to hear a no\u2026 Edit: i searched other polytechnic pre-admission colour vision test :D other polytechnic added a list of places you can go for a colour vision test! For anyone who is struggling to find a place like me ;]",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"pre-admission\", \"academic\", \"administration\"],\n  \"complaints\": [\"Difficulty finding a place to get a color blind test in Woodlands.\", \"Long wait times to be told the service is unavailable.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"pre-admission\", \"academic\", \"administration\"],\n  \"complaints\": [\"Difficulty finding a place for color blind test in Woodlands\", \"Long wait times to receive negative responses from clinics\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Equivalent-Ride8136",
@@ -37,7 +37,7 @@
   {
     "author": "Equivalent-Ride8136",
     "comment": "Try to do it on Monday when the office is open!",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Try to do it on Monday when the office is open!\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Visit the office on Monday\"]\n}\n```"
   },
   {
     "author": "Equivalent-Ride8136",
@@ -67,6 +67,6 @@
   {
     "author": "mount2010",
     "comment": "For me it was - print it out - bring it to SATA - let them fill it in - they will submit to TP",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Inconvenient process for form submission (print, bring to SATA, wait for them to submit)\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"cumbersome administrative process for document submission\"],\n  \"suggestions\": []\n}\n```"
   }
 ]

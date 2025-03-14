@@ -1,0 +1,22 @@
+[
+  {
+    "author": "KarmaSmtg",
+    "comment": "The red and black shirt? It's every other year ccas buy it I think(that's the reason why my cca didnt have it last year) but this year you should be able to buy it. As to the requirements I'm not sure,  mine allows anyone in the cca to buy it but other ccas might hace different requirements",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\", \"cca\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Ecstatic-Eggplant558",
+    "comment": "ohh what cca are u in?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"events\", \"CCA\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "KarmaSmtg",
+    "comment": "Are you currently in a sports cca? You could always ask ur captain or teacher in charge about the shirt",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"sports\", \"CCA\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Ask the sports CCA captain or teacher-in-charge about the shirt\"]\n}\n```"
+  },
+  {
+    "author": "Ecstatic-Eggplant558",
+    "comment": "okay thanks!",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

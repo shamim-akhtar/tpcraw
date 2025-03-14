@@ -1,1 +1,1 @@
-"```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"cca\", \"curriculum\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+"```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"CCA\", \"curriculum\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"

@@ -1,0 +1,27 @@
+[
+  {
+    "author": "nothappygooutside",
+    "comment": "if you did use generative AI and you didn't declare, you might be flagged for plagiarism. You should clarify with your tutor asap",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Clarify with tutor ASAP\"]\n}\n```"
+  },
+  {
+    "author": "Educational-Photo-77",
+    "comment": "i only use for when they ask to check with AI and compare it with your answer.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Educational-Photo-77",
+    "comment": "i did not use for any other things. only use for when the problem ask me to do",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "nothappygooutside",
+    "comment": "check the assessment rubrics/instructions, is the AI declaration compulsory to submit? if you didn't submit along with your assignment it can still lead to marks lost under organisation. i think you should clarify with your tutor",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Unclear AI declaration submission requirement\", \"Potential for marks loss due to unclear instructions\"],\n  \"suggestions\": [\"Clarify AI declaration submission requirement with tutors\"]\n}\n```"
+  },
+  {
+    "author": "nothappygooutside",
+    "comment": "yup so if the assignment requires you to use AI and you don't declare your use of AI that may be flagged as plagiarism. Please contact your tutor to clarify with them",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Contact tutor for clarification on AI usage in assignments\"]\n}\n```"
+  }
+]

@@ -7,7 +7,7 @@
   {
     "author": "TheoryPatient6067",
     "comment": "We cant help u much but to tell u to just start wi the revision. I dont know what will be out fully too, but dont just stay here expecting for resources to come rushing in. Use what you have and be independent enough to self research. Like i dont understand what is the trend of students coming here, asking what to do to prepare. The topics are there.",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Students are not independent enough\", \"Students expect resources to be readily available\", \"Students are asking for help with exam preparation instead of self-studying\"],\n  \"suggestions\": [\"Students should start revising immediately\", \"Students should utilize available resources and self-research\", \"Students should be more independent in their learning\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Students are not taking initiative to prepare for exams\", \"Students are expecting resources to be readily available without independent effort\"],\n  \"suggestions\": [\"Students should start revising immediately\", \"Students should be more independent and self-reliant in their studies\", \"Students should utilize available resources and research independently\"]\n}\n```"
   },
   {
     "author": "mount2010",
@@ -17,7 +17,7 @@
   {
     "author": "Terrible_Condition24",
     "comment": "Last year quiz was almost the same as this year,the only difference is that we have additional SQL",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Quiz questions are very similar year on year\", \"Additional SQL content added without sufficient notice or preparation\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Quiz questions were almost identical to previous year's, with only minor additions.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Nice_Gap_9599",

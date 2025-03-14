@@ -1,0 +1,17 @@
+[
+  {
+    "author": "NyandaKun",
+    "comment": "UPDATE : The bottle has now been reported to the campus security / lost and found office near the main bridge entrance.  If this is your bottle, please make your way to the office and claim it",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Substantial-Song9837",
+    "comment": "It\u2019s not mine",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "FlowOwn4200",
+    "comment": "then stfu",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

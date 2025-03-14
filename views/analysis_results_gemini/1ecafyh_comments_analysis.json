@@ -1,0 +1,82 @@
+[
+  {
+    "author": "NyandaKun",
+    "comment": "Hi there, here are all the list of eateries that are halal : 1. The flavors at the School of Info Tech (Level 2) - Muslim stall , western cuisine and ayam Penyet store 2. Canteen (not the one near the convention centre) at Engineering block (level 2) - Muslim stall . I\u2019m not sure about the western stall (please do let me know) 3. McDonald\u2019s , Subways 4. Bistro Lab - yes it\u2019s halal.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Verify halal status of western stall at Engineering block canteen.\"]\n}\n```"
+  },
+  {
+    "author": "noirbean",
+    "comment": "Go to the neighbourhood hawker centre/coffee shop for more variety",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Go to the neighbourhood hawker centre/coffee shop for more variety\"]\n}\n```"
+  },
+  {
+    "author": "Hydrohomie1337",
+    "comment": "Is the padang at design school still there?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Effective_Gas_1295",
+    "comment": "engine canteen - western food (banmian they removed it I think?) flavours (IT) - nasi padang, ayam penye, western food design canteen - nasi padang bistro lab triplets",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [\"removal of banmian from engine canteen\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "One_Victory4291",
+    "comment": "is itas still a thing? Western there was good",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "Does this mean the animals had their necks slit and blood drained out?",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [],\n  \"complaints\": [\"Concerns about animal welfare and potential inhumane treatment\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "smoneee",
+    "comment": "Is the ban mian at eng blk halal? The one beside  western stall n the other stall. Because there is 2 red tapes on the halal sign on the sign board above the stall",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [\"Uncertainty about the halal status of a food stall due to ambiguous halal signage.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "theuselessmastermind",
+    "comment": "triplets is halal as well!",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Public_Individual_",
+    "comment": "Good to know bistro lab is halal, couldn\u2019t find the halal cert when i tried to check must\u2019ve missed it",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [\"Difficulty in locating halal certification for Bistro Lab.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Ok-Mortgage-3178",
+    "comment": "since when bistro halal",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Public_Individual_",
+    "comment": "so bistro lab is halal right? Went with a friend and she couldn\u2019t find a halal cert there",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [\"Lack of visible halal certification at Bistro Lab.\"],\n  \"suggestions\": [\"Display halal certification prominently at Bistro Lab.\"]\n}\n```"
+  },
+  {
+    "author": "smoneee",
+    "comment": "Whats itas? It bbt isit? Yes western is good affordable too",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AdAdditional194",
+    "comment": "Used to be halal months ago then they had a closure. After the reopening, saw that it was no longer halal \u2018certified\u2019. Might be a certification issue or they change ingredients to not halal but your discretion.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"administration\"],\n  \"complaints\": [\"Halal certification lost after reopening of a food establishment.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "NyandaKun",
+    "comment": "Not sure though . But do look out for the sign yea?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Ok-Mortgage-3178",
+    "comment": "bistro labs halal???",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"food\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "NyandaKun",
+    "comment": "I see thanks for checking !",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

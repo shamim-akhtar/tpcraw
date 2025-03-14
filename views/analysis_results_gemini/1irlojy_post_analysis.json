@@ -1,1 +1,1 @@
-"```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"enrolment\", \"administration\"],\n  \"complaints\": [\"Difficulty converting JPEG to JPG for passport photo\", \"Uncertainty about photo dimensions (35mm x 45mm)\", \"Fear of spot withdrawal\"],\n  \"suggestions\": []\n}\n```"
+"```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"enrolment\", \"administration\"],\n  \"complaints\": [\"Difficulty converting JPEG to JPG photo for enrolment\", \"Uncertainty about photo size (35mm x 45mm)\"],\n  \"suggestions\": []\n}\n```"

@@ -2,7 +2,7 @@
   {
     "author": "Holiday_Stick3341",
     "comment": "hey! i think engineering requires special type of laptop (can check tp website)! also can ask the staff when you buying they shld be knowledgeable abt it! but i do know that macbook is a big no no for engineering HAHHAHA",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"engineering\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Check Temasek Polytechnic's website for engineering laptop requirements\", \"Ask staff for recommendations when purchasing a laptop\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"engineering\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Check Temasek Polytechnic's website for recommended laptop specifications\", \"Ask staff for advice when purchasing a laptop\"]\n}\n```"
   },
   {
     "author": "LoadEnvironmental316",
@@ -17,7 +17,7 @@
   {
     "author": "Vinhunter666",
     "comment": "Hi I\u2019m a year 3 student here , i recommend the asus Vivo book because it\u2019s great , idk if it was offered to Mine lasted 3 years and still working fine.",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"ASUS VivoBook laptop recommendation\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"Asus VivoBook laptop recommendation\"]\n}\n```"
   },
   {
     "author": "chiikawadestroyer",

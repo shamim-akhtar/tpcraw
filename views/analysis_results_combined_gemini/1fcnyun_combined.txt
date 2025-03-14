@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["financial aid", "bursary", "administration"],  "complaints": ["Delay in bursary payment despite remittance advice indicating payment on 3/9/24.  Payment not received by 9/9/24."],  "suggestions": []}

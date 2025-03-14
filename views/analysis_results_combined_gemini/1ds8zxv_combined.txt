@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["financial aid", "bursary", "administration"],  "complaints": ["Delayed bursary disbursement", "Bursary amount less than expected", "Lack of clear communication regarding disbursement timeline", "Uncertainty about application process and timelines"],  "suggestions": []}

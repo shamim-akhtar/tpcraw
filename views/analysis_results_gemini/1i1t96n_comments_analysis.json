@@ -1,0 +1,22 @@
+[
+  {
+    "author": "wzroap",
+    "comment": "Late February, similar to JAE applicants.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "anti-anti_depressent",
+    "comment": "I got my enrollment letter the week before start of sem lol but if you are worried can just email the admissions email",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"enrollment\"],\n  \"complaints\": [\"Late enrollment letter\"],\n  \"suggestions\": [\"Email admissions for concerns\"]\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "hii, I was an EAE successful applicant last year. expect it to come between feb-april.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"admission\", \"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Substantial-Fox8858",
+    "comment": "got mine in mid feb",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

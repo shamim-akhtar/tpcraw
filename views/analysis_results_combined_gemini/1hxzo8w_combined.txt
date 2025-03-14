@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "business economics"],  "complaints": ["failed MST", "struggling to understand business economics", "lack of friends in class", "difficulty seeking help"],  "suggestions": ["share economics notes", "tips on studying economics", "identify specific areas of struggle in business economics", "grasp fundamental concepts"]}

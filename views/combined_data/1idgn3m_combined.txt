@@ -1,0 +1,26 @@
+=== POST CONTENT ===
+Title: how to do nect
+Author: 4nn4hahaha
+Score: 10
+URL: https://www.reddit.com/r/TemasekPoly/comments/1idgn3m/how_to_do_nect/
+Created: 2025-01-30 14:28:19
+Body: i was about to start on nect but i realised they never give any details about the company. how am i supposed to design the network if i know nothing about their network… and the company size etc. anyone know can help me please.
+
+
+
+=== COMMENTS ===
+Comment by hello_I_am_unknown: Based on my lecturer, you can discuss with ur group mates about ur company size, so u can choose how big or small the company is.
+
+Comment by 4nn4hahaha: do yk for part 2 network security is it for wireless or for wired network or both
+
+Comment by 4nn4hahaha: oh thank you how about the company business?? is it everything we can customise…
+
+Comment by hello_I_am_unknown: If I am not wrong, just wireless, but confirm with ur lecturer?
+
+Comment by hello_I_am_unknown: Sorry for the late reply lol, yes u can customize
+
+Comment by MusicianEffective244: Yes.
+
+Comment by Issa3_kun: Jus youtube search building network in packet tracer got loads of examples bro
+
+

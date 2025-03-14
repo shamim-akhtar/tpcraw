@@ -1,0 +1,1 @@
+{  "sentiment": "negative",  "topics": ["academic", "career/internships"],  "complaints": ["Lack of achievements to discuss in interview"],  "suggestions": []}

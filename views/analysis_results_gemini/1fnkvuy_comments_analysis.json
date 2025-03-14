@@ -1,0 +1,42 @@
+[
+  {
+    "author": "Alpha-232",
+    "comment": "Did you book the facility in advance?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "iamnothingbuta",
+    "comment": "did you give them your id",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "AlfieWo",
+    "comment": "Seriously these staff have no big achievements in life. So when they seemingly have authority, they power trip. Remember don't be like these people when you grow up...",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Staff power tripping\", \"Staff lacking significant achievements\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "CorrectWalrus9736",
+    "comment": "yep booked it like last week",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "CorrectWalrus9736",
+    "comment": "yep",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Alpha-232",
+    "comment": "I think it should be fine since the staff was just checking, and I am pretty sure the campus is open to the public, so bringing your friends should not result in any punishment.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "CorrectWalrus9736",
+    "comment": "but the facilty (futsal field) say only open to tp staff and students only which means no outsiders allowed",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"Futsal field is restricted to TP staff and students only, excluding outsiders.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Alpha-232",
+    "comment": "Oh really I didn't know about that. Hopefully they let you go this time if you explain to them not to repeat again, but the worst case will be a warning letter.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": [\"explain to avoid repetition\"]\n}\n```"
+  }
+]

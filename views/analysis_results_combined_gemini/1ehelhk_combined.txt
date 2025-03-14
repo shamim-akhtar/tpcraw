@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["academic", "career/internships", "interview preparation"],  "complaints": [],  "suggestions": ["Research course modules and Google search them for interview preparation", "Highlight resourcefulness and independent learning during the interview"]}

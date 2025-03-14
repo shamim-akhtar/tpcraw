@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["academic", "GPA"],  "complaints": ["Struggling with MAS module"],  "suggestions": ["Try to get at least a pass or C/C+ in the module and score high in other subjects", "Don't drop the subject in Year 1 as it builds fundamental knowledge", "Build up a base GPA for insurance in future semesters", "Take a break if burned out"]}

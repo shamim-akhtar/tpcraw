@@ -1,0 +1,1 @@
+{  "sentiment": "neutral",  "topics": ["campus facilities", "academic", "events"],  "complaints": ["Business canteen closed", "Long queues at Flavours canteen during peak hours"],  "suggestions": ["Careful consideration of factors when using Venn diagrams for math projects", "Consider alternative project ideas if Venn diagrams prove too challenging"]}

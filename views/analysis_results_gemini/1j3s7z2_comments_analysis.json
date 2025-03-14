@@ -7,7 +7,7 @@
   {
     "author": "Braydentann",
     "comment": "1) it is more manageable as compared to y1 as it is a foundation year 2) It is relatively easy as long as you do not slack. If u choose to be part of our CCA PFP Ambassadors, then you are expected to balance work and cca!",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"clubs/CCA\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"academic\", \"student life\", \"CCA\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "No-Scene-2942",
@@ -37,7 +37,7 @@
   {
     "author": "Braydentann",
     "comment": "For PFP, as we want you to be well prepared for the rigour, most classes have sch on all days. However, in y1, you will have lessons on days ranging from 2-5 days depending on ur sch. I suggest working on flex weeks, study week, vacation, etc. Once your timetable is out, you may reschedule your work dates if you end earlier on certain days.",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"working on flex weeks\", \"study week\", \"vacation rescheduling based on timetable\"]\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": [\"working on flex weeks\", \"study week\", \"vacation\", \"reschedule work dates if lessons end earlier on certain days\"]\n}\n```"
   },
   {
     "author": "No-Scene-2942",

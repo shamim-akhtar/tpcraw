@@ -1,1 +1,1 @@
-{  "sentiment": "negative",  "topics": ["Global Studies", "Events", "Academic"],  "complaints": ["Difficulty withdrawing from Bali Global Studies trip"],  "suggestions": []}
+{  "sentiment": "negative",  "topics": ["events", "global studies"],  "complaints": ["Difficulty withdrawing from Bali Global Studies trip"],  "suggestions": []}

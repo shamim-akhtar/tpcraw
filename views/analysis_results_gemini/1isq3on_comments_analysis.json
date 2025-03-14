@@ -2,7 +2,7 @@
   {
     "author": "brillianthues69",
     "comment": "hi i got in through jae and also haven't received it yet \ud83d\ude1e\ud83d\ude1e hopefully they'll release sometime this week",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"admission\"],\n  \"complaints\": [\"Delay in receiving admission offer letter\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"admission\", \"administration\"],\n  \"complaints\": [\"Delay in receiving admission offer\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Lazy_Conversation305",
@@ -17,7 +17,7 @@
   {
     "author": "None",
     "comment": "i haven\u2019t received it yet too, i got pharm sci through jae! they did say by end feb so still got time. also for the colour vision test, can go polyclinic if im not wrong!",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [\"Delayed acceptance letter\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "JaiKay28",
@@ -27,7 +27,7 @@
   {
     "author": "Burnt_fishh",
     "comment": "i think eae ppl get it first because mine came over a week ago! I'm pretty sure for jae ppl its gna come soon",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"application/admission\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"application process\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "v1103331",
@@ -37,12 +37,12 @@
   {
     "author": "gisa_As748",
     "comment": "I just received the enrolment email! it just came out for me!",
-    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"enrolment\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"enrollment\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Valuable_Image1098",
     "comment": "real its taking forever \ud83d\ude13\ud83d\ude13 btw what course r u in?",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"Process taking too long\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Application or process taking too long\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Valuable_Image1098",
@@ -52,7 +52,7 @@
   {
     "author": "Valuable_Image1098",
     "comment": "hi! saw on my friends form that cannot go polyclinic! has to be privahe clinic or family doctor!",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"campus facilities\"],\n  \"complaints\": [\"Restriction on using the polyclinic, requiring students to use private clinics or family doctors.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"campus facilities\"],\n  \"complaints\": [\"Restriction on using polyclinic; students have to use private clinics or family doctors.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Valuable_Image1098",
@@ -62,7 +62,7 @@
   {
     "author": "Valuable_Image1098",
     "comment": "yeaa but i saw on my friends email that they have to submit by 27 feb which is next week and some still have to go for medical checkup n stuff so like its kinda rushed yk",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [\"rushed deadline for submission\", \"short timeframe between deadline and medical checkups\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"administration\", \"events\"],\n  \"complaints\": [\"rushed deadline\", \"short timeframe between deadline and medical checkups\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Valuable_Image1098",
@@ -77,7 +77,7 @@
   {
     "author": "unknown",
     "comment": "Comment by None: OHHH! i thought it was polyclinic cause someone said to me HAHHAHA but thanks for the info! also can i ask, did they give a list of clinics can go to or any private clinic will do?",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\", \"healthcare\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "damond_27",

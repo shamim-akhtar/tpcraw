@@ -1,0 +1,37 @@
+[
+  {
+    "author": "MathematicianLoud947",
+    "comment": "It would be nice if all the male students bothered to flush the toilets after use. And not leave huge screeds of toilet paper all over the place. And try to aim better. Oh, and not hawk into the sinks then don't bother to rinse them clean. I wonder why the female toilets don't have this problem. I pity the poor cleaners.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"Male students not flushing toilets\", \"Male students leaving toilet paper all over the place\", \"Male students not aiming properly\", \"Male students hawking into sinks without rinsing\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Wild-Lengthiness7600",
+    "comment": "I thought the male toilets in tp were bad until i enlisted",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"Male toilets are bad.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "ConsiderationTasty21",
+    "comment": "male toliets everywhere r disgusting what did u expect",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"Male toilets are disgusting\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "Some females tend to pee all over the seat because they don\u2019t want their butt to touch the seat because of germs. Usually near the end of working hours or the mall closed.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"Unhygienic restroom conditions in female restrooms, specifically urine on toilet seats.\"],\n  \"suggestions\": [\"Improved cleaning frequency of restrooms\", \"Consider providing toilet seat covers\"]\n}\n```"
+  },
+  {
+    "author": "MathematicianLoud947",
+    "comment": "This is specifically about polytechnic students. I believe girls there are much cleaner than the guys, since the female toilets tend to be less filthy.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"Male students' hygiene in toilets is poor.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "None",
+    "comment": "Ye female students thankfully are more hygienic.",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\", \"students\"],\n  \"complaints\": [\"Implies a lack of hygiene among male students.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "pokkagreentea100",
+    "comment": "as a female the toilets here aren't any better \ud83d\ude2d girls pls practice proper toilet etiquette",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"Poor toilet conditions\", \"Lack of proper toilet etiquette among students\"],\n  \"suggestions\": [\"Improved toilet maintenance and hygiene\", \"Encourage better toilet etiquette among students\"]\n}\n```"
+  }
+]

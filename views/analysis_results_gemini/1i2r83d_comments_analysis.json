@@ -1,0 +1,17 @@
+[
+  {
+    "author": "mount2010",
+    "comment": "Outside the ISH at (I think block 26A), there's shower facilities Bring your own towel and make sure you have somewhere to keep your wet towel No rules far as I could tell, I know because I was there for S&W",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "randommuserrs",
+    "comment": "also can shower at the place whr swimming pool are, iirc gotta walk thru engineering block",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [\"Having to walk through the engineering block to get to the showers near the swimming pool.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "BlacksmithGloomy9448",
+    "comment": "Idk",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

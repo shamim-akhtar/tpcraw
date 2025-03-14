@@ -1,0 +1,37 @@
+[
+  {
+    "author": "aminlee9",
+    "comment": "they will use the second part of the bursary to offset any payable amount for the second semester. source: I emailed them.",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"financial aid\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "SnooCookies9235",
+    "comment": "the 2nd pay out is most likely gna come out in mid dec - start jan! they'll most likely deduct sch fees first then aftwards send us our bursary so dont worry :)",
+    "analysis": "```json\n{\n  \"sentiment\": \"positive\",\n  \"topics\": [\"financial aid\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Confident-Beat2718",
+    "comment": "Is that absolute or depends if we pay for our semester? Like for EG we pay via CPF/GIRO, they gonna use our bursary to offset first than use our preferred payment method to pay for the remaining amount?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"finance\", \"fees\"],\n  \"complaints\": [\"Uncertainty regarding bursary offsetting before preferred payment method is used.\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "aminlee9",
+    "comment": "Yea most likely they will offset first and any remainder amount will be credited to our preferred payment method.",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Confident-Beat2718",
+    "comment": "Some people say we will be getting it next year after our semester fee had been settled",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"fees\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "aminlee9",
+    "comment": "Yes. They will offset first. Any remainder amount will then be distributed next year..",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Confident-Beat2718",
+    "comment": "So its possible for the semester fees to be completely settled before the disbursement of bursary, right?",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\", \"administration\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

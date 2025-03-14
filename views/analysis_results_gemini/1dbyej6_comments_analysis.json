@@ -1,0 +1,27 @@
+[
+  {
+    "author": "Fabulous-Novel8305",
+    "comment": "clipper's barber",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "NyandaKun",
+    "comment": "You can try K-cutz if you prefer to have some Korean style hair .",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"campus facilities\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Longjumping_Prize283",
+    "comment": "Aight thanks",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "Automatic_Phone8204",
+    "comment": "K-cuts if you prefer to wear a cap for another 2 months",
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Strict hair regulations\"],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "NyandaKun",
+    "comment": "\ud83d\ude05. I\u2019m currently using undercut for the style for now .",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

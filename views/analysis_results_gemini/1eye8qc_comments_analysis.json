@@ -1,0 +1,12 @@
+[
+  {
+    "author": "Content_DeletERROR",
+    "comment": "Not sure if they are graded but they certainly contribute to your class participation marks",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  },
+  {
+    "author": "NyandaKun",
+    "comment": "No. They are not graded, but they do count for your attendance and if necessary, class participation points for being attentive to class",
+    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [],\n  \"suggestions\": []\n}\n```"
+  }
+]

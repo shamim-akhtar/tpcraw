@@ -2,12 +2,12 @@
   {
     "author": "theuselessmastermind",
     "comment": "most sports ccas are competitive and will filter based on prior experience especially if it's a really popular one, it happened with table tennis before iirc",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"sports\", \"CCAs\", \"academic\"],\n  \"complaints\": [\"Competitiveness of sports CCAs filters out students based on prior experience\", \"Difficulty in joining popular CCAs\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"sports\", \"CCAs\", \"academic\"],\n  \"complaints\": [\"Competitiveness of sports CCAs filters out students based on prior experience, making it difficult for those without prior experience to join.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "AtomZones",
     "comment": "Generally for most sports ccas, you need to already have like past competitive experience to even go for trials",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"sports\", \"clubs and societies\", \"academic\"],\n  \"complaints\": [\"High barrier to entry for sports CCAs; requiring prior competitive experience.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"events\", \"academic\", \"career/internships\"],\n  \"complaints\": [\"High barrier to entry for sports CCAs; requires prior competitive experience.\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Efficient-Video-4591",
@@ -42,11 +42,11 @@
   {
     "author": "Little-Artichoke-871",
     "comment": "Last year there was 3 trial rounds you have to pass before being able to go for their trng whr u will be on probation for 1 month. After that 1 month, there will be a final filtering process",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"career/internships\"],\n  \"complaints\": [\"Multiple trial rounds before training\", \"One-month probation period with a final filtering process\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"career/internships\", \"administration\"],\n  \"complaints\": [\"Lengthy and multi-stage selection process for training\", \"1-month probation period adds extra pressure\"],\n  \"suggestions\": []\n}\n```"
   },
   {
     "author": "Efficient-Video-4591",
     "comment": "??? Well you could make it if you were either tall, athletic or have great game sense \ud83d\udc4d (so basically try again in your next life)",
-    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Difficulty in achieving academic success, implying high barriers to entry.\"],\n  \"suggestions\": []\n}\n```"
+    "analysis": "```json\n{\n  \"sentiment\": \"negative\",\n  \"topics\": [\"academic\"],\n  \"complaints\": [\"Difficulty in getting into Temasek Polytechnic\"],\n  \"suggestions\": []\n}\n```"
   }
 ]
