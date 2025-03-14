@@ -124,6 +124,14 @@ fetch('sentiment_count.csv')
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        transitions: {
+          zoom: {
+            animation: {
+              duration: 1000,
+              easing: 'easeOutCubic'
+            }
+          }
+        },
         plugins: {
           title: {
             display: true,
@@ -146,11 +154,11 @@ fetch('sentiment_count.csv')
             zoom: {
               wheel: { enabled: true },
               pinch: { enabled: true },
-              mode: 'xy'
+              mode: 'x'
             },
             pan: {
               enabled: true,
-              mode: 'xy'
+              mode: 'x'
             }
           }
         },
