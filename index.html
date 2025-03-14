@@ -163,10 +163,10 @@ fetch('sentiment_count.csv')
                                     <p>Loading post and comments...</p>`;
 
             // Construct file URLs (adjust paths as necessary)
-            const postUrl = `../reddit_data/${clickedPostId}_post.txt`;
-            const commentsUrl = `../analysis_results_gemini/${clickedPostId}_comments_analysis.json`;
-            const summaryUrl = `../analysis_results_combined_summary_gemini/${clickedPostId}_summary.txt`;
-            const combinedUrl = `../analysis_results_combined_gemini/${clickedPostId}_combined.txt`;
+            const postUrl = `reddit_data/${clickedPostId}_post.txt`;
+            const commentsUrl = `analysis_results_gemini/${clickedPostId}_comments_analysis.json`;
+            const summaryUrl = `analysis_results_combined_summary_gemini/${clickedPostId}_summary.txt`;
+            const combinedUrl = `analysis_results_combined_gemini/${clickedPostId}_combined.txt`;
 
             // Fetch both post and comments concurrently.
             Promise.all([
