@@ -95,6 +95,11 @@ fetch('sentiment_count.csv')
       negatives.push(-negVal); // multiply by -1 so they go below zero
     });
 
+    // Get the largest absolute value
+    const maxPositive = Math.max(...positives);       // e.g. 32
+    const minNegative = Math.min(...negatives);       // e.g. -27
+    const maxAbs = Math.max(maxPositive, Math.abs(minNegative));
+
     const ctx = document.getElementById("sentimentChart").getContext("2d");
 
     // Create the chart
@@ -169,7 +174,9 @@ fetch('sentiment_count.csv')
           },
           y: {
             stacked: true,  // Enable stacking on y-axis
-            beginAtZero: true
+            beginAtZero: true,
+            min: -maxAbs,
+            max:  maxAbs
           }
         },
         
