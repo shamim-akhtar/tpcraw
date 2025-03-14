@@ -140,7 +140,8 @@ fetch('sentiment_count.csv')
         },
         scales: {
           x: {
-            stacked: true // Enable stacking on x-axis
+            stacked: true, // Enable stacking on x-axis
+            display: false
           },
           y: {
             stacked: true,  // Enable stacking on y-axis
@@ -180,11 +181,11 @@ fetch('sentiment_count.csv')
               // -- 1) Format summary text for display --
               
               const data = JSON.parse(combinedDict);
-                // Now data is a normal JS object
-              console.log(data.sentiment);    // "neutral"
-              console.log(data.topics);       // ["academic", "hardware/technology"]
-              console.log(data.complaints);   // ["poor build quality of ...", "bulky gaming laptops", ...]
-              console.log(data.suggestions);
+              //   // Now data is a normal JS object
+              // console.log(data.sentiment);    // "neutral"
+              // console.log(data.topics);       // ["academic", "hardware/technology"]
+              // console.log(data.complaints);   // ["poor build quality of ...", "bulky gaming laptops", ...]
+              // console.log(data.suggestions);
 
               // Accumulate your HTML content in this variable
               let html = "";
