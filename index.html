@@ -4,7 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Stacked Sentiment Chart</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js "></script>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -43,7 +47,8 @@
 <div id="details">Click on a bar to see details.</div>
 
 <script>
-  // Helper function to parse the post text file into an object.
+
+// Helper function to parse the post text file into an object.
 function parsePostText(text) {
   const postData = {};
   // Split by newline and process each line.
@@ -119,6 +124,14 @@ fetch('sentiment_count.csv')
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        transitions: {
+          zoom: {
+            animation: {
+              duration: 1000,
+              easing: 'easeOutCubic'
+            }
+          }
+        },
         plugins: {
           title: {
             display: true,
@@ -135,6 +148,17 @@ fetch('sentiment_count.csv')
                   return `Positive: ${value}`;
                 }
               }
+            }
+          },
+          zoom: {
+            zoom: {
+              wheel: { enabled: true },
+              pinch: { enabled: true },
+              mode: 'x'
+            },
+            pan: {
+              enabled: true,
+              mode: 'x'
             }
           }
         },
