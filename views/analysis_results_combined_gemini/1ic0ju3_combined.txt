@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "IIT (Information and IT related project likely)", "DSAG (Diploma in Software Application Development)"],  "complaints": ["Difficulty with question 6 of DSAG project", "Unhelpful or scolding tutor in DSAG project", "Poor DSAG experience"],  "suggestions": []}

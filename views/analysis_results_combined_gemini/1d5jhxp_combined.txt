@@ -1,1 +1,0 @@
-{  "sentiment": "positive",  "topics": ["academic", "career/internships", "admission"],  "complaints": [],  "suggestions": ["Check diploma offered under Higher Nitec Sports Management", "Check early admission exercise", "Ensure good GPA", "Prepare a strong portfolio relevant to aviation management", "Research aviation management", "Try applying regardless"]}

@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["campus facilities"],  "complaints": ["Lack of microwaves in the engineering block (specifically ENG block 10)", "Inconvenient location of available microwaves"],  "suggestions": []}

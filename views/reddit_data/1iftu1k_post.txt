@@ -1,6 +1,0 @@
-Title: TPConnect
-Author: jafaraq
-Score: 52
-URL: https://tpconnect.xyz
-Created: 2025-02-02 17:41:09
-Body: Hey everyone, I've been working on a little side project ( https://tpconnect.xyz) , which allows students in tp to "connect" with each other based on their course, modules they need help with etc, and allow you to chat with them and get peer tutoring or find friends etc.! It also includes a forum page where you can post about different school matters, comment etc. Give it a try and I hope to receive feedback / suggested improvements/bugs spotted! Thanks! Hope this can enhance student life in some way!

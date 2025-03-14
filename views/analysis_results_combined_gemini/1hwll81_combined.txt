@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "attendance"],  "complaints": [],  "suggestions": ["Apply MC for only one day if attending class the next day to avoid overwriting attendance"]}

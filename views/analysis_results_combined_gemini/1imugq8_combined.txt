@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "CCA", "career/internships"],  "complaints": ["Concerns about the weight of exams and projects in GPA calculation", "Regret about low GPA in the MAS module"],  "suggestions": []}

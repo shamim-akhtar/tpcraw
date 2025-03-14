@@ -1,1 +1,0 @@
-{  "sentiment": "positive",  "topics": ["campus facilities", "food", "halal food"],  "complaints": ["BizPark food quality and halal options", "Limited halal food options in some schools", "Overpriced nasi padang at Flavours", "Bizpark closure"],  "suggestions": []}

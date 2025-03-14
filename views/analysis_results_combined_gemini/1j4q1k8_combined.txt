@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "events", "orientation"],  "complaints": ["Lack of information regarding the start date of school in enrolment email"],  "suggestions": []}

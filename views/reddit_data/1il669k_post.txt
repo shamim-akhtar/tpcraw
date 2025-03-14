@@ -1,9 +1,0 @@
-Title: Gaming Laptop or Normal Laptop
-Author: Forward_Age6095
-Score: 10
-URL: https://www.reddit.com/r/TemasekPoly/comments/1il669k/gaming_laptop_or_normal_laptop/
-Created: 2025-02-09 12:01:53
-Body: I’m entering an iit course this year and idk if I should get a gaming laptop like an asus tuf f/a 16 or a hp victus 16, or just get a normal laptop like a vivo book. 
-
-these are my course’s minimum specs:
-Processor: Intel 13th generation, Core i5-13420H / AMD Ryzen 7 7840HS or aboveMemory: 16GBHard Drive: 512GBGraphic: Nvidia GeForce RTX 3050 4GB GDDR6 VRAM or above

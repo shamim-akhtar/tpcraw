@@ -1,5 +1,0 @@
-The Reddit post and its single comment center on a Temasek Polytechnic (TP) student, presumably from the Information Technology (IIT) school, seeking assistance with SAS Enterprise Miner for a project.  The commenter suggests an alternative resource, the SAS Communities online forum, for obtaining help.
-
-The overall sentiment is neutral and helpful.  There's no overt negativity toward Temasek Polytechnic itself. The post reflects a student's need for technical assistance with a specific software and a supportive comment offering an external resource. No specific facilities or aspects of the school are mentioned beyond the implicit reference to the IIT school and its curriculum involving SAS Enterprise Miner.
-
-While no direct concerns regarding TP are raised in this interaction,  a potential area for improvement could be proactively informing students of readily available external resources like SAS Communities.  Adding links to such resources on the IIT school's website or within relevant course materials might prevent similar posts seeking assistance and streamline the learning process for students.

@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["financial aid", "bursary", "school fees", "administration"],  "complaints": ["Delay in bursary payout", "School fees invoice does not reflect bursary deduction", "Bursary payout is slower than school fees invoice"],  "suggestions": ["Check with the general office"]}

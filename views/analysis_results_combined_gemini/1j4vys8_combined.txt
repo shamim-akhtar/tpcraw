@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "computer engineering", "course materials", "technology"],  "complaints": ["phone screen too small for class materials"],  "suggestions": ["buy a tablet for accessing class materials and completing work while traveling", "refer to course webpage for recommended specs", "consider the weight of physical notes"]}

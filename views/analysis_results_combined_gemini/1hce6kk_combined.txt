@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["administration", "financial aid"],  "complaints": ["Delay in disbursement of bursary"],  "suggestions": []}

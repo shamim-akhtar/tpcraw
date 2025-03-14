@@ -1,6 +1,0 @@
-Title: how do i check if my fees are paid
-Author: Aggressive_Banana397
-Score: 3
-URL: https://www.reddit.com/r/TemasekPoly/comments/1djyf7z/how_do_i_check_if_my_fees_are_paid/
-Created: 2024-06-20 08:21:35
-Body: I made an axs transaction via the website but after the payment, the outstanding balance is still there on the website, is there a different place to check if my fees are paid or not? Like oss or somethinf
