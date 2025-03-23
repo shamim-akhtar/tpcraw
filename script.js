@@ -71,8 +71,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     // Apply the IIT vs Poly filter
     if (isIitChecked) {
-        // If checkbox is checked, show only iit == "yes"
-        q = query(q, where('iit', '==', 'yes'));
+      // If checkbox is checked, show only iit == "yes"
+      q = query(q, where('iit', '==', 'yes'));
     } 
 
     // Fetch posts
@@ -328,6 +328,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
       allPostsData = await fetchPostsInRange(); // store globally
       console.log("Data fetched from Firestore:", allPostsData);
+
+      // 1. Calculate the average weighted sentiment
+      if (allPostsData.length > 0) {
+        const sum = allPostsData.reduce((acc, post) => acc + post.weightedSentimentScore, 0);
+        const avg = sum / allPostsData.length;
+
+        // Display in the UI
+        const avgElement = document.getElementById("averageWeightedScore");
+        avgElement.textContent = `Average Weighted Sentiment Score: ${avg.toFixed(2)}`;
+      } 
+      else {
+        // If no posts are returned, show a message or reset it
+        document.getElementById("averageWeightedScore").textContent = 
+          "No posts found for this filter/date range.";
+      }
 
       // Render Weighted Sentiment chart
       renderWeightedSentimentChart(allPostsData);
