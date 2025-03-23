@@ -14,7 +14,11 @@ body {
   }
   
   .controls {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;   /* centers the .controls container */
     padding: 10px 20px;
+    /* optionally also a margin-bottom if you wish */
   }
   
   .date-range {
@@ -59,5 +63,49 @@ body {
     border: 1px solid #ccc;
     padding: 8px;
     text-align: left;
+  }
+
+  .chart-section canvas {
+    border: 2px solid #ccc;
+    padding: 5px;
+  }
+  
+  .post-count-section {
+    width: 90%;
+    max-width: 1200px;
+    margin: 10px auto;
+    text-align: left; /* left aligns the container */
+  }
+  
+  #postCount {
+    width: 150px;         /* fixed square dimensions */
+    height: 150px;
+    border: 2px solid #ccc;
+    box-sizing: border-box;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .postCount-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .postCount-hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 5px 0;
+  }
+  
+  .postCount-number {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
   }
   

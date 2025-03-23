@@ -73,6 +73,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (isIitChecked) {
       // If checkbox is checked, show only iit == "yes"
       q = query(q, where('iit', '==', 'yes'));
+      console.log("IIT option checked");
     } 
 
     // Fetch posts
@@ -329,6 +330,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       allPostsData = await fetchPostsInRange(); // store globally
       console.log("Data fetched from Firestore:", allPostsData);
 
+      // Update the Post Count box with the number of posts
+      document.querySelector("#postCount .postCount-number").textContent = allPostsData.length;
+
+
       // 1. Calculate the average weighted sentiment
       if (allPostsData.length > 0) {
         const sum = allPostsData.reduce((acc, post) => acc + post.weightedSentimentScore, 0);
@@ -340,8 +345,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       } 
       else {
         // If no posts are returned, show a message or reset it
-        document.getElementById("averageWeightedScore").textContent = 
-          "No posts found for this filter/date range.";
+        document.getElementById("averageWeightedScore").textContent = "No posts found for this filter/date range.";
       }
 
       // Render Weighted Sentiment chart
@@ -353,7 +357,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       // By default, show "Lowest 10 Weighted Sentiment Posts"
       postListDropdown.value = 'lowestWs';
       renderPostList(allPostsData, 'lowestWs');
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Error building charts:", error);
     }
   }
