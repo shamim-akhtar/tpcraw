@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Sentiment Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Load Chart.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <!-- Link to our ES module script -->
+  <script type="module" src="script.js"></script>
 </head>
 <body>
   <header>
@@ -14,24 +20,56 @@
   <section class="controls">
     <div class="date-range">
       <label for="start-date">Start Date:</label>
-      <input type="date" id="start-date" value="2025-01-01" />
-
+      <input type="date" id="start-date" value="2025-01-01">
+      
       <label for="end-date">End Date:</label>
-      <input type="date" id="end-date" />
-
+      <input type="date" id="end-date">
+      
+      <!-- New checkbox for toggling IIT vs Poly -->
+      <label for="iit-filter">IIT</label>
+      <input type="checkbox" id="iit-filter">
+  
       <button id="filter-btn">Filter</button>
     </div>
   </section>
+  
 
-  <section class="posts-info">
-    <div id="posts-count">Total Posts: 0</div>
+  <!-- Chart Container -->
+  <!-- <section class="chart-section">
+    <canvas id="sentimentChart"></canvas>
+  </section> -->
+  <!-- Chart Container -->
+  <section class="chart-section">
+    <!-- Set the canvas width to 1200 and optionally a matching inline style -->
+    <canvas
+      id="weightedSentimentChart"
+    ></canvas>
+  </section>
+  
+  <section class="chart-section">
+    <!-- Set the canvas width to 1200 and optionally a matching inline style -->
+    <canvas
+      id="engagementScoreChart"
+    ></canvas>
   </section>
 
-  <section class="posts-list" id="posts-list">
-    <!-- Posts go here -->
-  </section>
+  <!-- Card Section with dropdown & table -->
+  <section class="card-section">
+    <div class="card">
+      <h2>Post List</h2>
+      <label for="postListDropdown">Select View:</label>
+      <select id="postListDropdown">
+        <option value="topEngaged">Top 10 Engaged Posts</option>
+        <option value="lowestWs">Lowest 10 Weighted Sentiment Posts</option>
+        <option value="lowestRaw">Lowest 10 Raw Sentiment Posts</option>
+        <option value="highestWs">Highest 10 Weighted Sentiment Posts</option>
+        <option value="highestRaw">Highest 10 Raw Sentiment Posts</option>
+        <option value="recentPosts">Top 10 Most Recent Posts</option>
+      </select>
 
-  <!-- Script uses ES Modules -->
-  <script type="module" src="script.js"></script>
+      <!-- Table container -->
+      <div id="postListContainer"></div>
+    </div>
+  </section>
 </body>
 </html>

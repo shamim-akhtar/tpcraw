@@ -1,4 +1,4 @@
-// script.js
+// --- Import only what you need from Firebase SDKs (Modular v9) ---
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js';
 import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.21.0/firebase-analytics.js';
 import {
@@ -10,8 +10,10 @@ import {
   getDocs
 } from 'https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js';
 
-// 1. Set default end date to today as soon as the DOM is loaded
+console.log("Script is loaded and running.");
+
 document.addEventListener('DOMContentLoaded', async () => {
+  // 1. Set default end date to today's date
   const endDateInput = document.getElementById('end-date');
   endDateInput.value = new Date().toISOString().split('T')[0];
 
@@ -28,101 +30,322 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 3. Initialize Firebase
   const app = initializeApp(firebaseConfig);
-  getAnalytics(app);
+  const analytics = getAnalytics(app);
 
-  // 4. Get Firestore reference
+  // 4. Firestore instance
   const db = getFirestore(app);
 
-  // 5. Filter function
-  async function fetchAndRenderPosts() {
-    // Get start/end dates
+  // 5. Chart references
+  let weightedSentimentChart = null;
+  let engagementScoreChart = null;
+
+  // 6. Global array to store fetched posts
+  let allPostsData = [];
+
+  // ----------------------------
+  // FETCH FIRESTORE POSTS
+  // ----------------------------
+  async function fetchPostsInRange() {
+    console.log("fetchPostsInRange() called");
+
     const startDateValue = document.getElementById('start-date').value;
     const endDateValue = document.getElementById('end-date').value;
 
+    // Get checkbox value
+    const iitCheckbox = document.getElementById('iit-filter');
+    const isIitChecked = iitCheckbox.checked;
+
     const startDate = new Date(startDateValue);
     const endDate = new Date(endDateValue);
-    endDate.setHours(23, 59, 59, 999); // include the entire end date
+    // Include the entire end date
+    endDate.setHours(23, 59, 59, 999);
 
-    // Build base query: from collection('posts'), order by 'created' descending
-    let q = query(
-      collection(db, 'posts'),
-      orderBy('created', 'desc')
-    );
+    // Build query to 'posts'
+    let q = query(collection(db, 'posts'), orderBy('created', 'desc'));
 
-    // If user specified a start date
     if (startDateValue) {
-      // Firestore requires Timestamps or Date objects to compare
       q = query(q, where('created', '>=', startDate));
     }
-
-    // If user specified an end date
     if (endDateValue) {
       q = query(q, where('created', '<=', endDate));
     }
+    // Apply the IIT vs Poly filter
+    if (isIitChecked) {
+        // If checkbox is checked, show only iit == "yes"
+        q = query(q, where('iit', '==', 'yes'));
+    } 
 
-    // Execute the query
+    // Fetch posts
     const snapshot = await getDocs(q);
-    const posts = [];
-    snapshot.forEach((docSnap) => {
-      const data = docSnap.data();
-      posts.push(data);
-    });
+    console.log("Fetched posts, snapshot size:", snapshot.size);
 
-    renderPosts(posts);
-  }
+    // Build the data array
+    const dataArray = [];
+    snapshot.forEach(postDoc => {
+      const postData = postDoc.data();
+      const postId = postDoc.id;
+      const postTitle = postData.title || "No Title";
 
-  // 6. Render posts to the DOM
-  function renderPosts(posts) {
-    document.getElementById('posts-count').textContent = `Total Posts: ${posts.length}`;
-    const postsList = document.getElementById('posts-list');
-    postsList.innerHTML = '';
+      // Weighted sentiment
+      const weightedScore = postData.weightedSentimentScore || 0;
 
-    posts.forEach((post) => {
-      // Create a "card"
-      const card = document.createElement('div');
-      card.classList.add('card');
+      // Engagement score
+      const engagementScore = postData.engagementScore || 0;
 
-      // Title
-      const h3 = document.createElement('h3');
-      h3.textContent = post.title || 'No Title';
-      card.appendChild(h3);
+      // Raw sentiment (assumes a field 'rawSentimentScore' in each doc)
+      const rawSentiment = postData.rawSentimentScore || 0;
+      const category = postData.category || "";
 
-      // Created date
-      let formattedDate = 'N/A';
-      if (post.created?.seconds) {
-        // If stored as a Firestore timestamp
-        const createdMs = post.created.seconds * 1000;
-        formattedDate = new Date(createdMs).toLocaleString();
-      } else if (post.created) {
-        // If stored as a JS date
-        formattedDate = new Date(post.created).toLocaleString();
+      // Attempt to read 'created' as a JS Date (if it's a Firestore Timestamp)
+      let createdDate = postData.created;
+      if (createdDate && createdDate.toDate) {
+        createdDate = createdDate.toDate();
       }
 
-      // Info
-      const info = document.createElement('div');
-      info.innerHTML = `
-        <p>Created: ${formattedDate}</p>
-        <p>Weighted Sentiment: ${post.weightedSentimentScore ?? 'N/A'}</p>
-        <p>Raw Sentiment: ${post.rawSentimentScore ?? 'N/A'}</p>
-        <p>Emotion: ${post.emotion ?? 'N/A'}</p>
-        <p>Category: ${post.category ?? 'N/A'}</p>
-        <p>IIT: ${post.iit ?? 'N/A'}</p>
-        <p>Engagement Score: ${post.engagementScore ?? 'N/A'}</p>
-        <p>Summary: ${post.summary ?? 'N/A'}</p>
-        <p>
-          Positive: ${post.commentSentimentCounts?.positive ?? 0},
-          Negative: ${post.commentSentimentCounts?.negative ?? 0}
-        </p>
-      `;
-      card.appendChild(info);
+      dataArray.push({
+        postId,
+        title: postTitle,
+        category: category,
+        weightedSentimentScore: weightedScore,
+        engagementScore: engagementScore,
+        rawSentimentScore: rawSentiment,
+        created: createdDate,  // store as JS Date if possible
+        postDetails: postData
+      });
+    });
 
-      postsList.appendChild(card);
+    return dataArray;
+  }
+
+  // ----------------------------
+  // CHART 1: WEIGHTED SENTIMENT
+  // ----------------------------
+  function renderWeightedSentimentChart(data) {
+    console.log("Rendering Weighted Sentiment Chart with data:", data);
+
+    const labels = data.map(item => item.title);
+    const weightedScores = data.map(item => item.weightedSentimentScore);
+
+    // Color each bar: red if negative, green if >= 0
+    const backgroundColors = weightedScores.map(score =>
+      score < 0
+        ? 'rgba(255, 99, 132, 0.8)'  // red
+        : 'rgba(75, 192, 192, 0.8)'  // green
+    );
+
+    // Destroy existing chart if it exists
+    if (weightedSentimentChart) {
+      weightedSentimentChart.destroy();
+    }
+
+    const ctx = document.getElementById('weightedSentimentChart').getContext('2d');
+    weightedSentimentChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Weighted Sentiment Score',
+          data: weightedScores,
+          backgroundColor: backgroundColors
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
+        },
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const barIndex = elements[0].index;
+            const item = data[barIndex];
+            alert(
+              `Post Title: ${item.title}\n` +
+              `Category: ${item.category}\n` +
+              `Emotion: ${item.emotion}\n` +
+              `Engagement Score: ${item.engagementScore}\n` +
+              `IIT Related: ${item.iit}\n` +
+              `Raw Sentiment Score: ${item.rawSentimentScore}\n` +
+              `Summary: ${item.summary}\n` +
+              `Weighted Score: ${item.weightedSentimentScore}\n` +
+              `Created: ${item.created}`
+            );
+          }
+        }
+      }
     });
   }
 
-  // 7. Hook up the "Filter" button
-  document.getElementById('filter-btn').addEventListener('click', fetchAndRenderPosts);
+  // ----------------------------
+  // CHART 2: ENGAGEMENT SCORE
+  // ----------------------------
+  function renderEngagementScoreChart(data) {
+    console.log("Rendering Engagement Score Chart with data:", data);
 
-  // 8. Fetch posts on page load
-  fetchAndRenderPosts();
+    const labels = data.map(item => item.title);
+    const engagementScores = data.map(item => item.engagementScore);
+
+    // For example, color all engagement bars purple
+    const backgroundColors = engagementScores.map(() => 'rgba(153, 102, 255, 0.8)');
+
+    // Destroy existing chart if it exists
+    if (engagementScoreChart) {
+      engagementScoreChart.destroy();
+    }
+
+    const ctx = document.getElementById('engagementScoreChart').getContext('2d');
+    engagementScoreChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Engagement Score',
+          data: engagementScores,
+          backgroundColor: backgroundColors
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
+        },
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const barIndex = elements[0].index;
+            const item = data[barIndex];
+            alert(
+              `Post Title: ${item.title}\n` +
+              `Engagement Score: ${item.engagementScore}\n` +
+              `Created: ${item.created}`
+            );
+          }
+        }
+      }
+    });
+  }
+
+  // ----------------------------
+  // POST LIST DROPDOWN / TABLE
+  // ----------------------------
+
+  // Re-render the table whenever the dropdown changes
+  const postListDropdown = document.getElementById('postListDropdown');
+  postListDropdown.addEventListener('change', () => {
+    renderPostList(allPostsData, postListDropdown.value);
+  });
+
+  // This function sorts/filters the data to get 10 items, then displays them in a table
+  function renderPostList(data, listType) {
+    console.log("Rendering post list:", listType);
+
+    // Sort/filter logic
+    let selectedPosts = [...data]; // shallow copy so we don't mutate original
+
+    switch (listType) {
+      case 'topEngaged':
+        // Sort descending by engagementScore, then take top 10
+        selectedPosts.sort((a, b) => b.engagementScore - a.engagementScore);
+        selectedPosts = selectedPosts.slice(0, 10);
+        break;
+
+      case 'lowestWs':
+        // Sort ascending by weightedSentimentScore, take first 10
+        selectedPosts.sort((a, b) => a.weightedSentimentScore - b.weightedSentimentScore);
+        selectedPosts = selectedPosts.slice(0, 10);
+        break;
+
+      case 'lowestRaw':
+        // Sort ascending by rawSentimentScore, take first 10
+        selectedPosts.sort((a, b) => a.rawSentimentScore - b.rawSentimentScore);
+        selectedPosts = selectedPosts.slice(0, 10);
+        break;
+
+      case 'highestWs':
+        // Sort descending by weightedSentimentScore, take top 10
+        selectedPosts.sort((a, b) => b.weightedSentimentScore - a.weightedSentimentScore);
+        selectedPosts = selectedPosts.slice(0, 10);
+        break;
+
+      case 'highestRaw':
+        // Sort descending by rawSentimentScore, take top 10
+        selectedPosts.sort((a, b) => b.rawSentimentScore - a.rawSentimentScore);
+        selectedPosts = selectedPosts.slice(0, 10);
+        break;
+
+      case 'recentPosts':
+        // Sort descending by created date (most recent first), top 10
+        selectedPosts.sort((a, b) => new Date(b.created) - new Date(a.created));
+        selectedPosts = selectedPosts.slice(0, 10);
+        break;
+      
+      default:
+        // Just in case
+        selectedPosts = [];
+        break;
+    }
+
+    // Build table HTML
+    const tableHtml = buildPostsTable(selectedPosts);
+
+    // Insert table into the page
+    const container = document.getElementById('postListContainer');
+    container.innerHTML = tableHtml;
+  }
+
+  // Helper function: build an HTML table from a list of posts
+  function buildPostsTable(posts) {
+    let html = `
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Weighted Score</th>
+            <th>Engagement Score</th>
+            <th>Raw Sentiment</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+    for (const p of posts) {
+      html += `
+        <tr>
+          <td>${p.title}</td>
+          <td>${p.weightedSentimentScore.toFixed(2)}</td>
+          <td>${p.engagementScore.toFixed(2)}</td>
+          <td>${p.rawSentimentScore.toFixed(2)}</td>
+          <td>${p.created}</td>
+        </tr>
+      `;
+    }
+    html += `</tbody></table>`;
+    return html;
+  }
+
+  // ----------------------------
+  // MAIN: FETCH DATA, RENDER CHARTS & DEFAULT LIST
+  // ----------------------------
+  async function updateCharts() {
+    try {
+      allPostsData = await fetchPostsInRange(); // store globally
+      console.log("Data fetched from Firestore:", allPostsData);
+
+      // Render Weighted Sentiment chart
+      renderWeightedSentimentChart(allPostsData);
+
+      // Render Engagement Score chart
+      renderEngagementScoreChart(allPostsData);
+
+      // By default, show "Lowest 10 Weighted Sentiment Posts"
+      postListDropdown.value = 'lowestWs';
+      renderPostList(allPostsData, 'lowestWs');
+    } catch (error) {
+      console.error("Error building charts:", error);
+    }
+  }
+
+  // 10. Filter button event
+  document.getElementById('filter-btn').addEventListener('click', updateCharts);
+
+  // 11. Initial load
+  updateCharts();
 });
