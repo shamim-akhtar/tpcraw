@@ -33,7 +33,7 @@
     </div>
   </section>
 
-  <section class="post-count-section" style="display: flex; gap: 20px;">
+  <!-- <section class="post-count-section" style="display: flex; gap: 20px;">
     <div id="postCount" style="width: 170px; height: 150px; border: 1px solid #ccc; box-sizing: border-box; padding: 5px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
       <div class="postCount-title">Posts</div>
       <hr class="postCount-hr">
@@ -41,7 +41,7 @@
     </div>
 
     <div id="avgWeightedScoreBox" style=
-        "width: 170px; height: 150px; 
+        "width: 150px; height: 150px; 
         border: 1px solid #ccc; 
         box-sizing: border-box; 
         padding: 5px; 
@@ -51,23 +51,45 @@
         align-items: center;">
       <div class="postCount-title">Sentiment</div>
       <hr class="postCount-hr">
-      <!-- <div id="avgWeightedScoreNumber" class="postCount-number">0.00</div> -->
+      <div id="avgWeightedScoreNumber" class="postCount-number">0.00</div>
     </div>
 
-    <!-- Pie Chart box -->
     <div id="sentimentPieBox" style="
-        width: 170px; height: 150px; 
+        width: 150px; height: 150px; 
         border: 1px solid #ccc; 
         box-sizing: border-box; 
         padding: 5px; 
         display: flex; 
         flex-direction: column; 
         justify-content: center; 
+        flex: none;
         align-items: center;">
       <div class="postCount-title">Sentiments</div>
       <hr class="postCount-hr">
-      <!-- <canvas id="sentimentPieChart" style="width:60px; height:60px;"></canvas> -->
+      <canvas id="sentimentPieChart" style="width:100px; height:100px;"></canvas>
     </div>
+  </section> -->
+
+  <section class="post-count-section" style="display: flex; gap: 20px;">
+
+    <div id="postCount" class="dashboard-box">
+      <div class="postCount-title">Posts</div>
+      <!-- <hr class="postCount-hr"> -->
+      <div class="postCount-number">0</div>
+    </div>
+  
+    <div id="avgWeightedScoreBox" class="dashboard-box">
+      <div class="postCount-title">Sentiment</div>
+      <!-- <hr class="postCount-hr"> -->
+      <div id="avgWeightedScoreNumber" class="postCount-number">0.00</div>
+    </div>
+  
+    <div id="sentimentPieBox" class="dashboard-box" style="--content-top: 45px; --content-left: 20px">
+      <div class="postCount-title">Sentiments</div>
+      <!-- <hr class="postCount-hr"> -->
+      <canvas id="sentimentPieChart" style="width:100px; height:100px;"></canvas>
+    </div>
+  
   </section>
 
 

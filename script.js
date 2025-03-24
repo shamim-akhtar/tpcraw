@@ -344,7 +344,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.sentimentPieChartInstance = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['Positive (%)', 'Neutral (%)', 'Negative (%)'],
+        labels: ['Pos', 'Neu', 'Neg'],
         datasets: [{
           data: [positivePercent, neutralPercent, negativePercent],
           backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
@@ -355,7 +355,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         plugins: {
           legend: {
             display: false,
-            position: 'right' // Legends positioned to the right
+            position: 'left' // Legends positioned to the right
           },
           tooltip: {
             callbacks: {
@@ -366,8 +366,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
     // Explicitly set canvas size via JS (you can adjust these as needed)
-    ctx.canvas.width = 80; // desired width in pixels
-    ctx.canvas.height = 80; // desired height in pixels
+    ctx.canvas.width = 100; // desired width in pixels
+    ctx.canvas.height = 100; // desired height in pixels
   }
   
 

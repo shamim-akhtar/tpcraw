@@ -1,17 +1,5 @@
-# FIRST set environment variables explicitly to disable gRPC and use REST transport
-import os
-import certifi
-
-# os.environ['GOOGLE_CLOUD_DISABLE_GRPC'] = 'true'
-# os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
-
-# Now import certifi AFTER setting os.environ
-
 import firebase_admin
 from firebase_admin import credentials, firestore
-
-# Set explicit certificates for REST transport
-os.environ['REQUESTS_CA_BUNDLE'] = certifi.where()
 
 def init_firebase():
     cred = credentials.Certificate("firebase-credentials.json")
