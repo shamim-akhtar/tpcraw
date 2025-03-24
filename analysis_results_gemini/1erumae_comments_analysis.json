@@ -1,7 +1,0 @@
-[
-  {
-    "author": "_potatostick",
-    "comment": "same but they let me login during checkout anyways even tho couldn\u2019t recognise my palm",
-    "analysis": "```json\n{\n  \"sentiment\": \"neutral\",\n  \"topics\": [\"administration\", \"campus facilities\"],\n  \"complaints\": [\"Palm recognition system malfunctioned during checkout.\"],\n  \"suggestions\": []\n}\n```"
-  }
-]

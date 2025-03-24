@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "network engineering"],  "complaints": [],  "suggestions": ["ask your lecturer"]}

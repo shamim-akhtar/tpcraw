@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "administration"],  "complaints": ["Incompetent teachers/lecturers", "Lack of teacher knowledge/skill in creating learning materials", "Poor quality of education (IIT specifically mentioned as a 'shithole')"],  "suggestions": []}

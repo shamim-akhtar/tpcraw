@@ -3,380 +3,175 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Sentiment Analysis</title>
-  
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js "></script>
-
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 20px;
-    }
-    h1 {
-      margin-bottom: 20px;
-    }
-    #chart-container {
-      width: 80%;
-      height: 500px;
-      max-width: 1200px;
-      margin: auto;
-    }
-    canvas {
-      width: 100% !important;
-      height: 100% !important;
-    }
-    #details {
-      margin-top: 20px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #333;
-    }
-    #about {
-      margin-top: 20px;
-      font-size: 12px;
-      font-weight: normal;
-      color: #2b2929;
-      max-width: 1200px;
-      text-align: center;
-    }
-  </style>
+  <title>Sentiment Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="script.js"></script>
 </head>
 <body>
+  <header>
+    <h1>r/TemasekPoly Sentiment Dashboard</h1>
+  </header>
 
-<h1>TemasekPoly Reddit Sentiment Analysis</h1>
+  <section class="controls">
+    <div class="date-range">
+      <label for="start-date">Start Date:</label>
+      <input type="date" id="start-date" value="2025-01-01">
 
-<div id="chart-container">
-  <canvas id="sentimentChart"></canvas>
-</div>
+      <label for="end-date">End Date:</label>
+      <input type="date" id="end-date">
 
-<div id="details">Click on a bar to see details.</div>
-<!-- <div id ="about">This Stacked Sentiment Chart provides a visual analysis of Reddit discussions 
-  related to Temasek Polytechnic, extracted from the r/TemasekPoly subreddit. 
-  The data is collected and processed using AI-driven sentiment analysis, categorizing 
-  comments into positive and negative sentiments.</div> -->
+      <label for="iit-filter">IIT</label>
+      <input type="checkbox" id="iit-filter" checked>
 
-<script>
+      <button id="filter-btn">Filter</button>
+    </div>
+  </section>
 
-// Helper function to parse the post text file into an object.
-function parsePostText(text) {
-  const postData = {};
-  // Split by newline and process each line.
-  text.split("\n").forEach(line => {
-    // Split on the first colon only.
-    const parts = line.split(/:(.+)/); // This splits into at most two parts.
-    if (parts.length >= 2) {
-      const key = parts[0].trim();
-      const value = parts[1].trim();
-      postData[key] = value;
-    }
-  });
-  return postData;
-}
+  <div class="main-container" style="display:flex; gap:20px; padding:20px; box-sizing:border-box;">
 
-function cleanJsonString(maybeMarkdownJson) {
-  // Remove all occurrences of triple backticks and optional "json", then trim the result.
-  return maybeMarkdownJson.replace(/```(json)?/gi, '').trim();
-}
+    <!-- Left Div (Boxes) -->
+    <div class="left-div" style="flex:1; display:flex; flex-direction:column; gap:20px;">
 
-function formatTextAsHtml(text) {
-    return text.replace(/\n/g, "<br>");
-}
+      <div style="display:flex; gap:20px;">
+        <div id="postCount" class="dashboard-box">
+          <div class="postCount-title">Posts</div>
+          <div class="postCount-number">0</div>
+        </div>
 
-fetch('sentiment_count.csv')
-  .then(response => response.text())
-  .then(csvText => {
-    // Convert CSV to arrays
-    const rows = csvText.split("\n").slice(1);
-    const labels = [], positives = [], negatives = [];
+        <div id="commentsCount" class="dashboard-box">
+          <div class="postCount-title">Comments</div>
+          <div id="commentsCountNumber" class="postCount-number">0.00</div>
+        </div>  
+      </div>
 
-    rows.forEach(row => {
-      // skip empty lines
-      if (!row.trim()) return;
-      const [postId, pos, neg] = row.split(",");
-      labels.push(postId.trim());
+      <div id="avgWeightedScoreBox" class="dashboard-box-wide">
+        <div class="postCount-title">Avg Weighted Sentiment</div>
+        <div id="avgWeightedScoreNumber" class="postCount-number-wide">0.00</div>
+      </div>
 
-      // Parse numeric values
-      const posVal = parseInt(pos, 10);
-      const negVal = parseInt(neg, 10);
+      <div id="sentimentPieBox" class="dashboard-box-large" style="--content-top:45px; --content-left:20px;">
+        <div class="postCount-title-large">Sentiments Distribution</div>
+        <canvas id="sentimentPieChart" style="width:260px; height:260px;"></canvas>
+      </div>
 
-      // For a stacked bar, we keep positives as positive and negatives as negative
-      positives.push(posVal);
-      negatives.push(-negVal); // multiply by -1 so they go below zero
-    });
+    </div>
 
-    // Get the largest absolute value
-    const maxPositive = Math.max(...positives);       // e.g. 32
-    const minNegative = Math.min(...negatives);       // e.g. -27
-    const maxAbs = Math.max(maxPositive, Math.abs(minNegative));
+    <!-- Right Div (Charts) -->
+    <div class="right-div" style="flex:3; display:flex; flex-direction:column;">
 
-    const ctx = document.getElementById("sentimentChart").getContext("2d");
+      <div class="tab-container">
+        <button class="tab-button active" data-tab="weightedTab">Weighted Sentiment per Post</button>
+        <button class="tab-button" data-tab="stackedTab">Comment Sentiments per Post</button>
+        <button class="tab-button" data-tab="totalCommentsTab">Comments per Post</button>
+        <button class="tab-button" data-tab="engagementTab">Engagement Score per Post</button>
+        <button class="tab-button" data-tab="topPosts">Top 10 Posts</button>
+      </div>
 
-    // Create the chart
-    const sentimentChart = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: "Negative",
-            data: negatives,
-            backgroundColor: "rgba(255, 0, 0, 0.6)", 
-            borderColor: "rgba(200, 0, 0, 1)",
-            borderWidth: 1,
-            stack: 'sentiment'  // This key ensures stacking with Positive
-          },
-          {
-            label: "Positive",
-            data: positives,
-            backgroundColor: "rgba(0, 200, 0, 0.6)",
-            borderColor: "rgba(0, 150, 0, 1)",
-            borderWidth: 1,
-            stack: 'sentiment'  // Same stack ID to group them together
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        transitions: {
-          zoom: {
-            animation: {
-              duration: 1000,
-              easing: 'easeOutCubic'
-            }
-          }
-        },
-        plugins: {
-          title: {
-            display: true,
-            text: 'Sentiment (Positive vs Negative)',
-            font: { size: 18 }
-          },
-          tooltip: {
-            callbacks: {
-              label: function(tooltipItem) {
-                const value = tooltipItem.raw;
-                if (value < 0) {
-                  return `Negative: ${Math.abs(value)}`;
-                } else {
-                  return `Positive: ${value}`;
-                }
-              }
-            }
-          },
-          zoom: {
-            zoom: {
-              wheel: { enabled: true },
-              pinch: { enabled: true },
-              mode: 'x'
-            },
-            pan: {
-              enabled: true,
-              mode: 'x'
-            }
-          }
-        },
-        scales: {
-          x: {
-            stacked: true, // Enable stacking on x-axis
-            display: false
-          },
-          y: {
-            stacked: true,  // Enable stacking on y-axis
-            beginAtZero: true,
-            min: -maxAbs,
-            max:  maxAbs
-          }
-        },
-        
-        onClick: (event, elements) => {
-          if (elements.length > 0) {
-            const index = elements[0].index;
-            const clickedPostId = labels[index];
-            const posCount = positives[index];
-            const negCount = Math.abs(negatives[index]);
-            const detailsDiv = document.getElementById("details");
+      <section id="weightedTab" class="chart-section tab-content active">
+        <!-- <h3>Weighted Sentiment Score for Posts</h3> -->
+        <canvas id="weightedSentimentChart"></canvas>
+        <p style="font-size:small; text-align:left; max-width:1200px; margin:5px auto;">
+          This chart shows Weighted Sentiment Scores for posts based on selected filters. 
+          Each score combines sentiment polarity with engagement, giving more weight to 
+          popular posts. Positive scores reflect favorable sentiment; negative scores 
+          highlight critical feedback.
+        </p>
+      </section>
 
-            // Show initial header and loading message.
-            detailsDiv.innerHTML = `<p style="text-align: center; font-weight: bold;">
-                                      📌 ${clickedPostId} — Positive: ${posCount}, Negative: ${negCount}
-                                    </p>
-                                    <p>Loading post and comments...</p>`;
+      <section id="stackedTab" class="chart-section tab-content" style="display:none;">
+        <!-- <h3>Stacked Sentiment Chart</h3> -->
+        <canvas id="stackedSentimentChart"></canvas>
+        <p style="font-size:small; text-align:left; max-width:1200px; margin:5px auto;">
+          This stacked sentiment chart shows the positive (green) and negative (red) 
+          comment sentiments for each post in the selected date range. More green means 
+          a favorable response; more red indicates negative feedback. Use it to quickly 
+          gauge sentiment trends.
+        </p>
+      </section>
+      
 
-            // Construct file URLs (adjust paths as necessary)
-            const postUrl = `https://shamim-akhtar.github.io/tpcraw/reddit_data/${clickedPostId}_post.txt`;
-            const commentsUrl = `https://shamim-akhtar.github.io/tpcraw/analysis_results_gemini/${clickedPostId}_comments_analysis.json`;
-            const summaryUrl = `https://shamim-akhtar.github.io/tpcraw/analysis_results_combined_summary_gemini/${clickedPostId}_summary.txt`;
-            const combinedUrl = `https://shamim-akhtar.github.io/tpcraw/analysis_results_combined_gemini/${clickedPostId}_combined.txt`;
+      <section id="totalCommentsTab" class="chart-section tab-content" style="display:none;">
+        <!-- <h3>Stacked Sentiment Chart</h3> -->
+        <canvas id="totalCommentsChart"></canvas>
+        <p style="font-size:small; text-align:left; max-width:1200px; margin:5px auto;">
+          This chart uses purple bars to show the number of comments per post—taller bars mean higher 
+          engagement. Click a bar to view the post title and date for quick insights into popular content.
+        </p>
+      </section>
+      
 
-            // Fetch both post and comments concurrently.
-            Promise.all([
-              fetch(summaryUrl).then(resp => resp.text()),
-              fetch(postUrl).then(resp => resp.text()),
-              fetch(commentsUrl).then(resp => resp.text()),
-              fetch(combinedUrl).then(resp => resp.text())
-            ])
-            .then(([summaryText, postText, commentsTextOrig, combinedDict]) => {
-              
-              // -- 1) Format summary text for display --
-              
-              const data = JSON.parse(combinedDict);
-              //   // Now data is a normal JS object
-              // console.log(data.sentiment);    // "neutral"
-              // console.log(data.topics);       // ["academic", "hardware/technology"]
-              // console.log(data.complaints);   // ["poor build quality of ...", "bulky gaming laptops", ...]
-              // console.log(data.suggestions);
+      <section id="engagementTab" class="chart-section tab-content" style="display:none;">
+        <!-- <h3>Stacked Sentiment Chart</h3> -->
+        <canvas id="engagementScoreChart"></canvas>
+        <p style="font-size:small; text-align:left; max-width:1200px; margin:5px auto;">
+          This chart uses purple bars to show shows each post’s Engagement Score, based on weighted interactions 
+          like comments and upvotes. Higher scores highlight posts that sparked more interest or debate.
+        </p>
+      </section>
 
-              // Accumulate your HTML content in this variable
-              let html = "";
+      <section id="topPosts" class="chart-section tab-content" style="display:none;">
+      <div class="card" style="flex:1; display:flex; flex-direction:column;">
+        <!-- <h2>Post List</h2> -->
+        <label for="postListDropdown"><b>Select Criteria:</b></label>
+        <select id="postListDropdown">
+          <option value="topEngaged">Top 10 Engaged Posts</option>
+          <option value="lowestWs">Lowest 10 Weighted Sentiment Posts</option>
+          <option value="lowestRaw">Lowest 10 Raw Sentiment Posts</option>
+          <option value="highestWs">Highest 10 Weighted Sentiment Posts</option>
+          <option value="highestRaw">Highest 10 Raw Sentiment Posts</option>
+          <option value="recentPosts">Top 10 Most Recent Posts</option>
+        </select>
+  
+        <div id="postListContainer"></div>
+      </div>
+    </section>
 
-              // Loop through each key-value pair
-              for (const [key, value] of Object.entries(data)) {
-                if (Array.isArray(value)) {
-                  // If the value is an array, join elements with commas
-                  html += `<p><strong>${key}:</strong> ${value.join(", ")}</p>\n`;
-                } else {
-                  // Otherwise, just convert to string
-                  html += `<p><strong>${key}:</strong> ${value}</p>\n`;
-                }
-              }
+    </div>
 
-              // Build the final summary box
-              const combinedInfoHTML = `
-                <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-                  ${html}
-                </div>
-              `;
+  </div>
+
+  <!-- Card Section with dropdown & table -->
+  <!-- <section class="card-section">
+    <div class="card">
+      <h2>Post List</h2>
+      <label for="postListDropdown">Select View:</label>
+      <select id="postListDropdown">
+        <option value="topEngaged">Top 10 Engaged Posts</option>
+        <option value="lowestWs">Lowest 10 Weighted Sentiment Posts</option>
+        <option value="lowestRaw">Lowest 10 Raw Sentiment Posts</option>
+        <option value="highestWs">Highest 10 Weighted Sentiment Posts</option>
+        <option value="highestRaw">Highest 10 Raw Sentiment Posts</option>
+        <option value="recentPosts">Top 10 Most Recent Posts</option>
+      </select>
+
+      <div id="postListContainer"></div>
+    </div>
+  </section> -->
+
+  <footer style="
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #f5f5f5;
+  font-size: small;
+  text-align: center;
+  padding: 10px 20px;
+  border-top: 1px solid #ddd;
+  z-index: 1000;
+  box-sizing: border-box;
+">
+  <div style="max-width: 1000px; margin: 0 auto;">
+    <p style="margin: 0;">
+      <strong>Disclaimer:</strong> This dashboard uses the Google Gemini API to analyze sentiments, 
+      emotions, categories, and possible association to the School of IIT in crawled Reddit posts from 
+      r/TemasekPoly. Results may not be fully accurate—please refer to the post details for confirmation.
+    </p>
+  </div>
+</footer>
 
 
-              
-              // -- 1) Format summary text for display --
-              summaryText = formatTextAsHtml(summaryText);
-              const summaryHTML = `
-                <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-                  <h3 style="margin-top: 0;">Summary</h3>
-                  <p>${summaryText}</p>
-                </div>
-              `;
-              // Clean the JSON string from comments.
-              const cleanedCommentsString = cleanJsonString(commentsTextOrig);
-              let commentsHtml = "";
-              try {
-                // Parse the cleaned JSON string.
-                const commentsArray = JSON.parse(cleanedCommentsString);
-                // For each comment object, build HTML with formatted fields.
-                commentsArray.forEach(commentObj => {
-                  commentsHtml += `<div style="margin-bottom: 10px; border-bottom: 1px solid #ccc; padding-bottom: 10px;">`;
-                  // Render generic fields except 'analysis'
-                  for (const key in commentObj) {
-                    if (key === "analysis") continue; // Skip for now.
-                    let value = commentObj[key];
-                    if (Array.isArray(value)) {
-                      value = value.join(', ');
-                    }
-                    commentsHtml += `<p><strong>${key}:</strong> ${value}</p>`;
-                  }
-                  // Custom formatting for 'analysis'
-                  if (commentObj.analysis) {
-                    let analysisData = {};
-                    try {
-                      analysisData = JSON.parse(cleanJsonString(commentObj.analysis));
-                    } catch (e) {
-                      console.error("Error parsing analysis JSON:", e);
-                    }
-                    // Determine sentiment arrow
-                    const sentiment = analysisData.sentiment ? analysisData.sentiment.toLowerCase() : "neutral";
-                    let arrow = '';
-                    if (sentiment === "positive") {
-                      arrow = `<span style="color: green; font-size: 18px;">&#x2191;</span>`; // up arrow
-                    } else if (sentiment === "negative") {
-                      arrow = `<span style="color: red; font-size: 18px;">&#x2193;</span>`; // down arrow
-                    } else {
-                      arrow = `<span style="color: blue; font-size: 18px;">&#x2014;</span>`; // em-dash
-                    }
-                    
-                    // Format topics: map each topic to a background color.
-                    const topicColors = {
-                      "sports": "#B3E5FC",
-                      "CCAs": "#FFE082",
-                      "academic": "#C8E6C9",
-                      "technology": "#E1BEE7",
-                      "career/internships": "#FFCDD2",
-                      "campus facilities": "#D1C4E9"
-                    };
-                    let topicsHtml = "";
-                    if (Array.isArray(analysisData.topics)) {
-                      topicsHtml = analysisData.topics.map(topic => {
-                        const bgColor = topicColors[topic] || "#E0E0E0";
-                        return `<span style="font-weight: bold; background-color: ${bgColor}; padding: 2px 4px; margin-right: 4px;">${topic}</span>`;
-                      }).join(", ");
-                    }
-                    
-                    // Build the analysis section.
-                    commentsHtml += `
-                    
-                      <h3 style="margin-top: 0;">Analysis</h3>
-                      <p><strong>Sentiment:</strong> ${arrow}</p>
-                      <p><strong>Topics:</strong> ${topicsHtml}</p>
-                    `;
-                  }
-                  commentsHtml += `</div>`;
-                });
-              } catch (error) {
-                commentsHtml = `<p>Error parsing comments JSON.</p>`;
-                console.error("Error parsing comments JSON:", error);
-              }
-              
-              // Parse the post text.
-              const postData = parsePostText(postText);
-
-              // Build the HTML for the post details.
-              const postHTML = `
-                <p><strong>Title:</strong> <span style="font-weight: bold;">${postData["Title"] || "N/A"}</span></p>
-                <p><strong>Author:</strong> ${postData["Author"] || "N/A"}</p>
-                <p><strong>Date:</strong> ${postData["Created"] || "N/A"}</p>
-                <p><strong>URL:</strong> <a href="${postData["URL"] || "#"}" target="_blank">${postData["URL"] || "N/A"}</a></p>
-                <p><strong>Body:</strong></p>
-                <p>${postData["Body"] || ""}</p>
-              `;
-
-              // Update details with formatted HTML.
-              detailsDiv.innerHTML = `
-                <p style="text-align: center; font-weight: bold;">
-                  📌 ${clickedPostId} — Positive: ${posCount}, Negative: ${negCount}
-                </p>
-                <hr>
-                <div style="max-width: 1200px; margin: auto; text-align: left; font-weight: normal;">
-                  <h3><strong>About:</strong></h3>
-                  ${combinedInfoHTML}
-                  ${summaryHTML}
-                </div>
-                <div style="max-width: 1200px; margin: auto; text-align: left; font-weight: normal;">
-                  <h3><strong>Post Details:</strong></h3>
-                  ${postHTML}
-                  <p><strong>Comments:</strong></p>
-                  ${commentsHtml}
-                </div>
-              `;
-            })
-            .catch(error => {
-              detailsDiv.innerHTML = `<p style="text-align: center; font-weight: bold;">
-                                        📌 ${clickedPostId} — Positive: ${posCount}, Negative: ${negCount}
-                                      </p>
-                                      <p>Error loading post/comments.</p>`;
-              console.error("Error loading text files:", error);
-            });
-          }
-        }
-
-
-      }
-    });
-  });
-</script>
-
+  
 </body>
 </html>

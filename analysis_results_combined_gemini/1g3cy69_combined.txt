@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["campus facilities", "administration"],  "complaints": ["Lost wallet containing important documents (NRIC, ez-link cards)"],  "suggestions": ["Check with the office or staff in the IIT block for lost property"]}

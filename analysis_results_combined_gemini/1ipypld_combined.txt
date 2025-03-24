@@ -1,1 +1,0 @@
-{  "sentiment": "positive",  "topics": ["financial aid", "academic", "campus facilities", "devices/technology"],  "complaints": [],  "suggestions": ["Check eligibility criteria for government bursary and device subsidy.", "Check with student services office for details.", "Avoid 'allow your organization to manage your device' prompts when using school provided device."]}

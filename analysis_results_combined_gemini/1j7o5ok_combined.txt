@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["administration", "tuition/financial aid"],  "complaints": ["Slow response from Temasek Polytechnic regarding tuition grant application error.", "Misread information on tuition grant application form."],  "suggestions": ["Resubmit the application (suggested by another user)."]}

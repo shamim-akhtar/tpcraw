@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "campus facilities", "career/internships"],  "complaints": ["unfair marking in certain subjects due to subjective grading and teacher dependence"],  "suggestions": []}

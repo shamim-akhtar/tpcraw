@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["events", "administration"],  "complaints": ["Unable to register for the Global Studies (GS) trip to China due to technical issues and slow response time resulting in all slots being filled.", "Website or application process is cumbersome and confusing."],  "suggestions": []}

@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "administration", "attendance"],  "complaints": ["Received a warning letter for one absence.", "Concerns about scholarship renewal due to disciplinary record."],  "suggestions": []}

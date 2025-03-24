@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "attendance"],  "complaints": ["Missed lab test due to oversleeping", "Difficulty getting absence excused", "Inability to obtain MC for the previous day"],  "suggestions": []}

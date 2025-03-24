@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["bursary", "financial aid", "administration"],  "complaints": ["Received only half of the expected bursary amount in the first tranche."],  "suggestions": []}

@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "campus facilities", "administration", "career/internships"],  "complaints": [],  "suggestions": ["Check Temasek Polytechnic's website for recommended devices and BYOD policies.", "Consider financial aid schemes offered by the polytechnic.", "Explore the possibility of using a more powerful laptop for engineering courses."]}

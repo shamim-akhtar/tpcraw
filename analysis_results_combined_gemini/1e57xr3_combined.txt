@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "courses", "applications (EAE, JAE)", "course selection", "interviews"],  "complaints": [],  "suggestions": ["Mentioning desired course (Communication Design) during the interview might be beneficial but not guaranteed.", "Focus on JAE application as a backup plan.", "Be honest about course preferences during the interview."]}
