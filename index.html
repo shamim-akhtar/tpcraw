@@ -33,43 +33,6 @@
     </div>
   </section>
 
-  <!-- <section class="post-count-section" style="display: flex; gap: 20px;">
-    <div id="postCount" style="width: 170px; height: 150px; border: 1px solid #ccc; box-sizing: border-box; padding: 5px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-      <div class="postCount-title">Posts</div>
-      <hr class="postCount-hr">
-      <div class="postCount-number">0</div>
-    </div>
-
-    <div id="avgWeightedScoreBox" style=
-        "width: 150px; height: 150px; 
-        border: 1px solid #ccc; 
-        box-sizing: border-box; 
-        padding: 5px; 
-        display: flex; 
-        flex-direction: column; 
-        justify-content: center;
-        align-items: center;">
-      <div class="postCount-title">Sentiment</div>
-      <hr class="postCount-hr">
-      <div id="avgWeightedScoreNumber" class="postCount-number">0.00</div>
-    </div>
-
-    <div id="sentimentPieBox" style="
-        width: 150px; height: 150px; 
-        border: 1px solid #ccc; 
-        box-sizing: border-box; 
-        padding: 5px; 
-        display: flex; 
-        flex-direction: column; 
-        justify-content: center; 
-        flex: none;
-        align-items: center;">
-      <div class="postCount-title">Sentiments</div>
-      <hr class="postCount-hr">
-      <canvas id="sentimentPieChart" style="width:100px; height:100px;"></canvas>
-    </div>
-  </section> -->
-
   <section class="post-count-section" style="display: flex; gap: 20px;">
 
     <div id="postCount" class="dashboard-box">
@@ -92,46 +55,72 @@
   
   </section>
 
-
-
-  <!-- New element to show the average -->
-  <!-- <p id="averageWeightedScore" style="text-align:center; font-weight:bold; margin-top: 1rem;">
-  </p> -->
-  
-
-  <!-- Chart Container -->
-  <!-- <section class="chart-section">
-    <canvas id="sentimentChart"></canvas>
-  </section> -->
-  <!-- Chart Container -->
   <section class="chart-section">
-    <!-- Set the canvas width to 1200 and optionally a matching inline style -->
     <h3>Weighted Sentiment Score for Posts</h3>
      
     <p style="font-size: small; text-align: left; max-width: 1200px; margin: 5px auto;">
-      This chart illustrates the Weighted Sentiment Scores of posts within the selected date range and filters. 
-      The weighted sentiment score is computed by multiplying each post's raw sentiment score—derived from analyzing the sentiment polarity of post content—with its engagement score, giving greater emphasis to posts with higher interaction. 
-      A positive score indicates generally favorable sentiment, while a negative score highlights critical or negative sentiment, quickly identifying topics resonating positively or negatively within the community.
+      This chart displays the Weighted Sentiment Scores of posts within the selected date 
+      range and filters. The weighted sentiment score is computed by multiplying each post's 
+      raw sentiment score—derived from analyzing the sentiment polarity of post content—with 
+      its engagement score, giving greater emphasis to posts with higher interaction. 
+      A positive score indicates generally favorable sentiment, while a negative score 
+      highlights critical or negative sentiment, quickly identifying topics resonating 
+      positively or negatively within the community.
     </p>
     <canvas
       id="weightedSentimentChart"
     ></canvas>
   </section>
-  
+
+  <section class="chart-section">
+    <h3>Stacked Sentiment Chart</h3>
+     
+    <p style="font-size: small; text-align: left; max-width: 1200px; margin: 5px auto;">
+      This stacked sentiment chart displays the overall sentiment breakdown for each post within the selected date range. 
+      The green segment represents the total number of positive sentiments derived from the comments,
+      while the red segment shows the total number of negative sentiments. Posts with predominantly green
+       segments indicate a more favorable reception, whereas those with larger red segments 
+       suggest stronger negative feedback. This visualization helps you quickly assess the 
+       sentiment balance across the posts' comments.
+    </p>
+    <canvas
+      id="stackedSentimentChart"
+    ></canvas>
+  </section>
   
   <section class="chart-section">
     <!-- Set the canvas width to 1200 and optionally a matching inline style -->
     <h3>Engagement Score for Posts</h3>
      
     <p style="font-size: small; text-align: left; max-width: 1200px; margin: 5px auto;">
-      This chart displays the Engagement Scores for posts, reflecting interactions such as comments, likes, and shares. 
-      The engagement score is calculated by aggregating these interactions, with each type of interaction assigned a specific weight based on its significance in indicating active interest. 
-      Higher engagement typically signifies topics of greater interest or controversy, offering insights into the community’s most active discussions.
+      This chart displays the Engagement Scores for posts, reflecting interactions such as comments, and upvotes. 
+      The engagement score is calculated by aggregating these interactions, with each type of interaction assigned a
+       specific weight based on its significance in indicating active interest. 
+      Higher engagement typically signifies topics of greater interest or controversy, 
+      offering insights into the community’s most active discussions.
     </p>
     <canvas
       id="engagementScoreChart"
     ></canvas>
   </section>
+
+  <section class="chart-section">
+    <!-- Set the canvas width to 1200 and optionally a matching inline style -->
+    <h3>Total Comments per Post</h3>
+     
+    <p style="font-size: small; text-align: left; max-width: 1200px; margin: 5px auto;">
+      This engagement chart displays the total number of comments for each post, represented by 
+      purple bars. A taller bar indicates a higher level of user interaction, signaling 
+      which posts sparked more discussion. Clicking on a bar reveals additional details, 
+      such as the post title and creation date, helping you quickly identify the most 
+      engaging content.
+    </p>
+    <canvas
+      id="totalCommentsChart"
+    ></canvas>
+  </section>
+
+
 
 
   <!-- Card Section with dropdown & table -->

@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 5. Chart references
   let weightedSentimentChart = null;
   let engagementScoreChart = null;
+  let totalCommentsChart = null;
 
   // 6. Global array to store fetched posts
   let allPostsData = [];
@@ -92,6 +93,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Engagement score
       const engagementScore = postData.engagementScore || 0;
+      const totalComments = postData.totalComments || 0;
+
+      const positiveData = postData.totalPositiveSentiments || 0;
+      const negativeData = postData.totalNegativeSentiments || 0;
 
       // Raw sentiment (assumes a field 'rawSentimentScore' in each doc)
       const rawSentiment = postData.rawSentimentScore || 0;
@@ -110,7 +115,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         weightedSentimentScore: weightedScore,
         engagementScore: engagementScore,
         rawSentimentScore: rawSentiment,
+        totalComments: totalComments,
         created: createdDate,  // store as JS Date if possible
+        totalPositiveSentiments: positiveData,
+        totalNegativeSentiments: negativeData,
         postDetails: postData
       });
     });
@@ -176,6 +184,57 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // Sentiment stack.
+  function renderSentimentStackChart(data) {
+    // Extract labels and sentiment data from posts
+    const labels = data.map(post => post.title);
+    const positiveData = data.map(post => post.totalPositiveSentiments);
+    const negativeData = data.map(post => post.totalNegativeSentiments);
+  
+    // Get the canvas context
+    const ctx = document.getElementById('stackedSentimentChart').getContext('2d');
+  
+    // Destroy existing chart if present
+    if (window.sentimentStackChartInstance) {
+      window.sentimentStackChartInstance.destroy();
+    }
+  
+    // Create a stacked bar chart
+    window.sentimentStackChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Positive Sentiments',
+            data: positiveData,
+            backgroundColor: 'rgba(75, 192, 192, 0.8)', // Green
+            stack: 'Stack 0'
+          },
+          {
+            label: 'Negative Sentiments',
+            data: negativeData,
+            backgroundColor: 'rgba(255, 99, 132, 0.8)', // Red
+            stack: 'Stack 0'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            stacked: true
+          },
+          y: {
+            stacked: true,
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+  
+
   // ----------------------------
   // CHART 2: ENGAGEMENT SCORE
   // ----------------------------
@@ -224,6 +283,54 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+
+  // ----------------------------
+  // CHART 2: TOTAL COMMENTS
+  // ----------------------------
+  function renderCommentsCountChart(data) {
+    //console.log("Rendering Engagement Score Chart with data:", data);
+
+    const labels = data.map(item => item.title);
+    const totalComments = data.map(item => item.totalComments);
+
+    // For example, color all engagement bars purple
+    const backgroundColors = totalComments.map(() => 'rgba(153, 102, 255, 0.8)');
+
+    // Destroy existing chart if it exists
+    if (totalCommentsChart) {
+      totalCommentsChart.destroy();
+    }
+
+    const ctx = document.getElementById('totalCommentsChart').getContext('2d');
+    totalCommentsChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Total Comments',
+          data: totalComments,
+          backgroundColor: backgroundColors
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: { beginAtZero: true }
+        },
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const barIndex = elements[0].index;
+            const item = data[barIndex];
+            alert(
+              `Post Title: ${item.title}\n` +
+              `Total Comments: ${item.totalComments}\n` +
+              `Created: ${item.created}`
+            );
+          }
+        }
+      }
+    });
+  }
   // ----------------------------
   // POST LIST DROPDOWN / TABLE
   // ----------------------------
@@ -399,9 +506,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Render Weighted Sentiment chart
       renderWeightedSentimentChart(allPostsData);
+      renderSentimentStackChart(allPostsData);
 
       // Render Engagement Score chart
       renderEngagementScoreChart(allPostsData);
+      renderCommentsCountChart(allPostsData)
 
       // By default, show "Lowest 10 Weighted Sentiment Posts"
       postListDropdown.value = 'lowestWs';
