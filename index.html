@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Stacked Sentiment Chart</title>
+  <title>Sentiment Analysis</title>
   
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
@@ -34,6 +34,14 @@
       font-weight: bold;
       color: #333;
     }
+    #about {
+      margin-top: 20px;
+      font-size: 12px;
+      font-weight: normal;
+      color: #2b2929;
+      max-width: 1200px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
@@ -45,6 +53,10 @@
 </div>
 
 <div id="details">Click on a bar to see details.</div>
+<!-- <div id ="about">This Stacked Sentiment Chart provides a visual analysis of Reddit discussions 
+  related to Temasek Polytechnic, extracted from the r/TemasekPoly subreddit. 
+  The data is collected and processed using AI-driven sentiment analysis, categorizing 
+  comments into positive and negative sentiments.</div> -->
 
 <script>
 
@@ -338,7 +350,7 @@ fetch('sentiment_count.csv')
                 </p>
                 <hr>
                 <div style="max-width: 1200px; margin: auto; text-align: left; font-weight: normal;">
-                  <h3><strong>Analysis:</strong></h3>
+                  <h3><strong>About:</strong></h3>
                   ${combinedInfoHTML}
                   ${summaryHTML}
                 </div>
