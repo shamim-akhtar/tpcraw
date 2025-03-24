@@ -101,6 +101,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Raw sentiment (assumes a field 'rawSentimentScore' in each doc)
       const rawSentiment = postData.rawSentimentScore || 0;
       const category = postData.category || "";
+      const emotion = postData.emotion || "";
+      const summary = postData.summary || "";
+      const iit = postData.iit || "";
 
       // Attempt to read 'created' as a JS Date (if it's a Firestore Timestamp)
       let createdDate = postData.created;
@@ -119,6 +122,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         created: createdDate,  // store as JS Date if possible
         totalPositiveSentiments: positiveData,
         totalNegativeSentiments: negativeData,
+        emotion: emotion,
+        summary: summary,
+        iit: iit,
         postDetails: postData
       });
     });
