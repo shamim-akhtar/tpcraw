@@ -16,7 +16,7 @@ header {
 .controls {
   width: 90%;
   max-width: 1200px;
-  margin: 0 auto;   /* centers the .controls container */
+  margin: 0 auto;
   padding: 10px 20px;
 }
 
@@ -27,13 +27,44 @@ header {
   margin-bottom: 20px;
 }
 
-/* Chart Container */
-.chart-section {
+/* Main layout container */
+.main-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
+/* Left and right containers */
+.left-div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.right-div {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Chart Section */
+.chart-section {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.chart-section canvas {
+  border: 2px solid #ccc;
+  padding: 5px;
+}
+
+/* Card Section */
 .card-section {
   width: 90%;
   max-width: 1200px;
@@ -64,142 +95,67 @@ header {
   text-align: left;
 }
 
-.chart-section canvas {
-  border: 2px solid #ccc;
-  padding: 5px;
+/* Dashboard boxes common styling */
+.dashboard-box,
+.dashboard-box-wide,
+.dashboard-box-large {
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  background-color: #fafafa;
 }
 
-.post-count-section {
-  width: 100%;
-  max-width: 1200px;
-  margin: 10px auto;
-  text-align: left;
-}
-
-/* Dashboard box styling without flex */
 .dashboard-box {
-  --content-top: 50px; /* Default value */
-  --content-left: 0;
   width: 150px;
   height: 120px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
 }
 
-
-/* Title area fixed to 50px height */
-.postCount-title {
-  height: 50px;
-  line-height: 50px; /* vertically centers the text */
-  font-size: 1.2rem;
-  font-weight: bold;
-  width: 100%;
-  text-align: center;
-  box-sizing: border-box;
-  border-bottom: 1px solid #ccc;
-}
-
-/* Content area fixed to 100px height, positioned below the title */
-.dashboard-box > .postCount-number,
-.dashboard-box > canvas {
-  position: absolute;
-  top: var(--content-top);
-  left: var(--content-left);
-  width: 100%;
-  height: calc(100% - var(--content-top));
-  box-sizing: border-box;
-  text-align: center;
-  font-size: 3rem;
-  font-weight: bold;
-  padding-top: 10px;
-}
-
-/* Dashboard box styling without flex */
-.dashboard-box-large {
-  --content-top: 65px; /* Default value */
-  --content-left: 0;
-  width: 320px;
-  height: 320px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
-}
-
-
-/* Title area fixed to 50px height */
-.postCount-title-large {
-  height: 50px;
-  line-height: 50px; /* vertically centers the text */
-  font-size: 1.2rem;
-  font-weight: bold;
-  width: 100%;
-  text-align: center;
-  box-sizing: border-box;
-  border-bottom: 1px solid #ccc;
-}
-
-/* Content area fixed to 100px height, positioned below the title */
-.dashboard-box-large > .postCount-number-large,
-.dashboard-box-large > canvas {
-  position: absolute;
-  top: var(--content-top);
-  left: var(--content-left);
-  width: 100%;
-  height: calc(100% - var(--content-top));
-  box-sizing: border-box;
-  text-align: center;
-  font-size: 3rem;
-  font-weight: bold;
-  padding-top: 10px;
-}
-
-
-/* Dashboard box styling without flex */
 .dashboard-box-wide {
-  --content-top: 50px; /* Default value */
-  --content-left: 0;
   width: 320px;
   height: 120px;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
-  position: relative;
-  overflow: hidden;
 }
 
+.dashboard-box-large {
+  width: 320px;
+  height: 320px;
+}
 
-/* Title area fixed to 50px height */
+/* Dashboard title styling */
+.postCount-title,
+.postCount-title-large,
 .postCount-title-wide {
   height: 50px;
-  line-height: 50px; /* vertically centers the text */
+  line-height: 50px;
   font-size: 1.2rem;
   font-weight: bold;
-  width: 100%;
   text-align: center;
   box-sizing: border-box;
   border-bottom: 1px solid #ccc;
 }
 
-/* Content area fixed to 100px height, positioned below the title */
+/* Dashboard numbers */
+.dashboard-box > .postCount-number,
 .dashboard-box-wide > .postCount-number-wide,
-.dashboard-box-wide > canvas {
+.dashboard-box-large > .postCount-number-large,
+.dashboard-box > canvas,
+.dashboard-box-wide > canvas,
+.dashboard-box-large > canvas {
   position: absolute;
-  top: var(--content-top);
-  left: var(--content-left);
+  top: var(--content-top, 50px);
+  left: var(--content-left, 0);
   width: 100%;
-  height: calc(100% - var(--content-top));
-  box-sizing: border-box;
+  height: calc(100% - var(--content-top, 50px));
   text-align: center;
   font-size: 3rem;
   font-weight: bold;
   padding-top: 10px;
+  box-sizing: border-box;
 }
 
+/* Tabs styling */
 .tab-container {
   display: flex;
-  justify-content: center;
   gap: 10px;
   margin-bottom: 10px;
 }
