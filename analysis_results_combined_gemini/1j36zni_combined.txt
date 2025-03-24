@@ -1,1 +1,0 @@
-{  "sentiment": "positive",  "topics": ["events", "academic", "career/internships"],  "complaints": [],  "suggestions": ["refresh the application page frequently and quickly submit the application once the options appear", "be prepared to submit quickly, as slots fill up very fast"]}

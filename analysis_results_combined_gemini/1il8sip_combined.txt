@@ -1,1 +1,0 @@
-{  "sentiment": "positive",  "topics": ["academic", "course_specific", "timetable", "project_work", "stress_level"],  "complaints": [],  "suggestions": ["find a good project partner early", "be proactive in seeking help from teachers", "prepare for the course by self-learning some relevant topics (suggested by the student)" ]}

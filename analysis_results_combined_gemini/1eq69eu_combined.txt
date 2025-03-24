@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "administration"],  "complaints": ["Missed COMT exam due to illness", "Uncertainty about school's response to MC submission", "Concern about potential warning letters"],  "suggestions": ["Submit MC through TPOSS", "Inform lecturer about MC submission", "Inquire about retest date"]}

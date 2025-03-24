@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["CCA", "sports CCA", "table tennis", "badminton", "student selection process"],  "complaints": ["Difficulty in joining a sports CCA due to high competitiveness and prior experience requirements."],  "suggestions": []}

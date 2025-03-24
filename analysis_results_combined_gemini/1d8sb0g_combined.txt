@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "electives"],  "complaints": ["Lengthy elective selection process", "Uncertainty about selection criteria (GPA, FCFS, preference ranking)"],  "suggestions": []}

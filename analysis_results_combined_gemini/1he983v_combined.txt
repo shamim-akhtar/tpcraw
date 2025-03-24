@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["administration", "student_conduct"],  "complaints": [],  "suggestions": ["Take responsibility for actions", "Avoid engaging in underage sexual activity"]}

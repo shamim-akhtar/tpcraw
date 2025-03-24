@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "test/exams"],  "complaints": ["7 marks lost due to incorrect solution", "Test difficulty, particularly open-ended questions", "Unrealistic closed-book exam", "Lack of code editor", "Insufficient number of As or passing grades", "Focus on memorization rather than understanding"],  "suggestions": []}

@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic"],  "complaints": ["The comment 'welcome to the diploma in yapping' suggests a negative view of the academic program, implying it involves excessive or unproductive talking."],  "suggestions": []}

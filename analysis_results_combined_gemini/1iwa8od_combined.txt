@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "ICT", "curriculum"],  "complaints": ["Lack of introductory computer skills training in the curriculum for students with no prior computing knowledge."],  "suggestions": ["Students with no prior computing knowledge should learn basic Windows usage before enrolling."]}

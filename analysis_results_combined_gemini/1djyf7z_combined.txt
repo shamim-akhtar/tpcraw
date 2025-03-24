@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["administration", "fees/finance"],  "complaints": ["Payment not reflected on website immediately"],  "suggestions": []}

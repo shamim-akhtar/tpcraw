@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "gpa"],  "complaints": ["Received a D+ on a practical quiz which is 30% of the GPA", "Feeling destroyed and worried about GPA"],  "suggestions": []}

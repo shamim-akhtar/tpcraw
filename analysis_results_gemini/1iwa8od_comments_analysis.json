@@ -1,7 +1,0 @@
-[
-  {
-    "author": "mount2010",
-    "comment": "TP ITSIG has a website about this: https://tp-itsig.github.io/ Basic networking (routers, switches, modems: what they do and how to connect them), user interface design, Python (through Juypter Notebook), Data Structures/Algorithms intro (Python again), computer math (logarithms, boolean logic, functions, etc), HTML/CSS/JS/SQL, data analytics. **Note** that for our batch that there was **no** introduction to computers or how to use basic Windows features. If you are a student who has no prior computing knowledge, I would highly recommend picking up how to use Windows **now** rather than when you enrol and find yourself lost. I have given feedback about this but I cannot guarantee that they will make modifications based on it.",
-    "analysis": "```json\n{\n  \"sentiment\": \"mostly positive\",\n  \"topics\": [\"academic\", \"curriculum\", \"computer science\", \"IT\"],\n  \"complaints\": [\"Lack of introductory computer skills training (Windows basics) for students with no prior computing knowledge.\"],\n  \"suggestions\": [\"Incorporate introductory Windows skills training into the curriculum for students lacking prior computing experience.\"]\n}\n```"
-  }
-]

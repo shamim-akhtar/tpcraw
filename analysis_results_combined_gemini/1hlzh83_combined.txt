@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "career/internships"],  "complaints": ["Difficulty using KNIME for a Year 3 Semester 2 Fintech assignment.", "Lack of knowledge on how to use Axure RP 11 for project design."],  "suggestions": ["Request for help with KNIME and Axure RP 11 from fellow students."]}

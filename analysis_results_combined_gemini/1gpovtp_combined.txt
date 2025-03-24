@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["financial aid", "bursary", "administration"],  "complaints": ["Uncertainty regarding the timing of the second semester bursary payout.", "Concern that the bursary might be fully offset against semester fees before disbursement."],  "suggestions": []}

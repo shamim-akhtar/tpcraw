@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "career/internships"],  "complaints": ["Asking 'why they should pick you over others' in a group interview is considered unpleasant by some."],  "suggestions": ["Answer questions quickly and concisely", "Don't always be the first to answer", "Be knowledgeable about the course", "Don't answer questions you are unsure about"]}

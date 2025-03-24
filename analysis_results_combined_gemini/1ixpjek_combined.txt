@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "administration"],  "complaints": ["Difficulty coping with full-time study workload"],  "suggestions": ["Speak with current course advisor", "Check part-time course admission requirements before withdrawing from full-time course"]}

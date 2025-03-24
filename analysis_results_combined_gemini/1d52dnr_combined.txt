@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "administration"],  "complaints": ["Late submission of project and its impact on grade", "Uncertainty about late submission penalty"],  "suggestions": ["Talk to the teacher about the late submission", "Rate team members based on their contribution in the team survey"]}

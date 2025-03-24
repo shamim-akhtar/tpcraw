@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "CCA (Co-curricular Activities)", "SEAL Points", "career/internships", "university applications"],  "complaints": [],  "suggestions": []}

@@ -1,1 +1,0 @@
-{  "sentiment": "positive",  "topics": ["academic", "programme structure"],  "complaints": ["Initial confusion about the differing Year 1 curricula between Fashion Management & Design and Common Design Programme."],  "suggestions": []}

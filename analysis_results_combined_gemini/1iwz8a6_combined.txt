@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "exams"],  "complaints": ["EM2 exam was significantly different from past year papers", "EM2 exam was unexpectedly difficult"],  "suggestions": []}

@@ -1,1 +1,0 @@
-{  "sentiment": "mixed",  "topics": ["academic", "school of engineering", "culture", "competitiveness", "mental health"],  "complaints": ["Horrific", "extremely talented and competitive environment can be challenging"],  "suggestions": []}

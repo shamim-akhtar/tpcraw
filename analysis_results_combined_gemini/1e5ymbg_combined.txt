@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "administration"],  "complaints": ["Aptitude test was stressful and time-constrained", "Lack of communication from Temasek Polytechnic regarding application status", "Uncertainty about application outcome"],  "suggestions": []}

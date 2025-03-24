@@ -1,6 +1,0 @@
-Title: Microcontroller Applications EMC3006
-Author: Substantial-Fox8858
-Score: 4
-URL: https://www.reddit.com/r/TemasekPoly/comments/1ikib2q/microcontroller_applications_emc3006/
-Created: 2025-02-08 15:57:50
-Body: hello! would like to find out which coding language is used for mcapp (is it C or C++ or C#)? and any advice in general for this mod haha thankyou!  
