@@ -160,6 +160,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       },
       options: {
         responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Weighted Sentiment Breakdown by Post',
+            align: 'start', // Left-align the title
+            font: {
+              size: 18,
+              weight: '600',
+              family: 'Arial, sans-serif' // Crisp, readable font
+            },
+            color: '#333', // Darker color for better contrast
+            padding: {
+              top: 10,
+              bottom: 20
+            }
+          }
+        },
         scales: {
           y: { beginAtZero: true }
         },
@@ -221,6 +238,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       },
       options: {
         responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Sentiment Breakdown by Post',
+            align: 'start', // Left-align the title
+            font: {
+              size: 18,
+              weight: '600',
+              family: 'Arial, sans-serif' // Crisp, readable font
+            },
+            color: '#333', // Darker color for better contrast
+            padding: {
+              top: 10,
+              bottom: 20
+            }
+          }
+        },
         scales: {
           x: {
             stacked: true
@@ -409,7 +443,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             <th>Weighted Score</th>
             <th>Engagement Score</th>
             <th>Raw Sentiment</th>
-            <th>Created</th>
           </tr>
         </thead>
         <tbody>
@@ -421,7 +454,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           <td>${p.weightedSentimentScore.toFixed(2)}</td>
           <td>${p.engagementScore.toFixed(2)}</td>
           <td>${p.rawSentimentScore.toFixed(2)}</td>
-          <td>${p.created}</td>
         </tr>
       `;
     }
@@ -459,8 +491,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     
 
     // Reset the canvas dimensions explicitly
-    ctx.canvas.width = 100;
-    ctx.canvas.height = 100;
+    ctx.canvas.width = 260;
+    ctx.canvas.height = 260;
   
     window.sentimentPieChartInstance = new Chart(ctx, {
       type: 'pie',
@@ -486,63 +518,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       }
     });
-    // // Explicitly set canvas size via JS (you can adjust these as needed)
-    // ctx.canvas.width = 100; // desired width in pixels
-    // ctx.canvas.height = 100; // desired height in pixels
   }
-  
-
-
-  // ----------------------------
-  // MAIN: FETCH DATA, RENDER CHARTS & DEFAULT LIST
-  // ----------------------------
-  // async function updateCharts() {
-  //   try {
-  //     allPostsData = await fetchPostsInRange(); // store globally
-  //     console.log("Data fetched from Firestore:", allPostsData);
-
-  //     // Update the Post Count box with the number of posts
-  //     document.querySelector("#postCount .postCount-number").textContent = allPostsData.length;
-
-  //     // Calculate and display average weighted sentiment score:
-  //     if (allPostsData.length > 0) {
-  //       const sum = allPostsData.reduce((acc, post) => acc + post.weightedSentimentScore, 0);
-  //       const avg = sum / allPostsData.length;
-
-  //       // Update new box
-  //       document.getElementById("avgWeightedScoreNumber").textContent = avg.toFixed(2);
-  //     } 
-  //     else {
-  //       document.getElementById("avgWeightedScoreNumber").textContent = "N/A";
-  //     }
-
-  //     // Calculate and display total comments count:
-  //     if (allPostsData.length > 0) {
-  //       const totalComments = allPostsData.reduce((acc, post) => acc + post.totalComments, 0);
-  //       document.getElementById("commentsCountNumber").textContent = totalComments;
-  //     } 
-  //     else {
-  //       document.getElementById("commentsCountNumber").textContent = "0";
-  //     }
-
-  //     renderSentimentPieChart(allPostsData);
-
-  //     // Render Weighted Sentiment chart
-  //     renderWeightedSentimentChart(allPostsData);
-  //     renderSentimentStackChart(allPostsData);
-
-  //     // Render Engagement Score chart
-  //     renderEngagementScoreChart(allPostsData);
-  //     renderCommentsCountChart(allPostsData)
-
-  //     // By default, show "Lowest 10 Weighted Sentiment Posts"
-  //     postListDropdown.value = 'lowestWs';
-  //     renderPostList(allPostsData, 'lowestWs');
-  //   } 
-  //   catch (error) {
-  //     console.error("Error building charts:", error);
-  //   }
-  // }
 
   async function updateCharts() {
     try {
@@ -565,14 +541,25 @@ document.addEventListener('DOMContentLoaded', async () => {
       renderSentimentPieChart(allPostsData);
       renderEngagementScoreChart(allPostsData);
       renderCommentsCountChart(allPostsData);
-      renderPostList(allPostsData, 'lowestWs');
+
+      // By default, show "Lowest 10 Raw Sentiment Posts"
+      postListDropdown.value = 'lowestRaw';
+      renderPostList(allPostsData, 'lowestRaw');
+      // renderPostList(allPostsData, 'lowestWs');
   
       // Explicitly render only the default visible chart
       const activeTabId = document.querySelector('.tab-button.active').getAttribute('data-tab');
       if (activeTabId === 'weightedTab') {
         renderWeightedSentimentChart(allPostsData);
-      } else if (activeTabId === 'stackedTab') {
+      } 
+      else if (activeTabId === 'stackedTab') {
         renderSentimentStackChart(allPostsData);
+      }
+      else if (tabId === 'engagementTab') {
+        renderEngagementScoreChart(allPostsData);
+      }
+      else if (tabId === 'totalCommentsTab') {
+        renderCommentsCountChart(allPostsData);
       }
   
     } catch (error) {
@@ -610,8 +597,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Explicitly re-render charts when the tab is activated
       if (tabId === 'stackedTab') {
         renderSentimentStackChart(allPostsData);
-      } else if (tabId === 'weightedTab') {
+      } 
+      else if (tabId === 'weightedTab') {
         renderWeightedSentimentChart(allPostsData);
+      }
+      else if (tabId === 'engagementTab') {
+        renderEngagementScoreChart(allPostsData);
+      }
+      else if (tabId === 'totalCommentsTab') {
+        renderCommentsCountChart(allPostsData);
       }
     });
   });
