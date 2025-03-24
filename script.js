@@ -432,6 +432,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Calculate positive, neutral, negative sentiment percentages and render pie chart
   function renderSentimentPieChart(data) {
     const totalPosts = data.length;
+    // If no posts are returned, clear the canvas and exit.
+    if (totalPosts === 0) {
+      const ctx = document.getElementById('sentimentPieChart').getContext('2d');
+      if (window.sentimentPieChartInstance) {
+        window.sentimentPieChartInstance.destroy();
+      }
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      return;
+    }
   
     const positiveCount = data.filter(p => p.weightedSentimentScore > 0).length;
     const neutralCount = data.filter(p => p.weightedSentimentScore === 0).length;
@@ -447,6 +456,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (window.sentimentPieChartInstance) {
       window.sentimentPieChartInstance.destroy();
     }
+    
+
+    // Reset the canvas dimensions explicitly
+    ctx.canvas.width = 100;
+    ctx.canvas.height = 100;
   
     window.sentimentPieChartInstance = new Chart(ctx, {
       type: 'pie',
@@ -472,9 +486,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       }
     });
-    // Explicitly set canvas size via JS (you can adjust these as needed)
-    ctx.canvas.width = 100; // desired width in pixels
-    ctx.canvas.height = 100; // desired height in pixels
+    // // Explicitly set canvas size via JS (you can adjust these as needed)
+    // ctx.canvas.width = 100; // desired width in pixels
+    // ctx.canvas.height = 100; // desired height in pixels
   }
   
 
@@ -500,6 +514,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       } 
       else {
         document.getElementById("avgWeightedScoreNumber").textContent = "N/A";
+      }
+
+      // Calculate and display total comments count:
+      if (allPostsData.length > 0) {
+        const totalComments = allPostsData.reduce((acc, post) => acc + post.totalComments, 0);
+        document.getElementById("commentsCountNumber").textContent = totalComments;
+      } 
+      else {
+        document.getElementById("commentsCountNumber").textContent = "0";
       }
 
       renderSentimentPieChart(allPostsData);
