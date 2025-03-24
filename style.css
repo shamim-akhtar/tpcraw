@@ -70,7 +70,7 @@ header {
 }
 
 .post-count-section {
-  width: 90%;
+  width: 100%;
   max-width: 1200px;
   margin: 10px auto;
   text-align: left;
@@ -78,10 +78,10 @@ header {
 
 /* Dashboard box styling without flex */
 .dashboard-box {
-  --content-top: 65px; /* Default value */
+  --content-top: 50px; /* Default value */
   --content-left: 0;
   width: 150px;
-  height: 150px;
+  height: 120px;
   border: 1px solid #ccc;
   box-sizing: border-box;
   position: relative;
@@ -104,6 +104,87 @@ header {
 /* Content area fixed to 100px height, positioned below the title */
 .dashboard-box > .postCount-number,
 .dashboard-box > canvas {
+  position: absolute;
+  top: var(--content-top);
+  left: var(--content-left);
+  width: 100%;
+  height: calc(100% - var(--content-top));
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  padding-top: 10px;
+}
+
+/* Dashboard box styling without flex */
+.dashboard-box-large {
+  --content-top: 65px; /* Default value */
+  --content-left: 0;
+  width: 320px;
+  height: 320px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* Title area fixed to 50px height */
+.postCount-title-large {
+  height: 50px;
+  line-height: 50px; /* vertically centers the text */
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Content area fixed to 100px height, positioned below the title */
+.dashboard-box-large > .postCount-number-large,
+.dashboard-box-large > canvas {
+  position: absolute;
+  top: var(--content-top);
+  left: var(--content-left);
+  width: 100%;
+  height: calc(100% - var(--content-top));
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  padding-top: 10px;
+}
+
+
+/* Dashboard box styling without flex */
+.dashboard-box-wide {
+  --content-top: 50px; /* Default value */
+  --content-left: 0;
+  width: 320px;
+  height: 120px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+
+/* Title area fixed to 50px height */
+.postCount-title-wide {
+  height: 50px;
+  line-height: 50px; /* vertically centers the text */
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Content area fixed to 100px height, positioned below the title */
+.dashboard-box-wide > .postCount-number-wide,
+.dashboard-box-wide > canvas {
   position: absolute;
   top: var(--content-top);
   left: var(--content-left);

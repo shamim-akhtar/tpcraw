@@ -43,17 +43,23 @@
     <div id="commentsCount" class="dashboard-box">
       <div class="postCount-title">Comments</div>
       <div id="commentsCountNumber" class="postCount-number">0.00</div>
+    </div>  
+  </section>
+
+  <section class="post-count-section" style="display: flex; gap: 20px;">
+  
+    <div id="avgWeightedScoreBox" class="dashboard-box-wide">
+      <div class="postCount-title">Avg Weighted Sentiment</div>
+      <div id="avgWeightedScoreNumber" class="postCount-number-wide">0.00</div>
     </div>
   
-    <div id="avgWeightedScoreBox" class="dashboard-box">
-      <div class="postCount-title">Avg Sentiment</div>
-      <div id="avgWeightedScoreNumber" class="postCount-number">0.00</div>
-    </div>
+  </section>
+
+  <section class="post-count-section" style="display: flex; gap: 20px;">
   
-    <div id="sentimentPieBox" class="dashboard-box" style="--content-top: 45px; --content-left: 20px">
-      <div class="postCount-title">Sentiments</div>
-      <!-- <hr class="postCount-hr"> -->
-      <canvas id="sentimentPieChart" style="width:100px; height:100px;"></canvas>
+    <div id="sentimentPieBox" class="dashboard-box-large" style="--content-top: 45px; --content-left: 20px">
+      <div class="postCount-title-large">Sentiments Distribution</div>
+      <canvas id="sentimentPieChart" style="width:260px; height:260px;"></canvas>
     </div>
   
   </section>

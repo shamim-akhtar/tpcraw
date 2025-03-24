@@ -459,8 +459,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     
 
     // Reset the canvas dimensions explicitly
-    ctx.canvas.width = 100;
-    ctx.canvas.height = 100;
+    ctx.canvas.width = 260;
+    ctx.canvas.height = 260;
   
     window.sentimentPieChartInstance = new Chart(ctx, {
       type: 'pie',
