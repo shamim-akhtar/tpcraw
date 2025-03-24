@@ -90,11 +90,17 @@ body {
   }
   
   .postCount-title {
+    height: 30px;
+    display: flex;            /* Re-enable flex */
+    justify-content: center;  /* Vertical alignment */
+    align-items: center;      /* Horizontal alignment */
+    text-align: center;
     font-size: 1.2rem;
     font-weight: bold;
     width: 100%;
-    text-align: center;
+    flex: none;               /* Crucial: Prevent expansion */
   }
+  
   
   .postCount-hr {
     width: 100%;

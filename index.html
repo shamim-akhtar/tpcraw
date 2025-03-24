@@ -33,21 +33,48 @@
     </div>
   </section>
 
-  <!-- Post Count Box: left aligned below the date filter -->
-  <section class="post-count-section">
-    <div id="postCount">
+  <section class="post-count-section" style="display: flex; gap: 20px;">
+    <div id="postCount" style="width: 170px; height: 150px; border: 1px solid #ccc; box-sizing: border-box; padding: 5px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
       <div class="postCount-title">Posts</div>
       <hr class="postCount-hr">
       <div class="postCount-number">0</div>
+    </div>
+
+    <div id="avgWeightedScoreBox" style=
+        "width: 170px; height: 150px; 
+        border: 1px solid #ccc; 
+        box-sizing: border-box; 
+        padding: 5px; 
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center;
+        align-items: center;">
+      <div class="postCount-title">Sentiment</div>
+      <hr class="postCount-hr">
+      <!-- <div id="avgWeightedScoreNumber" class="postCount-number">0.00</div> -->
+    </div>
+
+    <!-- Pie Chart box -->
+    <div id="sentimentPieBox" style="
+        width: 170px; height: 150px; 
+        border: 1px solid #ccc; 
+        box-sizing: border-box; 
+        padding: 5px; 
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: center;">
+      <div class="postCount-title">Sentiments</div>
+      <hr class="postCount-hr">
+      <!-- <canvas id="sentimentPieChart" style="width:60px; height:60px;"></canvas> -->
     </div>
   </section>
 
 
 
   <!-- New element to show the average -->
-  <p id="averageWeightedScore" style="text-align:center; font-weight:bold; margin-top: 1rem;">
-    <!-- We'll populate this via JavaScript -->
-  </p>
+  <!-- <p id="averageWeightedScore" style="text-align:center; font-weight:bold; margin-top: 1rem;">
+  </p> -->
   
 
   <!-- Chart Container -->
@@ -57,17 +84,33 @@
   <!-- Chart Container -->
   <section class="chart-section">
     <!-- Set the canvas width to 1200 and optionally a matching inline style -->
+    <h3>Weighted Sentiment Score for Posts</h3>
+     
+    <p style="font-size: small; text-align: left; max-width: 1200px; margin: 5px auto;">
+      This chart illustrates the Weighted Sentiment Scores of posts within the selected date range and filters. 
+      The weighted sentiment score is computed by multiplying each post's raw sentiment score—derived from analyzing the sentiment polarity of post content—with its engagement score, giving greater emphasis to posts with higher interaction. 
+      A positive score indicates generally favorable sentiment, while a negative score highlights critical or negative sentiment, quickly identifying topics resonating positively or negatively within the community.
+    </p>
     <canvas
       id="weightedSentimentChart"
     ></canvas>
   </section>
   
+  
   <section class="chart-section">
     <!-- Set the canvas width to 1200 and optionally a matching inline style -->
+    <h3>Engagement Score for Posts</h3>
+     
+    <p style="font-size: small; text-align: left; max-width: 1200px; margin: 5px auto;">
+      This chart displays the Engagement Scores for posts, reflecting interactions such as comments, likes, and shares. 
+      The engagement score is calculated by aggregating these interactions, with each type of interaction assigned a specific weight based on its significance in indicating active interest. 
+      Higher engagement typically signifies topics of greater interest or controversy, offering insights into the community’s most active discussions.
+    </p>
     <canvas
       id="engagementScoreChart"
     ></canvas>
   </section>
+
 
   <!-- Card Section with dropdown & table -->
   <section class="card-section">

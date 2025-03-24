@@ -322,6 +322,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     return html;
   }
 
+  // Calculate positive, neutral, negative sentiment percentages and render pie chart
+  function renderSentimentPieChart(data) {
+    const totalPosts = data.length;
+  
+    const positiveCount = data.filter(p => p.weightedSentimentScore > 0).length;
+    const neutralCount = data.filter(p => p.weightedSentimentScore === 0).length;
+    const negativeCount = data.filter(p => p.weightedSentimentScore < 0).length;
+  
+    const positivePercent = ((positiveCount / totalPosts) * 100).toFixed(1);
+    const neutralPercent = ((neutralCount / totalPosts) * 100).toFixed(1);
+    const negativePercent = ((negativeCount / totalPosts) * 100).toFixed(1);
+  
+    const ctx = document.getElementById('sentimentPieChart').getContext('2d');
+  
+    // Destroy existing chart instance if it exists
+    if (window.sentimentPieChartInstance) {
+      window.sentimentPieChartInstance.destroy();
+    }
+  
+    window.sentimentPieChartInstance = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Positive (%)', 'Neutral (%)', 'Negative (%)'],
+        datasets: [{
+          data: [positivePercent, neutralPercent, negativePercent],
+          backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: {
+          legend: {
+            display: false,
+            position: 'right' // Legends positioned to the right
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) => `${context.label}: ${context.raw}%`
+            }
+          }
+        }
+      }
+    });
+    // Explicitly set canvas size via JS (you can adjust these as needed)
+    ctx.canvas.width = 80; // desired width in pixels
+    ctx.canvas.height = 80; // desired height in pixels
+  }
+  
+
+
   // ----------------------------
   // MAIN: FETCH DATA, RENDER CHARTS & DEFAULT LIST
   // ----------------------------
@@ -333,20 +383,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Update the Post Count box with the number of posts
       document.querySelector("#postCount .postCount-number").textContent = allPostsData.length;
 
-
-      // 1. Calculate the average weighted sentiment
+      // Calculate and display average weighted sentiment score:
       if (allPostsData.length > 0) {
         const sum = allPostsData.reduce((acc, post) => acc + post.weightedSentimentScore, 0);
         const avg = sum / allPostsData.length;
 
-        // Display in the UI
-        const avgElement = document.getElementById("averageWeightedScore");
-        avgElement.textContent = `Average Weighted Sentiment Score: ${avg.toFixed(2)}`;
+        // Update new box
+        document.getElementById("avgWeightedScoreNumber").textContent = avg.toFixed(2);
       } 
       else {
-        // If no posts are returned, show a message or reset it
-        document.getElementById("averageWeightedScore").textContent = "No posts found for this filter/date range.";
+        document.getElementById("avgWeightedScoreNumber").textContent = "N/A";
       }
+
+      renderSentimentPieChart(allPostsData);
 
       // Render Weighted Sentiment chart
       renderWeightedSentimentChart(allPostsData);
