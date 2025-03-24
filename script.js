@@ -496,57 +496,129 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ----------------------------
   // MAIN: FETCH DATA, RENDER CHARTS & DEFAULT LIST
   // ----------------------------
+  // async function updateCharts() {
+  //   try {
+  //     allPostsData = await fetchPostsInRange(); // store globally
+  //     console.log("Data fetched from Firestore:", allPostsData);
+
+  //     // Update the Post Count box with the number of posts
+  //     document.querySelector("#postCount .postCount-number").textContent = allPostsData.length;
+
+  //     // Calculate and display average weighted sentiment score:
+  //     if (allPostsData.length > 0) {
+  //       const sum = allPostsData.reduce((acc, post) => acc + post.weightedSentimentScore, 0);
+  //       const avg = sum / allPostsData.length;
+
+  //       // Update new box
+  //       document.getElementById("avgWeightedScoreNumber").textContent = avg.toFixed(2);
+  //     } 
+  //     else {
+  //       document.getElementById("avgWeightedScoreNumber").textContent = "N/A";
+  //     }
+
+  //     // Calculate and display total comments count:
+  //     if (allPostsData.length > 0) {
+  //       const totalComments = allPostsData.reduce((acc, post) => acc + post.totalComments, 0);
+  //       document.getElementById("commentsCountNumber").textContent = totalComments;
+  //     } 
+  //     else {
+  //       document.getElementById("commentsCountNumber").textContent = "0";
+  //     }
+
+  //     renderSentimentPieChart(allPostsData);
+
+  //     // Render Weighted Sentiment chart
+  //     renderWeightedSentimentChart(allPostsData);
+  //     renderSentimentStackChart(allPostsData);
+
+  //     // Render Engagement Score chart
+  //     renderEngagementScoreChart(allPostsData);
+  //     renderCommentsCountChart(allPostsData)
+
+  //     // By default, show "Lowest 10 Weighted Sentiment Posts"
+  //     postListDropdown.value = 'lowestWs';
+  //     renderPostList(allPostsData, 'lowestWs');
+  //   } 
+  //   catch (error) {
+  //     console.error("Error building charts:", error);
+  //   }
+  // }
+
   async function updateCharts() {
     try {
-      allPostsData = await fetchPostsInRange(); // store globally
-      console.log("Data fetched from Firestore:", allPostsData);
-
-      // Update the Post Count box with the number of posts
+      allPostsData = await fetchPostsInRange();
+      
       document.querySelector("#postCount .postCount-number").textContent = allPostsData.length;
-
-      // Calculate and display average weighted sentiment score:
+  
       if (allPostsData.length > 0) {
         const sum = allPostsData.reduce((acc, post) => acc + post.weightedSentimentScore, 0);
         const avg = sum / allPostsData.length;
-
-        // Update new box
         document.getElementById("avgWeightedScoreNumber").textContent = avg.toFixed(2);
-      } 
-      else {
-        document.getElementById("avgWeightedScoreNumber").textContent = "N/A";
-      }
-
-      // Calculate and display total comments count:
-      if (allPostsData.length > 0) {
+        
         const totalComments = allPostsData.reduce((acc, post) => acc + post.totalComments, 0);
         document.getElementById("commentsCountNumber").textContent = totalComments;
-      } 
-      else {
+      } else {
+        document.getElementById("avgWeightedScoreNumber").textContent = "N/A";
         document.getElementById("commentsCountNumber").textContent = "0";
       }
-
+  
       renderSentimentPieChart(allPostsData);
-
-      // Render Weighted Sentiment chart
-      renderWeightedSentimentChart(allPostsData);
-      renderSentimentStackChart(allPostsData);
-
-      // Render Engagement Score chart
       renderEngagementScoreChart(allPostsData);
-      renderCommentsCountChart(allPostsData)
-
-      // By default, show "Lowest 10 Weighted Sentiment Posts"
-      postListDropdown.value = 'lowestWs';
+      renderCommentsCountChart(allPostsData);
       renderPostList(allPostsData, 'lowestWs');
-    } 
-    catch (error) {
+  
+      // Explicitly render only the default visible chart
+      const activeTabId = document.querySelector('.tab-button.active').getAttribute('data-tab');
+      if (activeTabId === 'weightedTab') {
+        renderWeightedSentimentChart(allPostsData);
+      } else if (activeTabId === 'stackedTab') {
+        renderSentimentStackChart(allPostsData);
+      }
+  
+    } catch (error) {
       console.error("Error building charts:", error);
     }
   }
+  
 
   // 10. Filter button event
   document.getElementById('filter-btn').addEventListener('click', updateCharts);
 
   // 11. Initial load
   updateCharts();
+
+  // Handle tab switching logic
+  document.querySelectorAll('.tab-button').forEach(button => {
+    button.addEventListener('click', () => {
+      const tabId = button.getAttribute('data-tab');
+  
+      // Reset active states for buttons
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+  
+      // Reset active states for tabs and hide them
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+        tab.style.display = 'none';
+      });
+  
+      // Activate clicked tab button and tab content
+      button.classList.add('active');
+      const activeTab = document.getElementById(tabId);
+      activeTab.classList.add('active');
+      activeTab.style.display = 'block';
+  
+      // Explicitly re-render charts when the tab is activated
+      if (tabId === 'stackedTab') {
+        renderSentimentStackChart(allPostsData);
+      } else if (tabId === 'weightedTab') {
+        renderWeightedSentimentChart(allPostsData);
+      }
+    });
+  });
+  
+  // Set default active tab explicitly on load
+  document.querySelector('.tab-button.active').click();
+  
+
 });
+

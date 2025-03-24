@@ -58,7 +58,7 @@
   
   </section>
 
-  <section class="chart-section">
+  <!-- <section class="chart-section">
     <h3>Weighted Sentiment Score for Posts</h3>
      
     <p style="font-size: small; text-align: left; max-width: 1200px; margin: 5px auto;">
@@ -89,7 +89,43 @@
     <canvas
       id="stackedSentimentChart"
     ></canvas>
+  </section> -->
+
+  <!-- Tab buttons -->
+  <div class="tab-container">
+    <button class="tab-button active" data-tab="weightedTab">Weighted Sentiment Score</button>
+    <button class="tab-button" data-tab="stackedTab">Stacked Sentiment Chart</button>
+  </div>
+
+  <!-- Weighted Sentiment Score Tab Content -->
+  <section id="weightedTab" class="chart-section tab-content active">
+    <h3>Weighted Sentiment Score for Posts</h3>
+    <p style="font-size: small; text-align: left; max-width: 1200px; margin: 5px auto;">
+      This chart displays the Weighted Sentiment Scores of posts within the selected date 
+      range and filters. The weighted sentiment score is computed by multiplying each post's 
+      raw sentiment score—derived from analyzing the sentiment polarity of post content—with 
+      its engagement score, giving greater emphasis to posts with higher interaction. 
+      A positive score indicates generally favorable sentiment, while a negative score 
+      highlights critical or negative sentiment, quickly identifying topics resonating 
+      positively or negatively within the community.
+    </p>
+    <canvas id="weightedSentimentChart"></canvas>
   </section>
+
+  <!-- Stacked Sentiment Chart Tab Content -->
+  <section id="stackedTab" class="chart-section tab-content" style="display:none;">
+    <h3>Stacked Sentiment Chart</h3>
+    <p style="font-size: small; text-align: left; max-width: 1200px; margin: 5px auto;">
+      This stacked sentiment chart displays the overall sentiment breakdown for each post within the selected date range. 
+      The green segment represents the total number of positive sentiments derived from the comments,
+      while the red segment shows the total number of negative sentiments. Posts with predominantly green
+      segments indicate a more favorable reception, whereas those with larger red segments 
+      suggest stronger negative feedback. This visualization helps you quickly assess the 
+      sentiment balance across the posts' comments.
+    </p>
+    <canvas id="stackedSentimentChart"></canvas>
+  </section>
+
   
   <section class="chart-section">
     <!-- Set the canvas width to 1200 and optionally a matching inline style -->
