@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "CICT (specific module)"],  "complaints": [],  "suggestions": ["Read marking rubrics carefully", "Put in minimal effort to pass"]}

@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "gpa"],  "complaints": ["Some TPFun subjects are pass/fail and considered a waste of time", "Minimal quality submissions are sufficient for passing some TPFun subjects"],  "suggestions": []}

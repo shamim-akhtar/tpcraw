@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic"],  "complaints": ["Received a non-graded pass (NGP) due to illness and not obtaining a medical certificate (MC)"],  "suggestions": ["Seeking information on appealing a non-graded pass"]}

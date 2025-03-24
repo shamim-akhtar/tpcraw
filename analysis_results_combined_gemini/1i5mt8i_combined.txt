@@ -1,1 +1,0 @@
-{  "sentiment": "positive",  "topics": ["food", "campus facilities"],  "complaints": ["Mala at Shortcircuit not spicy enough"],  "suggestions": []}

@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["administration", "medical"],  "complaints": ["Slow response time from admissions regarding medical checkup procedures.", "Lack of clear information on how to handle medical checkups when students are overseas."],  "suggestions": []}

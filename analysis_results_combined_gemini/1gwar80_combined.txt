@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "events"],  "complaints": ["Difficulty of the NuH quiz", "Submitting the wrong number on the quiz", "Lack of preparation for the quiz"],  "suggestions": []}

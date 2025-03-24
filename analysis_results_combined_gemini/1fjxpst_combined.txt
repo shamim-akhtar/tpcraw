@@ -1,1 +1,0 @@
-{  "sentiment": "positive",  "topics": ["scholarships", "academic"],  "complaints": [],  "suggestions": ["Check the Brightspark website for scholarship information.", "Apply for the TP scholarship in Year 1 as it's only offered then."]}

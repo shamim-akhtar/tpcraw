@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic"],  "complaints": ["Business law module was difficult", "Exam tested on obscure terms requiring extensive note memorization"],  "suggestions": []}

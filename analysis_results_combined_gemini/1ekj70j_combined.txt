@@ -1,1 +1,0 @@
-{  "sentiment": "positive",  "topics": ["academic", "administration"],  "complaints": ["concern about warning letters affecting course selection"],  "suggestions": []}

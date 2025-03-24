@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "career/internships"],  "complaints": [],  "suggestions": ["Prepare for interview questions about opinions and reasons for choosing the Law and Management course.", "Avoid stating a desire to become a lawyer directly; focus on the practical skills gained at polytechnic."]}

@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["academic", "events"],  "complaints": ["Uncertainty about GPA release date", "Concerns about failing modules and retaking electives", "Stress related to GPA results"],  "suggestions": []}

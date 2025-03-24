@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["campus facilities", "academic"],  "complaints": ["Lack of knowledge about quiet study areas in Temasek Polytechnic."],  "suggestions": []}

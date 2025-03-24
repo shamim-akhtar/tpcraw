@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["financial aid", "bursary", "tuition fees"],  "complaints": ["Uncertainty regarding the timing of bursary disbursement."],  "suggestions": []}

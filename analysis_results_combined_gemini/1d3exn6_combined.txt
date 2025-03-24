@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["CCAs", "events", "academic"],  "complaints": ["Uncertainty about Seal points for recreational CCA participation."],  "suggestions": []}

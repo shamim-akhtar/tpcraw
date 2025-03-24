@@ -1,1 +1,0 @@
-{  "sentiment": "positive",  "topics": ["CCAs", "University Applications", "Portfolio Building", "Academic Performance", "Events", "Campus Life"],  "complaints": [],  "suggestions": ["Community Service Club", "TP Lionhearters", "TP Sport Club", "Course Interest Group", "School's Studies Club", "TPSUSTIG (Sustainability Interest Group)", "DMPC (if interested in arts)"]}

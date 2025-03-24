@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic", "attendance"],  "complaints": ["Stricter attendance policies", "Deduction of CP marks for excessive absences (even with MCs/LOAs)", "Uncertainty regarding attendance impact with MCs and absences"],  "suggestions": []}

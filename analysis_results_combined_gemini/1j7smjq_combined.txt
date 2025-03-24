@@ -1,1 +1,0 @@
-{  "sentiment": "neutral",  "topics": ["internship", "career/internships", "administration", "academic"],  "complaints": ["Inconsistent information regarding internship application process. Discrepancy between course head's advice and previous student experiences."],  "suggestions": []}

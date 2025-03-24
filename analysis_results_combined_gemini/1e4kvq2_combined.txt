@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["campus facilities", "administration"],  "complaints": ["Lost wallet at Temasek Polytechnic", "Lost and found office hasn't contacted the owner after a lost report was filed."],  "suggestions": []}

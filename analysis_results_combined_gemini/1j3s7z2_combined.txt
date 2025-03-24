@@ -1,1 +1,0 @@
-{  "sentiment": "positive",  "topics": ["academic", "schedule", "career/internships", "CCA (PFP Ambassadors)", "campus facilities"],  "complaints": [],  "suggestions": ["Work during flex weeks, study week, and vacation to balance work and studies.", "Reschedule work based on the timetable once it's released."]}

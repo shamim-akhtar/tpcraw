@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["financial aid", "administration"],  "complaints": ["Delay in bursary disbursement (since June for some students)", "Lack of communication regarding bursary status", "Frustration with the application and approval process"],  "suggestions": []}

@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["academic"],  "complaints": ["Poor grade in CRM subject", "CRM subject considered worst"],  "suggestions": []}

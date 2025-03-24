@@ -1,1 +1,0 @@
-{  "sentiment": "negative",  "topics": ["events", "administration", "academic"],  "complaints": ["compulsory attendance at extracurricular events", "lack of clarity on punishment for non-attendance", "potential negative impact on SEAL points"],  "suggestions": []}
