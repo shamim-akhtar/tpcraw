@@ -7,7 +7,9 @@ import {
   query,
   where,
   orderBy,
-  getDocs
+  getDocs,
+  getDoc,
+  doc
 } from 'https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js';
 
 console.log("Script is loaded and running.");
@@ -186,25 +188,88 @@ document.addEventListener('DOMContentLoaded', async () => {
         scales: {
           y: { beginAtZero: true }
         },
+        // onClick: (evt, elements) => {
+        //   if (elements.length > 0) {
+        //     const barIndex = elements[0].index;
+        //     const item = data[barIndex];
+        //     alert(
+        //       `Post Title: ${item.title}\n` +
+        //       `Category: ${item.category}\n` +
+        //       `Emotion: ${item.emotion}\n` +
+        //       `Engagement Score: ${item.engagementScore}\n` +
+        //       `IIT Related: ${item.iit}\n` +
+        //       `Raw Sentiment Score: ${item.rawSentimentScore}\n` +
+        //       `Summary: ${item.summary}\n` +
+        //       `Weighted Score: ${item.weightedSentimentScore}\n` +
+        //       `Created: ${item.created}`
+        //     );
+        //   }
+        // }
         onClick: (evt, elements) => {
           if (elements.length > 0) {
             const barIndex = elements[0].index;
             const item = data[barIndex];
-            alert(
-              `Post Title: ${item.title}\n` +
-              `Category: ${item.category}\n` +
-              `Emotion: ${item.emotion}\n` +
-              `Engagement Score: ${item.engagementScore}\n` +
-              `IIT Related: ${item.iit}\n` +
-              `Raw Sentiment Score: ${item.rawSentimentScore}\n` +
-              `Summary: ${item.summary}\n` +
-              `Weighted Score: ${item.weightedSentimentScore}\n` +
-              `Created: ${item.created}`
-            );
+            fetchAndDisplayPostDetails(item.postId);
           }
         }
       }
     });
+  }
+
+  // Function to fetch and display post details and comments
+  async function fetchAndDisplayPostDetails(postId) {
+    const postDetailsContainer = document.getElementById('post-details');
+
+    // Fetch Post Document
+    const postRef = doc(db, "posts", postId);
+    const postSnap = await getDoc(postRef);
+
+    if (!postSnap.exists()) {
+      postDetailsContainer.innerHTML = "<p>No details available for this post.</p>";
+      return;
+    }
+
+    const postData = postSnap.data();
+
+    // Exclude the body initially and prepare the analysis section
+    let analysisHtml = `<h3>Analysis:</h3><ul>`;
+    for (const [key, value] of Object.entries(postData)) {
+      if (key !== 'body') {
+        analysisHtml += `<li><strong>${key}:</strong> ${value}</li>`;
+      }
+    }
+    analysisHtml += `<li><strong>URL:</strong> <a href="${postData.body}" target="_blank">${postData.body}</a></li>`;
+    analysisHtml += `</ul>`;
+
+    // Post body section
+    const postBodyHtml = `
+      <h3>Post Body:</h3>
+      <p>${postData.body}</p>
+    `;
+
+    // Fetch comments
+    const commentsRef = collection(db, `posts/${postId}/comments`);
+    const commentsSnapshot = await getDocs(commentsRef);
+
+    let commentsHtml = `<h3>Comments (${commentsSnapshot.size}):</h3>`;
+
+    if (commentsSnapshot.size === 0) {
+      commentsHtml += `<p>No comments available.</p>`;
+    } else {
+      commentsSnapshot.forEach(commentDoc => {
+        const commentData = commentDoc.data();
+        commentsHtml += `
+          <div class="comment-card" style="border-bottom:1px solid #ddd;padding:10px;margin-bottom:10px;">
+            <strong>Author:</strong> ${commentData.author || "Anonymous"}<br>
+            <strong>Sentiment:</strong> ${commentData.sentiment}<br>
+            <p>${commentData.body}</p>
+          </div>
+        `;
+      });
+    }
+
+    // Display the assembled HTML
+    postDetailsContainer.innerHTML = analysisHtml + postBodyHtml + commentsHtml;
   }
 
   // Sentiment stack.
