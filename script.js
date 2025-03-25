@@ -188,23 +188,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         scales: {
           y: { beginAtZero: true }
         },
-        // onClick: (evt, elements) => {
-        //   if (elements.length > 0) {
-        //     const barIndex = elements[0].index;
-        //     const item = data[barIndex];
-        //     alert(
-        //       `Post Title: ${item.title}\n` +
-        //       `Category: ${item.category}\n` +
-        //       `Emotion: ${item.emotion}\n` +
-        //       `Engagement Score: ${item.engagementScore}\n` +
-        //       `IIT Related: ${item.iit}\n` +
-        //       `Raw Sentiment Score: ${item.rawSentimentScore}\n` +
-        //       `Summary: ${item.summary}\n` +
-        //       `Weighted Score: ${item.weightedSentimentScore}\n` +
-        //       `Created: ${item.created}`
-        //     );
-        //   }
-        // }
         onClick: (evt, elements) => {
           if (elements.length > 0) {
             const barIndex = elements[0].index;
@@ -232,20 +215,51 @@ document.addEventListener('DOMContentLoaded', async () => {
     const postData = postSnap.data();
 
     // Exclude the body initially and prepare the analysis section
-    let analysisHtml = `<h3>Analysis:</h3><ul>`;
-    for (const [key, value] of Object.entries(postData)) {
-      if (key !== 'body') {
-        analysisHtml += `<li><strong>${key}:</strong> ${value}</li>`;
-      }
-    }
-    analysisHtml += `<li><strong>URL:</strong> <a href="${postData.body}" target="_blank">${postData.body}</a></li>`;
-    analysisHtml += `</ul>`;
+    let analysisHtml = `<h3>Post Title: ${postData.title}</h3><ul>`;
+
+    const author = postData.author;
+    const url = postData.URL;
+
+    const date = postData.created.toDate ? postData.created.toDate() : new Date(postData.created);
+    const formattedDate = date.toLocaleString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    }).replace(',', '');
+    
+    const dateHtml = `<li class="post-date">Author: ${author}, ${formattedDate}</li>`;
+    const urlHtml = `<li class="post-date"><a href="${url}" target="_blank">${url}</a></li>`;
+
+    const category = postData.category;
+    const emotion = postData.emotion;
+    const engagementScore = postData.engagementScore;
+    const rawSentimentScore = postData.rawSentimentScore;
+    const score = postData.score;
+    const summary = postData.summary;
+    const totalNegativeSentiments = postData.totalNegativeSentiments;
+    const totalPositiveSentiments = postData.totalPositiveSentiments;
+    const weightedSentimentScore = postData.weightedSentimentScore;
+
+    const badgesHtml = `
+    <div class="shields-container">
+      <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
+      <img src="https://img.shields.io/badge/emotion-${postData.emotion}-purple?style=flat-square" alt="Emotion">
+      <img src="https://img.shields.io/badge/engagement-${engagementScore.toFixed(2)}-orange?style=flat-square" alt="Engagement">
+
+      <img src="https://img.shields.io/badge/reddit_score-${score}-brightgreen?style=flat-square" alt="Reddit Score">
+      <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-success?style=flat-square" alt="Positive">
+      <img src="https://img.shields.io/badge/negative_sentiments-${totalNegativeSentiments}-red?style=flat-square" alt="Negative">
+      <img src="https://img.shields.io/badge/weighted-${weightedSentimentScore.toFixed(2)}-blueviolet?style=flat-square" alt="Weighted">
+    </div>,`;
+  
+
+    const postSummary = `<br><strong>Summary of the post</strong><br><p>${summary}</p>`;
 
     // Post body section
-    const postBodyHtml = `
-      <h3>Post Body:</h3>
-      <p>${postData.body}</p>
-    `;
+    const postBodyHtml = `<p>${postData.body}</p>`;
 
     // Fetch comments
     const commentsRef = collection(db, `posts/${postId}/comments`);
@@ -255,13 +269,38 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (commentsSnapshot.size === 0) {
       commentsHtml += `<p>No comments available.</p>`;
-    } else {
+    } 
+    else {
       commentsSnapshot.forEach(commentDoc => {
         const commentData = commentDoc.data();
+        const commentDate = commentData.created.toDate ? commentData.created.toDate() : new Date(commentData.created);
+        const formattedCommentDate = date.toLocaleString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        }).replace(',', '');
+
+        const sentiment = commentData.sentiment;
+        let sentimentColor = 'orange'; // default for neutral
+
+        if (sentiment < 0) {
+          sentimentColor = 'red';
+        } else if (sentiment > 0) {
+          sentimentColor = 'green';
+        }
         commentsHtml += `
           <div class="comment-card" style="border-bottom:1px solid #ddd;padding:10px;margin-bottom:10px;">
-            <strong>Author:</strong> ${commentData.author || "Anonymous"}<br>
-            <strong>Sentiment:</strong> ${commentData.sentiment}<br>
+            <li class="post-date">Author: ${commentData.author}, ${formattedCommentDate}</li>
+            
+            <div class="shields-container">            
+              <img src="https://img.shields.io/badge/reddit_score-${commentData.score}-brightgreen?style=flat-square" alt="Reddit Score">
+              <img src="https://img.shields.io/badge/sentiment-${sentiment}-${sentimentColor}?style=flat-square" alt="Sentiment">
+              <img src="https://img.shields.io/badge/emotion-${commentData.emotion}-purple?style=flat-square" alt="Emotion">  
+              
+            </div>,
             <p>${commentData.body}</p>
           </div>
         `;
@@ -269,7 +308,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Display the assembled HTML
-    postDetailsContainer.innerHTML = analysisHtml + postBodyHtml + commentsHtml;
+    postDetailsContainer.innerHTML = analysisHtml 
+    + urlHtml
+    + postSummary
+    + badgesHtml
+    + dateHtml
+    + postBodyHtml 
+    + commentsHtml;
   }
 
   // Sentiment stack.
@@ -334,6 +379,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             stacked: true,
             beginAtZero: true
           }
+        },
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const barIndex = elements[0].index;
+            const item = data[barIndex];
+            fetchAndDisplayPostDetails(item.postId);
+          }
         }
       }
     });
@@ -370,6 +422,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       },
       options: {
         responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Engagement Score per Post',
+            align: 'start', // Left-align the title
+            font: {
+              size: 18,
+              weight: '600',
+              family: 'Arial, sans-serif' // Crisp, readable font
+            },
+            color: '#333', // Darker color for better contrast
+            padding: {
+              top: 10,
+              bottom: 20
+            }
+          }
+        },
         scales: {
           y: { beginAtZero: true }
         },
@@ -377,11 +446,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (elements.length > 0) {
             const barIndex = elements[0].index;
             const item = data[barIndex];
-            alert(
-              `Post Title: ${item.title}\n` +
-              `Engagement Score: ${item.engagementScore}\n` +
-              `Created: ${item.created}`
-            );
+            fetchAndDisplayPostDetails(item.postId);
           }
         }
       }
@@ -419,6 +484,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       },
       options: {
         responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Comments per Post',
+            align: 'start', // Left-align the title
+            font: {
+              size: 18,
+              weight: '600',
+              family: 'Arial, sans-serif' // Crisp, readable font
+            },
+            color: '#333', // Darker color for better contrast
+            padding: {
+              top: 10,
+              bottom: 20
+            }
+          }
+        },
         scales: {
           y: { beginAtZero: true }
         },
@@ -426,11 +508,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (elements.length > 0) {
             const barIndex = elements[0].index;
             const item = data[barIndex];
-            alert(
-              `Post Title: ${item.title}\n` +
-              `Total Comments: ${item.totalComments}\n` +
-              `Created: ${item.created}`
-            );
+            fetchAndDisplayPostDetails(item.postId);
           }
         }
       }
@@ -568,7 +646,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.sentimentPieChartInstance = new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['Pos', 'Neu', 'Neg'],
+        labels: ['Positive', 'Neutral', 'Negative'],
         datasets: [{
           data: [positivePercent, neutralPercent, negativePercent],
           backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
