@@ -2,7 +2,7 @@
 
 Welcome to the **r/TemasekPoly Sentiment Dashboard**, a web-based analytics interface that visualizes and summarizes Reddit posts and comments related to Temasek Polytechnic. It leverages sentiment analysis powered by **Google Gemini API** and data from **Firebase Firestore**.
 
-![][image1]
+![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_01.PNG)
 
 ---
 
@@ -18,7 +18,7 @@ The dashboard consists of **three main areas**:
 
 ## **🔧 1\. Controls Panel (Date & Filter Selection)**
 
-![][image2]
+![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_02.PNG)
 
 | Component | Function |
 | :---- | :---- |
@@ -33,7 +33,7 @@ The dashboard consists of **three main areas**:
 
 ### **📌 A. Left Panel – Summary Boxes**
 
-![][image3]
+![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_03.PNG)
 
 | Box | Description |
 | :---- | :---- |
@@ -47,34 +47,34 @@ The dashboard consists of **three main areas**:
 ### **📊 B. Right Panel – Detailed Charts using Tab Navigation**
 
 **Click any tab** to switch views.  
-![][image4]
+![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_04.PNG)
 
 | Weighted Sentiment per Post | Shows each post's overall sentiment score, adjusted for popularity. Combines sentiment polarity with engagement (more weight to popular posts). Positive \= green, Negative \= red. |
 | :---- | :---- |
 
-##### **![][image5]**
+![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_05.PNG)
 
 | Comment Sentiments per Post | Stacked bar chart showing the number of positive (green) and negative (red) comments per post.  |
 | :---- | :---- |
 
-##### **![][image6]**
+![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_06.PNG)
 
 | Comments per Post | Simple bar chart showing how many comments each post received. |
 | :---- | :---- |
 
 ##### 
 
-![][image7]
+![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_07.PNG)
 
 | Engagement Score per Post | Bar chart reflecting interaction level (e.g., comment count \+ score). Higher \= more engaging. |
 | :---- | :---- |
 
-##### ![][image8]
+![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_08.PNG)
 
 | Top 10 Posts | Dropdown-driven table view of the top/bottom posts based on various criteria. |
 | :---- | :---- |
 
-##### ![][image9]
+![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_09.PNG)
 
 ##### **🎯 Available Filters in Top 10 Posts dropdown:**
 
@@ -85,7 +85,7 @@ The dashboard consists of **three main areas**:
 * Highest 10 Raw Sentiment Posts  
 * Top 10 Most Recent Posts
 
-![][image10]
+![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_10.PNG)
 
 Each selection dynamically updates the table view.
 
@@ -108,7 +108,7 @@ Whenever you **click a chart bar**, this section updates to show:
 
 This section helps you **dive deep into user feedback and reactions**.
 
-![][image11]
+![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_11.PNG)
 
 ---
 
