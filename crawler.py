@@ -213,12 +213,24 @@ for submission in subreddit.new(limit=500):  # Using 'new' to get recent posts
         # summary = parts[4].strip()
 
     prompt_summary = f"""
-    You are an AI assigned to evaluate a Reddit post and its accompanying comments about 
-    Temasek Polytechnic. Begin by summarizing the main topics or issues discussed in a 
-    concise paragraph. In a second paragraph, describe the overall sentiment and emotional 
-    tone, highlighting any mentions of subjects, the school, or facilities. If warranted, 
-    provide a brief third paragraph with concerns or recommendations for school authorities, 
-    clearly specifying any referenced subjects, facilities, or aspects of the school.
+    You are an AI tasked with analyzing a Reddit post and its accompanying comments about 
+    Temasek Polytechnic. Perform the following steps (do not provide headings or titles for any paragraphs):
+
+    1. Start with a concise paragraph summarizing the key topics, issues, 
+    or themes discussed across the post and comments.
+
+    2. In the second paragraph, describe the overall sentiment and emotional 
+    tone expressed. Mention any references to specific academic subjects, school facilities, 
+    or aspects of campus life, if applicable.
+
+    3. If appropriate, include a third paragraph highlighting any 
+    concerns raised or constructive suggestions for school authorities. Clearly reference 
+    any specific subjects, facilities, or experiences mentioned.
+
+    If the provided text lacks sufficient content for analysis (e.g., it only contains links, 
+    attachments, or unrelated filler), simply state:
+
+    “The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations.”
 
     Text: "{combined_post_comments}"
     """
