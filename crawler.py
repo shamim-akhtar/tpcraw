@@ -63,32 +63,16 @@ new_last_timestamp = last_timestamp
 genai.configure(api_key=GOOGLE_GEMINI_API_KEY)
 model = genai.GenerativeModel()  # Use 'gemini-pro-vision' for multimodal
 
-# #temp
-# # Given UTC date/time string
-# utc_str = "2025-03-20 15:35:30"
-
-# # Parse the string into a datetime object (assuming UTC)
-# dt = datetime.datetime.strptime(utc_str, "%Y-%m-%d %H:%M:%S")
-
-# # Set timezone to UTC
-# dt_utc = dt.replace(tzinfo=datetime.timezone.utc)
-
-# # Convert to Unix timestamp
-# timestamp = dt_utc.timestamp()
-# print("Timestamp:", timestamp)
-# set_last_timestamp(timestamp)
-
-
 # Crawl new posts and comments incrementally
 for submission in subreddit.new(limit=500):  # Using 'new' to get recent posts
     if submission.created_utc <= last_timestamp:
         continue
-    
+    print(f"Found new post: {submission.id} : {submission.title}")
+
     # Update the latest timestamp
     if submission.created_utc > new_last_timestamp:
         new_last_timestamp = submission.created_utc
 
-    
     # Crawl comments
     submission.comments.replace_more(limit=None)
     comments = submission.comments.list()
@@ -130,20 +114,18 @@ for submission in subreddit.new(limit=500):  # Using 'new' to get recent posts
     post_ref = db.collection("posts").document(submission.id)
     post_ref.set(post_doc)
 
-
-    #save_to_file(post_filename, post_content)
-    
-    #comments_filename = os.path.join(output_dir, f"{submission.id}_comments.txt")
-    #comments_content = ""
-
     weighted_sentiment_sum = 0.0
     total_weight = 0.0
     raw_sentiment_score = 0.0
+    total_comments = 0
+    total_positive_sentiments = 0
+    total_negative_sentiments = 0
     
     for comment in comments:
         combined_post_comments += f"\n{comment.body}"
         prompt = f"""
-        Review the following text and provide a concise output in this format: 
+        You are an AI assigned to evaluate a Reddit post comment about 
+        Temasek Polytechnic. Review the following text and provide a concise output in this format: 
         a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
         then a comma, the identified emotion (happy, relief, stress, frustration, 
         pride, disappointment, confusion, neutral), another comma, the determined category 
@@ -169,12 +151,6 @@ for submission in subreddit.new(limit=500):  # Using 'new' to get recent posts
             category = parts[2].strip()
             iit_flag = parts[3].strip()  # Expected to be "yes" or "no"
 
-        # For debugging or further processing:
-        # print("Sentiment:", sentiment)
-        # print("Emotion:", emotion)
-        # print("Category:", category)
-        # print("IIT:", iit_flag)
-
         # Compute a weight for the comment based on its score.
         # Use a logarithmic scale; if comment.score is negative, default to a minimal weight of 1.
         weight = 1 + math.log2(max(comment.score, 0) + 1)
@@ -183,6 +159,13 @@ for submission in subreddit.new(limit=500):  # Using 'new' to get recent posts
         weighted_sentiment_sum += sentiment * weight
         total_weight += weight
         raw_sentiment_score += sentiment
+        
+        total_comments += 1
+
+        if sentiment > 0:
+            total_positive_sentiments += sentiment
+        elif sentiment < 0:
+            total_negative_sentiments += sentiment
 
         #print(response)
         comment_doc = {
@@ -201,7 +184,8 @@ for submission in subreddit.new(limit=500):  # Using 'new' to get recent posts
     #save_to_file(comments_filename, comments_content)
     
     prompt = f"""
-    Review the following text and provide a concise output in this format: 
+    You are an AI assigned to evaluate a Reddit post and its accompanying comments about 
+    Temasek Polytechnic. Review the following text and provide a concise output in this format: 
     a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
     then a comma, the identified emotion (happy, relief, stress, frustration, 
     pride, disappointment, confusion, neutral), another comma, the determined category 
@@ -209,9 +193,8 @@ for submission in subreddit.new(limit=500):  # Using 'new' to get recent posts
     lecturer, student life, infrastructure, classroom, events, CCA), 
     and finally, another comma followed by "yes" or "no" indicating whether the text 
     relates to the School of IIT (or the School of Informatics & IT, which includes
-    programs like Big Data Analytics, Applied AI, IT, Cybersecurity & Digital Forensics, 
-    Immersive Media & Game Development and Common ICT. Put "yes" only if any of the below keywords
-    is found in the text "IT", "IIT", "BDA", "CDF","AAI", "IGD"), a comma followed by the summary of the text.
+    programs like Big Data Analytics (BDA), Applied AI (AAI), IT (ITO), Cybersecurity & Digital Forensics (CDF), 
+    Immersive Media & Game Development (IGD) and Common ICT (CIT).
     Text: "{combined_post_comments}"
     """
     response = model.generate_content(prompt)
@@ -227,11 +210,25 @@ for submission in subreddit.new(limit=500):  # Using 'new' to get recent posts
         emotion = parts[1].strip()
         category = parts[2].strip()
         iit_flag = parts[3].strip()  # Expected to be "yes" or "no"
-        summary = parts[4].strip()
-        
+        # summary = parts[4].strip()
+
+    prompt_summary = f"""
+    You are an AI assigned to evaluate a Reddit post and its accompanying comments about 
+    Temasek Polytechnic. Begin by summarizing the main topics or issues discussed in a 
+    concise paragraph. In a second paragraph, describe the overall sentiment and emotional 
+    tone, highlighting any mentions of subjects, the school, or facilities. If warranted, 
+    provide a brief third paragraph with concerns or recommendations for school authorities, 
+    clearly specifying any referenced subjects, facilities, or aspects of the school.
+
+    Text: "{combined_post_comments}"
+    """
+
+    response = model.generate_content(prompt_summary)
+    summary = response.text.strip()
+
     # Calculate the weighted sentiment score for the post
     weighted_sentiment_score = weighted_sentiment_sum / total_weight if total_weight > 0 else 0
-    # Update the post document with the calculated weighted sentiment score
+    # Update the post document.
     post_ref.update({"weightedSentimentScore": weighted_sentiment_score})
     post_ref.update({"rawSentimentScore": raw_sentiment_score})
     post_ref.update({"summary": summary})
@@ -239,6 +236,12 @@ for submission in subreddit.new(limit=500):  # Using 'new' to get recent posts
     post_ref.update({"emotion": emotion})
     post_ref.update({"category": category})
     post_ref.update({"iit": iit_flag})
+    # Update the post with aggregated comment info
+    post_ref.update({
+        'totalComments': total_comments,
+        'totalPositiveSentiments': total_positive_sentiments,
+        'totalNegativeSentiments': total_negative_sentiments
+    })
     print(f"weightedSentimentScore: {weighted_sentiment_score}, rawSentimentScore: {raw_sentiment_score}")
 
 
