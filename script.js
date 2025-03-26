@@ -721,10 +721,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       else if (activeTabId === 'stackedTab') {
         renderSentimentStackChart(allPostsData);
       }
-      else if (tabId === 'engagementTab') {
+      else if (activeTabId  === 'engagementTab') {
         renderEngagementScoreChart(allPostsData);
       }
-      else if (tabId === 'totalCommentsTab') {
+      else if (activeTabId  === 'totalCommentsTab') {
         renderCommentsCountChart(allPostsData);
       }
   
