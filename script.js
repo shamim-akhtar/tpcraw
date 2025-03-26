@@ -319,8 +319,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Sentiment stack.
   function renderSentimentStackChart(data) {
-    // Extract labels and sentiment data from posts
-    const labels = data.map(post => post.title);
+    // Extract labels and sentiment data from postsconst 
+    MAX_LABEL_LENGTH = 25;
+    const labels = data.map(post =>
+      post.title.length > MAX_LABEL_LENGTH
+        ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
+        : post.title
+    );
     const positiveData = data.map(post => post.totalPositiveSentiments);
     const negativeData = data.map(post => post.totalNegativeSentiments);
   
@@ -398,7 +403,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderEngagementScoreChart(data) {
     console.log("Rendering Engagement Score Chart with data:", data);
 
-    const labels = data.map(item => item.title);
+    MAX_LABEL_LENGTH = 25;
+    const labels = data.map(post =>
+      post.title.length > MAX_LABEL_LENGTH
+        ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
+        : post.title
+    );
     const engagementScores = data.map(item => item.engagementScore);
 
     // For example, color all engagement bars purple
@@ -460,7 +470,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderCommentsCountChart(data) {
     //console.log("Rendering Engagement Score Chart with data:", data);
 
-    const labels = data.map(item => item.title);
+    MAX_LABEL_LENGTH = 25;
+    const labels = data.map(post =>
+      post.title.length > MAX_LABEL_LENGTH
+        ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
+        : post.title
+    );
     const totalComments = data.map(item => item.totalComments);
 
     // For example, color all engagement bars purple
