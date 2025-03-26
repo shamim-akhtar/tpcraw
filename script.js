@@ -250,18 +250,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const badgesHtml = `
     <div class="shields-container">
-      <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
+      <img src="https://img.shields.io/badge/category-${postData.category}-blue?style=flat-square" alt="Category">
       <img src="https://img.shields.io/badge/emotion-${postData.emotion}-purple?style=flat-square" alt="Emotion">
       <img src="https://img.shields.io/badge/engagement-${engagementScore.toFixed(2)}-orange?style=flat-square" alt="Engagement">
 
       <img src="https://img.shields.io/badge/reddit_score-${score}-brightgreen?style=flat-square" alt="Reddit Score">
-      <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-success?style=flat-square" alt="Positive">
+      <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
       <img src="https://img.shields.io/badge/negative_sentiments-${totalNegativeSentiments}-red?style=flat-square" alt="Negative">
-      <img src="https://img.shields.io/badge/weighted-${weightedSentimentScore.toFixed(2)}-blueviolet?style=flat-square" alt="Weighted">
+      <img src="https://img.shields.io/badge/weighted_sentiment-${weightedSentimentScore.toFixed(2)}-blueviolet?style=flat-square" alt="Weighted">
     </div>,`;
   
 
-    const postSummary = `<br><strong>Summary of the post</strong><br><p>${summary}</p>`;
+    const postSummary = `<br><strong>Summary of the post using Gen AI</strong><br><p>${summary}</p>`;
 
     // Post body section
     const postBodyHtml = `<p>${postData.body}</p>`;
