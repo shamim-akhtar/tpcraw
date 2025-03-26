@@ -9,6 +9,90 @@ import google.generativeai as genai
 import time
 import logging
 
+"""
+README - Reddit Crawler & Sentiment Aggregator for r/TemasekPoly
+
+Overview:
+---------
+This Python script crawls recent posts and comments from the Reddit subreddit r/TemasekPoly
+and saves them into a Firebase Firestore database. It uses Google's Gemini API (Generative AI)
+to evaluate the sentiment, emotion, category, and IIT relevance of each post and its comments.
+
+It is intended to be run automatically on a schedule (e.g. via cron or Task Scheduler) and includes
+resilience features like error handling, automatic retries, and crash recovery.
+
+Key Features:
+-------------
+- Crawls up to 500 of the most recent Reddit posts.
+- Skips posts already crawled based on their creation timestamp.
+- Processes and stores:
+  - Post title, author, body, score, timestamp, URL
+  - All associated comments
+  - AI-generated sentiment score (raw and weighted), emotion, category, IIT relevance
+  - A human-readable summary of the post and comment discussion
+- Automatically calculates and stores engagement metrics (e.g. sentiment scores, comment counts).
+- Tracks the last successfully crawled post to resume from where it left off.
+- Writes error logs to a file (`crawler_errors.log`) for admin review.
+- Handles Gemini API errors gracefully and retries calls automatically.
+
+Requirements:
+-------------
+- Python 3.7+
+- Firebase Admin SDK credentials saved in `firebase-credentials.json`
+- Environment variables set via `.env`:
+    - REDDIT_CLIENT_ID
+    - REDDIT_CLIENT_SECRET
+    - REDDIT_USER_AGENT
+    - GOOGLE_GEMINI_API_KEY
+
+Setup Instructions:
+-------------------
+1. Install dependencies:
+   pip install praw firebase-admin google-generativeai python-dotenv
+
+2. Add your `.env` file with Reddit and Gemini API credentials.
+
+3. Run the script manually or schedule it to run automatically:
+   python reddit_crawler.py
+
+Firestore Structure:
+--------------------
+posts (collection)
+ └─ {post_id} (document)
+     ├─ title
+     ├─ author
+     ├─ body
+     ├─ summary (AI-generated)
+     ├─ engagementScore
+     ├─ rawSentimentScore
+     ├─ weightedSentimentScore
+     ├─ emotion
+     ├─ category
+     ├─ iit (yes/no)
+     ├─ totalComments
+     ├─ totalPositiveSentiments
+     ├─ totalNegativeSentiments
+     └─ comments (subcollection)
+          └─ {comment_id} (document)
+               ├─ body
+               ├─ author
+               ├─ score
+               ├─ sentiment
+               ├─ emotion
+               ├─ category
+               └─ iit
+
+Outputs:
+--------
+- New posts and comments saved to Firestore.
+- AI summaries and sentiment metadata attached to each post.
+- `last_timestamp.txt` updated with the latest processed timestamp.
+- Logs stored in `crawler_errors.log`.
+- A final printout showing the number of new posts updated.
+
+"""
+
+
 # Setup logging to file
 logging.basicConfig(filename='crawler_errors.log', 
                     level=logging.ERROR,
