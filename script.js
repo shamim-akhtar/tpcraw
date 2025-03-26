@@ -14,6 +14,9 @@ import {
 
 console.log("Script is loaded and running.");
 
+const MAX_LABEL_LENGTH = 40;
+
+
 document.addEventListener('DOMContentLoaded', async () => {
   // 1. Set default end date to today's date
   const endDateInput = document.getElementById('end-date');
@@ -138,9 +141,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   // CHART 1: WEIGHTED SENTIMENT
   // ----------------------------
   function renderWeightedSentimentChart(data) {
-    console.log("Rendering Weighted Sentiment Chart with data:", data);
-
-    const labels = data.map(item => item.title);
+    const labels = data.map(post =>
+      post.title.length > MAX_LABEL_LENGTH
+        ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
+        : post.title
+    );
     const weightedScores = data.map(item => item.weightedSentimentScore);
 
     // Color each bar: red if negative, green if >= 0
@@ -320,7 +325,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Sentiment stack.
   function renderSentimentStackChart(data) {
     // Extract labels and sentiment data from postsconst 
-    MAX_LABEL_LENGTH = 25;
     const labels = data.map(post =>
       post.title.length > MAX_LABEL_LENGTH
         ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
@@ -403,7 +407,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderEngagementScoreChart(data) {
     console.log("Rendering Engagement Score Chart with data:", data);
 
-    MAX_LABEL_LENGTH = 25;
     const labels = data.map(post =>
       post.title.length > MAX_LABEL_LENGTH
         ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
@@ -470,7 +473,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderCommentsCountChart(data) {
     //console.log("Rendering Engagement Score Chart with data:", data);
 
-    MAX_LABEL_LENGTH = 25;
     const labels = data.map(post =>
       post.title.length > MAX_LABEL_LENGTH
         ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
