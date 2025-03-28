@@ -125,22 +125,32 @@ db = firestore.client()
 # File to store the last crawled timestamp
 LAST_TIMESTAMP_FILE = 'last_timestamp.txt'
 
+# def get_last_timestamp():
+#     #Retrieve the last timestamp from file.
+#     if os.path.exists(LAST_TIMESTAMP_FILE):
+#         with open(LAST_TIMESTAMP_FILE, 'r') as f:
+#             return float(f.read().strip())
+#     return 0
+
+# def set_last_timestamp(timestamp):
+#     #Save the last timestamp to file.
+#     with open(LAST_TIMESTAMP_FILE, 'w') as f:
+#         f.write(str(timestamp))
+
 def get_last_timestamp():
-    #Retrieve the last timestamp from file.
-    if os.path.exists(LAST_TIMESTAMP_FILE):
-        with open(LAST_TIMESTAMP_FILE, 'r') as f:
-            return float(f.read().strip())
+    try:
+        doc = db.collection("meta").document("last_timestamp").get()
+        if doc.exists:
+            return doc.to_dict().get("value", 0)
+    except Exception as e:
+        logging.error(f"Error fetching last_timestamp from Firestore: {e}")
     return 0
 
 def set_last_timestamp(timestamp):
-    #Save the last timestamp to file.
-    with open(LAST_TIMESTAMP_FILE, 'w') as f:
-        f.write(str(timestamp))
-
-def save_to_file(filename, content):
-    #Save content to a text file.
-    with open(filename, 'w', encoding='utf-8') as f:
-        f.write(content)
+    try:
+        db.collection("meta").document("last_timestamp").set({"value": timestamp})
+    except Exception as e:
+        logging.error(f"Error saving last_timestamp to Firestore: {e}")
 
 # ADDED: Helper function to safely generate content with retries
 def safe_generate_content(model, prompt, retries=3, delay=5):
@@ -371,6 +381,103 @@ try:
 
     # ADDED: Print out the number of new posts updated
     print(f"Number of new posts updated: {updated_posts_count}")
+
+    # HYBRID ADDITION: Track new comments on older posts
+    print("Scanning recent comments for updates to older posts...")
+    for comment in subreddit.comments(limit=500):
+        try:
+            # Ignore comments already processed
+            comment_ref = db.collection("posts").document(comment.submission.id).collection("comments").document(comment.id)
+            if comment_ref.get().exists:
+                continue  # Already stored
+
+            comment_created = datetime.datetime.fromtimestamp(comment.created_utc)
+            if comment.created_utc <= last_timestamp:
+                continue  # Already seen
+
+            # Fetch parent post info
+            post_id = comment.submission.id
+            post_ref = db.collection("posts").document(post_id)
+            post_snapshot = post_ref.get()
+
+            if not post_snapshot.exists:
+                continue  # Parent post was never processed (skip)
+
+            print(f"New comment on old post {post_id}: {comment.id}")
+
+            # Run Gemini prompt for single comment
+            prompt = f'''
+            You are an AI assigned to evaluate a Reddit post comment about 
+            Temasek Polytechnic. Review the following text and provide a concise output in this format: 
+            a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
+            then a comma, the identified emotion (happy, relief, stress, frustration, 
+            pride, disappointment, confusion, neutral), another comma, the determined category 
+            (academic, exams, facilities, subjects, administration, career, admission, results, internship,
+            lecturer, student life, infrastructure, classroom, events, CCA), 
+            and finally, a comma followed by "yes" or "no" indicating whether the text 
+            relates to the School of IIT (or the School of Informatics & IT, which includes
+            programs like Big Data Analytics, Applied AI, IT, Cybersecurity & Digital Forensics, 
+            Immersive Media & Game Development and Common ICT).
+            Text: "{comment.body}"
+            '''
+            response_text = safe_generate_content(model, prompt)
+            parts = response_text.split(',')
+
+            if len(parts) < 4:
+                logging.error(f"[OLD POST] Unexpected response format for comment {comment.id}: {response_text}")
+                continue
+
+            sentiment = int(parts[0].strip())
+            emotion = parts[1].strip()
+            category = parts[2].strip()
+            iit_flag = parts[3].strip()
+
+            comment_doc = {
+                "body": comment.body,
+                "author": str(comment.author),
+                "created": comment_created,
+                "score": comment.score,
+                "sentiment": sentiment,
+                "emotion": emotion,
+                "category": category,
+                "iit": iit_flag,
+            }
+            comment_ref.set(comment_doc)
+
+            # Fetch all comments for that post and recalculate sentiment metrics
+            comments_ref = post_ref.collection("comments").stream()
+            total_comments = 0
+            total_positive = 0
+            total_negative = 0
+            weighted_sum = 0
+            weight_total = 0
+
+            for c in comments_ref:
+                d = c.to_dict()
+                score = d.get("score", 0)
+                sent = d.get("sentiment", 0)
+                weight = 1 + math.log2(max(score, 0) + 1)
+                weighted_sum += sent * weight
+                weight_total += weight
+                total_comments += 1
+                if sent > 0:
+                    total_positive += sent
+                elif sent < 0:
+                    total_negative += sent
+
+            weighted_sent = weighted_sum / weight_total if weight_total > 0 else 0
+
+            post_ref.update({
+                'totalComments': total_comments,
+                'totalPositiveSentiments': total_positive,
+                'totalNegativeSentiments': total_negative,
+                'weightedSentimentScore': weighted_sent
+            })
+
+        except Exception as e:
+            logging.error(f"Error processing new comment on old post: {e}")
+            continue
+
 
 except Exception as e:
     # ADDED: Log any critical errors that occur during the crawling process
