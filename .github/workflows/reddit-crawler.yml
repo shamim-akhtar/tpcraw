@@ -35,4 +35,4 @@ jobs:
           echo "GOOGLE_GEMINI_API_KEY=${{ secrets.GOOGLE_GEMINI_API_KEY }}" >> .env
 
       - name: Run Reddit Crawler
-        run: python reddit_crawler.py
+        run: python crawler.py
