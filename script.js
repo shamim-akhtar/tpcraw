@@ -16,7 +16,6 @@ console.log("Script is loaded and running.");
 
 const MAX_LABEL_LENGTH = 40;
 
-
 document.addEventListener('DOMContentLoaded', async () => {
   // 1. Set default end date to today's date
   const endDateInput = document.getElementById('end-date');
@@ -80,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // If checkbox is checked, show only iit == "yes"
       q = query(q, where('iit', '==', 'yes'));
       console.log("IIT option checked");
-    } 
+    }
 
     // Fetch posts
     const snapshot = await getDocs(q);
@@ -124,7 +123,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         engagementScore: engagementScore,
         rawSentimentScore: rawSentiment,
         totalComments: totalComments,
-        created: createdDate,  // store as JS Date if possible
+        created: createdDate, // store as JS Date if possible
         totalPositiveSentiments: positiveData,
         totalNegativeSentiments: negativeData,
         emotion: emotion,
@@ -234,7 +233,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       minute: '2-digit',
       hour12: false
     }).replace(',', '');
-    
+
     const dateHtml = `<li class="post-date">Author: ${author}, ${formattedDate}</li>`;
     const urlHtml = `<li class="post-date"><a href="${url}" target="_blank">${url}</a></li>`;
 
@@ -253,17 +252,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
       <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(postData.emotion)}-purple?style=flat-square" alt="Emotion">
       <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
-
       <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(score)}-brightgreen?style=flat-square" alt="Reddit Score">
       <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
       <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
       <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(weightedSentimentScore.toFixed(2))}-blueviolet?style=flat-square" alt="Weighted">
     </div>,`;
-  
 
     const postSummary = `<br><strong>Summary of the post using Gen AI</strong><br><p>${summary}</p>`;
-
-    // Post body section
     const postBodyHtml = `<p>${postData.body}</p>`;
 
     // Fetch comments
@@ -274,7 +269,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (commentsSnapshot.size === 0) {
       commentsHtml += `<p>No comments available.</p>`;
-    } 
+    }
     else {
       commentsSnapshot.forEach(commentDoc => {
         const commentData = commentDoc.data();
@@ -296,15 +291,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else if (sentiment > 0) {
           sentimentColor = 'green';
         }
+
         commentsHtml += `
           <div class="comment-card" style="border-bottom:1px solid #ddd;padding:10px;margin-bottom:10px;">
             <li class="post-date">Author: ${commentData.author}, ${formattedCommentDate}</li>
-            
-            <div class="shields-container">            
+
+            <div class="shields-container">
               <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(commentData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
               <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(sentiment)}-${sentimentColor}?style=flat-square" alt="Sentiment">
-              <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(commentData.emotion)}-purple?style=flat-square" alt="Emotion">  
-              
+              <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(commentData.emotion)}-purple?style=flat-square" alt="Emotion">
             </div>,
             <p>${commentData.body}</p>
           </div>
@@ -313,18 +308,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Display the assembled HTML
-    postDetailsContainer.innerHTML = analysisHtml 
-    + urlHtml
-    + postSummary
-    + badgesHtml
-    + dateHtml
-    + postBodyHtml 
-    + commentsHtml;
+    postDetailsContainer.innerHTML = analysisHtml
+      + urlHtml
+      + postSummary
+      + badgesHtml
+      + dateHtml
+      + postBodyHtml
+      + commentsHtml;
   }
 
   // Sentiment stack.
   function renderSentimentStackChart(data) {
-    // Extract labels and sentiment data from postsconst 
     const labels = data.map(post =>
       post.title.length > MAX_LABEL_LENGTH
         ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
@@ -332,16 +326,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     );
     const positiveData = data.map(post => post.totalPositiveSentiments);
     const negativeData = data.map(post => post.totalNegativeSentiments);
-  
-    // Get the canvas context
+
     const ctx = document.getElementById('stackedSentimentChart').getContext('2d');
-  
-    // Destroy existing chart if present
+
     if (window.sentimentStackChartInstance) {
       window.sentimentStackChartInstance.destroy();
     }
-  
-    // Create a stacked bar chart
+
     window.sentimentStackChartInstance = new Chart(ctx, {
       type: 'bar',
       data: {
@@ -367,13 +358,13 @@ document.addEventListener('DOMContentLoaded', async () => {
           title: {
             display: true,
             text: 'Sentiment Breakdown by Post',
-            align: 'start', // Left-align the title
+            align: 'start',
             font: {
               size: 18,
               weight: '600',
-              family: 'Arial, sans-serif' // Crisp, readable font
+              family: 'Arial, sans-serif'
             },
-            color: '#333', // Darker color for better contrast
+            color: '#333',
             padding: {
               top: 10,
               bottom: 20
@@ -399,7 +390,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   }
-  
 
   // ----------------------------
   // CHART 2: ENGAGEMENT SCORE
@@ -414,10 +404,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     );
     const engagementScores = data.map(item => item.engagementScore);
 
-    // For example, color all engagement bars purple
     const backgroundColors = engagementScores.map(() => 'rgba(153, 102, 255, 0.8)');
 
-    // Destroy existing chart if it exists
     if (engagementScoreChart) {
       engagementScoreChart.destroy();
     }
@@ -439,13 +427,13 @@ document.addEventListener('DOMContentLoaded', async () => {
           title: {
             display: true,
             text: 'Engagement Score per Post',
-            align: 'start', // Left-align the title
+            align: 'start',
             font: {
               size: 18,
               weight: '600',
-              family: 'Arial, sans-serif' // Crisp, readable font
+              family: 'Arial, sans-serif'
             },
-            color: '#333', // Darker color for better contrast
+            color: '#333',
             padding: {
               top: 10,
               bottom: 20
@@ -466,13 +454,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-
   // ----------------------------
   // CHART 2: TOTAL COMMENTS
   // ----------------------------
   function renderCommentsCountChart(data) {
-    //console.log("Rendering Engagement Score Chart with data:", data);
-
     const labels = data.map(post =>
       post.title.length > MAX_LABEL_LENGTH
         ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
@@ -480,10 +465,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     );
     const totalComments = data.map(item => item.totalComments);
 
-    // For example, color all engagement bars purple
     const backgroundColors = totalComments.map(() => 'rgba(153, 102, 255, 0.8)');
 
-    // Destroy existing chart if it exists
     if (totalCommentsChart) {
       totalCommentsChart.destroy();
     }
@@ -505,13 +488,13 @@ document.addEventListener('DOMContentLoaded', async () => {
           title: {
             display: true,
             text: 'Comments per Post',
-            align: 'start', // Left-align the title
+            align: 'start',
             font: {
               size: 18,
               weight: '600',
-              family: 'Arial, sans-serif' // Crisp, readable font
+              family: 'Arial, sans-serif'
             },
-            color: '#333', // Darker color for better contrast
+            color: '#333',
             padding: {
               top: 10,
               bottom: 20
@@ -531,75 +514,63 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   }
+
   // ----------------------------
   // POST LIST DROPDOWN / TABLE
   // ----------------------------
-
-  // Re-render the table whenever the dropdown changes
   const postListDropdown = document.getElementById('postListDropdown');
   postListDropdown.addEventListener('change', () => {
     renderPostList(allPostsData, postListDropdown.value);
   });
 
-  // This function sorts/filters the data to get 10 items, then displays them in a table
   function renderPostList(data, listType) {
     console.log("Rendering post list:", listType);
 
-    // Sort/filter logic
-    let selectedPosts = [...data]; // shallow copy so we don't mutate original
+    let selectedPosts = [...data]; // shallow copy
 
     switch (listType) {
       case 'topEngaged':
-        // Sort descending by engagementScore, then take top 10
         selectedPosts.sort((a, b) => b.engagementScore - a.engagementScore);
         selectedPosts = selectedPosts.slice(0, 10);
         break;
-
       case 'lowestWs':
-        // Sort ascending by weightedSentimentScore, take first 10
         selectedPosts.sort((a, b) => a.weightedSentimentScore - b.weightedSentimentScore);
         selectedPosts = selectedPosts.slice(0, 10);
         break;
-
       case 'lowestRaw':
-        // Sort ascending by rawSentimentScore, take first 10
         selectedPosts.sort((a, b) => a.rawSentimentScore - b.rawSentimentScore);
         selectedPosts = selectedPosts.slice(0, 10);
         break;
-
       case 'highestWs':
-        // Sort descending by weightedSentimentScore, take top 10
         selectedPosts.sort((a, b) => b.weightedSentimentScore - a.weightedSentimentScore);
         selectedPosts = selectedPosts.slice(0, 10);
         break;
-
       case 'highestRaw':
-        // Sort descending by rawSentimentScore, take top 10
         selectedPosts.sort((a, b) => b.rawSentimentScore - a.rawSentimentScore);
         selectedPosts = selectedPosts.slice(0, 10);
         break;
-
       case 'recentPosts':
-        // Sort descending by created date (most recent first), top 10
         selectedPosts.sort((a, b) => new Date(b.created) - new Date(a.created));
         selectedPosts = selectedPosts.slice(0, 10);
         break;
-      
       default:
-        // Just in case
         selectedPosts = [];
         break;
     }
 
-    // Build table HTML
     const tableHtml = buildPostsTable(selectedPosts);
-
-    // Insert table into the page
     const container = document.getElementById('postListContainer');
     container.innerHTML = tableHtml;
+
+    // Make each row clickable:
+    container.querySelectorAll('tr[data-post-id]').forEach(row => {
+      row.addEventListener('click', () => {
+        const postId = row.getAttribute('data-post-id');
+        fetchAndDisplayPostDetails(postId);
+      });
+    });
   }
 
-  // Helper function: build an HTML table from a list of posts
   function buildPostsTable(posts) {
     let html = `
       <table>
@@ -614,8 +585,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         <tbody>
     `;
     for (const p of posts) {
+      // Add data-post-id and cursor style for row-click
       html += `
-        <tr>
+        <tr data-post-id="${p.postId}" style="cursor: pointer;">
           <td>${p.title}</td>
           <td>${p.weightedSentimentScore.toFixed(2)}</td>
           <td>${p.engagementScore.toFixed(2)}</td>
@@ -630,7 +602,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Calculate positive, neutral, negative sentiment percentages and render pie chart
   function renderSentimentPieChart(data) {
     const totalPosts = data.length;
-    // If no posts are returned, clear the canvas and exit.
     if (totalPosts === 0) {
       const ctx = document.getElementById('sentimentPieChart').getContext('2d');
       if (window.sentimentPieChartInstance) {
@@ -639,27 +610,24 @@ document.addEventListener('DOMContentLoaded', async () => {
       ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
       return;
     }
-  
+
     const positiveCount = data.filter(p => p.weightedSentimentScore > 0).length;
     const neutralCount = data.filter(p => p.weightedSentimentScore === 0).length;
     const negativeCount = data.filter(p => p.weightedSentimentScore < 0).length;
-  
+
     const positivePercent = ((positiveCount / totalPosts) * 100).toFixed(1);
     const neutralPercent = ((neutralCount / totalPosts) * 100).toFixed(1);
     const negativePercent = ((negativeCount / totalPosts) * 100).toFixed(1);
-  
+
     const ctx = document.getElementById('sentimentPieChart').getContext('2d');
-  
-    // Destroy existing chart instance if it exists
+
     if (window.sentimentPieChartInstance) {
       window.sentimentPieChartInstance.destroy();
     }
-    
 
-    // Reset the canvas dimensions explicitly
     ctx.canvas.width = 260;
     ctx.canvas.height = 260;
-  
+
     window.sentimentPieChartInstance = new Chart(ctx, {
       type: 'pie',
       data: {
@@ -674,7 +642,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         plugins: {
           legend: {
             display: false,
-            position: 'left' // Legends positioned to the right
+            position: 'left'
           },
           tooltip: {
             callbacks: {
@@ -689,50 +657,45 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function updateCharts() {
     try {
       allPostsData = await fetchPostsInRange();
-      
+
       document.querySelector("#postCount .postCount-number").textContent = allPostsData.length;
-  
+
       if (allPostsData.length > 0) {
         const sum = allPostsData.reduce((acc, post) => acc + post.weightedSentimentScore, 0);
         const avg = sum / allPostsData.length;
         document.getElementById("avgWeightedScoreNumber").textContent = avg.toFixed(2);
-        
+
         const totalComments = allPostsData.reduce((acc, post) => acc + post.totalComments, 0);
         document.getElementById("commentsCountNumber").textContent = totalComments;
       } else {
         document.getElementById("avgWeightedScoreNumber").textContent = "N/A";
         document.getElementById("commentsCountNumber").textContent = "0";
       }
-  
+
       renderSentimentPieChart(allPostsData);
       renderEngagementScoreChart(allPostsData);
       renderCommentsCountChart(allPostsData);
 
-      // By default, show "Lowest 10 Raw Sentiment Posts"
+      // Default: show "Lowest 10 Raw Sentiment Posts"
       postListDropdown.value = 'lowestRaw';
       renderPostList(allPostsData, 'lowestRaw');
-      // renderPostList(allPostsData, 'lowestWs');
-  
-      // Explicitly render only the default visible chart
+
+      // Re-render the currently active chart
       const activeTabId = document.querySelector('.tab-button.active').getAttribute('data-tab');
       if (activeTabId === 'weightedTab') {
         renderWeightedSentimentChart(allPostsData);
-      } 
-      else if (activeTabId === 'stackedTab') {
+      } else if (activeTabId === 'stackedTab') {
         renderSentimentStackChart(allPostsData);
-      }
-      else if (activeTabId  === 'engagementTab') {
+      } else if (activeTabId === 'engagementTab') {
         renderEngagementScoreChart(allPostsData);
-      }
-      else if (activeTabId  === 'totalCommentsTab') {
+      } else if (activeTabId === 'totalCommentsTab') {
         renderCommentsCountChart(allPostsData);
       }
-  
+
     } catch (error) {
       console.error("Error building charts:", error);
     }
   }
-  
 
   // 10. Filter button event
   document.getElementById('filter-btn').addEventListener('click', updateCharts);
@@ -744,41 +707,35 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.querySelectorAll('.tab-button').forEach(button => {
     button.addEventListener('click', () => {
       const tabId = button.getAttribute('data-tab');
-  
+
       // Reset active states for buttons
       document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-  
-      // Reset active states for tabs and hide them
+
+      // Reset active states for tabs
       document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
         tab.style.display = 'none';
       });
-  
+
       // Activate clicked tab button and tab content
       button.classList.add('active');
       const activeTab = document.getElementById(tabId);
       activeTab.classList.add('active');
       activeTab.style.display = 'block';
-  
+
       // Explicitly re-render charts when the tab is activated
       if (tabId === 'stackedTab') {
         renderSentimentStackChart(allPostsData);
-      } 
-      else if (tabId === 'weightedTab') {
+      } else if (tabId === 'weightedTab') {
         renderWeightedSentimentChart(allPostsData);
-      }
-      else if (tabId === 'engagementTab') {
+      } else if (tabId === 'engagementTab') {
         renderEngagementScoreChart(allPostsData);
-      }
-      else if (tabId === 'totalCommentsTab') {
+      } else if (tabId === 'totalCommentsTab') {
         renderCommentsCountChart(allPostsData);
       }
     });
   });
-  
-  // Set default active tab explicitly on load
+
+  // Set default active tab on load
   document.querySelector('.tab-button.active').click();
-  
-
 });
-
