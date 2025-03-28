@@ -6,6 +6,13 @@
   <title>Sentiment Dashboard</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.0/dist/chartjs-plugin-zoom.min.js"></script>
+
+  <script>
+    Chart.register(ChartZoom);
+  </script>
+
   <script type="module" src="script.js"></script>
 </head>
 <body>
@@ -109,6 +116,8 @@
           like comments and upvotes. Higher scores highlight posts that sparked more interest or debate.
         </p>
       </section>
+      <button id="resetZoomBtn">Reset Zoom</button>
+
 
       <section id="topPosts" class="chart-section tab-content" style="display:none;">
       <div class="card" style="flex:1; display:flex; flex-direction:column;">

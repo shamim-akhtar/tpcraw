@@ -14,7 +14,7 @@ import {
 
 console.log("Script is loaded and running.");
 
-const MAX_LABEL_LENGTH = 40;
+const MAX_LABEL_LENGTH = 30;
 
 document.addEventListener('DOMContentLoaded', async () => {
   // 1. Set default end date to today's date
@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let weightedSentimentChart = null;
   let engagementScoreChart = null;
   let totalCommentsChart = null;
+  let commentsSentimentChart = null;
 
   // 6. Global array to store fetched posts
   let allPostsData = [];
@@ -187,6 +188,23 @@ document.addEventListener('DOMContentLoaded', async () => {
               top: 10,
               bottom: 20
             }
+          },
+          
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              drag: {
+                enabled: true, 
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
           }
         },
         scales: {
@@ -329,11 +347,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const ctx = document.getElementById('stackedSentimentChart').getContext('2d');
 
-    if (window.sentimentStackChartInstance) {
-      window.sentimentStackChartInstance.destroy();
+    if (commentsSentimentChart) {
+      commentsSentimentChart.destroy();
     }
 
-    window.sentimentStackChartInstance = new Chart(ctx, {
+    commentsSentimentChart = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: labels,
@@ -369,6 +387,22 @@ document.addEventListener('DOMContentLoaded', async () => {
               top: 10,
               bottom: 20
             }
+          },
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              drag: {
+                enabled: true, 
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
           }
         },
         scales: {
@@ -438,6 +472,23 @@ document.addEventListener('DOMContentLoaded', async () => {
               top: 10,
               bottom: 20
             }
+          },
+          
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              drag: {
+                enabled: true, 
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
           }
         },
         scales: {
@@ -499,6 +550,22 @@ document.addEventListener('DOMContentLoaded', async () => {
               top: 10,
               bottom: 20
             }
+          },
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              drag: {
+                enabled: true, 
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
           }
         },
         scales: {
@@ -745,4 +812,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Set default active tab on load
   document.querySelector('.tab-button.active').click();
+  document.getElementById('resetZoomBtn').addEventListener('click', () => {
+    // For example, reset the Weighted Sentiment chart:
+    weightedSentimentChart.resetZoom();
+    totalCommentsChart.resetZoom();
+    commentsSentimentChart.resetZoom();
+  
+    // And you can do the same for the others:
+    engagementScoreChart.resetZoom();
+    // ...
+  });
+  
 });
