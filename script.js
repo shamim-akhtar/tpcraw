@@ -804,8 +804,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
 
       renderSentimentPieChart(allPostsData);
+
+      renderWeightedSentimentChart(allPostsData);
+      renderSentimentStackChart(allPostsData);
       renderEngagementScoreChart(allPostsData);
       renderCommentsCountChart(allPostsData);
+      
 
       // Default: show "Lowest 10 Raw Sentiment Posts"
       postListDropdown.value = 'lowestRaw';
@@ -869,15 +873,28 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Set default active tab on load
   document.querySelector('.tab-button.active').click();
-  document.getElementById('resetZoomBtn').addEventListener('click', () => {
-    // For example, reset the Weighted Sentiment chart:
-    weightedSentimentChart.resetZoom();
-    totalCommentsChart.resetZoom();
-    commentsSentimentChart.resetZoom();
-  
-    // And you can do the same for the others:
-    engagementScoreChart.resetZoom();
-    // ...
+  // document.getElementById('resetZoomWeightedBtn').addEventListener('click', () => {
+  //   // For example, reset the Weighted Sentiment chart:
+  //   weightedSentimentChart.resetZoom();
+  //   totalCommentsChart.resetZoom();
+  //   commentsSentimentChart.resetZoom();
+  //   engagementScoreChart.resetZoom();
+  // });
+  document.getElementById('resetZoomWeightedBtn').addEventListener('click', () => {
+    if (weightedSentimentChart) weightedSentimentChart.resetZoom();
   });
+  
+  document.getElementById('resetZoomStackedBtn').addEventListener('click', () => {
+    if (commentsSentimentChart) commentsSentimentChart.resetZoom();
+  });
+  
+  document.getElementById('resetZoomCommentsBtn').addEventListener('click', () => {
+    if (totalCommentsChart) totalCommentsChart.resetZoom();
+  });
+  
+  document.getElementById('resetZoomEngagementBtn').addEventListener('click', () => {
+    if (engagementScoreChart) engagementScoreChart.resetZoom();
+  });
+  
   
 });
