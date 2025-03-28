@@ -78,7 +78,26 @@
       <section id="weightedTab" class="chart-section tab-content active">
         <!-- <h3>Weighted Sentiment Score for Posts</h3> -->
         <canvas id="weightedSentimentChart"></canvas>
-        <p style="font-size:small; text-align:left; max-width:1200px; margin:5px auto;">
+        <div style="margin: 8px 0;">
+          <button
+            id="resetZoomWeightedBtn"
+            style="
+              background-color: #4285f4;
+              color: white;
+              border: none;
+              padding: 8px 14px;
+              border-radius: 4px;
+              cursor: pointer;
+              margin-right: 10px;
+            "
+          >
+            Reset Zoom
+          </button>
+          <span style="font-size: 0.85rem; color: #555;">
+            To zoom, click and drag on the chart or pinch on touch devices.
+          </span>
+        </div>
+        <p style="font-size:small; color: #3d3c3c;text-align:left; max-width:1200px; margin:5px auto;">
           This chart shows Weighted Sentiment Scores for posts based on selected filters. 
           Each score combines sentiment polarity with engagement, giving more weight to 
           popular posts. Positive scores reflect favorable sentiment; negative scores 
@@ -89,7 +108,26 @@
       <section id="stackedTab" class="chart-section tab-content" style="display:none;">
         <!-- <h3>Stacked Sentiment Chart</h3> -->
         <canvas id="stackedSentimentChart"></canvas>
-        <p style="font-size:small; text-align:left; max-width:1200px; margin:5px auto;">
+        <div style="margin: 8px 0;">
+          <button
+            id="resetZoomWeightedBtn"
+            style="
+              background-color: #4285f4;
+              color: white;
+              border: none;
+              padding: 8px 14px;
+              border-radius: 4px;
+              cursor: pointer;
+              margin-right: 10px;
+            "
+          >
+            Reset Zoom
+          </button>
+          <span style="font-size: 0.85rem; color: #555;">
+            To zoom, click and drag on the chart or pinch on touch devices.
+          </span>
+        </div>
+        <p style="font-size:small; color: #3d3c3c;text-align:left; max-width:1200px; margin:5px auto;">
           This stacked sentiment chart shows the positive (green) and negative (red) 
           comment sentiments for each post in the selected date range. More green means 
           a favorable response; more red indicates negative feedback. Use it to quickly 
@@ -101,7 +139,26 @@
       <section id="totalCommentsTab" class="chart-section tab-content" style="display:none;">
         <!-- <h3>Stacked Sentiment Chart</h3> -->
         <canvas id="totalCommentsChart"></canvas>
-        <p style="font-size:small; text-align:left; max-width:1200px; margin:5px auto;">
+        <div style="margin: 8px 0;">
+          <button
+            id="resetZoomWeightedBtn"
+            style="
+              background-color: #4285f4;
+              color: white;
+              border: none;
+              padding: 8px 14px;
+              border-radius: 4px;
+              cursor: pointer;
+              margin-right: 10px;
+            "
+          >
+            Reset Zoom
+          </button>
+          <span style="font-size: 0.85rem; color: #555;">
+            To zoom, click and drag on the chart or pinch on touch devices.
+          </span>
+        </div>
+        <p style="font-size:small; color: #3d3c3c;text-align:left; max-width:1200px; margin:5px auto;">
           This chart uses purple bars to show the number of comments per post—taller bars mean higher 
           engagement. Click a bar to view the post title and date for quick insights into popular content.
         </p>
@@ -111,12 +168,30 @@
       <section id="engagementTab" class="chart-section tab-content" style="display:none;">
         <!-- <h3>Stacked Sentiment Chart</h3> -->
         <canvas id="engagementScoreChart"></canvas>
-        <p style="font-size:small; text-align:left; max-width:1200px; margin:5px auto;">
+        <div style="margin: 8px 0;">
+          <button
+            id="resetZoomWeightedBtn"
+            style="
+              background-color: #4285f4;
+              color: white;
+              border: none;
+              padding: 8px 14px;
+              border-radius: 4px;
+              cursor: pointer;
+              margin-right: 10px;
+            "
+          >
+            Reset Zoom
+          </button>
+          <span style="font-size: 0.85rem; color: #555;">
+            To zoom, click and drag on the chart or pinch on touch devices.
+          </span>
+        </div>
+        <p style="font-size:small; color: #3d3c3c;text-align:left; max-width:1200px; margin:5px auto;">
           This chart uses purple bars to show shows each post’s Engagement Score, based on weighted interactions 
           like comments and upvotes. Higher scores highlight posts that sparked more interest or debate.
         </p>
       </section>
-      <button id="resetZoomBtn">Reset Zoom</button>
 
 
       <section id="topPosts" class="chart-section tab-content" style="display:none;">
