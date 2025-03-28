@@ -14,7 +14,7 @@ import {
 
 console.log("Script is loaded and running.");
 
-const MAX_LABEL_LENGTH = 40;
+const MAX_LABEL_LENGTH = 30;
 
 document.addEventListener('DOMContentLoaded', async () => {
   // 1. Set default end date to today's date
@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let weightedSentimentChart = null;
   let engagementScoreChart = null;
   let totalCommentsChart = null;
+  let commentsSentimentChart = null;
 
   // 6. Global array to store fetched posts
   let allPostsData = [];
@@ -140,11 +141,17 @@ document.addEventListener('DOMContentLoaded', async () => {
   // CHART 1: WEIGHTED SENTIMENT
   // ----------------------------
   function renderWeightedSentimentChart(data) {
-    const labels = data.map(post =>
-      post.title.length > MAX_LABEL_LENGTH
-        ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
-        : post.title
-    );
+    const labels = data.map(post => {
+      const { title } = post;
+      if (title.length > MAX_LABEL_LENGTH) {
+        // If title exceeds the limit, truncate and add ellipsis
+        return title.slice(0, MAX_LABEL_LENGTH) + '…';
+      } else {
+        // Otherwise, pad the left side with spaces until it reaches the desired length
+        return title.padStart(MAX_LABEL_LENGTH, ' ');
+      }
+    });
+    
     const weightedScores = data.map(item => item.weightedSentimentScore);
 
     // Color each bar: red if negative, green if >= 0
@@ -187,9 +194,36 @@ document.addEventListener('DOMContentLoaded', async () => {
               top: 10,
               bottom: 20
             }
+          },
+          
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              drag: {
+                enabled: true, 
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
           }
         },
         scales: {
+          x: {
+            
+            ticks: {
+              // Prevent tilt / rotation
+              maxRotation: 60,
+              minRotation: 60,
+              // Optional: center align each label
+              align: 'center'
+            }
+          },
           y: { beginAtZero: true }
         },
         onClick: (evt, elements) => {
@@ -319,21 +353,26 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Sentiment stack.
   function renderSentimentStackChart(data) {
-    const labels = data.map(post =>
-      post.title.length > MAX_LABEL_LENGTH
-        ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
-        : post.title
-    );
+    const labels = data.map(post => {
+      const { title } = post;
+      if (title.length > MAX_LABEL_LENGTH) {
+        // If title exceeds the limit, truncate and add ellipsis
+        return title.slice(0, MAX_LABEL_LENGTH) + '…';
+      } else {
+        // Otherwise, pad the left side with spaces until it reaches the desired length
+        return title.padStart(MAX_LABEL_LENGTH, ' ');
+      }
+    });
     const positiveData = data.map(post => post.totalPositiveSentiments);
     const negativeData = data.map(post => post.totalNegativeSentiments);
 
     const ctx = document.getElementById('stackedSentimentChart').getContext('2d');
 
-    if (window.sentimentStackChartInstance) {
-      window.sentimentStackChartInstance.destroy();
+    if (commentsSentimentChart) {
+      commentsSentimentChart.destroy();
     }
 
-    window.sentimentStackChartInstance = new Chart(ctx, {
+    commentsSentimentChart = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: labels,
@@ -369,11 +408,35 @@ document.addEventListener('DOMContentLoaded', async () => {
               top: 10,
               bottom: 20
             }
+          },
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              drag: {
+                enabled: true, 
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
           }
         },
         scales: {
           x: {
-            stacked: true
+            stacked: true,
+              
+            ticks: {
+              // Prevent tilt / rotation
+              maxRotation: 60,
+              minRotation: 60,
+              // Optional: center align each label
+              align: 'center'
+            },
           },
           y: {
             stacked: true,
@@ -395,13 +458,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   // CHART 2: ENGAGEMENT SCORE
   // ----------------------------
   function renderEngagementScoreChart(data) {
-    console.log("Rendering Engagement Score Chart with data:", data);
-
-    const labels = data.map(post =>
-      post.title.length > MAX_LABEL_LENGTH
-        ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
-        : post.title
-    );
+    const labels = data.map(post => {
+      const { title } = post;
+      if (title.length > MAX_LABEL_LENGTH) {
+        // If title exceeds the limit, truncate and add ellipsis
+        return title.slice(0, MAX_LABEL_LENGTH) + '…';
+      } else {
+        // Otherwise, pad the left side with spaces until it reaches the desired length
+        return title.padStart(MAX_LABEL_LENGTH, ' ');
+      }
+    });
     const engagementScores = data.map(item => item.engagementScore);
 
     const backgroundColors = engagementScores.map(() => 'rgba(153, 102, 255, 0.8)');
@@ -438,9 +504,36 @@ document.addEventListener('DOMContentLoaded', async () => {
               top: 10,
               bottom: 20
             }
+          },
+          
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              drag: {
+                enabled: true, 
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
           }
         },
         scales: {
+          x: {
+            
+            ticks: {
+              // Prevent tilt / rotation
+              maxRotation: 60,
+              minRotation: 60,
+              // Optional: center align each label
+              align: 'center'
+            }
+          },
           y: { beginAtZero: true }
         },
         onClick: (evt, elements) => {
@@ -458,11 +551,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   // CHART 2: TOTAL COMMENTS
   // ----------------------------
   function renderCommentsCountChart(data) {
-    const labels = data.map(post =>
-      post.title.length > MAX_LABEL_LENGTH
-        ? post.title.slice(0, MAX_LABEL_LENGTH) + '…'
-        : post.title
-    );
+    const labels = data.map(post => {
+      const { title } = post;
+      if (title.length > MAX_LABEL_LENGTH) {
+        // If title exceeds the limit, truncate and add ellipsis
+        return title.slice(0, MAX_LABEL_LENGTH) + '…';
+      } else {
+        // Otherwise, pad the left side with spaces until it reaches the desired length
+        return title.padStart(MAX_LABEL_LENGTH, ' ');
+      }
+    });
     const totalComments = data.map(item => item.totalComments);
 
     const backgroundColors = totalComments.map(() => 'rgba(153, 102, 255, 0.8)');
@@ -499,9 +597,35 @@ document.addEventListener('DOMContentLoaded', async () => {
               top: 10,
               bottom: 20
             }
+          },
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              drag: {
+                enabled: true, 
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
           }
         },
         scales: {
+          x: {
+            
+            ticks: {
+              // Prevent tilt / rotation
+              maxRotation: 60,
+              minRotation: 60,
+              // Optional: center align each label
+              align: 'center'
+            }
+          },
           y: { beginAtZero: true }
         },
         onClick: (evt, elements) => {
@@ -745,4 +869,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Set default active tab on load
   document.querySelector('.tab-button.active').click();
+  document.getElementById('resetZoomBtn').addEventListener('click', () => {
+    // For example, reset the Weighted Sentiment chart:
+    weightedSentimentChart.resetZoom();
+    totalCommentsChart.resetZoom();
+    commentsSentimentChart.resetZoom();
+  
+    // And you can do the same for the others:
+    engagementScoreChart.resetZoom();
+    // ...
+  });
+  
 });
