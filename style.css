@@ -111,17 +111,17 @@ header {
 
 .dashboard-box {
   width: 150px;
-  height: 120px;
+  height: 130px;
 }
 
 .dashboard-box-wide {
   width: 320px;
-  height: 120px;
+  height: 130px;
 }
 
 .dashboard-box-large {
   width: 320px;
-  height: 320px;
+  height: 355px;
 }
 
 /* Dashboard title styling */
