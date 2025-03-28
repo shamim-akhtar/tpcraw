@@ -565,6 +565,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Make each row clickable:
     container.querySelectorAll('tr[data-post-id]').forEach(row => {
       row.addEventListener('click', () => {
+        // NEW: remove 'selected' from any previously clicked row
+        container.querySelectorAll('tr.selected').forEach(sel => sel.classList.remove('selected'));
+  
+        // NEW: add 'selected' to the clicked row
+        row.classList.add('selected');
+  
+        // existing call
         const postId = row.getAttribute('data-post-id');
         fetchAndDisplayPostDetails(postId);
       });

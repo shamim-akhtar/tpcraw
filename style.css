@@ -254,4 +254,13 @@ header {
   height: 24px;
 }
 
+/* Table row hover effect */
+#postListContainer table tbody tr:hover {
+  background-color: #f2f2f2; /* change to any color you like */
+}
+
+/* Table row "selected" effect */
+#postListContainer table tbody tr.selected {
+  background-color: #d7e8ff; /* slightly highlighted color */
+}
 
