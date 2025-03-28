@@ -250,14 +250,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const badgesHtml = `
     <div class="shields-container">
-      <img src="https://img.shields.io/badge/category-${postData.category}-blue?style=flat-square" alt="Category">
-      <img src="https://img.shields.io/badge/emotion-${postData.emotion}-purple?style=flat-square" alt="Emotion">
-      <img src="https://img.shields.io/badge/engagement-${engagementScore.toFixed(2)}-orange?style=flat-square" alt="Engagement">
+      <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
+      <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(postData.emotion)}-purple?style=flat-square" alt="Emotion">
+      <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
 
-      <img src="https://img.shields.io/badge/reddit_score-${score}-brightgreen?style=flat-square" alt="Reddit Score">
+      <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(score)}-brightgreen?style=flat-square" alt="Reddit Score">
       <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
-      <img src="https://img.shields.io/badge/negative_sentiments-${totalNegativeSentiments}-red?style=flat-square" alt="Negative">
-      <img src="https://img.shields.io/badge/weighted_sentiment-${weightedSentimentScore.toFixed(2)}-blueviolet?style=flat-square" alt="Weighted">
+      <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
+      <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(weightedSentimentScore.toFixed(2))}-blueviolet?style=flat-square" alt="Weighted">
     </div>,`;
   
 
@@ -301,9 +301,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             <li class="post-date">Author: ${commentData.author}, ${formattedCommentDate}</li>
             
             <div class="shields-container">            
-              <img src="https://img.shields.io/badge/reddit_score-${commentData.score}-brightgreen?style=flat-square" alt="Reddit Score">
-              <img src="https://img.shields.io/badge/sentiment-${sentiment}-${sentimentColor}?style=flat-square" alt="Sentiment">
-              <img src="https://img.shields.io/badge/emotion-${commentData.emotion}-purple?style=flat-square" alt="Emotion">  
+              <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(commentData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
+              <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(sentiment)}-${sentimentColor}?style=flat-square" alt="Sentiment">
+              <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(commentData.emotion)}-purple?style=flat-square" alt="Emotion">  
               
             </div>,
             <p>${commentData.body}</p>
