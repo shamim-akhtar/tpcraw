@@ -170,3 +170,4 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 firebase-credentials.json
+firebase_encoded.txt
