@@ -8,6 +8,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom.js"></script> -->
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.0/dist/chartjs-plugin-zoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+
 
   <script>
     Chart.register(ChartZoom);
@@ -68,12 +70,14 @@
     <div class="right-div" style="flex:3; display:flex; flex-direction:column;">
 
       <div class="tab-container">
-        <button class="tab-button active" data-tab="weightedTab">Weighted Sentiment per Post</button>
-        <button class="tab-button" data-tab="stackedTab">Comment Sentiments per Post</button>
-        <button class="tab-button" data-tab="totalCommentsTab">Comments per Post</button>
-        <button class="tab-button" data-tab="engagementTab">Engagement Score per Post</button>
+        <button class="tab-button active" data-tab="weightedTab">Weighted Sentiments</button>
+        <button class="tab-button" data-tab="stackedTab">Comment Sentiments</button>
+        <button class="tab-button" data-tab="totalCommentsTab">Total Comments</button>
+        <button class="tab-button" data-tab="engagementTab">Engagement Scores</button>
         <button class="tab-button" data-tab="topPosts">Top 10 Posts</button>
         <button class="tab-button" data-tab="authorsTab">Author Stats</button>
+        <button class="tab-button" data-tab="timeSeriesTab">Category Time Series</button>
+
 
       </div>
 
@@ -220,6 +224,14 @@
         This chart displays the top 10 authors with a stacked breakdown of positive (green) and negative (red) sentiment counts.
       </p>
     </section>
+
+    <section id="timeSeriesTab" class="chart-section tab-content" style="display:none;">
+      <canvas id="timeSeriesChart"></canvas>
+      <p style="font-size:small; text-align:left; max-width:1200px; margin:5px auto;">
+        This chart displays the time series of average sentiment by category.
+      </p>
+    </section>
+    
     
 
     </div>

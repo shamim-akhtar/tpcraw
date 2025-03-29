@@ -898,6 +898,212 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  // Utility function: generate a random color for chart lines
+  function getRandomColor() {
+    const r = Math.floor(Math.random() * 200);
+    const g = Math.floor(Math.random() * 200);
+    const b = Math.floor(Math.random() * 200);
+    return `rgba(${r}, ${g}, ${b}, 1)`;
+  }
+
+  // Fetch time series data from Firestore's "category_stats" collection.
+  // Each document key is a date (YYYY-MM-DD) and contains maps for each category.
+  async function fetchTimeSeriesData() {
+    // Read the filter dates
+    const startDateValue = document.getElementById('start-date').value;
+    const endDateValue = document.getElementById('end-date').value;
+    const startDate = new Date(startDateValue);
+    const endDate = new Date(endDateValue);
+    // Include the entire end date
+    endDate.setHours(23, 59, 59, 999);
+  
+    const catStatsSnapshot = await getDocs(collection(db, 'category_stats'));
+    let timeSeriesData = {}; // { category: [ {x: date, y: averageSentiment}, ... ] }
+    
+    catStatsSnapshot.forEach(docSnap => {
+      const dateStr = docSnap.id; // document ID in YYYY-MM-DD format
+      const docDate = new Date(dateStr);
+      // Filter only those documents that fall within the selected date range
+      if (docDate >= startDate && docDate <= endDate) {
+        const data = docSnap.data();
+        for (let category in data) {
+          if (!timeSeriesData[category]) {
+            timeSeriesData[category] = [];
+          }
+          timeSeriesData[category].push({
+            x: dateStr,
+            y: data[category].averageSentiment || 0
+          });
+        }
+      }
+    });
+    
+    // Sort each category's data array by date
+    for (let category in timeSeriesData) {
+      timeSeriesData[category].sort((a, b) => new Date(a.x) - new Date(b.x));
+    }
+    
+    return timeSeriesData;
+  }
+
+  // Helper function: compute a moving average (default window = 7 days)
+  function computeMovingAverage(dataPoints, windowSize = 7) {
+    let maPoints = [];
+    for (let i = 0; i < dataPoints.length; i++) {
+      let start = Math.max(0, i - windowSize + 1);
+      let sum = 0;
+      let count = 0;
+      for (let j = start; j <= i; j++) {
+        sum += dataPoints[j].y;
+        count++;
+      }
+      let avg = sum / count;
+      maPoints.push({ x: dataPoints[i].x, y: avg });
+    }
+    return maPoints;
+  }
+
+  // Helper function to set the alpha value of an RGBA color string.
+  function setAlpha(rgba, alpha) {
+    // Assumes the input is in the format "rgba(r, g, b, 1)"
+    return rgba.replace(/, 1\)/, `, ${alpha})`);
+  }
+
+  // Updated renderTimeSeriesChart: show raw data in a light color and the 7-day MA in a solid line.
+  // Also, only the academic category is visible by default.
+  function renderTimeSeriesChart(data) {
+    let datasets = [];
+    for (let category in data) {
+      const color = getRandomColor();
+      
+      // Raw data dataset in a light/transparent color
+      datasets.push({
+        label: category + " (raw)",
+        data: data[category],
+        fill: false,
+        borderColor: setAlpha(color, 0.3), // transparent version
+        tension: 0.1,
+        borderWidth: 1.0,
+        hidden: (category.toLowerCase() !== 'academic')
+      });
+      
+      // 7-day moving average dataset in solid color
+      datasets.push({
+        label: category + " (7-day MA)",
+        data: computeMovingAverage(data[category], 7),
+        fill: false,
+        borderColor: color, // solid line
+        borderWidth: 1.0,
+        tension: 0.5,
+        hidden: (category.toLowerCase() !== 'academic')
+      });
+    }
+    
+    if (window.timeSeriesChartInstance) {
+      window.timeSeriesChartInstance.destroy();
+    }
+    
+    const ctx = document.getElementById('timeSeriesChart').getContext('2d');
+    window.timeSeriesChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        datasets: datasets
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Time Series of Average Sentiment by Category',
+            font: {
+              size: 18,
+              weight: '600'
+            }
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+          },
+          legend: {
+            labels: {
+              generateLabels: function(chart) {
+                const datasets = chart.data.datasets;
+                const seenCategories = {};
+                const labels = [];
+                datasets.forEach((dataset, i) => {
+                  // Expect label format "academic (raw)" or "academic (7-day MA)"
+                  const cat = dataset.label.split(" ")[0];
+                  if (seenCategories[cat] === undefined) {
+                    seenCategories[cat] = i;
+                    labels.push({
+                      text: cat,
+                      fillStyle: dataset.borderColor,
+                      hidden: !chart.isDatasetVisible(i),
+                      datasetIndex: i
+                    });
+                  }
+                });
+                // Sort labels alphabetically in ascending order
+                labels.sort((a, b) => a.text.localeCompare(b.text));
+                return labels;
+              }
+            },
+            onClick: function(e, legendItem, legend) {
+              const category = legendItem.text.toLowerCase();
+              const chart = legend.chart;
+              chart.data.datasets.forEach((dataset, i) => {
+                const dsCategory = dataset.label.split(" ")[0].toLowerCase();
+                if (dsCategory === category) {
+                  const meta = chart.getDatasetMeta(i);
+                  meta.hidden = meta.hidden === null ? !chart.data.datasets[i].hidden : !meta.hidden;
+                }
+              });
+              chart.update();
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: 'time',
+            time: {
+              parser: 'yyyy-MM-dd', // note lowercase 'yyyy'
+              unit: 'day',
+              displayFormats: {
+                day: 'MMM d'
+              }
+            },
+            title: {
+              display: true,
+              text: 'Date'
+            }
+          },
+          y: {
+            min: -1.2,
+            max: 1.2,
+            beginAtZero: false,
+            title: {
+              display: true,
+              text: 'Average Sentiment'
+            }
+          }
+        }
+      }
+    });
+  }
+
+  
+
+  // Update the time series chart by fetching the latest data and rendering the chart.
+  async function updateTimeSeriesChart() {
+    try {
+      const tsData = await fetchTimeSeriesData();
+      renderTimeSeriesChart(tsData);
+    } catch (error) {
+      console.error("Error updating time series chart:", error);
+    }
+  }
+
+
   async function updateCharts() {
     try {
       allPostsData = await fetchPostsInRange();
@@ -982,6 +1188,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderCommentsCountChart(allPostsData);
       } else if (tabId === 'authorsTab') {
         updateAuthorsChart();
+      } else if (tabId === 'timeSeriesTab') {
+        updateTimeSeriesChart();
       }
     });
   });
