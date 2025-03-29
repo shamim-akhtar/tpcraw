@@ -5,9 +5,16 @@ TPCraw is a Python-based project that crawls posts and comments from the r/Temas
 [View the Dashboard](https://shamim-akhtar.github.io/tpcraw/).
 
 
-## Added Features
+## Features
+### version 2.3 - Current Version
+**Implemented Time Series Aggregation for Sentiment by Category**
+> Developed a one-time aggregation script that scans all posts and comments in Firestore to compute daily sentiment statistics for each category. The aggregated data is stored in a new collection, "category_stats", where each document is keyed by date (formatted as YYYY-MM-DD) and contains a map for each category (e.g., academic, exams, internship) with fields for totalSentiment, count, positiveCount, negativeCount, and averageSentiment. This enhancement enables detailed time-series analysis of sentiment trends, allowing us to identify patterns like exam stress spikes and post-holiday drops in facility complaints. Finally, once tested to work, added the functionality to the crawler.
 
-### version 2.2 - Current Version
+**Visualize Time Series with Raw and 7-Day Moving Average Curves**
+>
+> This enhancement adds a new dashboard view to visualize the time series of average sentiment by category. It features a line chart that plots both the raw sentiment data (in a light, transparent line) and a smoothed 7-day moving average (in a solid line) for each category. By default, only the "academic" category is visible, and toggling a legend item will show or hide both the raw and smoothed curves for that category. Additionally, the y-axis is fixed between -1.2 and 1.2 to provide clear visual boundaries, making the trend analysis easier and reducing the impact of daily volatility.
+
+### version 2.2
 - [x] Implement Incremental Updates for Author Sentiment in Crawler
 - [x] Add One-Time Author Sentiment Aggregation Script
 - [x] Add Author Sentiment Stacked Bar Chart to Dashboard
@@ -21,11 +28,7 @@ TPCraw is a Python-based project that crawls posts and comments from the r/Temas
 
 ### TODO
 - [ ] Run analytics (e.g. temporal patterns) per author.
-> [!IMPORTANT]
-> - [ ] Implement Time Series Aggregation for Sentiment by Category
-> 
-> Develop a one-time aggregation script that scans all posts and comments in Firestore to compute daily sentiment statistics for each category. The aggregated data should be stored in a new collection, "category_stats", where each document is keyed by date (formatted as YYYY-MM-DD) and contains a map for each category (e.g., academic, exams, internship) with fields for totalSentiment, count, positiveCount, negativeCount, and averageSentiment. This enhancement will enable detailed time-series analysis of sentiment trends, allowing us to identify patterns like exam stress spikes and post-holiday drops in facility complaints.
-- [ ] 
+
 
 # **📊 Sentiment Dashboard User Guide**
 
