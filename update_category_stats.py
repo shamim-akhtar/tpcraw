@@ -43,12 +43,13 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 # Dictionary to hold aggregation data:
-# { "YYYY-MM-DD": { "exams": { "totalSentiment": ..., "count": ..., "positiveCount": ..., "negativeCount": ..., "averageSentiment": ... },
+# { "YYYY-MM-DD": { "exams": { "totalSentiment": ..., "count": ..., "positiveCount": ..., "negativeCount": ..., 
+#                              "averageSentiment": ..., "postIds": [...], "commentIds": [...] },
 #                   "academic": { ... },
 #                   ... } }
 agg_data = {}
 
-def update_agg(date_str, category, sentiment):
+def update_agg(date_str, category, sentiment, post_id=None, comment_id=None):
     """Update the aggregation dictionary for the given date and category."""
     if date_str not in agg_data:
         agg_data[date_str] = {}
@@ -57,15 +58,31 @@ def update_agg(date_str, category, sentiment):
             "totalSentiment": 0,
             "count": 0,
             "positiveCount": 0,
-            "negativeCount": 0
+            "negativeCount": 0,
+            "postIds": [],
+            "comments": {}  # Store comments as a dictionary: { postId: [commentIds] }
         }
+    
     agg_entry = agg_data[date_str][category]
     agg_entry["totalSentiment"] += sentiment
     agg_entry["count"] += 1
+
     if sentiment > 0:
         agg_entry["positiveCount"] += 1
     elif sentiment < 0:
         agg_entry["negativeCount"] += 1
+
+    if post_id:
+        if post_id not in agg_entry["postIds"]:
+            agg_entry["postIds"].append(post_id)
+        
+        # Store comments under the correct postId
+        if comment_id:
+            if post_id not in agg_entry["comments"]:
+                agg_entry["comments"][post_id] = []
+            if comment_id not in agg_entry["comments"][post_id]:
+                agg_entry["comments"][post_id].append(comment_id)
+
 
 def process_posts():
     """Process all posts in Firestore and update the aggregation."""
@@ -82,16 +99,20 @@ def process_posts():
                 dt = created
             else:
                 continue
+
             date_str = dt.strftime("%Y-%m-%d")
             category = data["category"]
             sentiment = data["sentiment"]
-            update_agg(date_str, category, sentiment)
+            post_id = post.id  # Store post ID
+            update_agg(date_str, category, sentiment, post_id=post_id)
 
 def process_comments():
     """Process all comments for each post and update the aggregation."""
     posts = db.collection("posts").stream()
     for post in posts:
-        comments = db.collection("posts").document(post.id).collection("comments").stream()
+        post_id = post.id  # Capture the postId
+        comments = db.collection("posts").document(post_id).collection("comments").stream()
+        
         for comment in comments:
             data = comment.to_dict()
             if "created" in data and "category" in data and "sentiment" in data:
@@ -102,10 +123,15 @@ def process_comments():
                     dt = created
                 else:
                     continue
+
                 date_str = dt.strftime("%Y-%m-%d")
                 category = data["category"]
                 sentiment = data["sentiment"]
-                update_agg(date_str, category, sentiment)
+                comment_id = comment.id  # Capture the commentId
+                
+                # Update aggregation dictionary and pass both postId and commentId
+                update_agg(date_str, category, sentiment, post_id=post_id, comment_id=comment_id)
+
 
 def compute_averages():
     """For each date and category, compute the average sentiment."""
