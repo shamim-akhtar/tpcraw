@@ -812,14 +812,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     return authorArray.slice(0, 10);
   }
 
-  // New function to render the authors bar chart
+  // New function to render the authors stacked bar chart
   function renderAuthorsChart(data) {
     const labels = data.map(item => item.author);
-    const negativeCount = data.map(item => item.negativeCount);
-
-    // Use red if the average sentiment is negative, green if positive
-    const backgroundColors = negativeCount.map(() => 'rgba(255, 99, 132, 0.8)');
-
+    const positiveCounts = data.map(item => item.positiveCount);
+    const negativeCounts = data.map(item => item.negativeCount);
 
     if (window.authorsChartInstance) {
       window.authorsChartInstance.destroy();
@@ -830,11 +827,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       type: 'bar',
       data: {
         labels: labels,
-        datasets: [{
-          label: 'Total Negative Sentiments',
-          data: negativeCount,
-          backgroundColor: backgroundColors,
-        }]
+        datasets: [
+          {
+            label: 'Positive Count',
+            data: positiveCounts,
+            backgroundColor: 'rgba(75, 192, 192, 0.8)', // green
+          },
+          {
+            label: 'Negative Count',
+            data: negativeCounts,
+            backgroundColor: 'rgba(255, 99, 132, 0.8)', // red
+          }
+        ]
       },
       options: {
         responsive: true,
@@ -854,13 +858,24 @@ document.addEventListener('DOMContentLoaded', async () => {
           tooltip: {
             callbacks: {
               label: function(context) {
-                return `${context.label}: ${context.raw.toFixed(2)}`;
+                return `${context.dataset.label}: ${context.raw}`;
               }
             }
           }
         },
         scales: {
-          y: { beginAtZero: false }
+          x: {
+            stacked: true,
+            ticks: {
+              maxRotation: 60,
+              minRotation: 60,
+              align: 'center'
+            }
+          },
+          y: {
+            stacked: true,
+            beginAtZero: true
+          }
         },
         onClick: (evt, elements) => {
           if (elements.length > 0) {
@@ -871,6 +886,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   }
+
 
   // New function to update the authors chart
   async function updateAuthorsChart() {
