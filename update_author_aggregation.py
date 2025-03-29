@@ -45,12 +45,15 @@ def process_posts():
                 "postCount": 0,
                 "commentCount": 0,
                 "negativeCount": 0,
-                "positiveCount": 0
+                "positiveCount": 0,
+                "posts": [],      # List to store post IDs
+                "comments": {}    # Dictionary to store comments by post ID
             }
 
         # Update stats for the post author
         author_stats[author]["totalSentimentScore"] += sentiment
         author_stats[author]["postCount"] += 1
+        author_stats[author]["posts"].append(post_doc.id)
         
         if sentiment < 0:
             author_stats[author]["negativeCount"] += 1
@@ -75,7 +78,9 @@ def process_comments():
                     "postCount": 0,
                     "commentCount": 0,
                     "negativeCount": 0,
-                    "positiveCount": 0
+                    "positiveCount": 0,
+                    "posts": [],      # List to store post IDs
+                    "comments": {}    # Dictionary to store comments by post ID
                 }
 
             # Update stats for the comment author
@@ -86,6 +91,11 @@ def process_comments():
                 author_stats[author]["negativeCount"] += 1
             elif sentiment > 0:
                 author_stats[author]["positiveCount"] += 1
+            
+            # Associate comment IDs with the corresponding post
+            if post_id not in author_stats[author]["comments"]:
+                author_stats[author]["comments"][post_id] = []
+            author_stats[author]["comments"][post_id].append(comment_doc.id)
 
 # Save to Firestore
 def save_to_firestore():
