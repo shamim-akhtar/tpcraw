@@ -946,21 +946,59 @@ document.addEventListener('DOMContentLoaded', async () => {
     return timeSeriesData;
   }
 
-  // Render a line chart with multiple lines—one per category—using the time series data.
+  // Helper function: compute a moving average (default window = 7 days)
+  function computeMovingAverage(dataPoints, windowSize = 7) {
+    let maPoints = [];
+    for (let i = 0; i < dataPoints.length; i++) {
+      let start = Math.max(0, i - windowSize + 1);
+      let sum = 0;
+      let count = 0;
+      for (let j = start; j <= i; j++) {
+        sum += dataPoints[j].y;
+        count++;
+      }
+      let avg = sum / count;
+      maPoints.push({ x: dataPoints[i].x, y: avg });
+    }
+    return maPoints;
+  }
+
+  // Helper function to set the alpha value of an RGBA color string.
+  function setAlpha(rgba, alpha) {
+    // Assumes the input is in the format "rgba(r, g, b, 1)"
+    return rgba.replace(/, 1\)/, `, ${alpha})`);
+  }
+
+  // Updated renderTimeSeriesChart: show raw data in a light color and the 7-day MA in a solid line.
+  // Also, only the academic category is visible by default.
   function renderTimeSeriesChart(data) {
     let datasets = [];
     for (let category in data) {
+      const color = getRandomColor();
+      
+      // Raw data dataset in a light/transparent color
       datasets.push({
-        label: category,
+        label: category + " (raw)",
         data: data[category],
         fill: false,
-        borderColor: getRandomColor(),
+        borderColor: setAlpha(color, 0.3), // transparent version
         tension: 0.1,
-        hidden: (category.toLowerCase() !== 'academic') // Only show 'academic' by default
+        borderWidth: 1.0,
+        hidden: (category.toLowerCase() !== 'academic')
+      });
+      
+      // 7-day moving average dataset in solid color
+      datasets.push({
+        label: category + " (7-day MA)",
+        data: computeMovingAverage(data[category], 7),
+        fill: false,
+        borderColor: color, // solid line
+        borderWidth: 1.0,
+        tension: 0.5,
+        hidden: (category.toLowerCase() !== 'academic')
       });
     }
     
-    // Destroy previous chart if it exists
     if (window.timeSeriesChartInstance) {
       window.timeSeriesChartInstance.destroy();
     }
@@ -985,13 +1023,50 @@ document.addEventListener('DOMContentLoaded', async () => {
           tooltip: {
             mode: 'index',
             intersect: false,
+          },
+          legend: {
+            labels: {
+              generateLabels: function(chart) {
+                const datasets = chart.data.datasets;
+                const seenCategories = {};
+                const labels = [];
+                datasets.forEach((dataset, i) => {
+                  // Expect label format "academic (raw)" or "academic (7-day MA)"
+                  const cat = dataset.label.split(" ")[0];
+                  if (seenCategories[cat] === undefined) {
+                    seenCategories[cat] = i;
+                    labels.push({
+                      text: cat,
+                      fillStyle: dataset.borderColor,
+                      hidden: !chart.isDatasetVisible(i),
+                      datasetIndex: i
+                    });
+                  }
+                });
+                // Sort labels alphabetically in ascending order
+                labels.sort((a, b) => a.text.localeCompare(b.text));
+                return labels;
+              }
+            },
+            onClick: function(e, legendItem, legend) {
+              const category = legendItem.text.toLowerCase();
+              const chart = legend.chart;
+              chart.data.datasets.forEach((dataset, i) => {
+                const dsCategory = dataset.label.split(" ")[0].toLowerCase();
+                if (dsCategory === category) {
+                  const meta = chart.getDatasetMeta(i);
+                  meta.hidden = meta.hidden === null ? !chart.data.datasets[i].hidden : !meta.hidden;
+                }
+              });
+              chart.update();
+            }
           }
         },
         scales: {
           x: {
             type: 'time',
             time: {
-              parser: 'yyyy-MM-dd', // use lowercase 'yyyy'
+              parser: 'yyyy-MM-dd', // note lowercase 'yyyy'
               unit: 'day',
               displayFormats: {
                 day: 'MMM d'
@@ -1015,6 +1090,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   }
+
   
 
   // Update the time series chart by fetching the latest data and rendering the chart.
