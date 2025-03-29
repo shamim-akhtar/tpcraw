@@ -1110,12 +1110,31 @@ document.addEventListener('DOMContentLoaded', async () => {
               text: 'Average Sentiment'
             }
           }
+        },
+        onClick: async (evt, elements) => { // New onClick event for clicking on data points
+          if (elements.length > 0) {
+              const element = elements[0];
+              const datasetIndex = element.datasetIndex;
+              const index = element.index;
+              const dataset = window.timeSeriesChartInstance.data.datasets[datasetIndex];
+              
+              // Extract category from the dataset label
+              const categoryLabel = dataset.label.split(" ")[0]; // e.g., "academic (raw)" becomes "academic"
+              const category = categoryLabel.toLowerCase(); // Normalizing to lowercase for consistency
+
+              // Get the clicked point's date
+              const dataPoint = dataset.data[index];
+              const dateStr = dataPoint.x; // Should be formatted as "YYYY-MM-DD"
+
+              console.log(`Clicked on Category: ${category}, Date: ${dateStr}`);
+
+              // Call the function to fetch and display relevant posts and comments
+              await fetchAndDisplayPostsByCategoryAndDate(category, dateStr);
+          }
         }
       }
     });
-  }
-
-  
+  }  
 
   // Update the time series chart by fetching the latest data and rendering the chart.
   async function updateTimeSeriesChart() {
@@ -1126,6 +1145,66 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.error("Error updating time series chart:", error);
     }
   }
+
+  async function fetchAndDisplayPostsByCategoryAndDate(category, dateStr) {
+    // Get the container where posts and comments will be rendered.
+    const container = document.getElementById('post-details');
+    container.innerHTML = `<p>Loading posts and comments for ${category} on ${dateStr}...</p>`;
+  
+    // Fetch the category_stats document for the given date.
+    const statsDocRef = doc(db, 'category_stats', dateStr);
+    const statsDocSnap = await getDoc(statsDocRef);
+  
+    if (!statsDocSnap.exists()) {
+      container.innerHTML = `<p>No data found for ${category} on ${dateStr}.</p>`;
+      return;
+    }
+  
+    const statsData = statsDocSnap.data();
+    if (!statsData[category]) {
+      container.innerHTML = `<p>No posts or comments found for ${category} on ${dateStr}.</p>`;
+      return;
+    }
+  
+    const postIds = statsData[category].postIds || [];
+    // Expected structure for comments: { postId: [commentId1, commentId2, ...] }
+    const commentsMap = statsData[category].comments || {};
+  
+    // Build the HTML for posts.
+    let html = `<h3>Posts for ${category} on ${dateStr}:</h3>`;
+    for (const postId of postIds) {
+      const postRef = doc(db, 'posts', postId);
+      const postSnap = await getDoc(postRef);
+      if (postSnap.exists()) {
+        const postData = postSnap.data();
+        html += `<div class="post-summary" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+                   <h4>${postData.title}</h4>
+                   <p>${postData.body}</p>
+                 </div>`;
+      }
+    }
+  
+    // Build the HTML for comments.
+    html += `<h3>Comments for ${category} on ${dateStr}:</h3>`;
+    // Loop through each postId in the comments map.
+    for (const postId in commentsMap) {
+      const commentIds = commentsMap[postId];
+      for (const commentId of commentIds) {
+        const commentRef = doc(db, `posts/${postId}/comments`, commentId);
+        const commentSnap = await getDoc(commentRef);
+        if (commentSnap.exists()) {
+          const commentData = commentSnap.data();
+          html += `<div class="comment-card" style="border:1px solid #ddd; padding:10px; margin-bottom:10px;">
+                     <p><strong>${commentData.author}:</strong> ${commentData.body}</p>
+                   </div>`;
+        }
+      }
+    }
+  
+    // Inject the complete HTML into the container.
+    container.innerHTML = html;
+  }
+  
 
 
   async function updateCharts() {
@@ -1172,7 +1251,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderEngagementScoreChart(allPostsData);
       } else if (activeTabId === 'totalCommentsTab') {
         renderCommentsCountChart(allPostsData);
-      } else if (tabId === 'timeSeriesTab') {
+      } else if (activeTabId === 'timeSeriesTab') {
         renderTimeSeriesChart(tsData);
       }
 

@@ -210,8 +210,10 @@ def update_author_stats(author, sentiment, is_post=True):
         logging.error(f"Error updating author stats for {author}: {e}")
 
 
-def update_category_stats(date_str, category, sentiment):
-    """Incrementally update the category stats for the given date and category."""
+# Incremental update function for category_stats.
+# This function updates the document for a given date and category,
+# merging new sentiment values and updating lists of post IDs and comments.
+def update_category_stats_incremental(date_str, category, sentiment, post_id=None, comment_id=None):
     doc_ref = db.collection("category_stats").document(date_str)
     transaction = db.transaction()
 
@@ -227,7 +229,9 @@ def update_category_stats(date_str, category, sentiment):
                 "totalSentiment": 0,
                 "count": 0,
                 "positiveCount": 0,
-                "negativeCount": 0
+                "negativeCount": 0,
+                "postIds": [],
+                "comments": {}  # Dictionary mapping post IDs to lists of comment IDs
             }
         cat_data = data[category]
         cat_data["totalSentiment"] += sentiment
@@ -236,12 +240,64 @@ def update_category_stats(date_str, category, sentiment):
             cat_data["positiveCount"] += 1
         elif sentiment < 0:
             cat_data["negativeCount"] += 1
-        # Compute average sentiment
+        if post_id:
+            if post_id not in cat_data["postIds"]:
+                cat_data["postIds"].append(post_id)
+        if comment_id and post_id:
+            if post_id not in cat_data["comments"]:
+                cat_data["comments"][post_id] = []
+            if comment_id not in cat_data["comments"][post_id]:
+                cat_data["comments"][post_id].append(comment_id)
+        # Update the average sentiment
         cat_data["averageSentiment"] = cat_data["totalSentiment"] / cat_data["count"]
         data[category] = cat_data
         transaction.set(doc_ref, data)
 
     update_in_transaction(transaction, doc_ref)
+
+def process_posts():
+    """Process all new posts in Firestore and update category_stats incrementally."""
+    posts = db.collection("posts").stream()
+    for post in posts:
+        data = post.to_dict()
+        if "created" in data and "category" in data and "sentiment" in data:
+            created = data["created"]
+            if hasattr(created, "to_datetime"):
+                dt = created.to_datetime()
+            elif isinstance(created, datetime.datetime):
+                dt = created
+            else:
+                continue
+            date_str = dt.strftime("%Y-%m-%d")
+            category = data["category"]
+            sentiment = data["sentiment"]
+            post_id = post.id
+            # Update category_stats incrementally with the post's sentiment and ID.
+            update_category_stats_incremental(date_str, category, sentiment, post_id=post_id)
+
+def process_comments():
+    """Process new comments from all posts and update category_stats incrementally."""
+    posts = db.collection("posts").stream()
+    for post in posts:
+        post_id = post.id
+        comments = db.collection("posts").document(post_id).collection("comments").stream()
+        for comment in comments:
+            data = comment.to_dict()
+            if "created" in data and "category" in data and "sentiment" in data:
+                created = data["created"]
+                if hasattr(created, "to_datetime"):
+                    dt = created.to_datetime()
+                elif isinstance(created, datetime.datetime):
+                    dt = created
+                else:
+                    continue
+                date_str = dt.strftime("%Y-%m-%d")
+                category = data["category"]
+                sentiment = data["sentiment"]
+                comment_id = comment.id
+                # Update category_stats incrementally with the comment's sentiment,
+                # and record the comment ID under its parent post.
+                update_category_stats_incremental(date_str, category, sentiment, post_id=post_id, comment_id=comment_id)
 
 # Get the last timestamp
 last_timestamp = get_last_timestamp()
@@ -375,8 +431,9 @@ try:
                 # Update the author's stats
                 update_author_stats(str(comment.author), sentiment, is_post=False)
                 # For each comment processed:
+                # Incrementally update category_stats for the comment.
                 comment_date_str = datetime.datetime.fromtimestamp(comment.created_utc).strftime("%Y-%m-%d")
-                update_category_stats(comment_date_str, category, sentiment)
+                update_category_stats_incremental(comment_date_str, category, sentiment, post_id=submission.id, comment_id=comment.id)
 
 
 
@@ -455,7 +512,8 @@ try:
             update_author_stats(str(submission.author), sentiment, is_post=True)
 
             post_date_str = datetime.datetime.fromtimestamp(submission.created_utc).strftime("%Y-%m-%d")
-            update_category_stats(post_date_str, category, sentiment)
+            update_category_stats_incremental(post_date_str, category, sentiment, post_id=submission.id)
+
 
 
             # ADDED: Increment the counter after successfully processing this post
@@ -559,11 +617,10 @@ try:
                 # Update the author's stats
                 author_name = d.get("author", "Unknown")
                 update_author_stats(author_name, sent, is_post=False)
-                # For each comment processed:
+
+                # Update category_stats incrementally for the new comment.
                 comment_date_str = datetime.datetime.fromtimestamp(comment.created_utc).strftime("%Y-%m-%d")
-                update_category_stats(comment_date_str, category, sentiment)
-
-
+                update_category_stats_incremental(comment_date_str, category, sentiment, post_id=post_id, comment_id=comment.id)
 
             weighted_sent = weighted_sum / weight_total if weight_total > 0 else 0
 
