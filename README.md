@@ -6,7 +6,13 @@ TPCraw is a Python-based project that crawls posts and comments from the r/Temas
 
 
 ## Added Features
-### version 2.1 - Current Version
+
+### version 2.2 - Current Version
+- [x] Implement Incremental Updates for Author Sentiment in Crawler
+- [x] Add One-Time Author Sentiment Aggregation Script
+- [x] Add Author Sentiment Stacked Bar Chart to Dashboard
+
+### version 2.1
 - [x] Enhance the post table with clickable rows to display full post details for Top 10 lists.
 - [x] Colour highlight for selected row in the top 10 list.
 - [x] Zoom control on chart and reset zoom.
