@@ -796,6 +796,92 @@ document.addEventListener('DOMContentLoaded', async () => {
     return html;
   }
 
+  // New function to fetch authors from Firestore
+  async function fetchAuthorStats() {
+    const authorsSnapshot = await getDocs(collection(db, 'authors'));
+    let authorArray = [];
+    authorsSnapshot.forEach(doc => {
+      const data = doc.data();
+      data.author = doc.id; // use the document ID as the author name
+      authorArray.push(data);
+    });
+    // Sort by negativeCount descending.
+    authorArray.sort((a, b) => b.negativeCount - a.negativeCount);
+
+    // Return top 10 negative authors
+    return authorArray.slice(0, 10);
+  }
+
+  // New function to render the authors bar chart
+  function renderAuthorsChart(data) {
+    const labels = data.map(item => item.author);
+    const negativeCount = data.map(item => item.negativeCount);
+
+    // Use red if the average sentiment is negative, green if positive
+    const backgroundColors = negativeCount.map(() => 'rgba(255, 99, 132, 0.8)');
+
+
+    if (window.authorsChartInstance) {
+      window.authorsChartInstance.destroy();
+    }
+
+    const ctx = document.getElementById('authorsChart').getContext('2d');
+    window.authorsChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Total Negative Sentiments',
+          data: negativeCount,
+          backgroundColor: backgroundColors,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Top 10 Authors with Most Negative Sentiments',
+            align: 'start',
+            font: {
+              size: 18,
+              weight: '600',
+              family: 'Arial, sans-serif'
+            },
+            color: '#333',
+            padding: { top: 10, bottom: 20 }
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return `${context.label}: ${context.raw.toFixed(2)}`;
+              }
+            }
+          }
+        },
+        scales: {
+          y: { beginAtZero: false }
+        },
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const authorName = labels[elements[0].index];
+            alert(`Author: ${authorName}`);
+          }
+        }
+      }
+    });
+  }
+
+  // New function to update the authors chart
+  async function updateAuthorsChart() {
+    try {
+      const authorData = await fetchAuthorStats();
+      renderAuthorsChart(authorData);
+    } catch (error) {
+      console.error("Error updating authors chart:", error);
+    }
+  }
+
   async function updateCharts() {
     try {
       allPostsData = await fetchPostsInRange();
@@ -878,6 +964,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderEngagementScoreChart(allPostsData);
       } else if (tabId === 'totalCommentsTab') {
         renderCommentsCountChart(allPostsData);
+      } else if (tabId === 'authorsTab') {
+        updateAuthorsChart();
       }
     });
   });
