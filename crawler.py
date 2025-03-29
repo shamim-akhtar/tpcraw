@@ -168,6 +168,47 @@ def safe_generate_content(model, prompt, retries=3, delay=5):
     # Return a fallback message if all retries fail
     return "The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations."
 
+# Helper function to update author stats in Firestore
+def update_author_stats(author, sentiment, is_post=True):
+    try:
+        author_ref = db.collection("authors").document(author)
+        author_doc = author_ref.get()
+
+        # If the author doesn't exist, create a new entry
+        if not author_doc.exists:
+            author_stats = {
+                "totalSentimentScore": 0,
+                "postCount": 0,
+                "commentCount": 0,
+                "negativeCount": 0,
+                "positiveCount": 0,
+                "averageSentiment": 0
+            }
+        else:
+            author_stats = author_doc.to_dict()
+
+        # Update sentiment and counts
+        author_stats["totalSentimentScore"] += sentiment
+        if is_post:
+            author_stats["postCount"] += 1
+        else:
+            author_stats["commentCount"] += 1
+
+        if sentiment < 0:
+            author_stats["negativeCount"] += 1
+        elif sentiment > 0:
+            author_stats["positiveCount"] += 1
+
+        # Calculate average sentiment
+        total_interactions = author_stats["postCount"] + author_stats["commentCount"]
+        author_stats["averageSentiment"] = author_stats["totalSentimentScore"] / total_interactions if total_interactions > 0 else 0
+
+        # Save the updated stats back to Firestore
+        author_ref.set(author_stats)
+
+    except Exception as e:
+        logging.error(f"Error updating author stats for {author}: {e}")
+
 # Get the last timestamp
 last_timestamp = get_last_timestamp()
 new_last_timestamp = last_timestamp
@@ -297,6 +338,10 @@ try:
                 # Write each comment into the subcollection: posts/{post_id}/comments/{comment_id}
                 post_ref.collection("comments").document(comment.id).set(comment_doc)
 
+                # Update the author's stats
+                update_author_stats(str(comment.author), sentiment, is_post=False)
+
+
             # Process overall post sentiment and summary using Gemini API with retries
             prompt = f"""
             You are an AI assigned to evaluate a Reddit post and its accompanying comments about 
@@ -367,6 +412,10 @@ try:
                 'totalNegativeSentiments': total_negative_sentiments
             })
             print(f"weightedSentimentScore: {weighted_sentiment_score}, rawSentimentScore: {raw_sentiment_score}")
+
+            # Update the author's stats
+            update_author_stats(str(submission.author), sentiment, is_post=True)
+
 
             # ADDED: Increment the counter after successfully processing this post
             updated_posts_count += 1
@@ -464,6 +513,12 @@ try:
                     total_positive += sent
                 elif sent < 0:
                     total_negative += sent
+                
+                
+                # Update the author's stats
+                author_name = d.get("author", "Unknown")
+                update_author_stats(author_name, sent, is_post=False)
+
 
             weighted_sent = weighted_sum / weight_total if weight_total > 0 else 0
 
