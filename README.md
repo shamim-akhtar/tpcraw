@@ -21,7 +21,11 @@ TPCraw is a Python-based project that crawls posts and comments from the r/Temas
 
 ### TODO
 - [ ] Run analytics (e.g. temporal patterns) per author.
-- [ ] Analyze sentiment by category over time.
+> [!IMPORTANT]
+> - [ ] Implement Time Series Aggregation for Sentiment by Category
+> 
+> Develop a one-time aggregation script that scans all posts and comments in Firestore to compute daily sentiment statistics for each category. The aggregated data should be stored in a new collection, "category_stats", where each document is keyed by date (formatted as YYYY-MM-DD) and contains a map for each category (e.g., academic, exams, internship) with fields for totalSentiment, count, positiveCount, negativeCount, and averageSentiment. This enhancement will enable detailed time-series analysis of sentiment trends, allowing us to identify patterns like exam stress spikes and post-holiday drops in facility complaints.
+- [ ] 
 
 # **📊 Sentiment Dashboard User Guide**
 
