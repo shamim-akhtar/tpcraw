@@ -909,21 +909,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Fetch time series data from Firestore's "category_stats" collection.
   // Each document key is a date (YYYY-MM-DD) and contains maps for each category.
   async function fetchTimeSeriesData() {
+    // Read the filter dates
+    const startDateValue = document.getElementById('start-date').value;
+    const endDateValue = document.getElementById('end-date').value;
+    const startDate = new Date(startDateValue);
+    const endDate = new Date(endDateValue);
+    // Include the entire end date
+    endDate.setHours(23, 59, 59, 999);
+  
     const catStatsSnapshot = await getDocs(collection(db, 'category_stats'));
     let timeSeriesData = {}; // { category: [ {x: date, y: averageSentiment}, ... ] }
     
     catStatsSnapshot.forEach(docSnap => {
       const dateStr = docSnap.id; // document ID in YYYY-MM-DD format
-      const data = docSnap.data();
-      // For each category in the document, add the average sentiment data point
-      for (let category in data) {
-        if (!timeSeriesData[category]) {
-          timeSeriesData[category] = [];
+      const docDate = new Date(dateStr);
+      // Filter only those documents that fall within the selected date range
+      if (docDate >= startDate && docDate <= endDate) {
+        const data = docSnap.data();
+        for (let category in data) {
+          if (!timeSeriesData[category]) {
+            timeSeriesData[category] = [];
+          }
+          timeSeriesData[category].push({
+            x: dateStr,
+            y: data[category].averageSentiment || 0
+          });
         }
-        timeSeriesData[category].push({
-          x: dateStr,
-          y: data[category].averageSentiment || 0
-        });
       }
     });
     
@@ -944,7 +955,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         data: data[category],
         fill: false,
         borderColor: getRandomColor(),
-        tension: 0.1
+        tension: 0.1,
+        hidden: (category.toLowerCase() !== 'academic') // Only show 'academic' by default
       });
     }
     
@@ -975,12 +987,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             intersect: false,
           }
         },
-        
         scales: {
           x: {
-            type: 'time',        
+            type: 'time',
             time: {
-              parser: 'yyyy-MM-dd',
+              parser: 'yyyy-MM-dd', // use lowercase 'yyyy'
               unit: 'day',
               displayFormats: {
                 day: 'MMM d'
@@ -992,6 +1003,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
           },
           y: {
+            min: -1.2,
+            max: 1.2,
             beginAtZero: false,
             title: {
               display: true,
@@ -1002,6 +1015,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   }
+  
 
   // Update the time series chart by fetching the latest data and rendering the chart.
   async function updateTimeSeriesChart() {
