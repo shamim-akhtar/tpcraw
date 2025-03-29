@@ -905,6 +905,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     const b = Math.floor(Math.random() * 200);
     return `rgba(${r}, ${g}, ${b}, 1)`;
   }
+  const PREDEFINED_CATEGORY_COLORS = {
+    academic: "#0070F2", 
+    exams: "#A93E00",
+    internship: "#5DC122",
+    facilities: "#BA066C",
+    subjects: "#256F3A",
+    administration: "#8B47D7",
+    career: "#798C77",
+    admission: "#AA0808",
+    results: "#470CED",
+    lecturer: "#DA6C6C",
+    "student life": "#049F9A",
+    infrastructure: "#4DB6AC",
+    classroom: "#354A5F",
+    events: "#00BCD4",
+    cca: "#7800A4"
+  };
+  
+  function getCategoryColor(category) {
+    const key = category.toLowerCase();
+    return PREDEFINED_CATEGORY_COLORS[key] || "#26C6DA"; // default cool cyan
+  }
+  
 
   // Fetch time series data from Firestore's "category_stats" collection.
   // Each document key is a date (YYYY-MM-DD) and contains maps for each category.
@@ -974,7 +997,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderTimeSeriesChart(data) {
     let datasets = [];
     for (let category in data) {
-      const color = getRandomColor();
+      const color = getCategoryColor(category);//getRandomColor();
       
       // Raw data dataset in a light/transparent color
       datasets.push({
@@ -983,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         fill: false,
         borderColor: setAlpha(color, 0.3), // transparent version
         tension: 0.1,
-        borderWidth: 1.0,
+        borderWidth: 0.5,
         hidden: (category.toLowerCase() !== 'academic')
       });
       
@@ -993,7 +1016,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         data: computeMovingAverage(data[category], 7),
         fill: false,
         borderColor: color, // solid line
-        borderWidth: 1.0,
+        borderWidth: 2.0,
         tension: 0.5,
         hidden: (category.toLowerCase() !== 'academic')
       });
@@ -1128,6 +1151,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       renderSentimentStackChart(allPostsData);
       renderEngagementScoreChart(allPostsData);
       renderCommentsCountChart(allPostsData);
+
+      
+      const tsData = await fetchTimeSeriesData();
+      renderTimeSeriesChart(tsData);
       
 
       // Default: show "Lowest 10 Raw Sentiment Posts"
@@ -1144,6 +1171,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderEngagementScoreChart(allPostsData);
       } else if (activeTabId === 'totalCommentsTab') {
         renderCommentsCountChart(allPostsData);
+      } else if (tabId === 'timeSeriesTab') {
+        renderTimeSeriesChart(tsData);
       }
 
     } catch (error) {
