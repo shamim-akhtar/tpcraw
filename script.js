@@ -879,8 +879,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         onClick: (evt, elements) => {
           if (elements.length > 0) {
-            const authorName = labels[elements[0].index];
-            alert(`Author: ${authorName}`);
+            const authorName = labels[elements[0].index];            
+            fetchAndDisplayPostsAndCommentsByAuthor(authorName);
+            // alert(`Author: ${authorName}`);
           }
         }
       }
@@ -1233,7 +1234,92 @@ document.addEventListener('DOMContentLoaded', async () => {
     container.innerHTML = html;
   }
   
+  async function fetchAndDisplayPostsAndCommentsByAuthor(authorName) {
+    const container = document.getElementById('post-details');
+    container.innerHTML = `<p>Loading posts and comments for ${authorName}...</p>`;
+  
+    try {
+      // Fetch the author document from the "authors" collection
+      const authorRef = doc(db, "authors", authorName);
+      const authorSnap = await getDoc(authorRef);
+      if (!authorSnap.exists()) {
+        container.innerHTML = `<p>No data found for author ${authorName}.</p>`;
+        return;
+      }
+      const authorData = authorSnap.data();
+      const postIds = authorData.posts || [];
+      const commentsMap = authorData.comments || {};
+  
+      let html = `<h3>Posts by ${authorName}:</h3>`;
+      if (postIds.length === 0) {
+        html += `<p>No posts found for ${authorName}.</p>`;
+      } else {
+        // Loop through each post ID and fetch the post document
+        for (const postId of postIds) {
+          const postRef = doc(db, "posts", postId);
+          const postSnap = await getDoc(postRef);
+          if (postSnap.exists()) {
+            const postData = postSnap.data();
+            
+        const badgesHtml = `
+        <div class="shields-container">
+          <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
+          <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(postData.emotion)}-purple?style=flat-square" alt="Emotion">
+          <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(postData.engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
+          <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(postData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
+          <img src="https://img.shields.io/badge/positive_sentiments-${postData.totalPositiveSentiments}-green?style=flat-square" alt="Positive">
+          <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(postData.totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
+          <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(postData.weightedSentimentScore.toFixed(2))}-blueviolet?style=flat-square" alt="Weighted">
+        </div>,`;
 
+            html += `<div class="post-summary" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+                       <h4>${postData.title}</h4>
+                       <p>${postData.body}</p>
+                       ${badgesHtml}
+                     </div>`;
+          }
+        }
+      }
+  
+      html += `<h3>Comments by ${authorName}:</h3>`;
+      let commentsFound = false;
+      // Loop through the comments mapping (keys are post IDs)
+      for (const postId in commentsMap) {
+        const commentIds = commentsMap[postId];
+        for (const commentId of commentIds) {
+          const commentRef = doc(db, `posts/${postId}/comments`, commentId);
+          const commentSnap = await getDoc(commentRef);
+          if (commentSnap.exists()) {
+            commentsFound = true;
+            const commentData = commentSnap.data();
+            let sentimentColor = 'orange';
+            if (commentData.sentiment < 0) {
+              sentimentColor = 'red';
+            } else if (commentData.sentiment > 0) {
+              sentimentColor = 'green';
+            }
+            html += `<div class="comment-card" style="border:1px solid #ddd; padding:10px; margin-bottom:10px;">
+                      <p><strong>${commentData.author}:</strong> ${commentData.body}</p>
+                      <div class="shields-container">
+              <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(commentData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
+              <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(commentData.sentiment)}-${sentimentColor}?style=flat-square" alt="Sentiment">
+              <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(commentData.emotion)}-purple?style=flat-square" alt="Emotion">
+                      </div>
+                     </div>`;
+          }
+        }
+      }
+      if (!commentsFound) {
+        html += `<p>No comments found for ${authorName}.</p>`;
+      }
+  
+      container.innerHTML = html;
+    } catch (error) {
+      console.error("Error fetching details for author", authorName, ":", error);
+      container.innerHTML = `<p>Error fetching details for ${authorName}.</p>`;
+    }
+  }
+  
 
   async function updateCharts() {
     try {
