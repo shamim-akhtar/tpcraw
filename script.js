@@ -1177,9 +1177,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       const postSnap = await getDoc(postRef);
       if (postSnap.exists()) {
         const postData = postSnap.data();
+        
+        const badgesHtml = `
+        <div class="shields-container">
+          <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
+          <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(postData.emotion)}-purple?style=flat-square" alt="Emotion">
+          <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(postData.engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
+          <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(postData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
+          <img src="https://img.shields.io/badge/positive_sentiments-${postData.totalPositiveSentiments}-green?style=flat-square" alt="Positive">
+          <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(postData.totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
+          <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(postData.weightedSentimentScore.toFixed(2))}-blueviolet?style=flat-square" alt="Weighted">
+        </div>,`;
+        
         html += `<div class="post-summary" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
                    <h4>${postData.title}</h4>
                    <p>${postData.body}</p>
+                   ${badgesHtml}
                  </div>`;
       }
     }
@@ -1194,9 +1207,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         const commentSnap = await getDoc(commentRef);
         if (commentSnap.exists()) {
           const commentData = commentSnap.data();
-          html += `<div class="comment-card" style="border:1px solid #ddd; padding:10px; margin-bottom:10px;">
-                     <p><strong>${commentData.author}:</strong> ${commentData.body}</p>
-                   </div>`;
+          const sentiment = commentData.sentiment;
+          let sentimentColor = 'orange'; // default for neutral
+
+          if (sentiment < 0) {
+            sentimentColor = 'red';
+          } else if (sentiment > 0) {
+            sentimentColor = 'green';
+          }
+          html += 
+          `<div class="comment-card" style="border:1px solid #ddd; padding:10px; margin-bottom:10px;">
+            <p><strong>${commentData.author}:</strong> ${commentData.body}</p>
+                     
+            <div class="shields-container">
+              <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(commentData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
+              <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(sentiment)}-${sentimentColor}?style=flat-square" alt="Sentiment">
+              <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(commentData.emotion)}-purple?style=flat-square" alt="Emotion">
+            </div>,
+          </div>`;
         }
       }
     }
