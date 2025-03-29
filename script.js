@@ -1038,6 +1038,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           title: {
             display: true,
             text: 'Time Series of Average Sentiment by Category',
+            align: 'start',
             font: {
               size: 18,
               weight: '600'
