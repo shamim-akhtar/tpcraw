@@ -19,6 +19,10 @@ TPCraw is a Python-based project that crawls posts and comments from the r/Temas
 - [x] Automated crawler job using GitHub workflow and action - runs at 5 AM Singapore time daily.
 - [x] Track new comments on older posts.
 
+### TODO
+- [ ] Run analytics (e.g. temporal patterns) per author.
+- [ ] Analyze sentiment by category over time.
+
 # **📊 Sentiment Dashboard User Guide**
 
 Welcome to the **r/TemasekPoly Sentiment Dashboard**, a web-based analytics interface that visualizes and summarizes Reddit posts and comments related to Temasek Polytechnic. It leverages sentiment analysis powered by **Google Gemini API** and data from **Firebase Firestore**.
