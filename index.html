@@ -73,6 +73,8 @@
         <button class="tab-button" data-tab="totalCommentsTab">Comments per Post</button>
         <button class="tab-button" data-tab="engagementTab">Engagement Score per Post</button>
         <button class="tab-button" data-tab="topPosts">Top 10 Posts</button>
+        <button class="tab-button" data-tab="authorsTab">Author Stats</button>
+
       </div>
 
       <section id="weightedTab" class="chart-section tab-content active">
@@ -194,7 +196,7 @@
       </section>
 
 
-      <section id="topPosts" class="chart-section tab-content" style="display:none;">
+    <section id="topPosts" class="chart-section tab-content" style="display:none;">
       <div class="card" style="flex:1; display:flex; flex-direction:column;">
         <!-- <h2>Post List</h2> -->
         <label for="postListDropdown"><b>Select Criteria:</b></label>
@@ -209,7 +211,16 @@
   
         <div id="postListContainer"></div>
       </div>
+    
     </section>
+
+    <section id="authorsTab" class="chart-section tab-content" style="display:none;">
+      <canvas id="authorsChart"></canvas>
+      <p style="font-size:small; text-align:left; max-width:1200px; margin:5px auto;">
+        This chart shows the top 10 authors with the most negative total sentiments.
+      </p>
+    </section>
+    
 
     </div>
 
