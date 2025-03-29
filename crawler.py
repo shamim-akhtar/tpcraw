@@ -209,6 +209,40 @@ def update_author_stats(author, sentiment, is_post=True):
     except Exception as e:
         logging.error(f"Error updating author stats for {author}: {e}")
 
+
+def update_category_stats(date_str, category, sentiment):
+    """Incrementally update the category stats for the given date and category."""
+    doc_ref = db.collection("category_stats").document(date_str)
+    transaction = db.transaction()
+
+    @firestore.transactional
+    def update_in_transaction(transaction, doc_ref):
+        snapshot = doc_ref.get(transaction=transaction)
+        if snapshot.exists:
+            data = snapshot.to_dict()
+        else:
+            data = {}
+        if category not in data:
+            data[category] = {
+                "totalSentiment": 0,
+                "count": 0,
+                "positiveCount": 0,
+                "negativeCount": 0
+            }
+        cat_data = data[category]
+        cat_data["totalSentiment"] += sentiment
+        cat_data["count"] += 1
+        if sentiment > 0:
+            cat_data["positiveCount"] += 1
+        elif sentiment < 0:
+            cat_data["negativeCount"] += 1
+        # Compute average sentiment
+        cat_data["averageSentiment"] = cat_data["totalSentiment"] / cat_data["count"]
+        data[category] = cat_data
+        transaction.set(doc_ref, data)
+
+    update_in_transaction(transaction, doc_ref)
+
 # Get the last timestamp
 last_timestamp = get_last_timestamp()
 new_last_timestamp = last_timestamp
@@ -340,6 +374,10 @@ try:
 
                 # Update the author's stats
                 update_author_stats(str(comment.author), sentiment, is_post=False)
+                # For each comment processed:
+                comment_date_str = datetime.datetime.fromtimestamp(comment.created_utc).strftime("%Y-%m-%d")
+                update_category_stats(comment_date_str, category, sentiment)
+
 
 
             # Process overall post sentiment and summary using Gemini API with retries
@@ -415,6 +453,9 @@ try:
 
             # Update the author's stats
             update_author_stats(str(submission.author), sentiment, is_post=True)
+
+            post_date_str = datetime.datetime.fromtimestamp(submission.created_utc).strftime("%Y-%m-%d")
+            update_category_stats(post_date_str, category, sentiment)
 
 
             # ADDED: Increment the counter after successfully processing this post
@@ -518,6 +559,10 @@ try:
                 # Update the author's stats
                 author_name = d.get("author", "Unknown")
                 update_author_stats(author_name, sent, is_post=False)
+                # For each comment processed:
+                comment_date_str = datetime.datetime.fromtimestamp(comment.created_utc).strftime("%Y-%m-%d")
+                update_category_stats(comment_date_str, category, sentiment)
+
 
 
             weighted_sent = weighted_sum / weight_total if weight_total > 0 else 0
