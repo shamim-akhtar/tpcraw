@@ -168,13 +168,13 @@ def safe_generate_content(model, prompt, retries=3, delay=5):
     # Return a fallback message if all retries fail
     return "The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations."
 
-# Helper function to update author stats in Firestore
-def update_author_stats(author, sentiment, is_post=True):
+# UPDATED: Helper function to update author stats in Firestore with post and comment IDs.
+def update_author_stats(author, sentiment, is_post=True, post_id=None, comment_id=None):
     try:
         author_ref = db.collection("authors").document(author)
         author_doc = author_ref.get()
 
-        # If the author doesn't exist, create a new entry
+        # If the author doesn't exist, create a new entry with extra fields.
         if not author_doc.exists:
             author_stats = {
                 "totalSentimentScore": 0,
@@ -182,26 +182,34 @@ def update_author_stats(author, sentiment, is_post=True):
                 "commentCount": 0,
                 "negativeCount": 0,
                 "positiveCount": 0,
-                "averageSentiment": 0
+                "averageSentiment": 0,
+                "posts": [],
+                "comments": {}
             }
         else:
             author_stats = author_doc.to_dict()
+            if "posts" not in author_stats:
+                author_stats["posts"] = []
+            if "comments" not in author_stats:
+                author_stats["comments"] = {}
 
         # Update sentiment and counts
         author_stats["totalSentimentScore"] += sentiment
         if is_post:
             author_stats["postCount"] += 1
+            if post_id and post_id not in author_stats["posts"]:
+                author_stats["posts"].append(post_id)
         else:
             author_stats["commentCount"] += 1
-
-        if sentiment < 0:
-            author_stats["negativeCount"] += 1
-        elif sentiment > 0:
-            author_stats["positiveCount"] += 1
+            if post_id and comment_id:
+                if post_id not in author_stats["comments"]:
+                    author_stats["comments"][post_id] = []
+                if comment_id not in author_stats["comments"][post_id]:
+                    author_stats["comments"][post_id].append(comment_id)
 
         # Calculate average sentiment
         total_interactions = author_stats["postCount"] + author_stats["commentCount"]
-        author_stats["averageSentiment"] = author_stats["totalSentimentScore"] / total_interactions if total_interactions > 0 else 0
+        author_stats["averageSentiment"] = (author_stats["totalSentimentScore"] / total_interactions) if total_interactions > 0 else 0
 
         # Save the updated stats back to Firestore
         author_ref.set(author_stats)
@@ -429,7 +437,7 @@ try:
                 post_ref.collection("comments").document(comment.id).set(comment_doc)
 
                 # Update the author's stats
-                update_author_stats(str(comment.author), sentiment, is_post=False)
+                update_author_stats(str(comment.author), sentiment, is_post=False, post_id=submission.id, comment_id=comment.id)
                 # For each comment processed:
                 # Incrementally update category_stats for the comment.
                 comment_date_str = datetime.datetime.fromtimestamp(comment.created_utc).strftime("%Y-%m-%d")
@@ -509,7 +517,7 @@ try:
             print(f"weightedSentimentScore: {weighted_sentiment_score}, rawSentimentScore: {raw_sentiment_score}")
 
             # Update the author's stats
-            update_author_stats(str(submission.author), sentiment, is_post=True)
+            update_author_stats(str(submission.author), sentiment, is_post=True, post_id=submission.id)
 
             post_date_str = datetime.datetime.fromtimestamp(submission.created_utc).strftime("%Y-%m-%d")
             update_category_stats_incremental(post_date_str, category, sentiment, post_id=submission.id)
@@ -616,7 +624,7 @@ try:
                 
                 # Update the author's stats
                 author_name = d.get("author", "Unknown")
-                update_author_stats(author_name, sent, is_post=False)
+                update_author_stats(author_name, sent, is_post=False, post_id=post_id, comment_id=c.id)
 
                 # Update category_stats incrementally for the new comment.
                 comment_date_str = datetime.datetime.fromtimestamp(comment.created_utc).strftime("%Y-%m-%d")

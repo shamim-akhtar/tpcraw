@@ -45,7 +45,9 @@ def process_posts():
                 "postCount": 0,
                 "commentCount": 0,
                 "negativeCount": 0,
-                "positiveCount": 0
+                "positiveCount": 0,
+                "posts": [],      # List to store post IDs
+                "comments": {}    # Dictionary to store comments by post ID
             }
 
         # Update stats for the post author
@@ -76,7 +78,9 @@ def process_comments():
                     "postCount": 0,
                     "commentCount": 0,
                     "negativeCount": 0,
-                    "positiveCount": 0
+                    "positiveCount": 0,
+                    "posts": [],      # List to store post IDs
+                    "comments": {}    # Dictionary to store comments by post ID
                 }
 
             # Update stats for the comment author
