@@ -137,8 +137,68 @@ document.addEventListener('DOMContentLoaded', async () => {
     return dataArray;
   }
 
+  
+
   // ----------------------------
-  // CHART 1: WEIGHTED SENTIMENT
+  // CHART 1: SENTIMENT DISTRIBUTION PIE CHART.
+  // ----------------------------
+  // Calculate positive, neutral, negative sentiment percentages and render pie chart
+  function renderSentimentPieChart(data) {
+    const totalPosts = data.length;
+    if (totalPosts === 0) {
+      const ctx = document.getElementById('sentimentPieChart').getContext('2d');
+      if (window.sentimentPieChartInstance) {
+        window.sentimentPieChartInstance.destroy();
+      }
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+      return;
+    }
+
+    const positiveCount = data.filter(p => p.weightedSentimentScore > 0).length;
+    const neutralCount = data.filter(p => p.weightedSentimentScore === 0).length;
+    const negativeCount = data.filter(p => p.weightedSentimentScore < 0).length;
+
+    const positivePercent = ((positiveCount / totalPosts) * 100).toFixed(1);
+    const neutralPercent = ((neutralCount / totalPosts) * 100).toFixed(1);
+    const negativePercent = ((negativeCount / totalPosts) * 100).toFixed(1);
+
+    const ctx = document.getElementById('sentimentPieChart').getContext('2d');
+
+    if (window.sentimentPieChartInstance) {
+      window.sentimentPieChartInstance.destroy();
+    }
+
+    ctx.canvas.width = 260;
+    ctx.canvas.height = 260;
+
+    window.sentimentPieChartInstance = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: ['Positive', 'Neutral', 'Negative'],
+        datasets: [{
+          data: [positivePercent, neutralPercent, negativePercent],
+          backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: {
+          legend: {
+            display: false,
+            position: 'left'
+          },
+          tooltip: {
+            callbacks: {
+              label: (context) => `${context.label}: ${context.raw}%`
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // ----------------------------
+  // CHART 2: WEIGHTED SENTIMENT
   // ----------------------------
   function renderWeightedSentimentChart(data) {
     const labels = data.map(post => {
@@ -237,6 +297,300 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  // ----------------------------
+  // CHART 3: RAW SENTIMENT STACK
+  // ----------------------------
+  function renderSentimentStackChart(data) {
+    const labels = data.map(post => {
+      const { title } = post;
+      if (title.length > MAX_LABEL_LENGTH) {
+        // If title exceeds the limit, truncate and add ellipsis
+        return title.slice(0, MAX_LABEL_LENGTH) + '…';
+      } else {
+        // Otherwise, pad the left side with spaces until it reaches the desired length
+        return title.padStart(MAX_LABEL_LENGTH, ' ');
+      }
+    });
+    const positiveData = data.map(post => post.totalPositiveSentiments);
+    const negativeData = data.map(post => post.totalNegativeSentiments);
+
+    const ctx = document.getElementById('stackedSentimentChart').getContext('2d');
+
+    if (commentsSentimentChart) {
+      commentsSentimentChart.destroy();
+    }
+
+    commentsSentimentChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Positive Sentiments',
+            data: positiveData,
+            backgroundColor: 'rgba(75, 192, 192, 0.8)', // Green
+            stack: 'Stack 0'
+          },
+          {
+            label: 'Negative Sentiments',
+            data: negativeData,
+            backgroundColor: 'rgba(255, 99, 132, 0.8)', // Red
+            stack: 'Stack 0'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Sentiment Breakdown by Post',
+            align: 'start',
+            font: {
+              size: 18,
+              weight: '600',
+              family: 'Arial, sans-serif'
+            },
+            color: '#333',
+            padding: {
+              top: 10,
+              bottom: 20
+            }
+          },
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              drag: {
+                enabled: true, 
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
+          }
+        },
+        scales: {
+          x: {
+            stacked: true,
+              
+            ticks: {
+              // Prevent tilt / rotation
+              maxRotation: 60,
+              minRotation: 60,
+              // Optional: center align each label
+              align: 'center'
+            },
+          },
+          y: {
+            stacked: true,
+            beginAtZero: true
+          }
+        },
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const barIndex = elements[0].index;
+            const item = data[barIndex];
+            fetchAndDisplayPostDetails(item.postId);
+          }
+        }
+      }
+    });
+  }
+
+  // ----------------------------
+  // CHART 4: ENGAGEMENT SCORE
+  // ----------------------------
+  function renderEngagementScoreChart(data) {
+    const labels = data.map(post => {
+      const { title } = post;
+      if (title.length > MAX_LABEL_LENGTH) {
+        // If title exceeds the limit, truncate and add ellipsis
+        return title.slice(0, MAX_LABEL_LENGTH) + '…';
+      } else {
+        // Otherwise, pad the left side with spaces until it reaches the desired length
+        return title.padStart(MAX_LABEL_LENGTH, ' ');
+      }
+    });
+    const engagementScores = data.map(item => item.engagementScore);
+
+    const backgroundColors = engagementScores.map(() => 'rgba(153, 102, 255, 0.8)');
+
+    if (engagementScoreChart) {
+      engagementScoreChart.destroy();
+    }
+
+    const ctx = document.getElementById('engagementScoreChart').getContext('2d');
+    engagementScoreChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Engagement Score',
+          data: engagementScores,
+          backgroundColor: backgroundColors
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Engagement Score per Post',
+            align: 'start',
+            font: {
+              size: 18,
+              weight: '600',
+              family: 'Arial, sans-serif'
+            },
+            color: '#333',
+            padding: {
+              top: 10,
+              bottom: 20
+            }
+          },
+          
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              drag: {
+                enabled: true, 
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
+          }
+        },
+        scales: {
+          x: {
+            
+            ticks: {
+              // Prevent tilt / rotation
+              maxRotation: 60,
+              minRotation: 60,
+              // Optional: center align each label
+              align: 'center'
+            }
+          },
+          y: { beginAtZero: true }
+        },
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const barIndex = elements[0].index;
+            const item = data[barIndex];
+            fetchAndDisplayPostDetails(item.postId);
+          }
+        }
+      }
+    });
+  }
+
+  // ----------------------------
+  // CHART 5: TOTAL COMMENTS
+  // ----------------------------
+  function renderCommentsCountChart(data) {
+    const labels = data.map(post => {
+      const { title } = post;
+      if (title.length > MAX_LABEL_LENGTH) {
+        // If title exceeds the limit, truncate and add ellipsis
+        return title.slice(0, MAX_LABEL_LENGTH) + '…';
+      } else {
+        // Otherwise, pad the left side with spaces until it reaches the desired length
+        return title.padStart(MAX_LABEL_LENGTH, ' ');
+      }
+    });
+    const totalComments = data.map(item => item.totalComments);
+
+    const backgroundColors = totalComments.map(() => 'rgba(153, 102, 255, 0.8)');
+
+    if (totalCommentsChart) {
+      totalCommentsChart.destroy();
+    }
+
+    const ctx = document.getElementById('totalCommentsChart').getContext('2d');
+    totalCommentsChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Total Comments',
+          data: totalComments,
+          backgroundColor: backgroundColors
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Comments per Post',
+            align: 'start',
+            font: {
+              size: 18,
+              weight: '600',
+              family: 'Arial, sans-serif'
+            },
+            color: '#333',
+            padding: {
+              top: 10,
+              bottom: 20
+            }
+          },
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              drag: {
+                enabled: true, 
+              },
+              pinch: {
+                enabled: true,
+              },
+              mode: 'x',
+            },
+          }
+        },
+        scales: {
+          x: {
+            
+            ticks: {
+              // Prevent tilt / rotation
+              maxRotation: 60,
+              minRotation: 60,
+              // Optional: center align each label
+              align: 'center'
+            }
+          },
+          y: { beginAtZero: true }
+        },
+        onClick: (evt, elements) => {
+          if (elements.length > 0) {
+            const barIndex = elements[0].index;
+            const item = data[barIndex];
+            fetchAndDisplayPostDetails(item.postId);
+          }
+        }
+      }
+    });
+  }
+
+  
+  // ----------------------------
+  // 6: FETCH POST DETAILS
+  // ----------------------------
   // Function to fetch and display post details and comments
   async function fetchAndDisplayPostDetails(postId) {
     const postDetailsContainer = document.getElementById('post-details');
@@ -351,296 +705,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       + commentsHtml;
   }
 
-  // Sentiment stack.
-  function renderSentimentStackChart(data) {
-    const labels = data.map(post => {
-      const { title } = post;
-      if (title.length > MAX_LABEL_LENGTH) {
-        // If title exceeds the limit, truncate and add ellipsis
-        return title.slice(0, MAX_LABEL_LENGTH) + '…';
-      } else {
-        // Otherwise, pad the left side with spaces until it reaches the desired length
-        return title.padStart(MAX_LABEL_LENGTH, ' ');
-      }
-    });
-    const positiveData = data.map(post => post.totalPositiveSentiments);
-    const negativeData = data.map(post => post.totalNegativeSentiments);
-
-    const ctx = document.getElementById('stackedSentimentChart').getContext('2d');
-
-    if (commentsSentimentChart) {
-      commentsSentimentChart.destroy();
-    }
-
-    commentsSentimentChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Positive Sentiments',
-            data: positiveData,
-            backgroundColor: 'rgba(75, 192, 192, 0.8)', // Green
-            stack: 'Stack 0'
-          },
-          {
-            label: 'Negative Sentiments',
-            data: negativeData,
-            backgroundColor: 'rgba(255, 99, 132, 0.8)', // Red
-            stack: 'Stack 0'
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Sentiment Breakdown by Post',
-            align: 'start',
-            font: {
-              size: 18,
-              weight: '600',
-              family: 'Arial, sans-serif'
-            },
-            color: '#333',
-            padding: {
-              top: 10,
-              bottom: 20
-            }
-          },
-          zoom: {
-            pan: {
-              enabled: true,
-              mode: 'x',
-              modifierKey: 'ctrl',
-            },
-            zoom: {
-              drag: {
-                enabled: true, 
-              },
-              pinch: {
-                enabled: true,
-              },
-              mode: 'x',
-            },
-          }
-        },
-        scales: {
-          x: {
-            stacked: true,
-              
-            ticks: {
-              // Prevent tilt / rotation
-              maxRotation: 60,
-              minRotation: 60,
-              // Optional: center align each label
-              align: 'center'
-            },
-          },
-          y: {
-            stacked: true,
-            beginAtZero: true
-          }
-        },
-        onClick: (evt, elements) => {
-          if (elements.length > 0) {
-            const barIndex = elements[0].index;
-            const item = data[barIndex];
-            fetchAndDisplayPostDetails(item.postId);
-          }
-        }
-      }
-    });
-  }
-
   // ----------------------------
-  // CHART 2: ENGAGEMENT SCORE
-  // ----------------------------
-  function renderEngagementScoreChart(data) {
-    const labels = data.map(post => {
-      const { title } = post;
-      if (title.length > MAX_LABEL_LENGTH) {
-        // If title exceeds the limit, truncate and add ellipsis
-        return title.slice(0, MAX_LABEL_LENGTH) + '…';
-      } else {
-        // Otherwise, pad the left side with spaces until it reaches the desired length
-        return title.padStart(MAX_LABEL_LENGTH, ' ');
-      }
-    });
-    const engagementScores = data.map(item => item.engagementScore);
-
-    const backgroundColors = engagementScores.map(() => 'rgba(153, 102, 255, 0.8)');
-
-    if (engagementScoreChart) {
-      engagementScoreChart.destroy();
-    }
-
-    const ctx = document.getElementById('engagementScoreChart').getContext('2d');
-    engagementScoreChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Engagement Score',
-          data: engagementScores,
-          backgroundColor: backgroundColors
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Engagement Score per Post',
-            align: 'start',
-            font: {
-              size: 18,
-              weight: '600',
-              family: 'Arial, sans-serif'
-            },
-            color: '#333',
-            padding: {
-              top: 10,
-              bottom: 20
-            }
-          },
-          
-          zoom: {
-            pan: {
-              enabled: true,
-              mode: 'x',
-              modifierKey: 'ctrl',
-            },
-            zoom: {
-              drag: {
-                enabled: true, 
-              },
-              pinch: {
-                enabled: true,
-              },
-              mode: 'x',
-            },
-          }
-        },
-        scales: {
-          x: {
-            
-            ticks: {
-              // Prevent tilt / rotation
-              maxRotation: 60,
-              minRotation: 60,
-              // Optional: center align each label
-              align: 'center'
-            }
-          },
-          y: { beginAtZero: true }
-        },
-        onClick: (evt, elements) => {
-          if (elements.length > 0) {
-            const barIndex = elements[0].index;
-            const item = data[barIndex];
-            fetchAndDisplayPostDetails(item.postId);
-          }
-        }
-      }
-    });
-  }
-
-  // ----------------------------
-  // CHART 2: TOTAL COMMENTS
-  // ----------------------------
-  function renderCommentsCountChart(data) {
-    const labels = data.map(post => {
-      const { title } = post;
-      if (title.length > MAX_LABEL_LENGTH) {
-        // If title exceeds the limit, truncate and add ellipsis
-        return title.slice(0, MAX_LABEL_LENGTH) + '…';
-      } else {
-        // Otherwise, pad the left side with spaces until it reaches the desired length
-        return title.padStart(MAX_LABEL_LENGTH, ' ');
-      }
-    });
-    const totalComments = data.map(item => item.totalComments);
-
-    const backgroundColors = totalComments.map(() => 'rgba(153, 102, 255, 0.8)');
-
-    if (totalCommentsChart) {
-      totalCommentsChart.destroy();
-    }
-
-    const ctx = document.getElementById('totalCommentsChart').getContext('2d');
-    totalCommentsChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Total Comments',
-          data: totalComments,
-          backgroundColor: backgroundColors
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Comments per Post',
-            align: 'start',
-            font: {
-              size: 18,
-              weight: '600',
-              family: 'Arial, sans-serif'
-            },
-            color: '#333',
-            padding: {
-              top: 10,
-              bottom: 20
-            }
-          },
-          zoom: {
-            pan: {
-              enabled: true,
-              mode: 'x',
-              modifierKey: 'ctrl',
-            },
-            zoom: {
-              drag: {
-                enabled: true, 
-              },
-              pinch: {
-                enabled: true,
-              },
-              mode: 'x',
-            },
-          }
-        },
-        scales: {
-          x: {
-            
-            ticks: {
-              // Prevent tilt / rotation
-              maxRotation: 60,
-              minRotation: 60,
-              // Optional: center align each label
-              align: 'center'
-            }
-          },
-          y: { beginAtZero: true }
-        },
-        onClick: (evt, elements) => {
-          if (elements.length > 0) {
-            const barIndex = elements[0].index;
-            const item = data[barIndex];
-            fetchAndDisplayPostDetails(item.postId);
-          }
-        }
-      }
-    });
-  }
-
-  // ----------------------------
-  // POST LIST DROPDOWN / TABLE
+  // 7. POST LIST DROPDOWN / TABLE
   // ----------------------------
   const postListDropdown = document.getElementById('postListDropdown');
   postListDropdown.addEventListener('change', () => {
@@ -728,61 +794,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     html += `</tbody></table>`;
     return html;
-  }
-
-  // Calculate positive, neutral, negative sentiment percentages and render pie chart
-  function renderSentimentPieChart(data) {
-    const totalPosts = data.length;
-    if (totalPosts === 0) {
-      const ctx = document.getElementById('sentimentPieChart').getContext('2d');
-      if (window.sentimentPieChartInstance) {
-        window.sentimentPieChartInstance.destroy();
-      }
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      return;
-    }
-
-    const positiveCount = data.filter(p => p.weightedSentimentScore > 0).length;
-    const neutralCount = data.filter(p => p.weightedSentimentScore === 0).length;
-    const negativeCount = data.filter(p => p.weightedSentimentScore < 0).length;
-
-    const positivePercent = ((positiveCount / totalPosts) * 100).toFixed(1);
-    const neutralPercent = ((neutralCount / totalPosts) * 100).toFixed(1);
-    const negativePercent = ((negativeCount / totalPosts) * 100).toFixed(1);
-
-    const ctx = document.getElementById('sentimentPieChart').getContext('2d');
-
-    if (window.sentimentPieChartInstance) {
-      window.sentimentPieChartInstance.destroy();
-    }
-
-    ctx.canvas.width = 260;
-    ctx.canvas.height = 260;
-
-    window.sentimentPieChartInstance = new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: ['Positive', 'Neutral', 'Negative'],
-        datasets: [{
-          data: [positivePercent, neutralPercent, negativePercent],
-          backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
-        }]
-      },
-      options: {
-        responsive: false,
-        plugins: {
-          legend: {
-            display: false,
-            position: 'left'
-          },
-          tooltip: {
-            callbacks: {
-              label: (context) => `${context.label}: ${context.raw}%`
-            }
-          }
-        }
-      }
-    });
   }
 
   async function updateCharts() {
@@ -873,13 +884,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Set default active tab on load
   document.querySelector('.tab-button.active').click();
-  // document.getElementById('resetZoomWeightedBtn').addEventListener('click', () => {
-  //   // For example, reset the Weighted Sentiment chart:
-  //   weightedSentimentChart.resetZoom();
-  //   totalCommentsChart.resetZoom();
-  //   commentsSentimentChart.resetZoom();
-  //   engagementScoreChart.resetZoom();
-  // });
+  
   document.getElementById('resetZoomWeightedBtn').addEventListener('click', () => {
     if (weightedSentimentChart) weightedSentimentChart.resetZoom();
   });
@@ -894,7 +899,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   document.getElementById('resetZoomEngagementBtn').addEventListener('click', () => {
     if (engagementScoreChart) engagementScoreChart.resetZoom();
-  });
-  
+  }); 
   
 });
