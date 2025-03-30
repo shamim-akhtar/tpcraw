@@ -1,38 +1,74 @@
-## Crawler.py Technical Documentation
+# Crawler.py - Technical Documentation
 
-### Overview
+## Introduction
 
-The `crawler.py` script is a Python-based data ingestion tool designed to fetch and process posts and comments from the `r/TemasekPoly` subreddit. The script stores the processed data in a Firebase Firestore database, and uses the Google Gemini API for Natural Language Processing (NLP) tasks such as sentiment analysis, emotion detection, category classification, and IIT relevance determination.
+The `crawler.py` script is designed to crawl the subreddit `r/TemasekPoly` and collect posts and comments for sentiment analysis. The data is processed using the Google Gemini API, categorized, and stored in Firebase Firestore. The tool is intended to provide insights into user sentiment and feedback related to Temasek Polytechnic, including specific relevance to the School of IIT.
 
-### Purpose
+## Purpose
 
-The primary purpose of this crawler is to extract relevant discussions from Reddit, perform sentiment analysis, categorize the content, and store the processed data for further visualization and analysis via a dashboard built using Chart.js and Firebase Firestore.
-#### Key Features:
+- Collect user-generated content from `r/TemasekPoly`.
+- Analyze content for sentiment, emotion, category, and IIT relevance.
+- Store the processed data in Firebase Firestore.
+- Provide structured data for visualization on a web-based dashboard.
+- Facilitate trend analysis and user feedback insights over time.
+
+## Key Features
 
 1. **Data Collection & Storage:**
-   - Fetches posts and comments from `r/TemasekPoly`.
-   - Stores processed data in Firebase Firestore under a structured schema.
+   - Fetches posts and comments from `r/TemasekPoly` using PRAW (Python Reddit API Wrapper).
+   - Stores processed data in Firebase Firestore with a structured schema.
    - Ensures previously processed posts and comments are not duplicated.
 
 2. **Sentiment Analysis:**
-   - Utilizes the Google Gemini API for natural language understanding.
-   - Categorizes content by sentiment, emotion, category, and relevance to IIT.
-   - Calculates weighted sentiment scores considering user engagement (comments and upvotes).
+   - Uses the Google Gemini API for NLP-based sentiment, emotion, and category analysis.
+   - Provides IIT relevance classification (`yes` or `no`).
+   - Calculates weighted sentiment scores based on engagement metrics (e.g., upvotes, comments).
 
 3. **Data Aggregation & Incremental Updating:**
-   - Uses incremental updates to keep Firestore statistics accurate and up-to-date.
    - Supports continuous learning by tracking historical sentiment trends.
+   - Uses incremental updates to maintain Firestore statistics accurately.
 
 4. **Error Handling & Logging:**
-   - Logs all errors to `crawler_errors.log` for easy debugging and troubleshooting.
-   - Resilient against API failures or Firestore connectivity issues.
+   - Logs all errors to `crawler_errors.log` for debugging and troubleshooting.
+   - Resilient to API failures or Firestore connectivity issues.
 
 5. **Scheduled Crawling:**
    - Integrated with GitHub Actions to run daily at 5 AM Singapore Time.
-   - Ensures regular data collection without manual intervention.
+   - Ensures consistent data collection without manual intervention.
 
+## Implementation Details
 
-### Dependencies
+The crawler is composed of several functions responsible for distinct tasks:
+
+### 1. Environment Setup & Initialization
+- Loading environment variables for Reddit and Gemini API credentials.
+- Initializing Firebase Firestore.
+- Setting up logging to record errors.
+
+### 2. Reddit Data Fetching
+- Fetching posts from `r/TemasekPoly`.
+- Fetching comments for each post.
+- Handling pagination and nested comments.
+
+### 3. Sentiment Analysis
+- Using Google Gemini API to analyze posts and comments.
+- Extracting sentiment score, emotion, category, and IIT relevance.
+- Generating a summary for each post.
+
+### 4. Data Storage
+- Saving posts and comments to Firestore.
+- Storing incremental statistics for authors and categories.
+- Ensuring data consistency through transactional updates.
+
+### 5. Error Handling & Logging
+- Logging errors to `crawler_errors.log`.
+- Handling exceptions during API calls and Firestore interactions.
+- Ensuring resilience through retry mechanisms.
+
+### 6. Scheduling & Automation
+- Automated crawling via GitHub Actions, scheduled daily at 5 AM Singapore Time.
+
+## Dependencies
 - `praw`: For interacting with Reddit's API to fetch posts and comments.
 - `firebase-admin`: For connecting and saving data to Firebase Firestore.
 - `google-generativeai`: For leveraging Google's Gemini API to analyze text data.
@@ -45,7 +81,7 @@ Install dependencies via:
 pip install praw firebase-admin google-generativeai python-dotenv
 ```
 
-### Files
+## Files
 - `crawler.py`: The main crawler script.
 - `.env`: Contains sensitive information like API keys for Reddit and Google Gemini API.
 - `firebase-credentials.json`: Firebase service account key file for Firestore authentication.
@@ -53,7 +89,7 @@ pip install praw firebase-admin google-generativeai python-dotenv
 - `crawler_errors.log`: Stores error logs generated during script execution.
 - `.github/workflows/reddit-crawler.yml`: GitHub Actions workflow file to schedule and trigger the crawler automatically.
 
-### Firestore Structure
+## Firestore Structure
 ```
 posts (collection)
  └─ {post_id} (document)
@@ -107,7 +143,7 @@ authors (collection)
      └─ comments
 ```
 
-### Initialization
+## Initialization
 
 The script loads environment variables, initializes the Reddit API via `praw`, and sets up Firebase Firestore.
 
@@ -133,7 +169,7 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 ```
 
-### Scheduling Using GitHub Actions
+## Scheduling Using GitHub Actions
 
 The crawler is scheduled to run at **5 AM Singapore Time (UTC+8)** using **GitHub Actions**. This allows automated crawling without manual intervention.
 
@@ -182,9 +218,11 @@ The `cron` setting above is configured to run the crawler daily at 5 AM Singapor
 
 ---
 
-### Crawler Functions
+## Code Documentation (Functions)
 
-#### 1. `get_last_timestamp()`
+This section will document each function in detail with code snippets, explanations, and purpose.
+
+### 1. `get_last_timestamp()`
 
 **Purpose:**  
 This function retrieves the timestamp of the last successfully processed Reddit post. This timestamp is essential for ensuring that the crawler doesn't reprocess posts that have already been captured in previous runs. This timestamp-based incremental processing ensures efficiency and prevents unnecessary reprocessing of old data. Without this, the script would waste resources by repeatedly analyzing the same posts.
@@ -210,7 +248,7 @@ def get_last_timestamp():
 - If Firestore access fails, the error is logged using Python’s `logging` module.
 
 ---
-#### 2. `set_last_timestamp()`
+### 2. `set_last_timestamp()`
 
 **Purpose:**  
 This function updates the timestamp of the most recently processed Reddit post in Firestore. By recording this timestamp, the crawler can avoid reprocessing older posts during subsequent runs.
@@ -235,7 +273,7 @@ def set_last_timestamp(timestamp):
 
 
 ---
-#### 3. `safe_generate_content()`
+### 3. `safe_generate_content()`
 
 **Purpose:**  
 This function is designed to **safely generate text content using the Google Gemini API**. It implements a retry mechanism to handle API failures gracefully.
@@ -278,7 +316,7 @@ def safe_generate_content(model, prompt, retries=3, delay=5):
 - Ensures that missing or incomplete results are handled gracefully, which improves the user experience.
 
 ---
-#### 4. `update_author_stats()`
+### 4. `update_author_stats()`
 
 **Purpose:**  
 This function **updates statistics related to Reddit authors** in the Firestore database. It records details such as sentiment scores, post counts, comment counts, and their respective sentiment distribution. This helps in analyzing the most influential or active authors in the subreddit.
@@ -365,7 +403,7 @@ def update_author_stats(author, sentiment, is_post=True, post_id=None, comment_i
 **Purpose:**  
 This function **incrementally updates category-specific sentiment statistics** in the Firestore database. It records daily statistics for each category, including sentiment scores, counts, positive/negative breakdowns, and post/comment IDs.
 
----
+
 
 **Implementation:**  
 ```python
@@ -418,7 +456,7 @@ def update_category_stats_incremental(date_str, category, sentiment, post_id=Non
     update_in_transaction(transaction, doc_ref)
 ```
 
----
+
 
 **Functionality:**  
 - **Updates a daily document** in the `category_stats` collection, where each document ID corresponds to a specific date (e.g., `2025-03-30`).
@@ -433,13 +471,13 @@ def update_category_stats_incremental(date_str, category, sentiment, post_id=Non
   - `postIds`: List of post IDs contributing to the category.
   - `comments`: A dictionary mapping post IDs to lists of comment IDs related to that category.
 
----
+
 
 **Error Handling:**  
 - The function uses **Firestore transactions** to ensure atomicity and prevent partial updates or race conditions.
 - If a transaction fails, it will be retried according to Firestore's internal transaction management.
 
----
+
 
 **Why This Is Important:**  
 - Enables **real-time incremental updates** for each category's statistics, allowing for accurate tracking of sentiment trends over time.
@@ -453,7 +491,7 @@ def update_category_stats_incremental(date_str, category, sentiment, post_id=Non
 **Purpose:**  
 The `process_posts()` function processes all new posts stored in Firestore and updates the `category_stats` collection incrementally. It ensures that each post’s sentiment is correctly categorized and recorded for statistical analysis.
 
----
+
 
 **Implementation:**  
 ```python
@@ -478,7 +516,7 @@ def process_posts():
             update_category_stats_incremental(date_str, category, sentiment, post_id=post_id)
 ```
 
----
+
 
 **Functionality:**  
 - **Fetches all documents** from the `posts` collection in Firestore.
@@ -489,27 +527,27 @@ def process_posts():
 - Converts the `created` timestamp to a datetime object and formats it as a string (`YYYY-MM-DD`).
 - Calls the `update_category_stats_incremental()` function to **record the post's sentiment data** for the specified date and category.
 
----
+
 
 **Error Handling:**  
 - The function gracefully **skips posts** that do not contain the required fields (`created`, `category`, `sentiment`).
 - It also checks for valid datetime objects before proceeding, ensuring compatibility with Firestore timestamp formats.
 
----
+
 
 **Why This Is Important:**  
 - Ensures that all posts are processed and their statistics are **recorded incrementally** for analysis.
 - Facilitates the generation of charts and graphs based on categorized sentiment data.
 - Provides historical sentiment trends for each category, enabling deeper insights into community feedback and discussions.
 
----
+
 
 ### 7. `process_comments()`
 
 **Purpose:**  
 The `process_comments()` function processes all new comments associated with posts in Firestore and updates the `category_stats` collection incrementally. This ensures that sentiment and category statistics are accurately updated as new comments are added.
 
----
+
 
 **Implementation:**  
 ```python
@@ -538,7 +576,7 @@ def process_comments():
                 update_category_stats_incremental(date_str, category, sentiment, post_id=post_id, comment_id=comment_id)
 ```
 
----
+
 
 **Functionality:**  
 - **Fetches all posts** from the `posts` collection.
@@ -550,14 +588,14 @@ def process_comments():
 - Converts the `created` timestamp to a datetime object and formats it as a string (`YYYY-MM-DD`).
 - Calls the `update_category_stats_incremental()` function to **record the comment's sentiment data** under the appropriate category and date.
 
----
+
 
 **Error Handling:**  
 - The function **skips comments** that are missing essential data fields (`created`, `category`, `sentiment`).
 - Ensures compatibility with Firestore timestamp formats by converting them to datetime objects before processing.
 - Relies on the transactional nature of `update_category_stats_incremental()` to avoid corruption from simultaneous writes.
 
----
+
 
 **Why This Is Important:**  
 - Captures user feedback beyond just posts—comments often contain valuable insights, complaints, or praise.
@@ -570,7 +608,7 @@ def process_comments():
 **Purpose:**  
 This block of code is the **heart of the crawler**, where posts and their comments are fetched from `r/TemasekPoly`, analyzed using the Google Gemini API, and stored in Firestore. It also updates Firestore with various statistics (sentiment scores, categories, etc.) for each post and comment.
 
----
+
 
 **Implementation:**
 
@@ -615,7 +653,7 @@ try:
             combined_post_comments = submission.selftext
 ```
 
----
+
 
 **Functionality:**
 
@@ -628,7 +666,7 @@ try:
 - **Skips posts already processed** by comparing their timestamp against the stored `last_timestamp`.
 - **Updates `new_last_timestamp`** to ensure that the latest processed post is recorded for future runs.
 
----
+
 
 **Comment Crawling & Sentiment Analysis:**
 
@@ -655,7 +693,7 @@ for comment in comments:
     response_text = safe_generate_content(model, prompt)
 ```
 
----
+
 
 **Functionality (Continued):**
 
@@ -674,7 +712,7 @@ for comment in comments:
 
 - **Combines all comments into one text block** (`combined_post_comments`) for aggregated analysis.
 
----
+
 
 **Data Storage & Firestore Updates:**
 
@@ -697,7 +735,7 @@ post_doc = {
 post_ref.set(post_doc)
 ```
 
----
+
 
 **Functionality (Continued):**
 
@@ -707,7 +745,7 @@ post_ref.set(post_doc)
   - `rawSentimentScore`, `weightedSentimentScore`, `categories`, `emotion`.
   - `engagementScore` calculated from upvotes and comments.
 
----
+
 
 **Why This Is Important:**  
 
@@ -723,7 +761,7 @@ post_ref.set(post_doc)
 **Purpose:**  
 After collecting the posts and comments, this section of the crawler script **processes the data** to generate sentiment scores, summaries, and updates statistics in Firestore for each post.
 
----
+
 
 ### Implementation (Post-Processing Loop)
 
@@ -759,7 +797,7 @@ else:
 
 ```
 
----
+
 
 ### Functionality:
 
@@ -779,7 +817,7 @@ else:
    - If the response from the API is not in the expected format, an error is logged.
    - Invalid or unrecognized responses are logged for further review.
 
----
+
 
 ### Implementation (Summary Generation & Firestore Update)
 
@@ -817,7 +855,7 @@ post_ref.update({
 })
 ```
 
----
+
 
 ### Functionality:
 
@@ -837,7 +875,7 @@ post_ref.update({
      - `weightedSentimentScore`, `rawSentimentScore`, `summary`, `sentiment`, `emotion`, `category`, `iit`.
      - Additionally, stores counts of total comments, positive sentiments, and negative sentiments.
 
----
+
 
 ### Why This Is Important:
 
@@ -854,7 +892,7 @@ post_ref.update({
 **Purpose:**  
 This section of the crawler ensures that **new comments on previously processed posts** are also captured and analyzed. This is important because Reddit posts can continue to receive new comments long after the initial crawl.
 
----
+
 
 ### Implementation
 
@@ -920,7 +958,7 @@ for comment in subreddit.comments(limit=500):
         comment_ref.set(comment_doc)
 ```
 
----
+
 
 ### Functionality:
 
@@ -945,7 +983,7 @@ for comment in subreddit.comments(limit=500):
      ```
    - Skips processing if the post is not stored in Firestore.
 
----
+
 
 ### Sentiment Analysis & Firestore Update:
 
@@ -964,7 +1002,7 @@ for comment in subreddit.comments(limit=500):
      ```
    - Ensures that **new comments on old posts** are accounted for in the dashboard.
 
----
+
 
 ### Why This Is Important:
 
@@ -982,7 +1020,6 @@ for comment in subreddit.comments(limit=500):
 **Purpose:**  
 The `crawler.py` script includes a comprehensive error-handling and logging system designed to **record errors, ensure resilience, and facilitate debugging**. Errors are logged to a file called `crawler_errors.log`.
 
----
 
 ### Implementation (Logging Setup)
 
@@ -995,7 +1032,6 @@ logging.basicConfig(
 )
 ```
 
----
 
 ### Explanation:
 
@@ -1007,7 +1043,6 @@ logging.basicConfig(
      - **Severity Level:** The level of the log message (`%(levelname)s`), e.g., `ERROR`, `CRITICAL`.
      - **Message:** The actual error message or description (`%(message)s`).
 
----
 
 ### Usage of Logging in the Code
 
@@ -1022,7 +1057,6 @@ except Exception as e:
 - Logs errors when the Google Gemini API fails to provide a response.
 - Includes retry attempt information for easier debugging.
 
----
 
 #### Example 2: Logging Firestore Errors
 
@@ -1032,7 +1066,6 @@ except Exception as e:
 ```
 - Logs errors occurring when saving the timestamp to Firestore.
 
----
 
 #### Example 3: Logging Unexpected API Responses
 
@@ -1042,7 +1075,6 @@ if len(parts) < 4:
 ```
 - Logs cases where the API returns an improperly formatted response.
 
----
 
 #### Example 4: Logging Critical Errors During Crawling
 
@@ -1054,7 +1086,6 @@ except Exception as e:
 - Catches **any unhandled exceptions** that may occur during the crawling process.
 - Prevents the script from crashing due to unexpected errors.
 
----
 
 ### Why This Is Important:
 
@@ -1071,7 +1102,7 @@ except Exception as e:
    - Logs provide a way to perform a detailed analysis after the script runs, ensuring that issues are caught and resolved.
 
 ---
-### Conclusion
+## Conclusion
 
 The `crawler.py` script is a robust and comprehensive data collection, processing, and analysis tool designed to **extract sentiment insights from Reddit discussions on `r/TemasekPoly`**. It uses a combination of Reddit API, Firebase Firestore, and the Google Gemini API to **fetch, analyze, categorize, and store data** for visualization and trend analysis.
 
