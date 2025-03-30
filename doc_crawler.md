@@ -27,7 +27,7 @@ pip install praw firebase-admin google-generativeai python-dotenv
 - `firebase-credentials.json`: Firebase service account key file for Firestore authentication.
 - `last_timestamp.txt`: Stores the timestamp of the last successfully processed post to prevent redundant processing.
 - `crawler_errors.log`: Stores error logs generated during script execution.
-- `.github/workflows/crawl.yml`: GitHub Actions workflow file to schedule and trigger the crawler automatically.
+- `.github/workflows/reddit-crawler.yml`: GitHub Actions workflow file to schedule and trigger the crawler automatically.
 
 ### Firestore Structure
 ```
