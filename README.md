@@ -34,6 +34,8 @@ This dashboard allows users to:
 
 The dashboard is implemented using **Chart.js** for visualization, **Firebase Firestore** for data retrieval, and **Chart.js Zoom Plugin** for interactive zooming and panning capabilities. It provides a comprehensive view of the sentiment trends and engagement metrics, making it easier to uncover valuable insights from the collected Reddit data.
 
+---
+
 ## Frontend Dashboard Features
 ### 📅 **Date Range & IIT Filter**
 ![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_02.PNG)
@@ -50,6 +52,8 @@ The **Date Range & IIT Filter** feature provides users with flexible data filter
 
 This feature enhances the user’s ability to tailor their analysis to specific periods or areas of interest, making the dashboard versatile and adaptable.
 
+---
+
 ### 📊 **Posts, Comments, and Avg Weighted Sentiment Metrics**
 
 ![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_03_1.PNG)
@@ -64,6 +68,10 @@ The **Posts, Comments, and Avg Weighted Sentiment Metrics** feature provides a q
 
 These metrics offer a high-level overview of user engagement and sentiment trends, serving as a starting point for deeper analysis through the various charts and graphs available on the dashboard.
 
+---
+
+
+
 ### 📊 **Sentiment Distribution Pie Chart**
 
 ![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_03_2.PNG)
@@ -76,6 +84,9 @@ The **Sentiment Distribution Pie Chart** provides a high-level overview of the s
 
 The pie chart helps users quickly gauge the overall sentiment landscape by showing the proportion of each sentiment type. It is especially useful for identifying whether the general mood is positive, negative, or balanced. Users can apply filters to narrow down the data by date range or IIT-related content.
 
+---
+
+
 ### 📈 **Weighted Sentiment Breakdown Chart**
 ![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_05.PNG)
 
@@ -87,6 +98,9 @@ The **Weighted Sentiment Breakdown Chart** displays the **Weighted Sentiment Sco
 The weighted sentiment score is calculated by combining the sentiment polarity of each post with engagement metrics such as comments and upvotes, providing a more accurate reflection of popular opinion. 
 
 Users can click on a specific bar to view detailed post information, including its title, summary, and related comments. Additionally, the chart supports **zooming and panning**, enabling users to explore data at various levels of detail.
+
+---
+
 
 ### 📊 **Comment Sentiment Stacked Chart**
 
@@ -102,6 +116,9 @@ This stacked chart helps identify the overall sentiment distribution across all 
 The chart supports **interactive zooming and panning**, allowing users to closely examine specific posts or date ranges. Additionally, users can click on a bar to view the underlying comments and their detailed analysis.
 
 
+---
+
+
 
 ### 💬 **Total Comments Chart**
 ![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_07.PNG)
@@ -114,6 +131,9 @@ The **Total Comments Chart** presents the total number of comments each post has
 This chart is particularly useful for identifying which posts have sparked the most conversation. By clicking on a specific bar, users can view detailed insights about the post, including its content, sentiment analysis, and associated comments. The chart supports **zooming, panning, and filtering**, enhancing the exploration of high-engagement posts over time.
 
 
+---
+
+
 ### 📈 **Engagement Score Chart**
 ![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_08.PNG)
 
@@ -123,6 +143,9 @@ The **Engagement Score Chart** visualizes the overall popularity and interaction
 - **Lower Scores:** Suggest posts with minimal interaction or interest.
 
 This bar chart allows users to quickly identify which posts have attracted the most attention and engagement from the community. Each bar represents a post, with taller bars indicating higher engagement. The chart supports **interactive zooming and panning**, allowing users to closely examine posts from different time periods. Additionally, clicking on a bar displays detailed information about the post.
+
+---
+
 
 ### **📋 Top 10 Posts**
 
@@ -180,6 +203,9 @@ The **Top 10 Authors Chart** displays a stacked bar chart highlighting the autho
 
 This feature is useful for identifying potential issues, complaints, or grievances that might need attention. It also allows for tracking individual authors over time to understand their overall sentiment trend. Clicking on any bar reveals all related posts and comments made by the selected author.
 
+---
+
+
 ### 📅 **Category Time Series Analysis**
 
 ![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_13.PNG)
@@ -192,6 +218,9 @@ The **Category Time Series Chart** provides a powerful way to visualize sentimen
 - **Clickable Points:** Clicking on data points within the chart reveals all relevant posts and comments for that particular category and date.
 
 This feature enables users to track how sentiment evolves across different categories over time, making it easier to spot emerging issues or improvements.
+
+---
+
 
 ### 🔍 **Post Details Display**
 
@@ -225,6 +254,9 @@ The **Post Details Display** feature provides a comprehensive breakdown of each 
 
 The crawler component of the application continuously collects user-generated content from the subreddit `r/TemasekPoly` on Reddit. It fetches both **posts and comments** using the PRAW (Python Reddit API Wrapper). This automated data gathering ensures that the application stays up-to-date with the latest discussions, feedback, and trends related to Temasek Polytechnic. The crawler retrieves a maximum of 500 recent posts and their associated comments each time it runs, providing a comprehensive dataset for further analysis.
 
+---
+
+
 ### 🤖 **Sentiment Analysis using AI**
 
 Leveraging the power of the **Google Gemini API**, the application processes each Reddit post and comment to extract insightful information such as:  
@@ -235,6 +267,10 @@ Leveraging the power of the **Google Gemini API**, the application processes eac
 - **IIT Relevance Detection:** Distinguishes whether a post or comment is related to the School of IIT or not.  
 
 The sentiment analysis enables the identification of themes, emotional trends, and areas of concern, providing valuable insights into how users feel about various aspects of Temasek Polytechnic.
+
+---
+
+
 ### 💾 **Data Storage & Structuring**
 
 All processed data is stored in **Firebase Firestore** using a well-defined and structured schema. This ensures efficient storage, quick retrieval, and organized management of posts, comments, and their related metadata. The data storage structure supports:  
@@ -244,6 +280,9 @@ All processed data is stored in **Firebase Firestore** using a well-defined and 
 - **Consistency:** Uses transactional updates to prevent data corruption, ensuring accuracy even when multiple updates are made simultaneously.  
 
 By employing Firebase Firestore, the app benefits from high availability, real-time updates, and secure data handling, essential for a robust and reliable sentiment analysis platform.
+
+---
+
 
 ### 📈 **Data Aggregation & Incremental Updating**
 
@@ -255,6 +294,9 @@ The application continuously aggregates and updates collected data to provide me
 
 This feature ensures that the application provides accurate, up-to-date analysis while minimizing resource consumption through incremental data processing.
 
+---
+
+
 ### 📃 **Error Handling & Logging**
 
 The application is built with robust error handling mechanisms to ensure smooth operation even when encountering issues. It includes:  
@@ -264,6 +306,9 @@ The application is built with robust error handling mechanisms to ensure smooth 
 -  **Graceful Degradation:** If a non-critical component fails, the crawler continues processing other data without interruption.  
 
 This resilience ensures that the application can handle unexpected issues without compromising data integrity or overall functionality.
+
+---
+
 
 ### ⏰ **Scheduled Crawling with GitHub Actions**
 
