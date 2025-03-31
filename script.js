@@ -662,7 +662,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       commentsSnapshot.forEach(commentDoc => {
         const commentData = commentDoc.data();
         const commentDate = commentData.created.toDate ? commentData.created.toDate() : new Date(commentData.created);
-        const formattedCommentDate = date.toLocaleString('en-GB', {
+        const formattedCommentDate = commentDate.toLocaleString('en-GB', {
           day: '2-digit',
           month: 'short',
           year: 'numeric',
