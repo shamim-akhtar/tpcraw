@@ -48,41 +48,67 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 6. Global array to store fetched posts
   let allPostsData = [];
 
-  // ----------------------------
-  // FETCH FIRESTORE POSTS
-  // ----------------------------
+  // --------------------------------------------------------------
+  // FETCH FIRESTORE POSTS - with filters for subreddit & checkboxes
+  // --------------------------------------------------------------
   async function fetchPostsInRange() {
     console.log("fetchPostsInRange() called");
 
     const startDateValue = document.getElementById('start-date').value;
     const endDateValue = document.getElementById('end-date').value;
 
-    // Get checkbox value
+    // Checkboxes
     const iitCheckbox = document.getElementById('iit-filter');
     const isIitChecked = iitCheckbox.checked;
+
+    const tpRelatedCheckbox = document.getElementById('tp-related-filter');
+    const isTpRelatedChecked = tpRelatedCheckbox.checked;
+
+    // Get the selected subreddit
+    const subredditSelect = document.getElementById('subreddit-select');
+    const selectedSubreddit = subredditSelect.value;
+    const lowerSub = selectedSubreddit.toLowerCase();
+
+    // For TemasekPoly, the collection is "posts", else "{lowerSub}_posts"
+    const postsCollection = (lowerSub === "temasekpoly") 
+      ? "posts"
+      : `${lowerSub}_posts`;
+
+    console.log("Selected subreddit:", selectedSubreddit);
+    console.log("Using posts collection:", postsCollection);
 
     const startDate = new Date(startDateValue);
     const endDate = new Date(endDateValue);
     // Include the entire end date
     endDate.setHours(23, 59, 59, 999);
 
-    // Build query to 'posts'
-    let q = query(collection(db, 'posts'), orderBy('created', 'desc'));
+    // Build initial query on the posts collection
+    let q = query(collection(db, postsCollection), orderBy('created', 'desc'));
 
+    // Apply date range filters
     if (startDateValue) {
       q = query(q, where('created', '>=', startDate));
     }
     if (endDateValue) {
       q = query(q, where('created', '<=', endDate));
     }
-    // Apply the IIT vs Poly filter
-    if (isIitChecked) {
-      // If checkbox is checked, show only iit == "yes"
-      q = query(q, where('iit', '==', 'yes'));
-      console.log("IIT option checked");
+
+    // If the subreddit is TemasekPoly, use the "iit" filter if checked
+    if (lowerSub === "temasekpoly") {
+      if (isIitChecked) {
+        q = query(q, where('iit', '==', 'yes'));
+        console.log("IIT filter applied: iit == yes");
+      }
+    }
+    // Otherwise, for non-TemasekPoly subreddits, use the "relatedToTemasekPoly" filter if checked
+    else {
+      if (isTpRelatedChecked) {
+        q = query(q, where('relatedToTemasekPoly', '==', true));
+        console.log("TP-related filter applied: relatedToTemasekPoly == true");
+      }
     }
 
-    // Fetch posts
+    // Now fetch posts
     const snapshot = await getDocs(q);
     console.log("Fetched posts, snapshot size:", snapshot.size);
 
@@ -95,7 +121,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       // Weighted sentiment
       const weightedScore = postData.weightedSentimentScore || 0;
-
       // Engagement score
       const engagementScore = postData.engagementScore || 0;
       const totalComments = postData.totalComments || 0;
@@ -103,14 +128,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       const positiveData = postData.totalPositiveSentiments || 0;
       const negativeData = postData.totalNegativeSentiments || 0;
 
-      // Raw sentiment (assumes a field 'rawSentimentScore' in each doc)
+      // Raw sentiment
       const rawSentiment = postData.rawSentimentScore || 0;
       const category = postData.category || "";
       const emotion = postData.emotion || "";
       const summary = postData.summary || "";
       const iit = postData.iit || "";
 
-      // Attempt to read 'created' as a JS Date (if it's a Firestore Timestamp)
+      // Convert Firestore Timestamp to JS Date if applicable
       let createdDate = postData.created;
       if (createdDate && createdDate.toDate) {
         createdDate = createdDate.toDate();
@@ -124,7 +149,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         engagementScore: engagementScore,
         rawSentimentScore: rawSentiment,
         totalComments: totalComments,
-        created: createdDate, // store as JS Date if possible
+        created: createdDate,
         totalPositiveSentiments: positiveData,
         totalNegativeSentiments: negativeData,
         emotion: emotion,
@@ -137,16 +162,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     return dataArray;
   }
 
-  
-
-  // ----------------------------
-  // CHART 1: SENTIMENT DISTRIBUTION PIE CHART.
-  // ----------------------------
-  // Calculate positive, neutral, negative sentiment percentages and render pie chart
+  // ---------------------------------------------
+  // Chart 1: SENTIMENT DISTRIBUTION PIE CHART
+  // ---------------------------------------------
   function renderSentimentPieChart(data) {
     const totalPosts = data.length;
+    const ctx = document.getElementById('sentimentPieChart').getContext('2d');
+
+    // If no data, destroy or clear existing chart
     if (totalPosts === 0) {
-      const ctx = document.getElementById('sentimentPieChart').getContext('2d');
       if (window.sentimentPieChartInstance) {
         window.sentimentPieChartInstance.destroy();
       }
@@ -161,8 +185,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const positivePercent = ((positiveCount / totalPosts) * 100).toFixed(1);
     const neutralPercent = ((neutralCount / totalPosts) * 100).toFixed(1);
     const negativePercent = ((negativeCount / totalPosts) * 100).toFixed(1);
-
-    const ctx = document.getElementById('sentimentPieChart').getContext('2d');
 
     if (window.sentimentPieChartInstance) {
       window.sentimentPieChartInstance.destroy();
@@ -197,31 +219,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // ----------------------------
-  // CHART 2: WEIGHTED SENTIMENT
-  // ----------------------------
+  // ---------------------------------------------
+  // Chart 2: WEIGHTED SENTIMENT
+  // ---------------------------------------------
   function renderWeightedSentimentChart(data) {
     const labels = data.map(post => {
       const { title } = post;
       if (title.length > MAX_LABEL_LENGTH) {
-        // If title exceeds the limit, truncate and add ellipsis
         return title.slice(0, MAX_LABEL_LENGTH) + '…';
       } else {
-        // Otherwise, pad the left side with spaces until it reaches the desired length
         return title.padStart(MAX_LABEL_LENGTH, ' ');
       }
     });
-    
     const weightedScores = data.map(item => item.weightedSentimentScore);
 
-    // Color each bar: red if negative, green if >= 0
+    // Bar color: red if negative, green if >= 0
     const backgroundColors = weightedScores.map(score =>
-      score < 0
-        ? 'rgba(255, 99, 132, 0.8)'  // red
-        : 'rgba(75, 192, 192, 0.8)'  // green
+      score < 0 ? 'rgba(255, 99, 132, 0.8)' : 'rgba(75, 192, 192, 0.8)'
     );
 
-    // Destroy existing chart if it exists
     if (weightedSentimentChart) {
       weightedSentimentChart.destroy();
     }
@@ -243,19 +259,11 @@ document.addEventListener('DOMContentLoaded', async () => {
           title: {
             display: true,
             text: 'Weighted Sentiment Breakdown by Post',
-            align: 'start', // Left-align the title
-            font: {
-              size: 18,
-              weight: '600',
-              family: 'Arial, sans-serif' // Crisp, readable font
-            },
-            color: '#333', // Darker color for better contrast
-            padding: {
-              top: 10,
-              bottom: 20
-            }
+            align: 'start',
+            font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
+            color: '#333',
+            padding: { top: 10, bottom: 20 }
           },
-          
           zoom: {
             pan: {
               enabled: true,
@@ -263,24 +271,17 @@ document.addEventListener('DOMContentLoaded', async () => {
               modifierKey: 'ctrl',
             },
             zoom: {
-              drag: {
-                enabled: true, 
-              },
-              pinch: {
-                enabled: true,
-              },
+              drag: { enabled: true },
+              pinch: { enabled: true },
               mode: 'x',
             },
           }
         },
         scales: {
           x: {
-            
             ticks: {
-              // Prevent tilt / rotation
               maxRotation: 60,
               minRotation: 60,
-              // Optional: center align each label
               align: 'center'
             }
           },
@@ -297,17 +298,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // ----------------------------
-  // CHART 3: RAW SENTIMENT STACK
-  // ----------------------------
+  // ---------------------------------------------
+  // Chart 3: RAW SENTIMENT STACK
+  // ---------------------------------------------
   function renderSentimentStackChart(data) {
     const labels = data.map(post => {
       const { title } = post;
       if (title.length > MAX_LABEL_LENGTH) {
-        // If title exceeds the limit, truncate and add ellipsis
         return title.slice(0, MAX_LABEL_LENGTH) + '…';
       } else {
-        // Otherwise, pad the left side with spaces until it reaches the desired length
         return title.padStart(MAX_LABEL_LENGTH, ' ');
       }
     });
@@ -328,13 +327,13 @@ document.addEventListener('DOMContentLoaded', async () => {
           {
             label: 'Positive Sentiments',
             data: positiveData,
-            backgroundColor: 'rgba(75, 192, 192, 0.8)', // Green
+            backgroundColor: 'rgba(75, 192, 192, 0.8)',
             stack: 'Stack 0'
           },
           {
             label: 'Negative Sentiments',
             data: negativeData,
-            backgroundColor: 'rgba(255, 99, 132, 0.8)', // Red
+            backgroundColor: 'rgba(255, 99, 132, 0.8)',
             stack: 'Stack 0'
           }
         ]
@@ -346,16 +345,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             display: true,
             text: 'Sentiment Breakdown by Post',
             align: 'start',
-            font: {
-              size: 18,
-              weight: '600',
-              family: 'Arial, sans-serif'
-            },
+            font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
             color: '#333',
-            padding: {
-              top: 10,
-              bottom: 20
-            }
+            padding: { top: 10, bottom: 20 }
           },
           zoom: {
             pan: {
@@ -364,12 +356,8 @@ document.addEventListener('DOMContentLoaded', async () => {
               modifierKey: 'ctrl',
             },
             zoom: {
-              drag: {
-                enabled: true, 
-              },
-              pinch: {
-                enabled: true,
-              },
+              drag: { enabled: true },
+              pinch: { enabled: true },
               mode: 'x',
             },
           }
@@ -377,12 +365,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         scales: {
           x: {
             stacked: true,
-              
             ticks: {
-              // Prevent tilt / rotation
               maxRotation: 60,
               minRotation: 60,
-              // Optional: center align each label
               align: 'center'
             },
           },
@@ -402,17 +387,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // ----------------------------
-  // CHART 4: ENGAGEMENT SCORE
-  // ----------------------------
+  // ---------------------------------------------
+  // Chart 4: ENGAGEMENT SCORE
+  // ---------------------------------------------
   function renderEngagementScoreChart(data) {
     const labels = data.map(post => {
       const { title } = post;
       if (title.length > MAX_LABEL_LENGTH) {
-        // If title exceeds the limit, truncate and add ellipsis
         return title.slice(0, MAX_LABEL_LENGTH) + '…';
       } else {
-        // Otherwise, pad the left side with spaces until it reaches the desired length
         return title.padStart(MAX_LABEL_LENGTH, ' ');
       }
     });
@@ -442,18 +425,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             display: true,
             text: 'Engagement Score per Post',
             align: 'start',
-            font: {
-              size: 18,
-              weight: '600',
-              family: 'Arial, sans-serif'
-            },
+            font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
             color: '#333',
-            padding: {
-              top: 10,
-              bottom: 20
-            }
+            padding: { top: 10, bottom: 20 }
           },
-          
           zoom: {
             pan: {
               enabled: true,
@@ -461,24 +436,17 @@ document.addEventListener('DOMContentLoaded', async () => {
               modifierKey: 'ctrl',
             },
             zoom: {
-              drag: {
-                enabled: true, 
-              },
-              pinch: {
-                enabled: true,
-              },
+              drag: { enabled: true },
+              pinch: { enabled: true },
               mode: 'x',
             },
           }
         },
         scales: {
           x: {
-            
             ticks: {
-              // Prevent tilt / rotation
               maxRotation: 60,
               minRotation: 60,
-              // Optional: center align each label
               align: 'center'
             }
           },
@@ -495,17 +463,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // ----------------------------
-  // CHART 5: TOTAL COMMENTS
-  // ----------------------------
+  // ---------------------------------------------
+  // Chart 5: TOTAL COMMENTS
+  // ---------------------------------------------
   function renderCommentsCountChart(data) {
     const labels = data.map(post => {
       const { title } = post;
       if (title.length > MAX_LABEL_LENGTH) {
-        // If title exceeds the limit, truncate and add ellipsis
         return title.slice(0, MAX_LABEL_LENGTH) + '…';
       } else {
-        // Otherwise, pad the left side with spaces until it reaches the desired length
         return title.padStart(MAX_LABEL_LENGTH, ' ');
       }
     });
@@ -535,16 +501,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             display: true,
             text: 'Comments per Post',
             align: 'start',
-            font: {
-              size: 18,
-              weight: '600',
-              family: 'Arial, sans-serif'
-            },
+            font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
             color: '#333',
-            padding: {
-              top: 10,
-              bottom: 20
-            }
+            padding: { top: 10, bottom: 20 }
           },
           zoom: {
             pan: {
@@ -553,24 +512,17 @@ document.addEventListener('DOMContentLoaded', async () => {
               modifierKey: 'ctrl',
             },
             zoom: {
-              drag: {
-                enabled: true, 
-              },
-              pinch: {
-                enabled: true,
-              },
+              drag: { enabled: true },
+              pinch: { enabled: true },
               mode: 'x',
             },
           }
         },
         scales: {
           x: {
-            
             ticks: {
-              // Prevent tilt / rotation
               maxRotation: 60,
               minRotation: 60,
-              // Optional: center align each label
               align: 'center'
             }
           },
@@ -587,16 +539,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  
-  // ----------------------------
-  // 6: FETCH POST DETAILS
-  // ----------------------------
-  // Function to fetch and display post details and comments
+  // ---------------------------------------------
+  // Fetch & Display Post Details
+  // ---------------------------------------------
   async function fetchAndDisplayPostDetails(postId) {
     const postDetailsContainer = document.getElementById('post-details');
 
-    // Fetch Post Document
-    const postRef = doc(db, "posts", postId);
+    // Identify the posts collection
+    const subredditSelect = document.getElementById('subreddit-select');
+    const selectedSubreddit = subredditSelect.value;
+    const lowerSub = selectedSubreddit.toLowerCase();
+    const postsCollection = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
+
+    const postRef = doc(db, postsCollection, postId);
     const postSnap = await getDoc(postRef);
 
     if (!postSnap.exists()) {
@@ -606,20 +561,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const postData = postSnap.data();
 
-    // Exclude the body initially and prepare the analysis section
     let analysisHtml = `<h3>Post Title: ${postData.title}</h3><ul>`;
-
     const author = postData.author;
     const url = postData.URL;
 
     const date = postData.created.toDate ? postData.created.toDate() : new Date(postData.created);
     const formattedDate = date.toLocaleString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
+      day: '2-digit', month: 'short', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', hour12: false
     }).replace(',', '');
 
     const dateHtml = `<li class="post-date">Author: ${author}, ${formattedDate}</li>`;
@@ -636,44 +585,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     const weightedSentimentScore = postData.weightedSentimentScore;
 
     const badgesHtml = `
-    <div class="shields-container">
-      <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
-      <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(postData.emotion)}-purple?style=flat-square" alt="Emotion">
-      <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
-      <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(score)}-brightgreen?style=flat-square" alt="Reddit Score">
-      <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
-      <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
-      <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(weightedSentimentScore.toFixed(2))}-blueviolet?style=flat-square" alt="Weighted">
-    </div>,`;
+      <div class="shields-container">
+        <img src="https://img.shields.io/badge/category-${encodeURIComponent(category)}-blue?style=flat-square" alt="Category">
+        <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
+        <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
+        <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(score)}-brightgreen?style=flat-square" alt="Reddit Score">
+        <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
+        <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
+        <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(weightedSentimentScore.toFixed(2))}-blueviolet?style=flat-square" alt="Weighted">
+      </div>
+    `;
 
     const postSummary = `<br><strong>Summary of the post using Gen AI</strong><br><p>${summary}</p>`;
     const postBodyHtml = `<p>${postData.body}</p>`;
 
     // Fetch comments
-    const commentsRef = collection(db, `posts/${postId}/comments`);
+    const commentsRef = collection(db, `${postsCollection}/${postId}/comments`);
     const commentsSnapshot = await getDocs(commentsRef);
 
     let commentsHtml = `<h3>Comments (${commentsSnapshot.size}):</h3>`;
-
     if (commentsSnapshot.size === 0) {
       commentsHtml += `<p>No comments available.</p>`;
-    }
-    else {
+    } else {
       commentsSnapshot.forEach(commentDoc => {
         const commentData = commentDoc.data();
         const commentDate = commentData.created.toDate ? commentData.created.toDate() : new Date(commentData.created);
         const formattedCommentDate = commentDate.toLocaleString('en-GB', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false
+          day: '2-digit', month: 'short', year: 'numeric',
+          hour: '2-digit', minute: '2-digit', hour12: false
         }).replace(',', '');
 
         const sentiment = commentData.sentiment;
         let sentimentColor = 'orange'; // default for neutral
-
         if (sentiment < 0) {
           sentimentColor = 'red';
         } else if (sentiment > 0) {
@@ -683,39 +626,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         commentsHtml += `
           <div class="comment-card" style="border-bottom:1px solid #ddd;padding:10px;margin-bottom:10px;">
             <li class="post-date">Author: ${commentData.author}, ${formattedCommentDate}</li>
-
             <div class="shields-container">
               <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(commentData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
               <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(sentiment)}-${sentimentColor}?style=flat-square" alt="Sentiment">
               <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(commentData.emotion)}-purple?style=flat-square" alt="Emotion">
-            </div>,
+            </div>
             <p>${commentData.body}</p>
           </div>
         `;
       });
     }
 
-    // Display the assembled HTML
-    postDetailsContainer.innerHTML = analysisHtml
-      + urlHtml
-      + postSummary
-      + badgesHtml
-      + dateHtml
-      + postBodyHtml
-      + commentsHtml;
+    postDetailsContainer.innerHTML = 
+      analysisHtml + urlHtml + postSummary + badgesHtml + dateHtml + postBodyHtml + commentsHtml;
   }
 
-  // ----------------------------
-  // 7. POST LIST DROPDOWN / TABLE
-  // ----------------------------
+  // ---------------------------------------------
+  // Post List Dropdown / Table
+  // ---------------------------------------------
   const postListDropdown = document.getElementById('postListDropdown');
   postListDropdown.addEventListener('change', () => {
     renderPostList(allPostsData, postListDropdown.value);
   });
 
   function renderPostList(data, listType) {
-    console.log("Rendering post list:", listType);
-
     let selectedPosts = [...data]; // shallow copy
 
     switch (listType) {
@@ -752,16 +686,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const container = document.getElementById('postListContainer');
     container.innerHTML = tableHtml;
 
-    // Make each row clickable:
+    // Make each row clickable
     container.querySelectorAll('tr[data-post-id]').forEach(row => {
       row.addEventListener('click', () => {
-        // NEW: remove 'selected' from any previously clicked row
+        // Remove 'selected' from any previously clicked row
         container.querySelectorAll('tr.selected').forEach(sel => sel.classList.remove('selected'));
-  
-        // NEW: add 'selected' to the clicked row
+        // Add 'selected' to the clicked row
         row.classList.add('selected');
-  
-        // existing call
         const postId = row.getAttribute('data-post-id');
         fetchAndDisplayPostDetails(postId);
       });
@@ -769,6 +700,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function buildPostsTable(posts) {
+    if (!posts || posts.length === 0) {
+      return `<p>No posts found for this filter.</p>`;
+    }
     let html = `
       <table>
         <thead>
@@ -782,7 +716,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         <tbody>
     `;
     for (const p of posts) {
-      // Add data-post-id and cursor style for row-click
       html += `
         <tr data-post-id="${p.postId}" style="cursor: pointer;">
           <td>${p.title}</td>
@@ -796,23 +729,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     return html;
   }
 
-  // New function to fetch authors from Firestore
+  // ---------------------------------------------
+  // Author Stats & Chart
+  // ---------------------------------------------
   async function fetchAuthorStats() {
-    const authorsSnapshot = await getDocs(collection(db, 'authors'));
+    // Identify authors collection
+    const subredditSelect = document.getElementById('subreddit-select');
+    const selectedSubreddit = subredditSelect.value;
+    const lowerSub = selectedSubreddit.toLowerCase();
+    const authorsCollection = (lowerSub === "temasekpoly") ? "authors" : `${lowerSub}_authors`;
+
+    const authorsSnapshot = await getDocs(collection(db, authorsCollection));
     let authorArray = [];
     authorsSnapshot.forEach(doc => {
       const data = doc.data();
-      data.author = doc.id; // use the document ID as the author name
+      data.author = doc.id; // doc ID as the author name
       authorArray.push(data);
     });
-    // Sort by negativeCount descending.
+    // Sort by negativeCount descending
     authorArray.sort((a, b) => b.negativeCount - a.negativeCount);
-
-    // Return top 10 negative authors
+    // Return top 10
     return authorArray.slice(0, 10);
   }
 
-  // New function to render the authors stacked bar chart
   function renderAuthorsChart(data) {
     const labels = data.map(item => item.author);
     const positiveCounts = data.map(item => item.positiveCount);
@@ -831,12 +770,12 @@ document.addEventListener('DOMContentLoaded', async () => {
           {
             label: 'Positive Count',
             data: positiveCounts,
-            backgroundColor: 'rgba(75, 192, 192, 0.8)', // green
+            backgroundColor: 'rgba(75, 192, 192, 0.8)',
           },
           {
             label: 'Negative Count',
             data: negativeCounts,
-            backgroundColor: 'rgba(255, 99, 132, 0.8)', // red
+            backgroundColor: 'rgba(255, 99, 132, 0.8)',
           }
         ]
       },
@@ -847,11 +786,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             display: true,
             text: 'Top 10 Authors with Most Negative Sentiments',
             align: 'start',
-            font: {
-              size: 18,
-              weight: '600',
-              family: 'Arial, sans-serif'
-            },
+            font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
             color: '#333',
             padding: { top: 10, bottom: 20 }
           },
@@ -879,17 +814,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         onClick: (evt, elements) => {
           if (elements.length > 0) {
-            const authorName = labels[elements[0].index];            
+            const authorName = labels[elements[0].index];
             fetchAndDisplayPostsAndCommentsByAuthor(authorName);
-            // alert(`Author: ${authorName}`);
           }
         }
       }
     });
   }
 
-
-  // New function to update the authors chart
   async function updateAuthorsChart() {
     try {
       const authorData = await fetchAuthorStats();
@@ -899,13 +831,70 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Utility function: generate a random color for chart lines
-  function getRandomColor() {
-    const r = Math.floor(Math.random() * 200);
-    const g = Math.floor(Math.random() * 200);
-    const b = Math.floor(Math.random() * 200);
-    return `rgba(${r}, ${g}, ${b}, 1)`;
+  // ---------------------------------------------
+  // Category Time Series
+  // ---------------------------------------------
+  // Helper function to fetch the time-series data from "category_stats" or "{sub}_category_stats"
+  async function fetchTimeSeriesData() {
+    const startDateValue = document.getElementById('start-date').value;
+    const endDateValue = document.getElementById('end-date').value;
+    const startDate = new Date(startDateValue);
+    const endDate = new Date(endDateValue);
+    endDate.setHours(23, 59, 59, 999);
+
+    const subredditSelect = document.getElementById('subreddit-select');
+    const selectedSubreddit = subredditSelect.value;
+    const lowerSub = selectedSubreddit.toLowerCase();
+    const categoryCollection = (lowerSub === "temasekpoly") ? "category_stats" : `${lowerSub}_category_stats`;
+
+    const catStatsSnapshot = await getDocs(collection(db, categoryCollection));
+    let timeSeriesData = {};
+
+    catStatsSnapshot.forEach(docSnap => {
+      const dateStr = docSnap.id; // YYYY-MM-DD doc ID
+      const docDate = new Date(dateStr);
+      if (docDate >= startDate && docDate <= endDate) {
+        const data = docSnap.data();
+        for (let category in data) {
+          if (!timeSeriesData[category]) {
+            timeSeriesData[category] = [];
+          }
+          timeSeriesData[category].push({
+            x: dateStr,
+            y: data[category].averageSentiment || 0
+          });
+        }
+      }
+    });
+
+    // Sort each category's data array by date
+    for (let category in timeSeriesData) {
+      timeSeriesData[category].sort((a, b) => new Date(a.x) - new Date(b.x));
+    }
+    return timeSeriesData;
   }
+
+  // Compute a simple moving average
+  function computeMovingAverage(dataPoints, windowSize = 7) {
+    let maPoints = [];
+    for (let i = 0; i < dataPoints.length; i++) {
+      let start = Math.max(0, i - windowSize + 1);
+      let sum = 0;
+      let count = 0;
+      for (let j = start; j <= i; j++) {
+        sum += dataPoints[j].y;
+        count++;
+      }
+      let avg = sum / count;
+      maPoints.push({ x: dataPoints[i].x, y: avg });
+    }
+    return maPoints;
+  }
+
+  function setAlpha(rgba, alpha) {
+    return rgba.replace(/, 1\)/, `, ${alpha})`);
+  }
+
   const PREDEFINED_CATEGORY_COLORS = {
     academic: "#0070F2", 
     exams: "#A93E00",
@@ -923,116 +912,46 @@ document.addEventListener('DOMContentLoaded', async () => {
     events: "#00BCD4",
     cca: "#7800A4"
   };
-  
   function getCategoryColor(category) {
     const key = category.toLowerCase();
-    return PREDEFINED_CATEGORY_COLORS[key] || "#26C6DA"; // default cool cyan
-  }
-  
-
-  // Fetch time series data from Firestore's "category_stats" collection.
-  // Each document key is a date (YYYY-MM-DD) and contains maps for each category.
-  async function fetchTimeSeriesData() {
-    // Read the filter dates
-    const startDateValue = document.getElementById('start-date').value;
-    const endDateValue = document.getElementById('end-date').value;
-    const startDate = new Date(startDateValue);
-    const endDate = new Date(endDateValue);
-    // Include the entire end date
-    endDate.setHours(23, 59, 59, 999);
-  
-    const catStatsSnapshot = await getDocs(collection(db, 'category_stats'));
-    let timeSeriesData = {}; // { category: [ {x: date, y: averageSentiment}, ... ] }
-    
-    catStatsSnapshot.forEach(docSnap => {
-      const dateStr = docSnap.id; // document ID in YYYY-MM-DD format
-      const docDate = new Date(dateStr);
-      // Filter only those documents that fall within the selected date range
-      if (docDate >= startDate && docDate <= endDate) {
-        const data = docSnap.data();
-        for (let category in data) {
-          if (!timeSeriesData[category]) {
-            timeSeriesData[category] = [];
-          }
-          timeSeriesData[category].push({
-            x: dateStr,
-            y: data[category].averageSentiment || 0
-          });
-        }
-      }
-    });
-    
-    // Sort each category's data array by date
-    for (let category in timeSeriesData) {
-      timeSeriesData[category].sort((a, b) => new Date(a.x) - new Date(b.x));
-    }
-    
-    return timeSeriesData;
+    return PREDEFINED_CATEGORY_COLORS[key] || "#26C6DA";
   }
 
-  // Helper function: compute a moving average (default window = 7 days)
-  function computeMovingAverage(dataPoints, windowSize = 7) {
-    let maPoints = [];
-    for (let i = 0; i < dataPoints.length; i++) {
-      let start = Math.max(0, i - windowSize + 1);
-      let sum = 0;
-      let count = 0;
-      for (let j = start; j <= i; j++) {
-        sum += dataPoints[j].y;
-        count++;
-      }
-      let avg = sum / count;
-      maPoints.push({ x: dataPoints[i].x, y: avg });
-    }
-    return maPoints;
-  }
-
-  // Helper function to set the alpha value of an RGBA color string.
-  function setAlpha(rgba, alpha) {
-    // Assumes the input is in the format "rgba(r, g, b, 1)"
-    return rgba.replace(/, 1\)/, `, ${alpha})`);
-  }
-
-  // Updated renderTimeSeriesChart: show raw data in a light color and the 7-day MA in a solid line.
-  // Also, only the academic category is visible by default.
   function renderTimeSeriesChart(data) {
     let datasets = [];
     for (let category in data) {
-      const color = getCategoryColor(category);//getRandomColor();
-      
-      // Raw data dataset in a light/transparent color
+      const color = getCategoryColor(category);
+
+      // (raw) data
       datasets.push({
         label: category + " (raw)",
         data: data[category],
         fill: false,
-        borderColor: setAlpha(color, 0.3), // transparent version
+        borderColor: setAlpha(color, 0.3),
         tension: 0.1,
         borderWidth: 0.5,
         hidden: (category.toLowerCase() !== 'academic')
       });
-      
-      // 7-day moving average dataset in solid color
+      // 7-day MA
       datasets.push({
         label: category + " (7-day MA)",
         data: computeMovingAverage(data[category], 7),
         fill: false,
-        borderColor: color, // solid line
+        borderColor: color,
         borderWidth: 2.0,
         tension: 0.5,
         hidden: (category.toLowerCase() !== 'academic')
       });
     }
-    
+
     if (window.timeSeriesChartInstance) {
       window.timeSeriesChartInstance.destroy();
     }
-    
+
     const ctx = document.getElementById('timeSeriesChart').getContext('2d');
     window.timeSeriesChartInstance = new Chart(ctx, {
       type: 'line',
-      data: {
-        datasets: datasets
-      },
+      data: { datasets: datasets },
       options: {
         responsive: true,
         plugins: {
@@ -1040,10 +959,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             display: true,
             text: 'Time Series of Average Sentiment by Category',
             align: 'start',
-            font: {
-              size: 18,
-              weight: '600'
-            }
+            font: { size: 18, weight: '600' }
           },
           tooltip: {
             mode: 'index',
@@ -1052,11 +968,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           legend: {
             labels: {
               generateLabels: function(chart) {
-                const datasets = chart.data.datasets;
+                const dsets = chart.data.datasets;
                 const seenCategories = {};
                 const labels = [];
-                datasets.forEach((dataset, i) => {
-                  // Expect label format "academic (raw)" or "academic (7-day MA)"
+                dsets.forEach((dataset, i) => {
                   const cat = dataset.label.split(" ")[0];
                   if (seenCategories[cat] === undefined) {
                     seenCategories[cat] = i;
@@ -1068,7 +983,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     });
                   }
                 });
-                // Sort labels alphabetically in ascending order
+                // Sort labels alphabetically
                 labels.sort((a, b) => a.text.localeCompare(b.text));
                 return labels;
               }
@@ -1091,7 +1006,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           x: {
             type: 'time',
             time: {
-              parser: 'yyyy-MM-dd', // note lowercase 'yyyy'
+              parser: 'yyyy-MM-dd',
               unit: 'day',
               displayFormats: {
                 day: 'MMM d'
@@ -1112,32 +1027,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
           }
         },
-        onClick: async (evt, elements) => { // New onClick event for clicking on data points
+        onClick: async (evt, elements) => {
           if (elements.length > 0) {
-              const element = elements[0];
-              const datasetIndex = element.datasetIndex;
-              const index = element.index;
-              const dataset = window.timeSeriesChartInstance.data.datasets[datasetIndex];
-              
-              // Extract category from the dataset label
-              const categoryLabel = dataset.label.split(" ")[0]; // e.g., "academic (raw)" becomes "academic"
-              const category = categoryLabel.toLowerCase(); // Normalizing to lowercase for consistency
-
-              // Get the clicked point's date
-              const dataPoint = dataset.data[index];
-              const dateStr = dataPoint.x; // Should be formatted as "YYYY-MM-DD"
-
-              console.log(`Clicked on Category: ${category}, Date: ${dateStr}`);
-
-              // Call the function to fetch and display relevant posts and comments
-              await fetchAndDisplayPostsByCategoryAndDate(category, dateStr);
+            const element = elements[0];
+            const datasetIndex = element.datasetIndex;
+            const index = element.index;
+            const dataset = window.timeSeriesChartInstance.data.datasets[datasetIndex];
+            const categoryLabel = dataset.label.split(" ")[0];
+            const category = categoryLabel.toLowerCase();
+            const dataPoint = dataset.data[index];
+            const dateStr = dataPoint.x;
+            console.log(`Clicked on Category: ${category}, Date: ${dateStr}`);
+            await fetchAndDisplayPostsByCategoryAndDate(category, dateStr);
           }
         }
       }
     });
-  }  
+  }
 
-  // Update the time series chart by fetching the latest data and rendering the chart.
   async function updateTimeSeriesChart() {
     try {
       const tsData = await fetchTimeSeriesData();
@@ -1147,188 +1054,192 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  // For clicking a data point in the time series chart
   async function fetchAndDisplayPostsByCategoryAndDate(category, dateStr) {
-    // Get the container where posts and comments will be rendered.
     const container = document.getElementById('post-details');
     container.innerHTML = `<p>Loading posts and comments for ${category} on ${dateStr}...</p>`;
-  
-    // Fetch the category_stats document for the given date.
-    const statsDocRef = doc(db, 'category_stats', dateStr);
+
+    const subredditSelect = document.getElementById('subreddit-select');
+    const selectedSubreddit = subredditSelect.value;
+    const lowerSub = selectedSubreddit.toLowerCase();
+    const postsCollection = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
+    const categoryCollection = (lowerSub === "temasekpoly") ? "category_stats" : `${lowerSub}_category_stats`;
+
+    const statsDocRef = doc(db, categoryCollection, dateStr);
     const statsDocSnap = await getDoc(statsDocRef);
-  
+
     if (!statsDocSnap.exists()) {
       container.innerHTML = `<p>No data found for ${category} on ${dateStr}.</p>`;
       return;
     }
-  
+
     const statsData = statsDocSnap.data();
     if (!statsData[category]) {
       container.innerHTML = `<p>No posts or comments found for ${category} on ${dateStr}.</p>`;
       return;
     }
-  
+
     const postIds = statsData[category].postIds || [];
-    // Expected structure for comments: { postId: [commentId1, commentId2, ...] }
     const commentsMap = statsData[category].comments || {};
-  
-    // Build the HTML for posts.
+
     let html = `<h3>Posts for ${category} on ${dateStr}:</h3>`;
     for (const postId of postIds) {
-      const postRef = doc(db, 'posts', postId);
+      const postRef = doc(db, postsCollection, postId);
       const postSnap = await getDoc(postRef);
       if (postSnap.exists()) {
         const postData = postSnap.data();
-        
         const badgesHtml = `
-        <div class="shields-container">
-          <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
-          <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(postData.emotion)}-purple?style=flat-square" alt="Emotion">
-          <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(postData.engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
-          <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(postData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
-          <img src="https://img.shields.io/badge/positive_sentiments-${postData.totalPositiveSentiments}-green?style=flat-square" alt="Positive">
-          <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(postData.totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
-          <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(postData.weightedSentimentScore.toFixed(2))}-blueviolet?style=flat-square" alt="Weighted">
-        </div>,`;
-        
-        html += 
-        `<div class="post-summary" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+          <div class="shields-container">
+            <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
+            <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(postData.emotion)}-purple?style=flat-square" alt="Emotion">
+            <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(postData.engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
+            <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(postData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
+            <img src="https://img.shields.io/badge/positive_sentiments-${postData.totalPositiveSentiments}-green?style=flat-square" alt="Positive">
+            <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(postData.totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
+            <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(postData.weightedSentimentScore.toFixed(2))}-blueviolet?style=flat-square" alt="Weighted">
+          </div>
+        `;
+        html += `
+        <div class="post-summary" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
           <h4>${postData.title}</h4>
           <p>${postData.body}</p>
           ${badgesHtml}
         </div>`;
       }
     }
-  
-    // Build the HTML for comments.
+
     html += `<h3>Comments for ${category} on ${dateStr}:</h3>`;
-    // Loop through each postId in the comments map.
     for (const postId in commentsMap) {
       const commentIds = commentsMap[postId];
       for (const commentId of commentIds) {
-        const commentRef = doc(db, `posts/${postId}/comments`, commentId);
+        const commentRef = doc(db, `${postsCollection}/${postId}/comments`, commentId);
         const commentSnap = await getDoc(commentRef);
         if (commentSnap.exists()) {
           const commentData = commentSnap.data();
           const sentiment = commentData.sentiment;
-          let sentimentColor = 'orange'; // default for neutral
-
+          let sentimentColor = 'orange';
           if (sentiment < 0) {
             sentimentColor = 'red';
           } else if (sentiment > 0) {
             sentimentColor = 'green';
           }
-          html += 
-          `<div class="comment-card" style="border:1px solid #ddd; padding:10px; margin-bottom:10px;">
+          html += `
+          <div class="comment-card" style="border:1px solid #ddd; padding:10px; margin-bottom:10px;">
             <p><strong>${commentData.author}:</strong> ${commentData.body}</p>
-                     
             <div class="shields-container">
               <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(commentData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
               <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(sentiment)}-${sentimentColor}?style=flat-square" alt="Sentiment">
               <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(commentData.emotion)}-purple?style=flat-square" alt="Emotion">
-            </div>,
+            </div>
           </div>`;
         }
       }
     }
-  
-    // Inject the complete HTML into the container.
+
     container.innerHTML = html;
   }
 
+  // For clicking on the authors chart bars
   async function fetchAndDisplayPostsAndCommentsByAuthor(authorName) {
     const container = document.getElementById('post-details');
     container.innerHTML = `<p>Loading posts and comments for ${authorName}...</p>`;
-  
+
+    const subredditSelect = document.getElementById('subreddit-select');
+    const selectedSubreddit = subredditSelect.value;
+    const lowerSub = selectedSubreddit.toLowerCase();
+    const postsCollection = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
+    const authorsCollection = (lowerSub === "temasekpoly") ? "authors" : `${lowerSub}_authors`;
+
     try {
-      // Fetch the author document
-      const authorRef = doc(db, "authors", authorName);
+      const authorRef = doc(db, authorsCollection, authorName);
       const authorSnap = await getDoc(authorRef);
+
       if (!authorSnap.exists()) {
         container.innerHTML = `<p>No data found for author ${authorName}.</p>`;
         return;
       }
+
       const authorData = authorSnap.data();
       const postIds = authorData.posts || [];
       const commentsMap = authorData.comments || {};
-  
+
       let html = `<h3>Posts by ${authorName}:</h3>`;
       if (postIds.length === 0) {
-        html += `<p>No posts found for ${authorName}.</p>`;
+        html += `<p>No posts found.</p>`;
       } else {
-        // Fetch all posts concurrently using Promise.all
-        const postPromises = postIds.map(postId => getDoc(doc(db, "posts", postId)));
+        const postPromises = postIds.map(postId => getDoc(doc(db, postsCollection, postId)));
         const postSnaps = await Promise.all(postPromises);
         postSnaps.forEach(postSnap => {
           if (postSnap.exists()) {
             const postData = postSnap.data();
-            
-            
             const badgesHtml = `
-            <div class="shields-container">
-              <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
-              <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(postData.emotion)}-purple?style=flat-square" alt="Emotion">
-              <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(postData.engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
-              <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(postData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
-              <img src="https://img.shields.io/badge/positive_sentiments-${postData.totalPositiveSentiments}-green?style=flat-square" alt="Positive">
-              <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(postData.totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
-              <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(postData.weightedSentimentScore.toFixed(2))}-blueviolet?style=flat-square" alt="Weighted">
-            </div>,`;
-
-            html += 
-            `<div class="post-summary" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
-              <h4>${postData.title}</h4>
-              <p>${postData.body}</p>
-              ${badgesHtml}
-            </div>`;
+              <div class="shields-container">
+                <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
+                <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(postData.emotion)}-purple?style=flat-square" alt="Emotion">
+                <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(postData.engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
+                <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(postData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
+                <img src="https://img.shields.io/badge/positive_sentiments-${encodeURIComponent(postData.totalPositiveSentiments)}-green?style=flat-square" alt="Positive">
+                <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(postData.totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
+                <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(postData.weightedSentimentScore.toFixed(2))}-blueviolet?style=flat-square" alt="Weighted">
+              </div>
+            `;
+            html += `
+              <div class="post-summary" style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+                <h4>${postData.title}</h4>
+                <p>${postData.body}</p>
+                ${badgesHtml}
+              </div>
+            `;
           }
         });
       }
-  
+
       html += `<h3>Comments by ${authorName}:</h3>`;
-      // Build an array of comment promises
       let commentPromises = [];
       for (const postId in commentsMap) {
         const commentIds = commentsMap[postId];
         commentIds.forEach(commentId => {
-          commentPromises.push(getDoc(doc(db, `posts/${postId}/comments`, commentId)));
+          commentPromises.push(getDoc(doc(db, `${postsCollection}/${postId}/comments`, commentId)));
         });
       }
       const commentSnaps = await Promise.all(commentPromises);
+
       if (commentSnaps.length === 0) {
-        html += `<p>No comments found for ${authorName}.</p>`;
-      } 
-      else {
+        html += `<p>No comments found.</p>`;
+      } else {
         commentSnaps.forEach(commentSnap => {
           if (commentSnap.exists()) {
             const commentData = commentSnap.data();
             let sentimentColor = 'orange';
             if (commentData.sentiment < 0) {
               sentimentColor = 'red';
-            } 
-            else if (commentData.sentiment > 0) {
+            } else if (commentData.sentiment > 0) {
               sentimentColor = 'green';
             }
-            html += 
-            `<div class="comment-card" style="border:1px solid #ddd; padding:10px; margin-bottom:10px;">
-              <p><strong>${commentData.author}:</strong> ${commentData.body}</p>
-              <div class="shields-container">
-                <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(commentData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
-                <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(commentData.sentiment)}-${sentimentColor}?style=flat-square" alt="Sentiment">
-                <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(commentData.emotion)}-purple?style=flat-square" alt="Emotion">
+            html += `
+              <div class="comment-card" style="border:1px solid #ddd; padding:10px; margin-bottom:10px;">
+                <p><strong>${commentData.author}:</strong> ${commentData.body}</p>
+                <div class="shields-container">
+                  <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(commentData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
+                  <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(commentData.sentiment)}-${sentimentColor}?style=flat-square" alt="Sentiment">
+                  <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(commentData.emotion)}-purple?style=flat-square" alt="Emotion">
+                </div>
               </div>
-            </div>`;
+            `;
           }
         });
       }
-  
+
       container.innerHTML = html;
-    } 
-    catch (error) {
+    } catch (error) {
       console.error("Error fetching details for author", authorName, ":", error);
       container.innerHTML = `<p>Error fetching details for ${authorName}.</p>`;
     }
-  }  
+  }
 
+  // ---------------------------------------------
+  // Main "updateCharts" logic
+  // ---------------------------------------------
   async function updateCharts() {
     try {
       allPostsData = await fetchPostsInRange();
@@ -1347,23 +1258,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById("commentsCountNumber").textContent = "0";
       }
 
+      // Render charts
       renderSentimentPieChart(allPostsData);
-
       renderWeightedSentimentChart(allPostsData);
       renderSentimentStackChart(allPostsData);
       renderEngagementScoreChart(allPostsData);
       renderCommentsCountChart(allPostsData);
 
-      
+      // Time Series
       const tsData = await fetchTimeSeriesData();
       renderTimeSeriesChart(tsData);
-      
 
-      // Default: show "Lowest 10 Raw Sentiment Posts"
+      // Default post list = "lowestRaw"
       postListDropdown.value = 'lowestRaw';
       renderPostList(allPostsData, 'lowestRaw');
 
-      // Re-render the currently active chart
+      // Re-render the currently active tab
       const activeTabId = document.querySelector('.tab-button.active').getAttribute('data-tab');
       if (activeTabId === 'weightedTab') {
         renderWeightedSentimentChart(allPostsData);
@@ -1376,39 +1286,31 @@ document.addEventListener('DOMContentLoaded', async () => {
       } else if (activeTabId === 'timeSeriesTab') {
         renderTimeSeriesChart(tsData);
       }
-
     } catch (error) {
       console.error("Error building charts:", error);
     }
   }
 
-  // 10. Filter button event
+  // 10. Filter button
   document.getElementById('filter-btn').addEventListener('click', updateCharts);
 
   // 11. Initial load
   updateCharts();
 
-  // Handle tab switching logic
+  // 12. Tab switching
   document.querySelectorAll('.tab-button').forEach(button => {
     button.addEventListener('click', () => {
       const tabId = button.getAttribute('data-tab');
-
-      // Reset active states for buttons
       document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-
-      // Reset active states for tabs
       document.querySelectorAll('.tab-content').forEach(tab => {
         tab.classList.remove('active');
         tab.style.display = 'none';
       });
-
-      // Activate clicked tab button and tab content
       button.classList.add('active');
       const activeTab = document.getElementById(tabId);
       activeTab.classList.add('active');
       activeTab.style.display = 'block';
 
-      // Explicitly re-render charts when the tab is activated
       if (tabId === 'stackedTab') {
         renderSentimentStackChart(allPostsData);
       } else if (tabId === 'weightedTab') {
@@ -1427,21 +1329,41 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Set default active tab on load
   document.querySelector('.tab-button.active').click();
-  
+
+  // Reset Zoom Buttons
   document.getElementById('resetZoomWeightedBtn').addEventListener('click', () => {
     if (weightedSentimentChart) weightedSentimentChart.resetZoom();
   });
-  
   document.getElementById('resetZoomStackedBtn').addEventListener('click', () => {
     if (commentsSentimentChart) commentsSentimentChart.resetZoom();
   });
-  
   document.getElementById('resetZoomCommentsBtn').addEventListener('click', () => {
     if (totalCommentsChart) totalCommentsChart.resetZoom();
   });
-  
   document.getElementById('resetZoomEngagementBtn').addEventListener('click', () => {
     if (engagementScoreChart) engagementScoreChart.resetZoom();
-  }); 
-  
+  });
+
+  // Listen for subreddit dropdown changes
+  document.getElementById('subreddit-select').addEventListener('change', () => {
+    // Optional: Show/hide checkboxes
+    const selectedSub = document.getElementById('subreddit-select').value.toLowerCase();
+    const iitBox = document.getElementById('iit-filter');
+    const tpRelatedBox = document.getElementById('tp-related-filter');
+
+    if (selectedSub === 'temasekpoly') {
+      iitBox.style.display = 'inline-block';
+      tpRelatedBox.style.display = 'none';
+    } else {
+      iitBox.style.display = 'none';
+      tpRelatedBox.style.display = 'inline-block';
+    }
+
+    updateCharts();
+  });
+
+  // On load, hide the TP-Related filter if we start with TemasekPoly
+  if (document.getElementById('subreddit-select').value.toLowerCase() === 'temasekpoly') {
+    document.getElementById('tp-related-filter').style.display = 'none';
+  }
 });
