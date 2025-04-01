@@ -114,43 +114,104 @@ reddit = praw.Reddit(
     user_agent=REDDIT_USER_AGENT
 )
 
-# Specify the subreddit
-subreddit = reddit.subreddit('TemasekPoly')
+# # Specify the subreddit
+# subreddit = reddit.subreddit('TemasekPoly')
+
 
 # Initialize Firebase Firestore
 cred = credentials.Certificate("firebase-credentials.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-# File to store the last crawled timestamp
-LAST_TIMESTAMP_FILE = 'last_timestamp.txt'
-
-# def get_last_timestamp():
-#     #Retrieve the last timestamp from file.
-#     if os.path.exists(LAST_TIMESTAMP_FILE):
-#         with open(LAST_TIMESTAMP_FILE, 'r') as f:
-#             return float(f.read().strip())
-#     return 0
-
-# def set_last_timestamp(timestamp):
-#     #Save the last timestamp to file.
-#     with open(LAST_TIMESTAMP_FILE, 'w') as f:
-#         f.write(str(timestamp))
-
-def get_last_timestamp():
+# Load subreddit list from configuration file
+def load_subreddits(file_path='subreddits.txt'):
     try:
-        doc = db.collection("meta").document("last_timestamp").get()
+        with open(file_path, 'r') as file:
+            subreddits = [line.strip().lower() for line in file if line.strip()]
+        return subreddits
+    except Exception as e:
+        logging.error(f"Failed to load subreddits from {file_path}: {e}")
+        return []
+
+# def detect_temasek_poly_related(text):
+#     keywords = ['Temasek Polytechnic', 'TemasekPoly', 'TP', 'Temasek Poly']
+#     text_lower = text.lower()
+#     return any(keyword.lower() in text_lower for keyword in keywords)
+
+import re
+
+def detect_temasek_poly_related(text: str) -> bool:
+    """
+    Returns True if the text mentions Temasek Polytechnic in some form.
+    Uses regex word boundaries (\b) so that 'TP' is matched only as
+    a standalone word, rather than a substring of, say, "watpad."
+    """
+    if not text:
+        return False
+    
+    # Regex pattern with word boundaries for each variant
+    # The \b ensures we match "TP" as a separate token/word.
+    # It also matches "Temasek Poly" or "Temasek Polytechnic" as complete words/phrases.
+    # Using re.IGNORECASE for case-insensitive matching.
+    pattern = r"\btemasek polytechnic\b|\btemasekpoly\b|\btemasek poly\b|\btp\b"
+    return bool(re.search(pattern, text, re.IGNORECASE))
+
+
+def get_last_timestamp(subreddit):
+    """Fetch the last crawled timestamp for a given subreddit from Firestore."""
+    doc_id = f"last_timestamp_{subreddit}"
+    try:
+        doc = db.collection("meta").document(doc_id).get()
         if doc.exists:
             return doc.to_dict().get("value", 0)
     except Exception as e:
-        logging.error(f"Error fetching last_timestamp from Firestore: {e}")
+        logging.error(f"[{subreddit}] Error fetching last_timestamp: {e}")
     return 0
 
-def set_last_timestamp(timestamp):
+    # try:
+    #     doc = db.collection("meta").document("last_timestamp").get()
+    #     if doc.exists:
+    #         return doc.to_dict().get("value", 0)
+    # except Exception as e:
+    #     logging.error(f"Error fetching last_timestamp from Firestore: {e}")
+    # return 0
+
+def get_collections(subreddit_name: str):
+    """
+    Returns a dictionary of Firestore collection references for posts, authors, 
+    and category_stats, depending on whether the subreddit is 'TemasekPoly' or something else.
+    """
+    # Convert the subreddit name to lowercase to keep things consistent
+    sub_lower = subreddit_name.lower()
+
+    if sub_lower == "temasekpoly":
+        # For TemasekPoly, keep your existing root-level collections:
+        return {
+            "posts": db.collection("posts"),
+            "authors": db.collection("authors"),
+            "category_stats": db.collection("category_stats"),
+        }
+    else:
+        # e.g. "singapore_posts", "singapore_authors"
+        return {
+            'posts': db.collection(f"{sub_lower}_posts"),
+            'authors': db.collection(f"{sub_lower}_authors"),
+            'category_stats': db.collection(f"{sub_lower}_category_stats"),
+        }
+
+
+def set_last_timestamp(timestamp, subreddit):
+    """Store the last crawled timestamp for a given subreddit in Firestore."""
+    doc_id = f"last_timestamp_{subreddit}"
     try:
-        db.collection("meta").document("last_timestamp").set({"value": timestamp})
+        db.collection("meta").document(doc_id).set({"value": timestamp})
     except Exception as e:
-        logging.error(f"Error saving last_timestamp to Firestore: {e}")
+        logging.error(f"[{subreddit}] Error saving last_timestamp: {e}")
+
+    # try:
+    #     db.collection("meta").document("last_timestamp").set({"value": timestamp})
+    # except Exception as e:
+    #     logging.error(f"Error saving last_timestamp to Firestore: {e}")
 
 # ADDED: Helper function to safely generate content with retries
 def safe_generate_content(model, prompt, retries=3, delay=5):
@@ -169,13 +230,25 @@ def safe_generate_content(model, prompt, retries=3, delay=5):
     return "The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations."
 
 # UPDATED: Helper function to update author stats in Firestore with post and comment IDs.
-def update_author_stats(author, sentiment, is_post=True, post_id=None, comment_id=None):
+def update_author_stats(author, sentiment, subreddit, is_post=True, post_id=None, comment_id=None):
+    """
+    Updates the author's statistics in Firestore. Tracks:
+      - totalSentimentScore
+      - positiveCount
+      - negativeCount
+      - postCount
+      - commentCount
+      - averageSentiment
+      - references to the posts and/or comments authored
+    """
     try:
-        author_ref = db.collection("authors").document(author)
+        # Access your Firestore collections for the given subreddit
+        refs = get_collections(subreddit)
+        author_ref = refs["authors"].document(author)
         author_doc = author_ref.get()
 
-        # If the author doesn't exist, create a new entry with extra fields.
-        if not author_doc.exists:
+        # If the author doesn't exist, create a default stats structure
+        if not author_doc.exists():
             author_stats = {
                 "totalSentimentScore": 0,
                 "postCount": 0,
@@ -187,42 +260,63 @@ def update_author_stats(author, sentiment, is_post=True, post_id=None, comment_i
                 "comments": {}
             }
         else:
+            # Load existing stats
             author_stats = author_doc.to_dict()
+            # Ensure expected fields exist
             if "posts" not in author_stats:
                 author_stats["posts"] = []
             if "comments" not in author_stats:
                 author_stats["comments"] = {}
+            if "positiveCount" not in author_stats:
+                author_stats["positiveCount"] = 0
+            if "negativeCount" not in author_stats:
+                author_stats["negativeCount"] = 0
 
-        # Update sentiment and counts
+        # Update total sentiment score
         author_stats["totalSentimentScore"] += sentiment
+
+        # Increment positive/negative counts if needed
+        if sentiment > 0:
+            author_stats["positiveCount"] = author_stats.get("positiveCount", 0) + 1
+        elif sentiment < 0:
+            author_stats["negativeCount"] = author_stats.get("negativeCount", 0) + 1
+
+        # Update postCount or commentCount
         if is_post:
             author_stats["postCount"] += 1
+            # Add the post ID to the author's posts list (if not already there)
             if post_id and post_id not in author_stats["posts"]:
                 author_stats["posts"].append(post_id)
         else:
             author_stats["commentCount"] += 1
+            # Add the comment under author_stats["comments"][postId]
             if post_id and comment_id:
                 if post_id not in author_stats["comments"]:
                     author_stats["comments"][post_id] = []
                 if comment_id not in author_stats["comments"][post_id]:
                     author_stats["comments"][post_id].append(comment_id)
 
-        # Calculate average sentiment
+        # Recompute average sentiment across all posts/comments
         total_interactions = author_stats["postCount"] + author_stats["commentCount"]
-        author_stats["averageSentiment"] = (author_stats["totalSentimentScore"] / total_interactions) if total_interactions > 0 else 0
+        if total_interactions > 0:
+            author_stats["averageSentiment"] = author_stats["totalSentimentScore"] / total_interactions
+        else:
+            author_stats["averageSentiment"] = 0
 
-        # Save the updated stats back to Firestore
+        # Finally, write the updated stats back to Firestore
         author_ref.set(author_stats)
 
     except Exception as e:
         logging.error(f"Error updating author stats for {author}: {e}")
 
 
+
 # Incremental update function for category_stats.
 # This function updates the document for a given date and category,
 # merging new sentiment values and updating lists of post IDs and comments.
-def update_category_stats_incremental(date_str, category, sentiment, post_id=None, comment_id=None):
-    doc_ref = db.collection("category_stats").document(date_str)
+def update_category_stats_incremental(date_str, category, sentiment, subreddit, post_id=None, comment_id=None):
+    refs = get_collections(subreddit)
+    doc_ref = refs["category_stats"].document(date_str)
     transaction = db.transaction()
 
     @firestore.transactional
@@ -263,9 +357,11 @@ def update_category_stats_incremental(date_str, category, sentiment, post_id=Non
 
     update_in_transaction(transaction, doc_ref)
 
-def process_posts():
+def process_posts(subreddit):
     """Process all new posts in Firestore and update category_stats incrementally."""
-    posts = db.collection("posts").stream()
+    
+    refs = get_collections(subreddit)
+    posts = refs["posts"].stream()
     for post in posts:
         data = post.to_dict()
         if "created" in data and "category" in data and "sentiment" in data:
@@ -281,14 +377,16 @@ def process_posts():
             sentiment = data["sentiment"]
             post_id = post.id
             # Update category_stats incrementally with the post's sentiment and ID.
-            update_category_stats_incremental(date_str, category, sentiment, post_id=post_id)
+            update_category_stats_incremental(date_str, category, subreddit, sentiment, post_id=post_id)
 
-def process_comments():
+def process_comments(subreddit):
     """Process new comments from all posts and update category_stats incrementally."""
-    posts = db.collection("posts").stream()
+    refs = get_collections(subreddit)
+
+    posts = refs["posts"].stream()
     for post in posts:
         post_id = post.id
-        comments = db.collection("posts").document(post_id).collection("comments").stream()
+        comments =refs["posts"].document(post_id).collection("comments").stream()
         for comment in comments:
             data = comment.to_dict()
             if "created" in data and "category" in data and "sentiment" in data:
@@ -305,81 +403,272 @@ def process_comments():
                 comment_id = comment.id
                 # Update category_stats incrementally with the comment's sentiment,
                 # and record the comment ID under its parent post.
-                update_category_stats_incremental(date_str, category, sentiment, post_id=post_id, comment_id=comment_id)
+                update_category_stats_incremental(date_str, category, sentiment, subreddit, post_id=post_id, comment_id=comment_id)
 
-# Get the last timestamp
-last_timestamp = get_last_timestamp()
-new_last_timestamp = last_timestamp
+def crawl_subreddit(subreddit, model):
+    # Get the last timestamp
+    last_timestamp = get_last_timestamp(subreddit)
+    new_last_timestamp = last_timestamp
+    
+    # Get correct Firestore references
+    refs = get_collections(subreddit)
+    sub = reddit.subreddit(subreddit)
 
-# Configure Gemini API
-genai.configure(api_key=GOOGLE_GEMINI_API_KEY)
-model = genai.GenerativeModel()  # Use 'gemini-pro-vision' for multimodal
+    # ADDED: Counter for the number of new posts updated
+    updated_posts_count = 0
 
-# ADDED: Counter for the number of new posts updated
-updated_posts_count = 0
+    # ADDED: Wrap the entire crawling process to catch unexpected errors
+    try:
+        # Crawl new posts and comments incrementally
+        for submission in sub.new(limit=500):  # Using 'new' to get recent posts
+            # Skip posts that have already been processed
+            if submission.created_utc <= last_timestamp:
+                continue
 
-# ADDED: Wrap the entire crawling process to catch unexpected errors
-try:
-    # Crawl new posts and comments incrementally
-    for submission in subreddit.new(limit=500):  # Using 'new' to get recent posts
-        # Skip posts that have already been processed
-        if submission.created_utc <= last_timestamp:
-            continue
+            try:
+                print(f"[{subreddit}] Found new post: {submission.id} : {submission.title}")
 
-        try:
-            print(f"Found new post: {submission.id} : {submission.title}")
+                # Update the latest timestamp
+                if submission.created_utc > new_last_timestamp:
+                    new_last_timestamp = submission.created_utc
 
-            # Update the latest timestamp
-            if submission.created_utc > new_last_timestamp:
-                new_last_timestamp = submission.created_utc
+                # Crawl comments
+                submission.comments.replace_more(limit=None)
+                comments = submission.comments.list()
 
-            # Crawl comments
-            submission.comments.replace_more(limit=None)
-            comments = submission.comments.list()
+                # Calculate scores and initialize sentiment data.
+                raw_sentiment_score = 0.0
+                categories = []  # e.g., ["Exams", "Facilities"]
+                emotion = "Neutral"
 
-            # Calculate scores and initialize sentiment data.
-            raw_sentiment_score = 0.0
-            categories = []  # e.g., ["Exams", "Facilities"]
-            emotion = "Neutral"
+                # Get the engagement score.
+                upvotes = submission.score
+                comments_count = submission.num_comments
+                engagement_score = (upvotes + 1) * math.log2(comments_count + 1)
 
-            # Get the engagement score.
-            upvotes = submission.score
-            comments_count = submission.num_comments
-            engagement_score = (upvotes + 1) * math.log2(comments_count + 1)
+                combined_post_comments = ""
+                combined_post_comments += submission.selftext
 
-            combined_post_comments = ""
-            combined_post_comments += submission.selftext
+                # ------ SAVE TO Firebase database ----------------
+                post_doc = {
+                    "subreddit": subreddit,
+                    "title": submission.title,
+                    "author": str(submission.author),
+                    "created": datetime.datetime.fromtimestamp(submission.created_utc),
+                    "body": submission.selftext,
+                    'summary': "",
+                    "score": submission.score,
+                    "URL": submission.url,
+                    "engagementScore": engagement_score,
+                    "rawSentimentScore": raw_sentiment_score,
+                    "weightedSentimentScore": 0,
+                    "categories": categories,
+                    "emotion": emotion,
+                }
+                # Write the post document to Firestore: posts/{post_id}
+                post_ref = refs["posts"].document(submission.id)
+                post_ref.set(post_doc)
 
-            # ------ SAVE TO Firebase database ----------------
-            post_doc = {
-                "title": submission.title,
-                "author": str(submission.author),
-                "created": datetime.datetime.fromtimestamp(submission.created_utc),
-                "body": submission.selftext,
-                'summary': "",
-                "score": submission.score,
-                "URL": submission.url,
-                "engagementScore": engagement_score,
-                "rawSentimentScore": raw_sentiment_score,
-                "weightedSentimentScore": 0,
-                "categories": categories,
-                "emotion": emotion,
-            }
-            # Write the post document to Firestore: posts/{post_id}
-            post_ref = db.collection("posts").document(submission.id)
-            post_ref.set(post_doc)
+                weighted_sentiment_sum = 0.0
+                total_weight = 0.0
+                raw_sentiment_score = 0.0
+                total_comments = 0
+                total_positive_sentiments = 0
+                total_negative_sentiments = 0
 
-            weighted_sentiment_sum = 0.0
-            total_weight = 0.0
-            raw_sentiment_score = 0.0
-            total_comments = 0
-            total_positive_sentiments = 0
-            total_negative_sentiments = 0
+                # Process each comment with error handling
+                for comment in comments:
+                    combined_post_comments += f"\n{comment.body}"
+                    prompt = f"""
+                    You are an AI assigned to evaluate a Reddit post comment about 
+                    Temasek Polytechnic. Review the following text and provide a concise output in this format: 
+                    a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
+                    then a comma, the identified emotion (happy, relief, stress, frustration, 
+                    pride, disappointment, confusion, neutral), another comma, the determined category 
+                    (academic, exams, facilities, subjects, administration, career, admission, results, internship,
+                    lecturer, student life, infrastructure, classroom, events, CCA), 
+                    and finally, a comma followed by "yes" or "no" indicating whether the text 
+                    relates to the School of IIT (or the School of Informatics & IT, which includes
+                    programs like Big Data Analytics, Applied AI, IT, Cybersecurity & Digital Forensics, 
+                    Immersive Media & Game Development and Common ICT).
+                    Text: "{comment.body}"
+                    """
+                    # ADDED: Use safe_generate_content to retry Gemini API calls
+                    response_text = safe_generate_content(model, prompt)
+                    # Expected format: "<sentiment>,<emotion>,<category>,<iit_flag>"
+                    parts = response_text.split(',')
 
-            # Process each comment with error handling
-            for comment in comments:
-                combined_post_comments += f"\n{comment.body}"
+                    if len(parts) < 4:
+                        logging.error(f"Unexpected response format for comment {comment.id}: {response_text}")
+                        continue
+                    else:
+                        try:
+                            sentiment = int(parts[0].strip())
+                        except Exception as e:
+                            logging.error(f"[{subreddit}] Error parsing sentiment for comment {comment.id}: {e}")
+                            sentiment = 0
+                        emotion = parts[1].strip()
+                        category = parts[2].strip()
+                        iit_flag = parts[3].strip()  # Expected to be "yes" or "no"
+
+                    # Compute weight for the comment based on its score
+                    weight = 1 + math.log2(max(comment.score, 0) + 1)
+                    weighted_sentiment_sum += sentiment * weight
+                    total_weight += weight
+                    raw_sentiment_score += sentiment
+                    total_comments += 1
+
+                    if sentiment > 0:
+                        total_positive_sentiments += sentiment
+                    elif sentiment < 0:
+                        total_negative_sentiments += sentiment
+
+                    comment_doc = {
+                        "body": comment.body,
+                        "author": str(comment.author),
+                        "created": datetime.datetime.fromtimestamp(comment.created_utc) if hasattr(comment, 'created_utc') else None,
+                        "score": comment.score,
+                        "sentiment": sentiment,
+                        'emotion': emotion,
+                        'category': category,
+                        'iit': iit_flag,
+                    }
+                    # Write each comment into the subcollection: posts/{post_id}/comments/{comment_id}
+                    post_ref.collection("comments").document(comment.id).set(comment_doc)
+
+                    # Update the author's stats
+                    update_author_stats(str(comment.author), sentiment, subreddit, is_post=False, post_id=submission.id, comment_id=comment.id)
+                    # For each comment processed:
+                    # Incrementally update category_stats for the comment.
+                    comment_date_str = datetime.datetime.fromtimestamp(comment.created_utc).strftime("%Y-%m-%d")
+                    update_category_stats_incremental(comment_date_str, category, sentiment, subreddit, post_id=submission.id, comment_id=comment.id)
+
+
+
+                # Process overall post sentiment and summary using Gemini API with retries
                 prompt = f"""
+                You are an AI assigned to evaluate a Reddit post and its accompanying comments about 
+                Temasek Polytechnic. Review the following text and provide a concise output in this format: 
+                a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
+                then a comma, the identified emotion (happy, relief, stress, frustration, 
+                pride, disappointment, confusion, neutral), another comma, the determined category 
+                (academic, exams, facilities, subjects, administration, career, admission, results, internship,
+                lecturer, student life, infrastructure, classroom, events, CCA), 
+                and finally, another comma followed by "yes" or "no" indicating whether the text 
+                relates to the School of IIT (or the School of Informatics & IT, which includes
+                programs like Big Data Analytics (BDA), Applied AI (AAI), IT (ITO), Cybersecurity & Digital Forensics (CDF), 
+                Immersive Media & Game Development (IGD) and Common ICT (CIT).
+                Text: "{combined_post_comments}"
+                """
+                response_text = safe_generate_content(model, prompt)
+                parts = response_text.split(',')
+                if len(parts) < 5:
+                    logging.error(f"Unexpected response format for post {submission.id}: {response_text}")
+                else:
+                    try:
+                        sentiment = int(parts[0].strip())
+                    except Exception as e:
+                        logging.error(f"[{subreddit}] Error parsing sentiment for post {submission.id}: {e}")
+                        sentiment = 0
+                    emotion = parts[1].strip()
+                    category = parts[2].strip()
+                    iit_flag = parts[3].strip()  # Expected to be "yes" or "no"
+
+                prompt_summary = f"""
+                You are an AI tasked with analyzing a Reddit post and its accompanying comments about 
+                Temasek Polytechnic. Perform the following steps (do not provide headings or titles for any paragraphs):
+
+                1. Start with a concise paragraph summarizing the key topics, issues, 
+                or themes discussed across the post and comments.
+
+                2. In the second paragraph, describe the overall sentiment and emotional 
+                tone expressed. Mention any references to specific academic subjects, school facilities, 
+                or aspects of campus life, if applicable.
+
+                3. If appropriate, include a third paragraph highlighting any 
+                concerns raised or constructive suggestions for school authorities. Clearly reference 
+                any specific subjects, facilities, or experiences mentioned.
+
+                If the provided text lacks sufficient content for analysis (e.g., it only contains links, 
+                attachments, or unrelated filler), simply state:
+
+                “The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations.”
+
+                Text: "{combined_post_comments}"
+                """
+                summary = safe_generate_content(model, prompt_summary)
+
+                #related to tp.
+                
+                post_text = submission.title + " " + submission.selftext
+                related_to_tp = detect_temasek_poly_related(combined_post_comments)
+
+                # Calculate the weighted sentiment score for the post
+                weighted_sentiment_score = weighted_sentiment_sum / total_weight if total_weight > 0 else 0
+                # Update the post document.
+                post_ref.update({"weightedSentimentScore": weighted_sentiment_score})
+                post_ref.update({"rawSentimentScore": raw_sentiment_score})
+                post_ref.update({"summary": summary})
+                post_ref.update({"sentiment": sentiment})
+                post_ref.update({"emotion": emotion})
+                post_ref.update({"category": category})
+                post_ref.update({"iit": iit_flag})
+                post_ref.update({"relatedToTemasekPoly": related_to_tp})
+                # Update aggregated comment info
+                post_ref.update({
+                    'totalComments': total_comments,
+                    'totalPositiveSentiments': total_positive_sentiments,
+                    'totalNegativeSentiments': total_negative_sentiments
+                })
+                print(f"weightedSentimentScore: {weighted_sentiment_score}, rawSentimentScore: {raw_sentiment_score}")
+
+                # Update the author's stats
+                update_author_stats(str(submission.author), sentiment, subreddit, is_post=True, post_id=submission.id)
+
+                post_date_str = datetime.datetime.fromtimestamp(submission.created_utc).strftime("%Y-%m-%d")
+                update_category_stats_incremental(post_date_str, category, sentiment, subreddit, post_id=submission.id)
+
+
+
+                # ADDED: Increment the counter after successfully processing this post
+                updated_posts_count += 1
+
+            except Exception as e:
+                # ADDED: Log any errors during processing of a submission and continue with next post
+                logging.error(f"[{subreddit}] Error processing submission {submission.id}: {e}")
+                continue
+
+        # Save the new last timestamp for the next run
+        set_last_timestamp(new_last_timestamp, subreddit)
+
+        # ADDED: Print out the number of new posts updated
+        print(f"Number of new posts updated: {updated_posts_count}")
+
+        # HYBRID ADDITION: Track new comments on older posts
+        print("Scanning recent comments for updates to older posts...")
+        for comment in sub.comments(limit=500):
+            try:
+                # Ignore comments already processed
+                comment_ref = refs["posts"].document(comment.submission.id).collection("comments").document(comment.id)
+                if comment_ref.get().exists:
+                    continue  # Already stored
+
+                comment_created = datetime.datetime.fromtimestamp(comment.created_utc)
+                if comment.created_utc <= last_timestamp:
+                    continue  # Already seen
+
+                # Fetch parent post info
+                post_id = comment.submission.id
+                post_ref = refs["posts"].document(post_id)
+                post_snapshot = post_ref.get()
+
+                if not post_snapshot.exists:
+                    continue  # Parent post was never processed (skip)
+
+                print(f"New comment on old post {post_id}: {comment.id}")
+
+                # Run Gemini prompt for single comment
+                prompt = f'''
                 You are an AI assigned to evaluate a Reddit post comment about 
                 Temasek Polytechnic. Review the following text and provide a concise output in this format: 
                 a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
@@ -392,258 +681,90 @@ try:
                 programs like Big Data Analytics, Applied AI, IT, Cybersecurity & Digital Forensics, 
                 Immersive Media & Game Development and Common ICT).
                 Text: "{comment.body}"
-                """
-                # ADDED: Use safe_generate_content to retry Gemini API calls
+                '''
                 response_text = safe_generate_content(model, prompt)
-                # Expected format: "<sentiment>,<emotion>,<category>,<iit_flag>"
                 parts = response_text.split(',')
 
                 if len(parts) < 4:
-                    logging.error(f"Unexpected response format for comment {comment.id}: {response_text}")
+                    logging.error(f"[OLD POST] Unexpected response format for comment {comment.id}: {response_text}")
                     continue
-                else:
-                    try:
-                        sentiment = int(parts[0].strip())
-                    except Exception as e:
-                        logging.error(f"Error parsing sentiment for comment {comment.id}: {e}")
-                        sentiment = 0
-                    emotion = parts[1].strip()
-                    category = parts[2].strip()
-                    iit_flag = parts[3].strip()  # Expected to be "yes" or "no"
 
-                # Compute weight for the comment based on its score
-                weight = 1 + math.log2(max(comment.score, 0) + 1)
-                weighted_sentiment_sum += sentiment * weight
-                total_weight += weight
-                raw_sentiment_score += sentiment
-                total_comments += 1
-
-                if sentiment > 0:
-                    total_positive_sentiments += sentiment
-                elif sentiment < 0:
-                    total_negative_sentiments += sentiment
+                sentiment = int(parts[0].strip())
+                emotion = parts[1].strip()
+                category = parts[2].strip()
+                iit_flag = parts[3].strip()
 
                 comment_doc = {
                     "body": comment.body,
                     "author": str(comment.author),
-                    "created": datetime.datetime.fromtimestamp(comment.created_utc) if hasattr(comment, 'created_utc') else None,
+                    "created": comment_created,
                     "score": comment.score,
                     "sentiment": sentiment,
-                    'emotion': emotion,
-                    'category': category,
-                    'iit': iit_flag,
+                    "emotion": emotion,
+                    "category": category,
+                    "iit": iit_flag,
                 }
-                # Write each comment into the subcollection: posts/{post_id}/comments/{comment_id}
-                post_ref.collection("comments").document(comment.id).set(comment_doc)
+                comment_ref.set(comment_doc)
 
-                # Update the author's stats
-                update_author_stats(str(comment.author), sentiment, is_post=False, post_id=submission.id, comment_id=comment.id)
-                # For each comment processed:
-                # Incrementally update category_stats for the comment.
-                comment_date_str = datetime.datetime.fromtimestamp(comment.created_utc).strftime("%Y-%m-%d")
-                update_category_stats_incremental(comment_date_str, category, sentiment, post_id=submission.id, comment_id=comment.id)
+                # Fetch all comments for that post and recalculate sentiment metrics
+                comments_ref = post_ref.collection("comments").stream()
+                total_comments = 0
+                total_positive = 0
+                total_negative = 0
+                weighted_sum = 0
+                weight_total = 0
 
+                for c in comments_ref:
+                    d = c.to_dict()
+                    score = d.get("score", 0)
+                    sent = d.get("sentiment", 0)
+                    weight = 1 + math.log2(max(score, 0) + 1)
+                    weighted_sum += sent * weight
+                    weight_total += weight
+                    total_comments += 1
+                    if sent > 0:
+                        total_positive += sent
+                    elif sent < 0:
+                        total_negative += sent
+                    
+                    
+                    # Update the author's stats
+                    author_name = d.get("author", "Unknown")
+                    update_author_stats(author_name, sent, subreddit, is_post=False, post_id=post_id, comment_id=c.id)
 
+                    # Update category_stats incrementally for the new comment.
+                    comment_date_str = datetime.datetime.fromtimestamp(comment.created_utc).strftime("%Y-%m-%d")
+                    update_category_stats_incremental(comment_date_str, category, sentiment, subreddit, post_id=post_id, comment_id=comment.id)
 
-            # Process overall post sentiment and summary using Gemini API with retries
-            prompt = f"""
-            You are an AI assigned to evaluate a Reddit post and its accompanying comments about 
-            Temasek Polytechnic. Review the following text and provide a concise output in this format: 
-            a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
-            then a comma, the identified emotion (happy, relief, stress, frustration, 
-            pride, disappointment, confusion, neutral), another comma, the determined category 
-            (academic, exams, facilities, subjects, administration, career, admission, results, internship,
-            lecturer, student life, infrastructure, classroom, events, CCA), 
-            and finally, another comma followed by "yes" or "no" indicating whether the text 
-            relates to the School of IIT (or the School of Informatics & IT, which includes
-            programs like Big Data Analytics (BDA), Applied AI (AAI), IT (ITO), Cybersecurity & Digital Forensics (CDF), 
-            Immersive Media & Game Development (IGD) and Common ICT (CIT).
-            Text: "{combined_post_comments}"
-            """
-            response_text = safe_generate_content(model, prompt)
-            parts = response_text.split(',')
-            if len(parts) < 5:
-                logging.error(f"Unexpected response format for post {submission.id}: {response_text}")
-            else:
-                try:
-                    sentiment = int(parts[0].strip())
-                except Exception as e:
-                    logging.error(f"Error parsing sentiment for post {submission.id}: {e}")
-                    sentiment = 0
-                emotion = parts[1].strip()
-                category = parts[2].strip()
-                iit_flag = parts[3].strip()  # Expected to be "yes" or "no"
+                weighted_sent = weighted_sum / weight_total if weight_total > 0 else 0
 
-            prompt_summary = f"""
-            You are an AI tasked with analyzing a Reddit post and its accompanying comments about 
-            Temasek Polytechnic. Perform the following steps (do not provide headings or titles for any paragraphs):
+                post_ref.update({
+                    'totalComments': total_comments,
+                    'totalPositiveSentiments': total_positive,
+                    'totalNegativeSentiments': total_negative,
+                    'weightedSentimentScore': weighted_sent
+                })
 
-            1. Start with a concise paragraph summarizing the key topics, issues, 
-            or themes discussed across the post and comments.
-
-            2. In the second paragraph, describe the overall sentiment and emotional 
-            tone expressed. Mention any references to specific academic subjects, school facilities, 
-            or aspects of campus life, if applicable.
-
-            3. If appropriate, include a third paragraph highlighting any 
-            concerns raised or constructive suggestions for school authorities. Clearly reference 
-            any specific subjects, facilities, or experiences mentioned.
-
-            If the provided text lacks sufficient content for analysis (e.g., it only contains links, 
-            attachments, or unrelated filler), simply state:
-
-            “The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations.”
-
-            Text: "{combined_post_comments}"
-            """
-            summary = safe_generate_content(model, prompt_summary)
-
-            # Calculate the weighted sentiment score for the post
-            weighted_sentiment_score = weighted_sentiment_sum / total_weight if total_weight > 0 else 0
-            # Update the post document.
-            post_ref.update({"weightedSentimentScore": weighted_sentiment_score})
-            post_ref.update({"rawSentimentScore": raw_sentiment_score})
-            post_ref.update({"summary": summary})
-            post_ref.update({"sentiment": sentiment})
-            post_ref.update({"emotion": emotion})
-            post_ref.update({"category": category})
-            post_ref.update({"iit": iit_flag})
-            # Update aggregated comment info
-            post_ref.update({
-                'totalComments': total_comments,
-                'totalPositiveSentiments': total_positive_sentiments,
-                'totalNegativeSentiments': total_negative_sentiments
-            })
-            print(f"weightedSentimentScore: {weighted_sentiment_score}, rawSentimentScore: {raw_sentiment_score}")
-
-            # Update the author's stats
-            update_author_stats(str(submission.author), sentiment, is_post=True, post_id=submission.id)
-
-            post_date_str = datetime.datetime.fromtimestamp(submission.created_utc).strftime("%Y-%m-%d")
-            update_category_stats_incremental(post_date_str, category, sentiment, post_id=submission.id)
-
-
-
-            # ADDED: Increment the counter after successfully processing this post
-            updated_posts_count += 1
-
-        except Exception as e:
-            # ADDED: Log any errors during processing of a submission and continue with next post
-            logging.error(f"Error processing submission {submission.id}: {e}")
-            continue
-
-    # Save the new last timestamp for the next run
-    set_last_timestamp(new_last_timestamp)
-
-    # ADDED: Print out the number of new posts updated
-    print(f"Number of new posts updated: {updated_posts_count}")
-
-    # HYBRID ADDITION: Track new comments on older posts
-    print("Scanning recent comments for updates to older posts...")
-    for comment in subreddit.comments(limit=500):
-        try:
-            # Ignore comments already processed
-            comment_ref = db.collection("posts").document(comment.submission.id).collection("comments").document(comment.id)
-            if comment_ref.get().exists:
-                continue  # Already stored
-
-            comment_created = datetime.datetime.fromtimestamp(comment.created_utc)
-            if comment.created_utc <= last_timestamp:
-                continue  # Already seen
-
-            # Fetch parent post info
-            post_id = comment.submission.id
-            post_ref = db.collection("posts").document(post_id)
-            post_snapshot = post_ref.get()
-
-            if not post_snapshot.exists:
-                continue  # Parent post was never processed (skip)
-
-            print(f"New comment on old post {post_id}: {comment.id}")
-
-            # Run Gemini prompt for single comment
-            prompt = f'''
-            You are an AI assigned to evaluate a Reddit post comment about 
-            Temasek Polytechnic. Review the following text and provide a concise output in this format: 
-            a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
-            then a comma, the identified emotion (happy, relief, stress, frustration, 
-            pride, disappointment, confusion, neutral), another comma, the determined category 
-            (academic, exams, facilities, subjects, administration, career, admission, results, internship,
-            lecturer, student life, infrastructure, classroom, events, CCA), 
-            and finally, a comma followed by "yes" or "no" indicating whether the text 
-            relates to the School of IIT (or the School of Informatics & IT, which includes
-            programs like Big Data Analytics, Applied AI, IT, Cybersecurity & Digital Forensics, 
-            Immersive Media & Game Development and Common ICT).
-            Text: "{comment.body}"
-            '''
-            response_text = safe_generate_content(model, prompt)
-            parts = response_text.split(',')
-
-            if len(parts) < 4:
-                logging.error(f"[OLD POST] Unexpected response format for comment {comment.id}: {response_text}")
+            except Exception as e:
+                logging.error(f"[{subreddit}] Error processing new comment on old post: {e}")
                 continue
 
-            sentiment = int(parts[0].strip())
-            emotion = parts[1].strip()
-            category = parts[2].strip()
-            iit_flag = parts[3].strip()
 
-            comment_doc = {
-                "body": comment.body,
-                "author": str(comment.author),
-                "created": comment_created,
-                "score": comment.score,
-                "sentiment": sentiment,
-                "emotion": emotion,
-                "category": category,
-                "iit": iit_flag,
-            }
-            comment_ref.set(comment_doc)
+    except Exception as e:
+        # ADDED: Log any critical errors that occur during the crawling process
+        logging.error(f"Critical error in crawling process: {e}")
 
-            # Fetch all comments for that post and recalculate sentiment metrics
-            comments_ref = post_ref.collection("comments").stream()
-            total_comments = 0
-            total_positive = 0
-            total_negative = 0
-            weighted_sum = 0
-            weight_total = 0
+# ----------------------------
+# Main - run for all subreddits
+# ----------------------------
+if __name__ == "__main__":
+    # Configure Google Gemini
+    genai.configure(api_key=GOOGLE_GEMINI_API_KEY)
+    model = genai.GenerativeModel()
 
-            for c in comments_ref:
-                d = c.to_dict()
-                score = d.get("score", 0)
-                sent = d.get("sentiment", 0)
-                weight = 1 + math.log2(max(score, 0) + 1)
-                weighted_sum += sent * weight
-                weight_total += weight
-                total_comments += 1
-                if sent > 0:
-                    total_positive += sent
-                elif sent < 0:
-                    total_negative += sent
-                
-                
-                # Update the author's stats
-                author_name = d.get("author", "Unknown")
-                update_author_stats(author_name, sent, is_post=False, post_id=post_id, comment_id=c.id)
+    # Load the subreddits from config
+    subreddits = load_subreddits()
 
-                # Update category_stats incrementally for the new comment.
-                comment_date_str = datetime.datetime.fromtimestamp(comment.created_utc).strftime("%Y-%m-%d")
-                update_category_stats_incremental(comment_date_str, category, sentiment, post_id=post_id, comment_id=comment.id)
-
-            weighted_sent = weighted_sum / weight_total if weight_total > 0 else 0
-
-            post_ref.update({
-                'totalComments': total_comments,
-                'totalPositiveSentiments': total_positive,
-                'totalNegativeSentiments': total_negative,
-                'weightedSentimentScore': weighted_sent
-            })
-
-        except Exception as e:
-            logging.error(f"Error processing new comment on old post: {e}")
-            continue
-
-
-except Exception as e:
-    # ADDED: Log any critical errors that occur during the crawling process
-    logging.error(f"Critical error in crawling process: {e}")
+    # For each subreddit in the list, run the same logic
+    for sb_name in subreddits:
+        crawl_subreddit(sb_name, model)
