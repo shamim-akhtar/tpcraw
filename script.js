@@ -1366,4 +1366,64 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (document.getElementById('subreddit-select').value.toLowerCase() === 'temasekpoly') {
     document.getElementById('tp-related-filter').style.display = 'none';
   }
+  
+  const subredditSelect = document.getElementById("subreddit-select");
+  const iitFilter = document.getElementById("iit-filter");
+  const tpRelatedFilter = document.getElementById("tp-related-filter");
+  // Get the labels associated with the checkboxes
+  const iitLabel = document.querySelector('label[for="iit-filter"]');
+  const tpLabel = document.querySelector('label[for="tp-related-filter"]');
+  function updateFilters() {
+    // When "TemasekPoly" is selected, show IIT filter and hide TP-Related filter
+    if (subredditSelect.value === "TemasekPoly") {
+      if (iitFilter) { iitFilter.style.display = "inline-block"; }
+      if (iitLabel) { iitLabel.style.display = "inline-block"; }
+      if (tpRelatedFilter) { tpRelatedFilter.style.display = "none"; }
+      if (tpLabel) { tpLabel.style.display = "none"; }
+    } else {
+      // For other subreddits, hide IIT filter and show TP-Related filter
+      if (iitFilter) { iitFilter.style.display = "none"; }
+      if (iitLabel) { iitLabel.style.display = "none"; }
+      if (tpRelatedFilter) { tpRelatedFilter.style.display = "inline-block"; }
+      if (tpLabel) { tpLabel.style.display = "inline-block"; }
+    }
+  }
+
+  updateFilters();
+  // Update filters (and charts) when the subreddit selection changes
+  subredditSelect.addEventListener("change", () => {
+    updateFilters();
+    updateCharts(); // This will re-run your chart updates
+  });
+
+  // document.addEventListener("DOMContentLoaded", () => {
+  //   const subredditSelect = document.getElementById("subreddit-select");
+  //   const iitFilter = document.getElementById("iit-filter");
+  //   const tpRelatedFilter = document.getElementById("tp-related-filter");
+
+  //   // Get the associated labels using their 'for' attribute selectors
+  //   const iitLabel = document.querySelector('label[for="iit-filter"]');
+  //   const tpLabel = document.querySelector('label[for="tp-related-filter"]');
+
+  //   function updateFilters() {
+  //     if (subredditSelect.value === "TemasekPoly") {
+  //       // For TemasekPoly, show IIT filter and hide TP-Related filter
+  //       if (iitFilter) { iitFilter.style.display = "inline-block"; }
+  //       if (iitLabel) { iitLabel.style.display = "inline-block"; }
+  //       if (tpRelatedFilter) { tpRelatedFilter.style.display = "none"; }
+  //       if (tpLabel) { tpLabel.style.display = "none"; }
+  //     } else {
+  //       // For other subreddits, show TP-Related filter and hide IIT filter
+  //       if (iitFilter) { iitFilter.style.display = "none"; }
+  //       if (iitLabel) { iitLabel.style.display = "none"; }
+  //       if (tpRelatedFilter) { tpRelatedFilter.style.display = "inline-block"; }
+  //       if (tpLabel) { tpLabel.style.display = "inline-block"; }
+  //     }
+  //   }
+
+  //   // Update on page load
+  //   updateFilters();
+  //   // Listen for changes on the subreddit dropdown
+  //   subredditSelect.addEventListener("change", updateFilters);
+  // });
 });
