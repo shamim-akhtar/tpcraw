@@ -585,12 +585,17 @@ def crawl_subreddit(subreddit_name, model):
 
                     # --- Gemini Analysis for Comment ---
                     prompt = f"""
-                    Analyze the following Reddit comment text related to Temasek Polytechnic.
+                    Analyze the following Reddit comment.
                     Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
                     - sentiment_score: 1 (positive), -1 (negative), 0 (neutral)
                     - emotion: happy, relief, stress, frustration, pride, disappointment, confusion, neutral
                     - category: academic, exams, facilities, subjects, administration, career, admission, results, internship, lecturer, student life, infrastructure, classroom, events, CCA, other
-                    - iit_flag: yes (related to School of IIT/Informatics & IT programs like BDA, AAI, ITO, CDF, IGD, CIT) or no
+                    - iit_flag: yes (related to School of IIT/Informatics & IT programs, including diplomas such as Big Data Analytics/BDA, 
+                    Applied Artificial Intelligence/AAI,
+                    Information Technology,
+                    Cyber Security & Digital Forensics/CDF,
+                    Immersive Media & Game Development/IGD
+                    ) or no
                     Text: "{comment_body}"
                     """
                     response_text = safe_generate_content(model, prompt)
@@ -674,14 +679,20 @@ def crawl_subreddit(subreddit_name, model):
 
                 # --- Gemini Analysis for Overall Post (incl. comments) ---
                 print(f"[{subreddit_name}] Analyzing overall post {post_id}...")
-                prompt_overall = f"""Analyze the following Reddit post and its comments about Temasek Polytechnic.
-Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
-- sentiment_score: 1 (positive), -1 (negative), 0 (neutral)
-- emotion: happy, relief, stress, frustration, pride, disappointment, confusion, neutral
-- category: academic, exams, facilities, subjects, administration, career, admission, results, internship, lecturer, student life, infrastructure, classroom, events, CCA, other
-- iit_flag: yes (related to School of IIT/Informatics & IT programs) or no
-Text: "{combined_post_comments}"
-"""
+                prompt_overall = f"""
+                Analyze the following Reddit post and its comments.
+                Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
+                - sentiment_score: 1 (positive), -1 (negative), 0 (neutral)
+                - emotion: happy, relief, stress, frustration, pride, disappointment, confusion, neutral
+                - category: academic, exams, facilities, subjects, administration, career, admission, results, internship, lecturer, student life, infrastructure, classroom, events, CCA, other
+                - iit_flag: yes (related to School of IIT/Informatics & IT programs, including diplomas such as Big Data Analytics/BDA, 
+                Applied Artificial Intelligence/AAI,
+                Information Technology,
+                Cyber Security & Digital Forensics/CDF,
+                Immersive Media & Game Development/IGD
+                ) or no
+                Text: "{combined_post_comments}"
+                """
                 response_text_overall = safe_generate_content(model, prompt_overall)
                 parts_overall = response_text_overall.split(',')
 
@@ -703,14 +714,15 @@ Text: "{combined_post_comments}"
                     logging.warning(f"[{subreddit_name}] Unexpected Gemini response format for overall post {post_id}. Response: {response_text_overall}")
 
                 # --- Gemini Summary ---
-                prompt_summary = f"""Create a 3-paragraph summary of the Reddit post and comments about Temasek Polytechnic.
-1.  Summarize key topics/themes.
-2.  Describe overall sentiment/emotion, mentioning specific subjects, facilities, or campus life aspects if relevant.
-3.  (If applicable) Highlight concerns or suggestions for authorities, referencing specifics.
-If the text is too short or lacks meaning, state: "The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations."
-Do not use headings.
-Text: "{combined_post_comments}"
-"""
+                prompt_summary = f"""
+                Create a 3-paragraph summary of the Reddit post and comments.
+                1.  Summarize key topics/themes.
+                2.  Describe overall sentiment/emotion, mentioning specific subjects, facilities, or campus life aspects if relevant.
+                3.  (If applicable) Highlight concerns or suggestions for authorities, referencing specifics.
+                If the text is too short or lacks meaning, state: "The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations."
+                Do not use headings.
+                Text: "{combined_post_comments}"
+                """
                 summary = safe_generate_content(model, prompt_summary)
 
 
@@ -808,11 +820,20 @@ Text: "{combined_post_comments}"
                     comment_created_dt = datetime.datetime.fromtimestamp(comment_created_utc)
                     comment_date_str = comment_created_dt.strftime("%Y-%m-%d")
 
-                    prompt = f"""Analyze the following Reddit comment text related to Temasek Polytechnic.
-Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
-[...] # Same prompt details as before
-Text: "{comment_body}"
-"""
+                    prompt = f"""
+                    Analyze the following Reddit comment.
+                    Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
+                    - sentiment_score: 1 (positive), -1 (negative), 0 (neutral)
+                    - emotion: happy, relief, stress, frustration, pride, disappointment, confusion, neutral
+                    - category: academic, exams, facilities, subjects, administration, career, admission, results, internship, lecturer, student life, infrastructure, classroom, events, CCA, other
+                    - iit_flag: yes (related to School of IIT/Informatics & IT programs, including diplomas such as Big Data Analytics/BDA, 
+                    Applied Artificial Intelligence/AAI,
+                    Information Technology,
+                    Cyber Security & Digital Forensics/CDF,
+                    Immersive Media & Game Development/IGD
+                    ) or no
+                    Text: "{comment_body}"
+                    """
                     response_text = safe_generate_content(model, prompt)
                     parts = response_text.split(',')
                     # Parse response with defaults (same logic as above)
