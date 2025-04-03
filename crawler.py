@@ -10,7 +10,56 @@ import time
 import logging
 import re
 from collections import defaultdict # Added for easier aggregation
-# from google.cloud import firestore
+
+
+PROMPT_COMMENT = '''
+You are an AI assigned to evaluate a Reddit post comment. 
+Review the following text and provide a concise output in this format: 
+a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
+then a comma, the identified emotion (happy, relief, stress, frustration, 
+pride, disappointment, confusion, neutral), another comma, the determined category 
+(academic, exams, facilities, subjects, administration, career, admission, results, internship,
+lecturer, student life, infrastructure, classroom, events, CCA),
+and finally, a comma followed by "yes" or "no" indicating whether the text 
+relates to the School of IIT (or the School of Informatics & IT, which includes
+diplomas like Big Data Analytics/BDA, Applied AI/AAI, Information Technology/IT, Cybersecurity & Digital Forensics/CDF, 
+Immersive Media & Game Development/IGD and Common ICT)/CICT.
+'''
+
+PROMPT_POST_COMMENTS = '''
+You are an AI assigned to evaluate a Reddit post and its accompanying comments about. 
+Review the following text and provide a concise output in this format: 
+a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
+then a comma, the identified emotion (happy, relief, stress, frustration, 
+pride, disappointment, confusion, neutral), another comma, the determined category 
+(academic, exams, facilities, subjects, administration, career, admission, results, internship,
+lecturer, student life, infrastructure, classroom, events, CCA), 
+and finally, another comma followed by "yes" or "no" indicating whether the text 
+relates to the School of IIT (or the School of Informatics & IT, which includes
+programs like Big Data Analytics (BDA), Applied AI (AAI), IT (ITO), Cybersecurity & Digital Forensics (CDF), 
+Immersive Media & Game Development (IGD) and Common ICT (CIT).
+'''
+
+PROMPT_SUMMARY = '''
+You are an AI tasked with analyzing a Reddit post and its accompanying comments about. 
+Perform the following steps (do not provide headings or titles for any paragraphs):
+
+1. Start with a concise paragraph summarizing the key topics, issues, 
+or themes discussed across the post and comments.
+
+2. In the second paragraph, describe the overall sentiment and emotional 
+tone expressed. Mention any references to specific academic subjects, school facilities, 
+or aspects of campus life, if applicable.
+
+3. If appropriate, include a third paragraph highlighting any 
+concerns raised or constructive suggestions for school authorities. Clearly reference 
+any specific subjects, facilities, or experiences mentioned.
+
+If the provided text lacks sufficient content for analysis (e.g., it only contains links, 
+attachments, or unrelated filler), simply state:
+
+“The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations.”
+'''
 
 # --- Constants ---
 BATCH_COMMIT_SIZE = 400 # Max operations per batch is 500, use a lower number for safety
@@ -584,20 +633,22 @@ def crawl_subreddit(subreddit_name, model):
                     combined_post_comments += f"\n{comment_body}" # Append for overall summary/sentiment
 
                     # --- Gemini Analysis for Comment ---
-                    prompt = f"""
-                    Analyze the following Reddit comment.
-                    Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
-                    - sentiment_score: 1 (positive), -1 (negative), 0 (neutral)
-                    - emotion: happy, relief, stress, frustration, pride, disappointment, confusion, neutral
-                    - category: academic, exams, facilities, subjects, administration, career, admission, results, internship, lecturer, student life, infrastructure, classroom, events, CCA, other
-                    - iit_flag: yes (related to School of IIT/Informatics & IT programs, including diplomas such as Big Data Analytics/BDA, 
-                    Applied Artificial Intelligence/AAI,
-                    Information Technology,
-                    Cyber Security & Digital Forensics/CDF,
-                    Immersive Media & Game Development/IGD
-                    ) or no
-                    Text: "{comment_body}"
-                    """
+                    # prompt = f"""
+                    # Analyze the following Reddit comment.
+                    # Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
+                    # - sentiment_score: 1 (positive), -1 (negative), 0 (neutral)
+                    # - emotion: happy, relief, stress, frustration, pride, disappointment, confusion, neutral
+                    # - category: academic, exams, facilities, subjects, administration, career, admission, results, internship, lecturer, student life, infrastructure, classroom, events, CCA, other
+                    # - iit_flag: yes (related to School of IIT/Informatics & IT programs, including diplomas such as Big Data Analytics/BDA, 
+                    # Applied Artificial Intelligence/AAI,
+                    # Information Technology,
+                    # Cyber Security & Digital Forensics/CDF,
+                    # Immersive Media & Game Development/IGD
+                    # ) or no
+                    # Text: "{comment_body}"
+                    # """
+
+                    prompt = PROMPT_COMMENT + f" Text: ${comment.body}"
                     response_text = safe_generate_content(model, prompt)
                     parts = response_text.split(',')
 
@@ -679,20 +730,22 @@ def crawl_subreddit(subreddit_name, model):
 
                 # --- Gemini Analysis for Overall Post (incl. comments) ---
                 print(f"[{subreddit_name}] Analyzing overall post {post_id}...")
-                prompt_overall = f"""
-                Analyze the following Reddit post and its comments.
-                Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
-                - sentiment_score: 1 (positive), -1 (negative), 0 (neutral)
-                - emotion: happy, relief, stress, frustration, pride, disappointment, confusion, neutral
-                - category: academic, exams, facilities, subjects, administration, career, admission, results, internship, lecturer, student life, infrastructure, classroom, events, CCA, other
-                - iit_flag: yes (related to School of IIT/Informatics & IT programs, including diplomas such as Big Data Analytics/BDA, 
-                Applied Artificial Intelligence/AAI,
-                Information Technology,
-                Cyber Security & Digital Forensics/CDF,
-                Immersive Media & Game Development/IGD
-                ) or no
-                Text: "{combined_post_comments}"
-                """
+                # prompt_overall = f"""
+                # Analyze the following Reddit post and its comments.
+                # Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
+                # - sentiment_score: 1 (positive), -1 (negative), 0 (neutral)
+                # - emotion: happy, relief, stress, frustration, pride, disappointment, confusion, neutral
+                # - category: academic, exams, facilities, subjects, administration, career, admission, results, internship, lecturer, student life, infrastructure, classroom, events, CCA, other
+                # - iit_flag: yes (related to School of IIT/Informatics & IT programs, including diplomas such as Big Data Analytics/BDA, 
+                # Applied Artificial Intelligence/AAI,
+                # Information Technology,
+                # Cyber Security & Digital Forensics/CDF,
+                # Immersive Media & Game Development/IGD
+                # ) or no
+                # Text: "{combined_post_comments}"
+                # """
+
+                prompt_overall = PROMPT_POST_COMMENTS + f" Text: ${combined_post_comments}"
                 response_text_overall = safe_generate_content(model, prompt_overall)
                 parts_overall = response_text_overall.split(',')
 
@@ -714,15 +767,16 @@ def crawl_subreddit(subreddit_name, model):
                     logging.warning(f"[{subreddit_name}] Unexpected Gemini response format for overall post {post_id}. Response: {response_text_overall}")
 
                 # --- Gemini Summary ---
-                prompt_summary = f"""
-                Create a 3-paragraph summary of the Reddit post and comments.
-                1.  Summarize key topics/themes.
-                2.  Describe overall sentiment/emotion, mentioning specific subjects, facilities, or campus life aspects if relevant.
-                3.  (If applicable) Highlight concerns or suggestions for authorities, referencing specifics.
-                If the text is too short or lacks meaning, state: "The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations."
-                Do not use headings.
-                Text: "{combined_post_comments}"
-                """
+                # prompt_summary = f"""
+                # Create a 3-paragraph summary of the Reddit post and comments.
+                # 1.  Summarize key topics/themes.
+                # 2.  Describe overall sentiment/emotion, mentioning specific subjects, facilities, or campus life aspects if relevant.
+                # 3.  (If applicable) Highlight concerns or suggestions for authorities, referencing specifics.
+                # If the text is too short or lacks meaning, state: "The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations."
+                # Do not use headings.
+                # Text: "{combined_post_comments}"
+                # """
+                prompt_summary = PROMPT_SUMMARY + f" Text: ${combined_post_comments}"
                 summary = safe_generate_content(model, prompt_summary)
 
 
@@ -820,21 +874,22 @@ def crawl_subreddit(subreddit_name, model):
                     comment_created_dt = datetime.datetime.fromtimestamp(comment_created_utc)
                     comment_date_str = comment_created_dt.strftime("%Y-%m-%d")
 
-                    prompt = f"""
-                    Analyze the following Reddit comment.
-                    Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
-                    - sentiment_score: 1 (positive), -1 (negative), 0 (neutral)
-                    - emotion: happy, relief, stress, frustration, pride, disappointment, confusion, neutral
-                    - category: academic, exams, facilities, subjects, administration, career, admission, results, internship, lecturer, student life, infrastructure, classroom, events, CCA, other
-                    - iit_flag: yes (related to School of IIT/Informatics & IT programs, including diplomas such as Big Data Analytics/BDA, 
-                    Applied Artificial Intelligence/AAI,
-                    Information Technology,
-                    Cyber Security & Digital Forensics/CDF,
-                    Immersive Media & Game Development/IGD
-                    ) or no
-                    Text: "{comment_body}"
-                    """
-                    response_text = safe_generate_content(model, prompt)
+                    # prompt = f"""
+                    # Analyze the following Reddit comment.
+                    # Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
+                    # - sentiment_score: 1 (positive), -1 (negative), 0 (neutral)
+                    # - emotion: happy, relief, stress, frustration, pride, disappointment, confusion, neutral
+                    # - category: academic, exams, facilities, subjects, administration, career, admission, results, internship, lecturer, student life, infrastructure, classroom, events, CCA, other
+                    # - iit_flag: yes (related to School of IIT/Informatics & IT programs, including diplomas such as Big Data Analytics/BDA, 
+                    # Applied Artificial Intelligence/AAI,
+                    # Information Technology,
+                    # Cyber Security & Digital Forensics/CDF,
+                    # Immersive Media & Game Development/IGD
+                    # ) or no
+                    # Text: "{comment_body}"
+                    # """
+                    prompt_comment = PROMPT_COMMENT + f" Text: ${comment_body}"
+                    response_text = safe_generate_content(model, prompt_comment)
                     parts = response_text.split(',')
                     # Parse response with defaults (same logic as above)
                     sentiment = 0; emotion = "Neutral"; category = "Uncategorized"; iit_flag = "no"
