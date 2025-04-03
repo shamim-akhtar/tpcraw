@@ -8,93 +8,15 @@ from firebase_admin import credentials, firestore
 import google.generativeai as genai
 import time
 import logging
+import re
+from collections import defaultdict # Added for easier aggregation
+# from google.cloud import firestore
 
-"""
-README - Reddit Crawler & Sentiment Aggregator for r/TemasekPoly
-
-Overview:
----------
-This Python script crawls recent posts and comments from the Reddit subreddit r/TemasekPoly
-and saves them into a Firebase Firestore database. It uses Google's Gemini API (Generative AI)
-to evaluate the sentiment, emotion, category, and IIT relevance of each post and its comments.
-
-It is intended to be run automatically on a schedule (e.g. via cron or Task Scheduler) and includes
-resilience features like error handling, automatic retries, and crash recovery.
-
-Key Features:
--------------
-- Crawls up to 500 of the most recent Reddit posts.
-- Skips posts already crawled based on their creation timestamp.
-- Processes and stores:
-  - Post title, author, body, score, timestamp, URL
-  - All associated comments
-  - AI-generated sentiment score (raw and weighted), emotion, category, IIT relevance
-  - A human-readable summary of the post and comment discussion
-- Automatically calculates and stores engagement metrics (e.g. sentiment scores, comment counts).
-- Tracks the last successfully crawled post to resume from where it left off.
-- Writes error logs to a file (`crawler_errors.log`) for admin review.
-- Handles Gemini API errors gracefully and retries calls automatically.
-
-Requirements:
--------------
-- Python 3.7+
-- Firebase Admin SDK credentials saved in `firebase-credentials.json`
-- Environment variables set via `.env`:
-    - REDDIT_CLIENT_ID
-    - REDDIT_CLIENT_SECRET
-    - REDDIT_USER_AGENT
-    - GOOGLE_GEMINI_API_KEY
-
-Setup Instructions:
--------------------
-1. Install dependencies:
-   pip install praw firebase-admin google-generativeai python-dotenv
-
-2. Add your `.env` file with Reddit and Gemini API credentials.
-
-3. Run the script manually or schedule it to run automatically:
-   python reddit_crawler.py
-
-Firestore Structure:
---------------------
-posts (collection)
- └─ {post_id} (document)
-     ├─ title
-     ├─ author
-     ├─ body
-     ├─ summary (AI-generated)
-     ├─ engagementScore
-     ├─ rawSentimentScore
-     ├─ weightedSentimentScore
-     ├─ emotion
-     ├─ category
-     ├─ iit (yes/no)
-     ├─ totalComments
-     ├─ totalPositiveSentiments
-     ├─ totalNegativeSentiments
-     └─ comments (subcollection)
-          └─ {comment_id} (document)
-               ├─ body
-               ├─ author
-               ├─ score
-               ├─ sentiment
-               ├─ emotion
-               ├─ category
-               └─ iit
-
-Outputs:
---------
-- New posts and comments saved to Firestore.
-- AI summaries and sentiment metadata attached to each post.
-- `last_timestamp.txt` updated with the latest processed timestamp.
-- Logs stored in `crawler_errors.log`.
-- A final printout showing the number of new posts updated.
-
-"""
-
+# --- Constants ---
+BATCH_COMMIT_SIZE = 400 # Max operations per batch is 500, use a lower number for safety
 
 # Setup logging to file
-logging.basicConfig(filename='crawler_errors.log', 
+logging.basicConfig(filename='crawler_errors.log',
                     level=logging.ERROR,
                     format='%(asctime)s %(levelname)s: %(message)s')
 
@@ -114,31 +36,28 @@ reddit = praw.Reddit(
     user_agent=REDDIT_USER_AGENT
 )
 
-# # Specify the subreddit
-# subreddit = reddit.subreddit('TemasekPoly')
-
-
 # Initialize Firebase Firestore
-cred = credentials.Certificate("firebase-credentials.json")
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+try:
+    cred = credentials.Certificate("firebase-credentials.json")
+    firebase_admin.initialize_app(cred)
+    db = firestore.client()
+    print("Firebase Initialized Successfully.")
+except Exception as e:
+    logging.error(f"Failed to initialize Firebase: {e}")
+    print(f"CRITICAL: Failed to initialize Firebase: {e}")
+    exit() # Exit if Firebase can't connect
 
 # Load subreddit list from configuration file
 def load_subreddits(file_path='subreddits.txt'):
     try:
         with open(file_path, 'r') as file:
             subreddits = [line.strip().lower() for line in file if line.strip()]
+        print(f"Loaded subreddits: {subreddits}")
         return subreddits
     except Exception as e:
         logging.error(f"Failed to load subreddits from {file_path}: {e}")
+        print(f"ERROR: Failed to load subreddits from {file_path}: {e}")
         return []
-
-# def detect_temasek_poly_related(text):
-#     keywords = ['Temasek Polytechnic', 'TemasekPoly', 'TP', 'Temasek Poly']
-#     text_lower = text.lower()
-#     return any(keyword.lower() in text_lower for keyword in keywords)
-
-import re
 
 def detect_temasek_poly_related(text: str) -> bool:
     """
@@ -148,14 +67,8 @@ def detect_temasek_poly_related(text: str) -> bool:
     """
     if not text:
         return False
-    
-    # Regex pattern with word boundaries for each variant
-    # The \b ensures we match "TP" as a separate token/word.
-    # It also matches "Temasek Poly" or "Temasek Polytechnic" as complete words/phrases.
-    # Using re.IGNORECASE for case-insensitive matching.
     pattern = r"\btemasek polytechnic\b|\btemasekpoly\b|\btemasek poly\b|\btp\b"
     return bool(re.search(pattern, text, re.IGNORECASE))
-
 
 def get_last_timestamp(subreddit):
     """Fetch the last crawled timestamp for a given subreddit from Firestore."""
@@ -168,603 +81,956 @@ def get_last_timestamp(subreddit):
         logging.error(f"[{subreddit}] Error fetching last_timestamp: {e}")
     return 0
 
-    # try:
-    #     doc = db.collection("meta").document("last_timestamp").get()
-    #     if doc.exists:
-    #         return doc.to_dict().get("value", 0)
-    # except Exception as e:
-    #     logging.error(f"Error fetching last_timestamp from Firestore: {e}")
-    # return 0
-
 def get_collections(subreddit_name: str):
     """
-    Returns a dictionary of Firestore collection references for posts, authors, 
+    Returns a dictionary of Firestore collection references for posts, authors,
     and category_stats, depending on whether the subreddit is 'TemasekPoly' or something else.
     """
-    # Convert the subreddit name to lowercase to keep things consistent
     sub_lower = subreddit_name.lower()
+    # Define collection names based on subreddit
+    posts_collection_name = "posts" if sub_lower == "temasekpoly" else f"{sub_lower}_posts"
+    authors_collection_name = "authors" if sub_lower == "temasekpoly" else f"{sub_lower}_authors"
+    category_stats_collection_name = "category_stats" if sub_lower == "temasekpoly" else f"{sub_lower}_category_stats"
 
-    if sub_lower == "temasekpoly":
-        # For TemasekPoly, keep your existing root-level collections:
-        return {
-            "posts": db.collection("posts"),
-            "authors": db.collection("authors"),
-            "category_stats": db.collection("category_stats"),
-        }
-    else:
-        # e.g. "singapore_posts", "singapore_authors"
-        return {
-            'posts': db.collection(f"{sub_lower}_posts"),
-            'authors': db.collection(f"{sub_lower}_authors"),
-            'category_stats': db.collection(f"{sub_lower}_category_stats"),
-        }
+    return {
+        "posts": db.collection(posts_collection_name),
+        "authors": db.collection(authors_collection_name),
+        "category_stats": db.collection(category_stats_collection_name),
+        "meta": db.collection("meta") # Assuming meta is global or adjust if needed
+    }
 
-
-def set_last_timestamp(timestamp, subreddit):
+def set_last_timestamp(timestamp, subreddit, refs):
     """Store the last crawled timestamp for a given subreddit in Firestore."""
     doc_id = f"last_timestamp_{subreddit}"
     try:
-        db.collection("meta").document(doc_id).set({"value": timestamp})
+        refs["meta"].document(doc_id).set({"value": timestamp})
     except Exception as e:
         logging.error(f"[{subreddit}] Error saving last_timestamp: {e}")
 
-    # try:
-    #     db.collection("meta").document("last_timestamp").set({"value": timestamp})
-    # except Exception as e:
-    #     logging.error(f"Error saving last_timestamp to Firestore: {e}")
-
-# ADDED: Helper function to safely generate content with retries
+# Helper function to safely generate content with retries
 def safe_generate_content(model, prompt, retries=3, delay=5):
     for attempt in range(retries):
         try:
             response = model.generate_content(prompt)
-            # Check if the response is valid
-            if response and response.text:
+            # Check for valid response and text content
+            if response and hasattr(response, 'text') and response.text:
                 return response.text.strip()
+            # Handle potential blocking or safety issues
+            elif response and hasattr(response, 'prompt_feedback') and response.prompt_feedback.block_reason:
+                 logging.warning(f"Content generation blocked. Reason: {response.prompt_feedback.block_reason}")
+                 return "Content generation blocked due to safety settings." # Return specific message
             else:
-                raise ValueError("Empty response text")
+                # General case for empty or unexpected response structure
+                raise ValueError(f"Empty or invalid response structure received. Response: {response}")
+
         except Exception as e:
-            logging.error(f"Error in generate_content: {e}. Attempt {attempt+1} of {retries}")
-            time.sleep(delay)
-    # Return a fallback message if all retries fail
-    return "The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations."
-
-# UPDATED: Helper function to update author stats in Firestore with post and comment IDs.
-def update_author_stats(author, sentiment, subreddit, is_post=True, post_id=None, comment_id=None):
-    """
-    Updates the author's statistics in Firestore. Tracks:
-      - totalSentimentScore
-      - positiveCount
-      - negativeCount
-      - postCount
-      - commentCount
-      - averageSentiment
-      - references to the posts and/or comments authored
-    """
-    try:
-        # Access your Firestore collections for the given subreddit
-        refs = get_collections(subreddit)
-        author_ref = refs["authors"].document(author)
-        author_doc = author_ref.get()
-
-        # If the author doesn't exist, create a default stats structure
-        if not author_doc.exists():
-            author_stats = {
-                "totalSentimentScore": 0,
-                "postCount": 0,
-                "commentCount": 0,
-                "negativeCount": 0,
-                "positiveCount": 0,
-                "averageSentiment": 0,
-                "posts": [],
-                "comments": {}
-            }
-        else:
-            # Load existing stats
-            author_stats = author_doc.to_dict()
-            # Ensure expected fields exist
-            if "posts" not in author_stats:
-                author_stats["posts"] = []
-            if "comments" not in author_stats:
-                author_stats["comments"] = {}
-            if "positiveCount" not in author_stats:
-                author_stats["positiveCount"] = 0
-            if "negativeCount" not in author_stats:
-                author_stats["negativeCount"] = 0
-
-        # Update total sentiment score
-        author_stats["totalSentimentScore"] += sentiment
-
-        # Increment positive/negative counts if needed
-        if sentiment > 0:
-            author_stats["positiveCount"] = author_stats.get("positiveCount", 0) + 1
-        elif sentiment < 0:
-            author_stats["negativeCount"] = author_stats.get("negativeCount", 0) + 1
-
-        # Update postCount or commentCount
-        if is_post:
-            author_stats["postCount"] += 1
-            # Add the post ID to the author's posts list (if not already there)
-            if post_id and post_id not in author_stats["posts"]:
-                author_stats["posts"].append(post_id)
-        else:
-            author_stats["commentCount"] += 1
-            # Add the comment under author_stats["comments"][postId]
-            if post_id and comment_id:
-                if post_id not in author_stats["comments"]:
-                    author_stats["comments"][post_id] = []
-                if comment_id not in author_stats["comments"][post_id]:
-                    author_stats["comments"][post_id].append(comment_id)
-
-        # Recompute average sentiment across all posts/comments
-        total_interactions = author_stats["postCount"] + author_stats["commentCount"]
-        if total_interactions > 0:
-            author_stats["averageSentiment"] = author_stats["totalSentimentScore"] / total_interactions
-        else:
-            author_stats["averageSentiment"] = 0
-
-        # Finally, write the updated stats back to Firestore
-        author_ref.set(author_stats)
-
-    except Exception as e:
-        logging.error(f"Error updating author stats for {author}: {e}")
-
-
-
-# Incremental update function for category_stats.
-# This function updates the document for a given date and category,
-# merging new sentiment values and updating lists of post IDs and comments.
-def update_category_stats_incremental(date_str, category, sentiment, subreddit, post_id=None, comment_id=None):
-    refs = get_collections(subreddit)
-    doc_ref = refs["category_stats"].document(date_str)
-    transaction = db.transaction()
-
-    @firestore.transactional
-    def update_in_transaction(transaction, doc_ref):
-        snapshot = doc_ref.get(transaction=transaction)
-        if snapshot.exists:
-            data = snapshot.to_dict()
-        else:
-            data = {}
-        if category not in data:
-            data[category] = {
-                "totalSentiment": 0,
-                "count": 0,
-                "positiveCount": 0,
-                "negativeCount": 0,
-                "postIds": [],
-                "comments": {}  # Dictionary mapping post IDs to lists of comment IDs
-            }
-        cat_data = data[category]
-        cat_data["totalSentiment"] += sentiment
-        cat_data["count"] += 1
-        if sentiment > 0:
-            cat_data["positiveCount"] += 1
-        elif sentiment < 0:
-            cat_data["negativeCount"] += 1
-        if post_id:
-            if post_id not in cat_data["postIds"]:
-                cat_data["postIds"].append(post_id)
-        if comment_id and post_id:
-            if post_id not in cat_data["comments"]:
-                cat_data["comments"][post_id] = []
-            if comment_id not in cat_data["comments"][post_id]:
-                cat_data["comments"][post_id].append(comment_id)
-        # Update the average sentiment
-        cat_data["averageSentiment"] = cat_data["totalSentiment"] / cat_data["count"]
-        data[category] = cat_data
-        transaction.set(doc_ref, data)
-
-    update_in_transaction(transaction, doc_ref)
-
-def process_posts(subreddit):
-    """Process all new posts in Firestore and update category_stats incrementally."""
-    
-    refs = get_collections(subreddit)
-    posts = refs["posts"].stream()
-    for post in posts:
-        data = post.to_dict()
-        if "created" in data and "category" in data and "sentiment" in data:
-            created = data["created"]
-            if hasattr(created, "to_datetime"):
-                dt = created.to_datetime()
-            elif isinstance(created, datetime.datetime):
-                dt = created
+            logging.error(f"Error in generate_content (Attempt {attempt+1}/{retries}): {e}. Prompt snippet: {prompt[:100]}...")
+            if attempt < retries - 1:
+                time.sleep(delay)
             else:
-                continue
-            date_str = dt.strftime("%Y-%m-%d")
-            category = data["category"]
-            sentiment = data["sentiment"]
-            post_id = post.id
-            # Update category_stats incrementally with the post's sentiment and ID.
-            update_category_stats_incremental(date_str, category, subreddit, sentiment, post_id=post_id)
+                 logging.error(f"generate_content failed after {retries} attempts.")
+    # Return a fallback message if all retries fail
+    return "Error generating response after multiple attempts."
 
-def process_comments(subreddit):
-    """Process new comments from all posts and update category_stats incrementally."""
-    refs = get_collections(subreddit)
+# OPTIMIZED: Accumulate author stats in memory
+def update_author_stats_memory(author_updates, author, sentiment, is_post=True, post_id=None, comment_id=None):
+    """
+    Updates author statistics in the provided in-memory dictionary.
+    Tracks cumulative changes to be written later.
+    """
+    if not author or author.lower() == '[deleted]': # Skip deleted authors
+        return
 
-    posts = refs["posts"].stream()
-    for post in posts:
-        post_id = post.id
-        comments =refs["posts"].document(post_id).collection("comments").stream()
-        for comment in comments:
-            data = comment.to_dict()
-            if "created" in data and "category" in data and "sentiment" in data:
-                created = data["created"]
-                if hasattr(created, "to_datetime"):
-                    dt = created.to_datetime()
-                elif isinstance(created, datetime.datetime):
-                    dt = created
-                else:
-                    continue
-                date_str = dt.strftime("%Y-%m-%d")
-                category = data["category"]
-                sentiment = data["sentiment"]
-                comment_id = comment.id
-                # Update category_stats incrementally with the comment's sentiment,
-                # and record the comment ID under its parent post.
-                update_category_stats_incremental(date_str, category, sentiment, subreddit, post_id=post_id, comment_id=comment_id)
+    # Initialize author data if not present
+    if author not in author_updates:
+        author_updates[author] = {
+            "deltaSentimentScore": 0,
+            "deltaPostCount": 0,
+            "deltaCommentCount": 0,
+            "deltaNegativeCount": 0,
+            "deltaPositiveCount": 0,
+            "newPosts": set(), # Use sets for efficient unique additions
+            "newComments": defaultdict(set) # {post_id: {comment_id1, comment_id2}}
+        }
 
-def crawl_subreddit(subreddit, model):
-    # Get the last timestamp
-    last_timestamp = get_last_timestamp(subreddit)
+    stats = author_updates[author]
+
+    # Update delta sentiment score
+    stats["deltaSentimentScore"] += sentiment
+
+    # Increment positive/negative counts
+    if sentiment > 0:
+        stats["deltaPositiveCount"] += 1
+    elif sentiment < 0:
+        stats["deltaNegativeCount"] += 1
+
+    # Update post/comment counts and references
+    if is_post:
+        stats["deltaPostCount"] += 1
+        if post_id:
+            stats["newPosts"].add(post_id)
+    else:
+        stats["deltaCommentCount"] += 1
+        if post_id and comment_id:
+            stats["newComments"][post_id].add(comment_id)
+
+# OPTIMIZED: Write aggregated author stats using Batch
+def commit_author_stats(author_updates, refs):
+    """
+    Writes aggregated author statistics from memory to Firestore using batches.
+    Fetches existing data and merges updates.
+    """
+    if not author_updates:
+        return
+
+    print(f"Committing stats for {len(author_updates)} authors...")
+    authors_ref = refs["authors"]
+    batch = db.batch()
+    count = 0
+
+    authors_to_fetch = list(author_updates.keys())
+    existing_authors_data = {}
+
+    # Fetch existing author documents efficiently (Firestore limits `in` queries to 30 items)
+    for i in range(0, len(authors_to_fetch), 30):
+         chunk = authors_to_fetch[i:i+30]
+         try:
+            docs = authors_ref.where(firestore.FieldPath.document_id(), "in", chunk).stream()
+            for doc in docs:
+                existing_authors_data[doc.id] = doc.to_dict()
+         except Exception as e:
+            logging.error(f"Error fetching author chunk {i//30 + 1}: {e}")
+
+
+    for author, updates in author_updates.items():
+        author_ref = authors_ref.document(author)
+
+        # Get existing stats or initialize default
+        current_stats = existing_authors_data.get(author, {})
+        if not current_stats: # Author is new or fetch failed
+             current_stats = {
+                "totalSentimentScore": 0, "postCount": 0, "commentCount": 0,
+                "negativeCount": 0, "positiveCount": 0, "averageSentiment": 0,
+                "posts": [], "comments": {}
+            }
+
+        # Ensure lists/dicts exist if fetched doc is missing them
+        current_stats.setdefault("posts", [])
+        current_stats.setdefault("comments", {})
+        current_stats.setdefault("totalSentimentScore", 0)
+        current_stats.setdefault("postCount", 0)
+        current_stats.setdefault("commentCount", 0)
+        current_stats.setdefault("negativeCount", 0)
+        current_stats.setdefault("positiveCount", 0)
+
+        # Apply deltas
+        current_stats["totalSentimentScore"] += updates["deltaSentimentScore"]
+        current_stats["postCount"] += updates["deltaPostCount"]
+        current_stats["commentCount"] += updates["deltaCommentCount"]
+        current_stats["negativeCount"] += updates["deltaNegativeCount"]
+        current_stats["positiveCount"] += updates["deltaPositiveCount"]
+
+        # Merge new post IDs (convert set to list for Firestore)
+        existing_post_set = set(current_stats["posts"])
+        existing_post_set.update(updates["newPosts"])
+        current_stats["posts"] = sorted(list(existing_post_set)) # Store sorted list
+
+        # Merge new comment IDs (convert sets to lists for Firestore)
+        for post_id, comment_ids_set in updates["newComments"].items():
+            current_stats["comments"].setdefault(post_id, [])
+            existing_comment_set = set(current_stats["comments"][post_id])
+            existing_comment_set.update(comment_ids_set)
+            current_stats["comments"][post_id] = sorted(list(existing_comment_set)) # Store sorted list
+
+
+        # Recalculate average sentiment
+        total_interactions = current_stats["postCount"] + current_stats["commentCount"]
+        current_stats["averageSentiment"] = (current_stats["totalSentimentScore"] / total_interactions) if total_interactions > 0 else 0
+
+        # Add update to batch
+        batch.set(author_ref, current_stats) # Use set to overwrite completely with merged data
+        count += 1
+
+        # Commit batch if size limit reached
+        if count >= BATCH_COMMIT_SIZE:
+            try:
+                print(f"Committing author batch ({count} operations)...")
+                batch.commit()
+                print("Author batch committed.")
+                batch = db.batch() # Start new batch
+                count = 0
+            except Exception as e:
+                logging.error(f"Error committing author batch: {e}")
+                # Consider retry logic or partial failure handling here
+                batch = db.batch() # Start new batch even on error
+                count = 0
+
+
+    # Commit any remaining operations in the last batch
+    if count > 0:
+        try:
+            print(f"Committing final author batch ({count} operations)...")
+            batch.commit()
+            print("Final author batch committed.")
+        except Exception as e:
+            logging.error(f"Error committing final author batch: {e}")
+
+def update_category_stats_memory(category_updates, date_str, category, sentiment, post_id=None, comment_id=None):
+    """
+    Accumulates category stats changes in memory so they can be written
+    to Firestore in bulk. Mirrors the structure in the unoptimized
+    'update_category_stats_incremental' function.
+
+    category_updates is a dictionary keyed by (date_str, category), e.g.:
+       category_updates[(date_str, category)] = {
+           "deltaSentiment": 0,
+           "deltaCount": 0,
+           "deltaPositiveCount": 0,
+           "deltaNegativeCount": 0,
+           "newPostIds": set(),
+           "newComments": defaultdict(set),
+       }
+
+    The final Firestore document (for each date_str) has the form:
+       {
+         "<category>": {
+             "totalSentiment": ...,
+             "count": ...,
+             "positiveCount": ...,
+             "negativeCount": ...,
+             "averageSentiment": ...,
+             "postIds": [...],
+             "comments": {
+                 "<post_id>": ["<comment_id>", ...]
+             }
+         },
+         ...other categories...
+       }
+    """
+
+    # If there is no category or no date, do nothing
+    if not category or not date_str:
+        return
+
+    # (date_str, category) is our 'key' for grouping changes in memory
+    key = (date_str, category)
+
+    # If there's no record yet for this (date_str, category), initialize
+    if key not in category_updates:
+        category_updates[key] = {
+            "deltaSentiment": 0,
+            "deltaCount": 0,
+            "deltaPositiveCount": 0,
+            "deltaNegativeCount": 0,
+            # We store new post/comment IDs in sets for easy de-duplication
+            "newPostIds": set(),
+            "newComments": defaultdict(set),
+        }
+
+    cat_data = category_updates[key]
+
+    # Increment total sentiment and count
+    cat_data["deltaSentiment"] += sentiment
+    cat_data["deltaCount"] += 1
+
+    # Increment positive/negative counts
+    if sentiment > 0:
+        cat_data["deltaPositiveCount"] += 1
+    elif sentiment < 0:
+        cat_data["deltaNegativeCount"] += 1
+
+    # Track any new post or comment IDs for merging later
+    if post_id:
+        cat_data["newPostIds"].add(post_id)
+
+        if comment_id:
+            cat_data["newComments"][post_id].add(comment_id)
+
+
+# Make sure you have the necessary import near the top:
+# from google.cloud import firestore # If using direct client init
+# or
+# from firebase_admin import firestore # If using admin sdk init
+
+def commit_category_stats_non_transactional(category_updates, refs):
+    """
+    Writes aggregated category statistics NON-TRANSACTIONALLY.
+    Checks if the document exists.
+    - If exists: Uses atomic increments/ArrayUnion via update().
+    - If not exists: Creates the document via set() with initial values.
+    The 'comments' map is updated non-atomically in both cases.
+    """
+    if not category_updates:
+        return
+
+    print(f"Committing stats for {len(category_updates)} category-date pairs NON-TRANSACTIONALLY...")
+    category_stats_ref = refs["category_stats"]
+
+    # Group updates by date string first (same as before)
+    updates_grouped_by_date = defaultdict(dict)
+    for (date_str, category), updates in category_updates.items():
+        updates_grouped_by_date[date_str][category] = updates
+
+    # Process each date's updates
+    for date_str, date_updates in updates_grouped_by_date.items():
+        doc_ref = category_stats_ref.document(date_str)
+        doc_exists = False
+        current_doc_data = {} # Needed for comments merge regardless of existence
+
+        # --- Step 1: Check existence and get current data for comments merge ---
+        try:
+            snapshot = doc_ref.get()
+            doc_exists = snapshot.exists
+            if doc_exists:
+                current_doc_data = snapshot.to_dict()
+            print(f"[{date_str}] Checked document existence. Exists: {doc_exists}")
+        except Exception as e:
+             # Log error but proceed, assuming doc doesn't exist for safety
+             logging.error(f"Non-transactional commit: Failed initial get for doc {date_str}: {e}")
+             print(f"WARN: [{date_str}] Failed to check doc existence, proceeding as if it doesn't exist: {e}")
+             doc_exists = False
+             current_doc_data = {}
+
+        # --- Step 2: Prepare updates (payloads differ based on existence) ---
+        update_payload = {} # For update() if doc exists
+        create_payload = {} # For set() if doc does not exist
+        merged_comments_for_doc = {} # Store category-specific merged comments for this date doc
+
+        for category, updates in date_updates.items():
+            # --- Prepare merged comments (needed for both create and update) ---
+            current_category_data = current_doc_data.get(category, {})
+            merged_comments_for_category = current_category_data.get("comments", {})
+            new_comments_to_add = updates.get("newComments", {})
+
+            if new_comments_to_add:
+                for post_id, comment_ids_set_to_add in new_comments_to_add.items():
+                    merged_comments_for_category.setdefault(post_id, [])
+                    existing_comment_set = set(merged_comments_for_category.get(post_id, []))
+                    existing_comment_set.update(comment_ids_set_to_add)
+                    merged_comments_for_category[post_id] = sorted(list(existing_comment_set))
+                merged_comments_for_doc[category] = merged_comments_for_category # Store for later use
+            # --- End of comments merge ---
+
+
+            if doc_exists:
+                # --- Prepare payload for UPDATE ---
+                category_path_prefix = f"{category}."
+                if updates.get("deltaSentiment", 0) != 0:
+                    update_payload[f"{category_path_prefix}totalSentiment"] = firestore.Increment(updates["deltaSentiment"])
+                if updates.get("deltaCount", 0) != 0:
+                    update_payload[f"{category_path_prefix}count"] = firestore.Increment(updates["deltaCount"])
+                if updates.get("deltaPositiveCount", 0) != 0:
+                    update_payload[f"{category_path_prefix}positiveCount"] = firestore.Increment(updates["deltaPositiveCount"])
+                if updates.get("deltaNegativeCount", 0) != 0:
+                    update_payload[f"{category_path_prefix}negativeCount"] = firestore.Increment(updates["deltaNegativeCount"])
+
+                new_post_ids_list = list(updates.get("newPostIds", set()))
+                if new_post_ids_list:
+                     update_payload[f"{category_path_prefix}postIds"] = firestore.ArrayUnion(new_post_ids_list)
+
+                # Add merged comments for this category to the update payload
+                if category in merged_comments_for_doc:
+                    update_payload[f"{category_path_prefix}comments"] = merged_comments_for_doc[category]
+
+            else:
+                # --- Prepare payload for CREATE (set) ---
+                # Calculate initial values directly from deltas
+                totalSentiment = updates.get("deltaSentiment", 0)
+                count = updates.get("deltaCount", 0)
+                positiveCount = updates.get("deltaPositiveCount", 0)
+                negativeCount = updates.get("deltaNegativeCount", 0)
+                postIds = sorted(list(updates.get("newPostIds", set())))
+                comments = merged_comments_for_doc.get(category, {}) # Use already merged comments for this batch
+                averageSentiment = (totalSentiment / count) if count > 0 else 0
+
+                # Ensure category exists in create_payload
+                if category not in create_payload:
+                     create_payload[category] = {}
+
+                create_payload[category] = {
+                    "totalSentiment": totalSentiment,
+                    "count": count,
+                    "positiveCount": positiveCount,
+                    "negativeCount": negativeCount,
+                    "averageSentiment": averageSentiment, # Calculate initial average
+                    "postIds": postIds,
+                    "comments": comments
+                }
+
+        # --- Step 3: Perform the database operation ---
+        if doc_exists:
+            if update_payload:
+                try:
+                    print(f"[{date_str}] Applying non-transactional UPDATE with {len(update_payload)} fields...")
+                    doc_ref.update(update_payload)
+                    print(f"[{date_str}] Non-transactional UPDATE applied successfully.")
+                except Exception as e:
+                    logging.error(f"Failed non-transactional UPDATE for date {date_str}: {e}", exc_info=True)
+                    print(f"ERROR: Failed non-transactional UPDATE for date {date_str}: {e}")
+            else:
+                 print(f"[{date_str}] No update payload generated for existing doc.")
+        else: # Document does not exist
+            if create_payload:
+                try:
+                    print(f"[{date_str}] Applying non-transactional CREATE with SET for {len(create_payload)} categories...")
+                    doc_ref.set(create_payload) # Use set() to create the document
+                    print(f"[{date_str}] Non-transactional CREATE applied successfully.")
+                except Exception as e:
+                    logging.error(f"Failed non-transactional CREATE for date {date_str}: {e}", exc_info=True)
+                    print(f"ERROR: Failed non-transactional CREATE for date {date_str}: {e}")
+            else:
+                print(f"[{date_str}] No create payload generated for new doc.")
+
+
+# Main crawling function
+def crawl_subreddit(subreddit_name, model):
+    print(f"\n--- Starting crawl for r/{subreddit_name} ---")
+    last_timestamp = get_last_timestamp(subreddit_name)
+    print(f"[{subreddit_name}] Last timestamp: {datetime.datetime.fromtimestamp(last_timestamp)} ({last_timestamp})")
     new_last_timestamp = last_timestamp
-    
-    # Get correct Firestore references
-    refs = get_collections(subreddit)
-    sub = reddit.subreddit(subreddit)
 
-    # ADDED: Counter for the number of new posts updated
+    refs = get_collections(subreddit_name)
+    sub = reddit.subreddit(subreddit_name)
+
     updated_posts_count = 0
+    processed_comments_count = 0
+    new_comments_on_old_posts_count = 0
 
-    # ADDED: Wrap the entire crawling process to catch unexpected errors
+    # --- In-memory stores for aggregation ---
+    author_updates = defaultdict(lambda: { # Use defaultdict for easier initialization
+        "deltaSentimentScore": 0, "deltaPostCount": 0, "deltaCommentCount": 0,
+        "deltaNegativeCount": 0, "deltaPositiveCount": 0,
+        "newPosts": set(), "newComments": defaultdict(set)
+    })
+    category_updates = defaultdict(lambda: { # Key: (date_str, category)
+         "deltaSentiment": 0, "deltaCount": 0, "deltaPositiveCount": 0, "deltaNegativeCount": 0,
+         "newPostIds": set(), "newComments": defaultdict(set)
+    })
+    # ---
+
     try:
-        # Crawl new posts and comments incrementally
-        for submission in sub.new(limit=500):  # Using 'new' to get recent posts
-            # Skip posts that have already been processed
-            if submission.created_utc <= last_timestamp:
-                continue
+        # =============================================
+        # 1. Process NEW posts and their comments
+        # =============================================
+        print(f"[{subreddit_name}] Fetching new submissions...")
+        for submission in sub.new(limit=500): # Adjust limit as needed
+            submission_time = submission.created_utc
+            if submission_time <= last_timestamp:
+                # print(f"[{subreddit_name}] Skipping post {submission.id} (already processed or older)")
+                continue # Skip already processed posts
+
+            # Update the latest timestamp seen in this run
+            if submission_time > new_last_timestamp:
+                new_last_timestamp = submission_time
+
+            print(f"[{subreddit_name}] Processing NEW post: {submission.id} : {submission.title[:50]}...")
 
             try:
-                print(f"[{subreddit}] Found new post: {submission.id} : {submission.title}")
+                # --- Prepare Post Data ---
+                post_id = submission.id
+                post_author = str(submission.author) if submission.author else "[deleted]"
+                post_created_dt = datetime.datetime.fromtimestamp(submission_time)
+                post_date_str = post_created_dt.strftime("%Y-%m-%d")
 
-                # Update the latest timestamp
-                if submission.created_utc > new_last_timestamp:
-                    new_last_timestamp = submission.created_utc
-
-                # Crawl comments
-                submission.comments.replace_more(limit=None)
-                comments = submission.comments.list()
-
-                # Calculate scores and initialize sentiment data.
-                raw_sentiment_score = 0.0
-                categories = []  # e.g., ["Exams", "Facilities"]
-                emotion = "Neutral"
-
-                # Get the engagement score.
-                upvotes = submission.score
-                comments_count = submission.num_comments
-                engagement_score = (upvotes + 1) * math.log2(comments_count + 1)
-
-                combined_post_comments = ""
-                combined_post_comments += submission.selftext
-
-                # ------ SAVE TO Firebase database ----------------
+                # Initial post doc (summary, sentiment etc. will be added after comment processing)
                 post_doc = {
-                    "subreddit": subreddit,
+                    "subreddit": subreddit_name,
                     "title": submission.title,
-                    "author": str(submission.author),
-                    "created": datetime.datetime.fromtimestamp(submission.created_utc),
+                    "author": post_author,
+                    "created": post_created_dt,
                     "body": submission.selftext,
-                    'summary': "",
                     "score": submission.score,
                     "URL": submission.url,
-                    "engagementScore": engagement_score,
-                    "rawSentimentScore": raw_sentiment_score,
-                    "weightedSentimentScore": 0,
-                    "categories": categories,
-                    "emotion": emotion,
+                    # Placeholders - will be updated later in one go
+                    "summary": "", "engagementScore": 0.0, "rawSentimentScore": 0.0,
+                    "weightedSentimentScore": 0.0, "category": "Uncategorized", "emotion": "Neutral",
+                    "sentiment": 0, "iit": "no", "relatedToTemasekPoly": False,
+                    "totalComments": 0, "totalPositiveSentiments": 0, "totalNegativeSentiments": 0
                 }
-                # Write the post document to Firestore: posts/{post_id}
-                post_ref = refs["posts"].document(submission.id)
-                post_ref.set(post_doc)
+
+                # --- Process Comments ---
+                comments_data = [] # Store comment data temporarily
+                combined_post_comments = submission.selftext # Start summary text with post body
+
+                print(f"[{subreddit_name}] Fetching comments for post {post_id}...")
+                submission.comments.replace_more(limit=None) # Fetch all comments
+                all_comments = submission.comments.list()
+                print(f"[{subreddit_name}] Got {len(all_comments)} comments for post {post_id}.")
+
 
                 weighted_sentiment_sum = 0.0
                 total_weight = 0.0
-                raw_sentiment_score = 0.0
-                total_comments = 0
-                total_positive_sentiments = 0
-                total_negative_sentiments = 0
+                raw_sentiment_score_agg = 0.0 # Renamed to avoid clash with post_doc field
+                total_comments_agg = 0       # Renamed
+                total_positive_sentiments_agg = 0 # Renamed
+                total_negative_sentiments_agg = 0 # Renamed
 
-                # Process each comment with error handling
-                for comment in comments:
-                    combined_post_comments += f"\n{comment.body}"
+                # Use a batch for writing comments of this post
+                comment_batch = db.batch()
+                comment_write_count = 0
+
+                for comment in all_comments:
+                    if not hasattr(comment, 'body') or not hasattr(comment, 'id') or not hasattr(comment, 'author'):
+                        logging.warning(f"[{subreddit_name}] Skipping malformed comment object in post {post_id}")
+                        continue # Skip deleted comments or malformed objects
+
+                    comment_id = comment.id
+                    comment_author = str(comment.author) if comment.author else "[deleted]"
+                    comment_body = comment.body
+                    comment_score = comment.score
+                    comment_created_dt = datetime.datetime.fromtimestamp(comment.created_utc) if hasattr(comment, 'created_utc') else post_created_dt # Fallback
+                    comment_date_str = comment_created_dt.strftime("%Y-%m-%d")
+
+                    combined_post_comments += f"\n{comment_body}" # Append for overall summary/sentiment
+
+                    # --- Gemini Analysis for Comment ---
                     prompt = f"""
-                    You are an AI assigned to evaluate a Reddit post comment about 
-                    Temasek Polytechnic. Review the following text and provide a concise output in this format: 
-                    a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
-                    then a comma, the identified emotion (happy, relief, stress, frustration, 
-                    pride, disappointment, confusion, neutral), another comma, the determined category 
-                    (academic, exams, facilities, subjects, administration, career, admission, results, internship,
-                    lecturer, student life, infrastructure, classroom, events, CCA), 
-                    and finally, a comma followed by "yes" or "no" indicating whether the text 
-                    relates to the School of IIT (or the School of Informatics & IT, which includes
-                    programs like Big Data Analytics, Applied AI, IT, Cybersecurity & Digital Forensics, 
-                    Immersive Media & Game Development and Common ICT).
-                    Text: "{comment.body}"
+                    Analyze the following Reddit comment text related to Temasek Polytechnic.
+                    Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
+                    - sentiment_score: 1 (positive), -1 (negative), 0 (neutral)
+                    - emotion: happy, relief, stress, frustration, pride, disappointment, confusion, neutral
+                    - category: academic, exams, facilities, subjects, administration, career, admission, results, internship, lecturer, student life, infrastructure, classroom, events, CCA, other
+                    - iit_flag: yes (related to School of IIT/Informatics & IT programs like BDA, AAI, ITO, CDF, IGD, CIT) or no
+                    Text: "{comment_body}"
                     """
-                    # ADDED: Use safe_generate_content to retry Gemini API calls
                     response_text = safe_generate_content(model, prompt)
-                    # Expected format: "<sentiment>,<emotion>,<category>,<iit_flag>"
                     parts = response_text.split(',')
 
-                    if len(parts) < 4:
-                        logging.error(f"Unexpected response format for comment {comment.id}: {response_text}")
-                        continue
-                    else:
+                    # Default values in case of parsing failure
+                    sentiment = 0
+                    emotion = "Neutral"
+                    category = "Uncategorized" # Default category
+                    iit_flag = "no"
+
+                    if len(parts) >= 4:
                         try:
                             sentiment = int(parts[0].strip())
-                        except Exception as e:
-                            logging.error(f"[{subreddit}] Error parsing sentiment for comment {comment.id}: {e}")
-                            sentiment = 0
-                        emotion = parts[1].strip()
-                        category = parts[2].strip()
-                        iit_flag = parts[3].strip()  # Expected to be "yes" or "no"
+                        except ValueError:
+                            logging.warning(f"[{subreddit_name}] Failed to parse sentiment for comment {comment_id} in post {post_id}. Response: {response_text}")
+                        emotion = parts[1].strip() if parts[1].strip() else "Neutral"
+                        category = parts[2].strip().lower() if parts[2].strip() else "Uncategorized" # Use lower case consistently
+                        iit_flag = parts[3].strip().lower() if parts[3].strip().lower() in ["yes", "no"] else "no"
+                    else:
+                         logging.warning(f"[{subreddit_name}] Unexpected Gemini response format for comment {comment_id}. Response: {response_text}")
 
-                    # Compute weight for the comment based on its score
-                    weight = 1 + math.log2(max(comment.score, 0) + 1)
+
+                    # --- Aggregate Comment Stats ---
+                    weight = 1 + math.log2(max(comment_score, 0) + 1)
                     weighted_sentiment_sum += sentiment * weight
                     total_weight += weight
-                    raw_sentiment_score += sentiment
-                    total_comments += 1
+                    raw_sentiment_score_agg += sentiment
+                    total_comments_agg += 1
+                    processed_comments_count += 1
 
                     if sentiment > 0:
-                        total_positive_sentiments += sentiment
+                        total_positive_sentiments_agg += sentiment # Summing the scores (e.g., all +1s)
                     elif sentiment < 0:
-                        total_negative_sentiments += sentiment
+                        total_negative_sentiments_agg += sentiment # Summing the scores (e.g., all -1s)
 
+                    # --- Prepare Comment Document for Batch ---
                     comment_doc = {
-                        "body": comment.body,
-                        "author": str(comment.author),
-                        "created": datetime.datetime.fromtimestamp(comment.created_utc) if hasattr(comment, 'created_utc') else None,
-                        "score": comment.score,
+                        "body": comment_body,
+                        "author": comment_author,
+                        "created": comment_created_dt,
+                        "score": comment_score,
                         "sentiment": sentiment,
-                        'emotion': emotion,
-                        'category': category,
-                        'iit': iit_flag,
+                        "emotion": emotion,
+                        "category": category,
+                        "iit": iit_flag,
+                        # Add parent post id if needed for easier querying, though structure implies it
+                        # "postId": post_id
                     }
-                    # Write each comment into the subcollection: posts/{post_id}/comments/{comment_id}
-                    post_ref.collection("comments").document(comment.id).set(comment_doc)
+                    comment_ref = refs["posts"].document(post_id).collection("comments").document(comment_id)
+                    comment_batch.set(comment_ref, comment_doc)
+                    comment_write_count += 1
 
-                    # Update the author's stats
-                    update_author_stats(str(comment.author), sentiment, subreddit, is_post=False, post_id=submission.id, comment_id=comment.id)
-                    # For each comment processed:
-                    # Incrementally update category_stats for the comment.
-                    comment_date_str = datetime.datetime.fromtimestamp(comment.created_utc).strftime("%Y-%m-%d")
-                    update_category_stats_incremental(comment_date_str, category, sentiment, subreddit, post_id=submission.id, comment_id=comment.id)
+                    # --- Update In-Memory Aggregations ---
+                    update_author_stats_memory(author_updates, comment_author, sentiment, is_post=False, post_id=post_id, comment_id=comment_id)
+                    update_category_stats_memory(category_updates, comment_date_str, category, sentiment, post_id=post_id, comment_id=comment_id)
+
+                    # Commit comment batch periodically if needed (unlikely for single post)
+                    if comment_write_count >= BATCH_COMMIT_SIZE:
+                         print(f"[{subreddit_name}] Committing intermediate comment batch for post {post_id} ({comment_write_count} ops)...")
+                         try:
+                             comment_batch.commit()
+                             print(f"[{subreddit_name}] Intermediate comment batch committed.")
+                             comment_batch = db.batch() # New batch
+                             comment_write_count = 0
+                         except Exception as e:
+                             logging.error(f"[{subreddit_name}] Error committing intermediate comment batch for post {post_id}: {e}")
+                             comment_batch = db.batch() # Reset batch on error
+                             comment_write_count = 0
 
 
-
-                # Process overall post sentiment and summary using Gemini API with retries
-                prompt = f"""
-                You are an AI assigned to evaluate a Reddit post and its accompanying comments about 
-                Temasek Polytechnic. Review the following text and provide a concise output in this format: 
-                a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
-                then a comma, the identified emotion (happy, relief, stress, frustration, 
-                pride, disappointment, confusion, neutral), another comma, the determined category 
-                (academic, exams, facilities, subjects, administration, career, admission, results, internship,
-                lecturer, student life, infrastructure, classroom, events, CCA), 
-                and finally, another comma followed by "yes" or "no" indicating whether the text 
-                relates to the School of IIT (or the School of Informatics & IT, which includes
-                programs like Big Data Analytics (BDA), Applied AI (AAI), IT (ITO), Cybersecurity & Digital Forensics (CDF), 
-                Immersive Media & Game Development (IGD) and Common ICT (CIT).
-                Text: "{combined_post_comments}"
-                """
-                response_text = safe_generate_content(model, prompt)
-                parts = response_text.split(',')
-                if len(parts) < 5:
-                    logging.error(f"Unexpected response format for post {submission.id}: {response_text}")
-                else:
+                # Commit remaining comments for the post
+                if comment_write_count > 0:
+                    print(f"[{subreddit_name}] Committing final comment batch for post {post_id} ({comment_write_count} ops)...")
                     try:
-                        sentiment = int(parts[0].strip())
+                        comment_batch.commit()
+                        print(f"[{subreddit_name}] Final comment batch committed for post {post_id}.")
                     except Exception as e:
-                        logging.error(f"[{subreddit}] Error parsing sentiment for post {submission.id}: {e}")
-                        sentiment = 0
-                    emotion = parts[1].strip()
-                    category = parts[2].strip()
-                    iit_flag = parts[3].strip()  # Expected to be "yes" or "no"
+                         logging.error(f"[{subreddit_name}] Error committing final comment batch for post {post_id}: {e}")
 
-                prompt_summary = f"""
-                You are an AI tasked with analyzing a Reddit post and its accompanying comments about 
-                Temasek Polytechnic. Perform the following steps (do not provide headings or titles for any paragraphs):
 
-                1. Start with a concise paragraph summarizing the key topics, issues, 
-                or themes discussed across the post and comments.
+                # --- Gemini Analysis for Overall Post (incl. comments) ---
+                print(f"[{subreddit_name}] Analyzing overall post {post_id}...")
+                prompt_overall = f"""Analyze the following Reddit post and its comments about Temasek Polytechnic.
+Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
+- sentiment_score: 1 (positive), -1 (negative), 0 (neutral)
+- emotion: happy, relief, stress, frustration, pride, disappointment, confusion, neutral
+- category: academic, exams, facilities, subjects, administration, career, admission, results, internship, lecturer, student life, infrastructure, classroom, events, CCA, other
+- iit_flag: yes (related to School of IIT/Informatics & IT programs) or no
+Text: "{combined_post_comments}"
+"""
+                response_text_overall = safe_generate_content(model, prompt_overall)
+                parts_overall = response_text_overall.split(',')
 
-                2. In the second paragraph, describe the overall sentiment and emotional 
-                tone expressed. Mention any references to specific academic subjects, school facilities, 
-                or aspects of campus life, if applicable.
+                # Default values
+                post_sentiment = 0
+                post_emotion = "Neutral"
+                post_category = "Uncategorized"
+                post_iit_flag = "no"
 
-                3. If appropriate, include a third paragraph highlighting any 
-                concerns raised or constructive suggestions for school authorities. Clearly reference 
-                any specific subjects, facilities, or experiences mentioned.
+                if len(parts_overall) >= 4:
+                    try:
+                        post_sentiment = int(parts_overall[0].strip())
+                    except ValueError:
+                         logging.warning(f"[{subreddit_name}] Failed to parse overall sentiment for post {post_id}. Response: {response_text_overall}")
+                    post_emotion = parts_overall[1].strip() if parts_overall[1].strip() else "Neutral"
+                    post_category = parts_overall[2].strip().lower() if parts_overall[2].strip() else "Uncategorized"
+                    post_iit_flag = parts_overall[3].strip().lower() if parts_overall[3].strip().lower() in ["yes", "no"] else "no"
+                else:
+                    logging.warning(f"[{subreddit_name}] Unexpected Gemini response format for overall post {post_id}. Response: {response_text_overall}")
 
-                If the provided text lacks sufficient content for analysis (e.g., it only contains links, 
-                attachments, or unrelated filler), simply state:
-
-                “The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations.”
-
-                Text: "{combined_post_comments}"
-                """
+                # --- Gemini Summary ---
+                prompt_summary = f"""Create a 3-paragraph summary of the Reddit post and comments about Temasek Polytechnic.
+1.  Summarize key topics/themes.
+2.  Describe overall sentiment/emotion, mentioning specific subjects, facilities, or campus life aspects if relevant.
+3.  (If applicable) Highlight concerns or suggestions for authorities, referencing specifics.
+If the text is too short or lacks meaning, state: "The text does not contain enough meaningful information to generate a summary, sentiment analysis, or recommendations."
+Do not use headings.
+Text: "{combined_post_comments}"
+"""
                 summary = safe_generate_content(model, prompt_summary)
 
-                #related to tp.
-                
-                post_text = submission.title + " " + submission.selftext
+
+                # --- Final Calculations for Post ---
+                weighted_sentiment_score = weighted_sentiment_sum / total_weight if total_weight > 0 else 0
+                engagement_score = (submission.score + 1) * math.log2(total_comments_agg + 1) # Use aggregated count
                 related_to_tp = detect_temasek_poly_related(combined_post_comments)
 
-                # Calculate the weighted sentiment score for the post
-                weighted_sentiment_score = weighted_sentiment_sum / total_weight if total_weight > 0 else 0
-                # Update the post document.
-                post_ref.update({"weightedSentimentScore": weighted_sentiment_score})
-                post_ref.update({"rawSentimentScore": raw_sentiment_score})
-                post_ref.update({"summary": summary})
-                post_ref.update({"sentiment": sentiment})
-                post_ref.update({"emotion": emotion})
-                post_ref.update({"category": category})
-                post_ref.update({"iit": iit_flag})
-                post_ref.update({"relatedToTemasekPoly": related_to_tp})
-                # Update aggregated comment info
-                post_ref.update({
-                    'totalComments': total_comments,
-                    'totalPositiveSentiments': total_positive_sentiments,
-                    'totalNegativeSentiments': total_negative_sentiments
-                })
-                print(f"weightedSentimentScore: {weighted_sentiment_score}, rawSentimentScore: {raw_sentiment_score}")
-
-                # Update the author's stats
-                update_author_stats(str(submission.author), sentiment, subreddit, is_post=True, post_id=submission.id)
-
-                post_date_str = datetime.datetime.fromtimestamp(submission.created_utc).strftime("%Y-%m-%d")
-                update_category_stats_incremental(post_date_str, category, sentiment, subreddit, post_id=submission.id)
+                # --- Update In-Memory Aggregations for Post Author & Category ---
+                update_author_stats_memory(author_updates, post_author, post_sentiment, is_post=True, post_id=post_id)
+                update_category_stats_memory(category_updates, post_date_str, post_category, post_sentiment, post_id=post_id)
 
 
+                # --- CONSOLIDATED Post Update ---
+                post_update_data = {
+                    "summary": summary,
+                    "engagementScore": engagement_score,
+                    "rawSentimentScore": raw_sentiment_score_agg, # Use aggregated value
+                    "weightedSentimentScore": weighted_sentiment_score,
+                    "sentiment": post_sentiment, # Overall sentiment from Gemini
+                    "emotion": post_emotion,
+                    "category": post_category,
+                    "iit": post_iit_flag,
+                    "relatedToTemasekPoly": related_to_tp,
+                    "totalComments": total_comments_agg,
+                    "totalPositiveSentiments": total_positive_sentiments_agg,
+                    "totalNegativeSentiments": total_negative_sentiments_agg,
+                    "lastUpdated": firestore.SERVER_TIMESTAMP # Track when updated
+                }
 
-                # ADDED: Increment the counter after successfully processing this post
+                # Write the initial post doc and the update in one go if possible,
+                # but usually safer to set first, then update.
+                # Let's set the initial doc then update with aggregated/analyzed data.
+                post_ref = refs["posts"].document(post_id)
+                post_ref.set(post_doc, merge=True) # Use merge=True just in case it ran partially before
+                post_ref.update(post_update_data) # Single update call!
+
+                print(f"[{subreddit_name}] Successfully processed and updated post {post_id}.")
                 updated_posts_count += 1
 
+            except praw.exceptions.PRAWException as pe:
+                 logging.error(f"[{subreddit_name}] PRAW error processing submission {submission.id}: {pe}")
+                 print(f"[{subreddit_name}] PRAW Error on {submission.id}: {pe}")
             except Exception as e:
-                # ADDED: Log any errors during processing of a submission and continue with next post
-                logging.error(f"[{subreddit}] Error processing submission {submission.id}: {e}")
+                logging.exception(f"[{subreddit_name}] Unexpected error processing submission {submission.id}: {e}") # Log full traceback
+                print(f"[{subreddit_name}] Error on {submission.id}: {e}")
+                # Continue to next submission
                 continue
 
-        # Save the new last timestamp for the next run
-        set_last_timestamp(new_last_timestamp, subreddit)
+        # =====================================================
+        # 2. Check for NEW Comments on OLD Posts (Hybrid Approach)
+        # =====================================================
+        print(f"\n[{subreddit_name}] Scanning recent comments for updates to older posts...")
+        # Use a batch for writing these new comments
+        new_comment_batch = db.batch()
+        new_comment_write_count = 0
+        # Track posts that need recalculation due to new comments
+        posts_to_recalculate = defaultdict(list) # {post_id: [new_comment_data_dict]}
 
-        # ADDED: Print out the number of new posts updated
-        print(f"Number of new posts updated: {updated_posts_count}")
+        try:
+            # Limit might need adjustment based on comment frequency vs. run frequency
+            for comment in sub.comments(limit=500):
+                if not hasattr(comment, 'created_utc') or not hasattr(comment, 'id') or not hasattr(comment, 'submission'):
+                    continue # Skip malformed
 
-        # HYBRID ADDITION: Track new comments on older posts
-        print("Scanning recent comments for updates to older posts...")
-        for comment in sub.comments(limit=500):
-            try:
-                # Ignore comments already processed
-                comment_ref = refs["posts"].document(comment.submission.id).collection("comments").document(comment.id)
-                if comment_ref.get().exists:
-                    continue  # Already stored
-
-                comment_created = datetime.datetime.fromtimestamp(comment.created_utc)
-                if comment.created_utc <= last_timestamp:
-                    continue  # Already seen
-
-                # Fetch parent post info
-                post_id = comment.submission.id
-                post_ref = refs["posts"].document(post_id)
-                post_snapshot = post_ref.get()
-
-                if not post_snapshot.exists:
-                    continue  # Parent post was never processed (skip)
-
-                print(f"New comment on old post {post_id}: {comment.id}")
-
-                # Run Gemini prompt for single comment
-                prompt = f'''
-                You are an AI assigned to evaluate a Reddit post comment about 
-                Temasek Polytechnic. Review the following text and provide a concise output in this format: 
-                a sentiment score (1 for positive, -1 for negative, or 0 for neutral), 
-                then a comma, the identified emotion (happy, relief, stress, frustration, 
-                pride, disappointment, confusion, neutral), another comma, the determined category 
-                (academic, exams, facilities, subjects, administration, career, admission, results, internship,
-                lecturer, student life, infrastructure, classroom, events, CCA), 
-                and finally, a comma followed by "yes" or "no" indicating whether the text 
-                relates to the School of IIT (or the School of Informatics & IT, which includes
-                programs like Big Data Analytics, Applied AI, IT, Cybersecurity & Digital Forensics, 
-                Immersive Media & Game Development and Common ICT).
-                Text: "{comment.body}"
-                '''
-                response_text = safe_generate_content(model, prompt)
-                parts = response_text.split(',')
-
-                if len(parts) < 4:
-                    logging.error(f"[OLD POST] Unexpected response format for comment {comment.id}: {response_text}")
+                comment_created_utc = comment.created_utc
+                # Skip if comment is not new OR if its parent post was processed *in this run*
+                # (avoids double processing comments added during the run)
+                if comment_created_utc <= last_timestamp or comment.submission.created_utc > last_timestamp:
                     continue
 
-                sentiment = int(parts[0].strip())
-                emotion = parts[1].strip()
-                category = parts[2].strip()
-                iit_flag = parts[3].strip()
+                try:
+                    post_id = comment.submission.id
+                    comment_id = comment.id
 
-                comment_doc = {
-                    "body": comment.body,
-                    "author": str(comment.author),
-                    "created": comment_created,
-                    "score": comment.score,
-                    "sentiment": sentiment,
-                    "emotion": emotion,
-                    "category": category,
-                    "iit": iit_flag,
-                }
-                comment_ref.set(comment_doc)
+                    # Check if comment *document* already exists (more robust than just timestamp)
+                    comment_ref = refs["posts"].document(post_id).collection("comments").document(comment_id)
+                    if comment_ref.get().exists:
+                        # print(f"[{subreddit_name}] Skipping comment {comment_id} on old post {post_id} (already exists)")
+                        continue # Already stored
 
-                # Fetch all comments for that post and recalculate sentiment metrics
-                comments_ref = post_ref.collection("comments").stream()
-                total_comments = 0
-                total_positive = 0
-                total_negative = 0
-                weighted_sum = 0
-                weight_total = 0
+                    # Check if parent post exists (it should if it's older)
+                    post_ref = refs["posts"].document(post_id)
+                    post_snapshot = post_ref.get()
+                    if not post_snapshot.exists:
+                         logging.warning(f"[{subreddit_name}] Skipping comment {comment_id} as parent post {post_id} not found.")
+                         continue # Parent post not in DB, skip
 
-                for c in comments_ref:
-                    d = c.to_dict()
-                    score = d.get("score", 0)
-                    sent = d.get("sentiment", 0)
-                    weight = 1 + math.log2(max(score, 0) + 1)
-                    weighted_sum += sent * weight
-                    weight_total += weight
-                    total_comments += 1
-                    if sent > 0:
-                        total_positive += sent
-                    elif sent < 0:
-                        total_negative += sent
-                    
-                    
-                    # Update the author's stats
-                    author_name = d.get("author", "Unknown")
-                    update_author_stats(author_name, sent, subreddit, is_post=False, post_id=post_id, comment_id=c.id)
+                    print(f"[{subreddit_name}] Found NEW comment {comment_id} on OLD post {post_id}")
 
-                    # Update category_stats incrementally for the new comment.
-                    comment_date_str = datetime.datetime.fromtimestamp(comment.created_utc).strftime("%Y-%m-%d")
-                    update_category_stats_incremental(comment_date_str, category, sentiment, subreddit, post_id=post_id, comment_id=comment.id)
+                    # --- Process the new comment (similar to above) ---
+                    comment_author = str(comment.author) if comment.author else "[deleted]"
+                    comment_body = comment.body
+                    comment_score = comment.score
+                    comment_created_dt = datetime.datetime.fromtimestamp(comment_created_utc)
+                    comment_date_str = comment_created_dt.strftime("%Y-%m-%d")
 
-                weighted_sent = weighted_sum / weight_total if weight_total > 0 else 0
+                    prompt = f"""Analyze the following Reddit comment text related to Temasek Polytechnic.
+Provide output as: <sentiment_score>,<emotion>,<category>,<iit_flag>
+[...] # Same prompt details as before
+Text: "{comment_body}"
+"""
+                    response_text = safe_generate_content(model, prompt)
+                    parts = response_text.split(',')
+                    # Parse response with defaults (same logic as above)
+                    sentiment = 0; emotion = "Neutral"; category = "Uncategorized"; iit_flag = "no"
+                    if len(parts) >= 4:
+                        try: sentiment = int(parts[0].strip())
+                        except ValueError: pass
+                        emotion = parts[1].strip() or "Neutral"
+                        category = parts[2].strip().lower() or "Uncategorized"
+                        iit_flag = parts[3].strip().lower() if parts[3].strip().lower() in ["yes", "no"] else "no"
+                    else:
+                         logging.warning(f"[{subreddit_name}] Unexpected Gemini format for new comment {comment_id} on old post {post_id}.")
 
-                post_ref.update({
-                    'totalComments': total_comments,
-                    'totalPositiveSentiments': total_positive,
-                    'totalNegativeSentiments': total_negative,
-                    'weightedSentimentScore': weighted_sent
-                })
+                    comment_doc = {
+                        "body": comment_body, "author": comment_author, "created": comment_created_dt,
+                        "score": comment_score, "sentiment": sentiment, "emotion": emotion,
+                        "category": category, "iit": iit_flag
+                    }
 
-            except Exception as e:
-                logging.error(f"[{subreddit}] Error processing new comment on old post: {e}")
-                continue
+                    # Add comment write to batch
+                    new_comment_batch.set(comment_ref, comment_doc)
+                    new_comment_write_count += 1
+                    new_comments_on_old_posts_count += 1
+                    processed_comments_count += 1 # Also count this as a processed comment
+
+                    # Add data needed for recalculation later
+                    posts_to_recalculate[post_id].append({
+                        'sentiment': sentiment, 'score': comment_score
+                    })
 
 
+                    # --- Update In-Memory Aggregations ---
+                    update_author_stats_memory(author_updates, comment_author, sentiment, is_post=False, post_id=post_id, comment_id=comment_id)
+                    update_category_stats_memory(category_updates, comment_date_str, category, sentiment, post_id=post_id, comment_id=comment_id)
+
+                    # Commit batch periodically
+                    if new_comment_write_count >= BATCH_COMMIT_SIZE:
+                        print(f"[{subreddit_name}] Committing intermediate new comment batch ({new_comment_write_count} ops)...")
+                        try:
+                            new_comment_batch.commit()
+                            print(f"[{subreddit_name}] Intermediate new comment batch committed.")
+                            new_comment_batch = db.batch()
+                            new_comment_write_count = 0
+                        except Exception as e:
+                            logging.error(f"[{subreddit_name}] Error committing intermediate new comment batch: {e}")
+                            new_comment_batch = db.batch() # Reset
+                            new_comment_write_count = 0
+
+
+                except praw.exceptions.PRAWException as pe:
+                     logging.error(f"[{subreddit_name}] PRAW error processing comment {getattr(comment, 'id', 'N/A')} on old post: {pe}")
+                except Exception as e:
+                    logging.exception(f"[{subreddit_name}] Unexpected error processing comment {getattr(comment, 'id', 'N/A')} on old post: {e}")
+                    continue # Continue with the next comment
+
+            # Commit remaining new comments
+            if new_comment_write_count > 0:
+                print(f"[{subreddit_name}] Committing final new comment batch ({new_comment_write_count} ops)...")
+                try:
+                    new_comment_batch.commit()
+                    print(f"[{subreddit_name}] Final new comment batch committed.")
+                except Exception as e:
+                    logging.error(f"[{subreddit_name}] Error committing final new comment batch: {e}")
+
+
+            # =====================================================
+            # 3. Recalculate Stats for Old Posts with New Comments
+            # =====================================================
+            if posts_to_recalculate:
+                print(f"\n[{subreddit_name}] Recalculating stats for {len(posts_to_recalculate)} old posts with new comments...")
+                recalc_batch = db.batch()
+                recalc_ops_count = 0
+
+                for post_id, _ in posts_to_recalculate.items(): # We only need post_id here
+                    try:
+                        post_ref = refs["posts"].document(post_id)
+                        # Fetch ALL comments for the post *now* including the newly added ones
+                        comments_snapshot = post_ref.collection("comments").stream()
+
+                        # Recalculate aggregate scores
+                        total_comments = 0
+                        total_positive = 0
+                        total_negative = 0
+                        weighted_sum = 0.0
+                        weight_total = 0.0
+                        raw_sum = 0.0
+
+                        for c_snap in comments_snapshot:
+                            c_data = c_snap.to_dict()
+                            sent = c_data.get("sentiment", 0)
+                            score = c_data.get("score", 0)
+
+                            weight = 1 + math.log2(max(score, 0) + 1)
+                            weighted_sum += sent * weight
+                            weight_total += weight
+                            raw_sum += sent
+                            total_comments += 1
+                            if sent > 0:
+                                total_positive += sent
+                            elif sent < 0:
+                                total_negative += sent
+
+                        # Calculate final scores
+                        weighted_sent = weighted_sum / weight_total if weight_total > 0 else 0
+
+                        # Prepare update data for the post
+                        post_recalc_update = {
+                            'totalComments': total_comments,
+                            'totalPositiveSentiments': total_positive,
+                            'totalNegativeSentiments': total_negative,
+                            'weightedSentimentScore': weighted_sent,
+                            'rawSentimentScore': raw_sum, # Update raw score too
+                            'lastUpdated': firestore.SERVER_TIMESTAMP
+                        }
+
+                        # Add update to batch
+                        recalc_batch.update(post_ref, post_recalc_update)
+                        recalc_ops_count += 1
+
+                        # Commit batch periodically
+                        if recalc_ops_count >= BATCH_COMMIT_SIZE:
+                             print(f"[{subreddit_name}] Committing intermediate recalc batch ({recalc_ops_count} ops)...")
+                             try:
+                                 recalc_batch.commit()
+                                 print(f"[{subreddit_name}] Intermediate recalc batch committed.")
+                                 recalc_batch = db.batch()
+                                 recalc_ops_count = 0
+                             except Exception as e:
+                                 logging.error(f"[{subreddit_name}] Error committing intermediate recalc batch: {e}")
+                                 recalc_batch = db.batch() # Reset
+                                 recalc_ops_count = 0
+
+                    except Exception as e:
+                        logging.error(f"[{subreddit_name}] Error recalculating stats for old post {post_id}: {e}")
+                        continue # Skip to next post on error
+
+                # Commit final recalc batch
+                if recalc_ops_count > 0:
+                    print(f"[{subreddit_name}] Committing final recalc batch ({recalc_ops_count} ops)...")
+                    try:
+                        recalc_batch.commit()
+                        print(f"[{subreddit_name}] Final recalc batch committed.")
+                    except Exception as e:
+                        logging.error(f"[{subreddit_name}] Error committing final recalc batch: {e}")
+
+        except praw.exceptions.PRAWException as pe:
+            logging.error(f"[{subreddit_name}] PRAW error during recent comment scan: {pe}")
+            print(f"[{subreddit_name}] PRAW Error during comment scan: {pe}")
+        except Exception as e:
+            logging.exception(f"[{subreddit_name}] Unexpected error during recent comment scan: {e}")
+            print(f"[{subreddit_name}] Error during comment scan: {e}")
+
+
+        # =============================================
+        # 4. Commit Aggregated Stats (Authors & Categories)
+        # =============================================
+        print(f"\n[{subreddit_name}] Committing aggregated author and category stats...")
+        commit_author_stats(author_updates, refs)
+        # commit_category_stats(category_updates, refs)
+        commit_category_stats_non_transactional(category_updates, refs)
+
+
+        # =============================================
+        # 5. Save the final timestamp
+        # =============================================
+        if new_last_timestamp > last_timestamp:
+             set_last_timestamp(new_last_timestamp, subreddit_name, refs)
+             print(f"[{subreddit_name}] Updated last timestamp to: {datetime.datetime.fromtimestamp(new_last_timestamp)} ({new_last_timestamp})")
+        else:
+             print(f"[{subreddit_name}] Last timestamp remains unchanged.")
+
+
+        # --- Final Summary ---
+        print(f"\n--- Finished crawl for r/{subreddit_name} ---")
+        print(f"  New posts processed: {updated_posts_count}")
+        print(f"  Total comments processed (new posts + new on old): {processed_comments_count}")
+        print(f"  New comments found on old posts: {new_comments_on_old_posts_count}")
+
+    except praw.exceptions.PRAWException as pe:
+        logging.error(f"[{subreddit_name}] CRITICAL PRAW error during main crawl loop: {pe}")
+        print(f"[{subreddit_name}] CRITICAL PRAW Error: {pe}")
     except Exception as e:
-        # ADDED: Log any critical errors that occur during the crawling process
-        logging.error(f"Critical error in crawling process: {e}")
+        logging.exception(f"[{subreddit_name}] CRITICAL unexpected error in main crawl function: {e}") # Log full traceback
+        print(f"[{subreddit_name}] CRITICAL Error: {e}")
+
 
 # ----------------------------
 # Main - run for all subreddits
 # ----------------------------
 if __name__ == "__main__":
+    start_time = time.time()
+    print("Script started.")
+
     # Configure Google Gemini
-    genai.configure(api_key=GOOGLE_GEMINI_API_KEY)
-    model = genai.GenerativeModel()
+    try:
+        genai.configure(api_key=GOOGLE_GEMINI_API_KEY)
+        # Optional: Adjust safety settings if needed, e.g.
+        # safety_settings = [
+        #     {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
+        #     {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
+        #     # ... other categories
+        # ]
+        # model = genai.GenerativeModel(safety_settings=safety_settings)
+        model = genai.GenerativeModel() # Default settings
+        print("Google Gemini Configured.")
+    except Exception as e:
+        logging.error(f"Failed to configure Google Gemini: {e}")
+        print(f"CRITICAL: Failed to configure Google Gemini: {e}")
+        exit()
 
-    # Load the subreddits from config
     subreddits = load_subreddits()
+    if not subreddits:
+        print("No subreddits loaded. Exiting.")
+        exit()
 
-    # For each subreddit in the list, run the same logic
     for sb_name in subreddits:
         crawl_subreddit(sb_name, model)
+        print("-" * 50) # Separator between subreddits
+
+    end_time = time.time()
+    print(f"\nScript finished in {end_time - start_time:.2f} seconds.")
