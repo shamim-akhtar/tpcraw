@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Weighted sentiment
       const weightedScore = postData.weightedSentimentScore || 0;
       // Engagement score
-      const engagementScore = postData.engagementScore || 0;
+      const engagementScore = postData.engagementScore ?? 0;
       const totalComments = postData.totalComments || 0;
 
       const positiveData = postData.totalPositiveSentiments || 0;
@@ -576,7 +576,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const category = postData.category;
     const emotion = postData.emotion;
-    const engagementScore = postData.engagementScore;
+    const engagementScore = postData.engagementScore ?? 0;
     const rawSentimentScore = postData.rawSentimentScore;
     const score = postData.score;
     const summary = postData.summary;
@@ -584,11 +584,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const totalPositiveSentiments = postData.totalPositiveSentiments;
     const weightedSentimentScore = postData.weightedSentimentScore;
 
+    const safeNumberStr = engagementScore.toFixed(2);
     const badgesHtml = `
       <div class="shields-container">
         <img src="https://img.shields.io/badge/category-${encodeURIComponent(category)}-blue?style=flat-square" alt="Category">
         <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
-        <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
+        <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
         <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(score)}-brightgreen?style=flat-square" alt="Reddit Score">
         <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
         <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
@@ -1088,11 +1089,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       const postSnap = await getDoc(postRef);
       if (postSnap.exists()) {
         const postData = postSnap.data();
+        const engagementScore = postData.engagementScore ?? 0;
+        const safeNumberStr = engagementScore.toFixed(2);
         const badgesHtml = `
           <div class="shields-container">
             <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
             <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(postData.emotion)}-purple?style=flat-square" alt="Emotion">
-            <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(postData.engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
+            <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
             <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(postData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
             <img src="https://img.shields.io/badge/positive_sentiments-${postData.totalPositiveSentiments}-green?style=flat-square" alt="Positive">
             <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(postData.totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
@@ -1172,11 +1175,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         postSnaps.forEach(postSnap => {
           if (postSnap.exists()) {
             const postData = postSnap.data();
+            
+            const engagementScore = postData.engagementScore ?? 0;
+            const safeNumberStr = engagementScore.toFixed(2);
+          
             const badgesHtml = `
               <div class="shields-container">
                 <img src="https://img.shields.io/badge/category-${encodeURIComponent(postData.category)}-blue?style=flat-square" alt="Category">
                 <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(postData.emotion)}-purple?style=flat-square" alt="Emotion">
-                <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(postData.engagementScore.toFixed(2))}-orange?style=flat-square" alt="Engagement">
+                <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
                 <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(postData.score)}-brightgreen?style=flat-square" alt="Reddit Score">
                 <img src="https://img.shields.io/badge/positive_sentiments-${encodeURIComponent(postData.totalPositiveSentiments)}-green?style=flat-square" alt="Positive">
                 <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(postData.totalNegativeSentiments)}-red?style=flat-square" alt="Negative">
