@@ -48,6 +48,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 6. Global array to store fetched posts
   let allPostsData = [];
 
+  // 7. Get references to new search elements
+  const keywordInput = document.getElementById('keyword-search');
+  const searchButton = document.getElementById('search-btn');
+  const postDetailsContainer = document.getElementById('post-details'); // Reference to the display area
+  
+
   // --------------------------------------------------------------
   // FETCH FIRESTORE POSTS - with filters for subreddit & checkboxes
   // --------------------------------------------------------------
@@ -1247,6 +1253,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // ---------------------------------------------
+  // NEW: KEYWORD SEARCH FUNCTIONALITY
+  // ---------------------------------------------
+
+  // Function to highlight keyword in text
+  function highlightKeyword(text, keyword) {
+    if (!text || !keyword) return text;
+    try {
+      // Use RegExp for case-insensitive highlighting of the whole word/phrase
+      const regex = new RegExp(`(${keyword.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi'); 
+      return text.replace(regex, '<mark>$1</mark>');
+    } 
+    catch (e) {
+      console.error("Regex error during highlighting:", e);
+      // Fallback to simple includes highlighting if regex fails
+        const lowerText = text.toLowerCase();
+        const lowerKeyword = keyword.toLowerCase();
+        let startIndex = lowerText.indexOf(lowerKeyword);
+        if (startIndex === -1) return text;
+        let result = text.substring(0, startIndex) + 
+                    '<mark>' + text.substring(startIndex, startIndex + keyword.length) + '</mark>' +
+                    text.substring(startIndex + keyword.length);
+        return result; // Only highlights first instance in fallback
+    }
+  }
+
+  // ---------------------------------------------
   // Main "updateCharts" logic
   // ---------------------------------------------
   async function updateCharts() {
@@ -1300,8 +1332,238 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  // Function to perform search across posts and comments
+  async function searchByKeyword() {
+    const keyword = keywordInput.value.trim();
+    if (!keyword) {
+      postDetailsContainer.innerHTML = "<p>Please enter a keyword to search.</p>";
+      return;
+    }
+
+    postDetailsContainer.innerHTML = `<p>Searching for "${keyword}"...</p>`;
+
+    const subredditSelect = document.getElementById('subreddit-select');
+    const selectedSubreddit = subredditSelect.value;
+    const lowerSub = selectedSubreddit.toLowerCase();
+    const postsCollectionName = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
+    const lowerKeyword = keyword.toLowerCase();
+
+    let matchingPosts = [];
+    let matchingComments = []; // Will store { commentData, postId, postTitle }
+
+    try {
+      // Strategy: Fetch all posts within the date range (simpler than complex backend search)
+      // Note: This might be slow for very large date ranges/subreddits.
+      // Consider adding limits or using a backend search service for production.
+      const startDateValue = document.getElementById('start-date').value;
+      const endDateValue = document.getElementById('end-date').value;
+      const startDate = new Date(startDateValue);
+      const endDate = new Date(endDateValue);
+      endDate.setHours(23, 59, 59, 999);
+
+      let postsQuery = query(collection(db, postsCollectionName),
+          orderBy('created', 'desc'), // Keep ordering consistent
+          where('created', '>=', startDate),
+          where('created', '<=', endDate)
+      );
+
+      const postsSnapshot = await getDocs(postsQuery);
+      console.log(`Keyword search: Found ${postsSnapshot.size} posts in date range.`);
+
+      const commentFetchPromises = [];
+
+      postsSnapshot.forEach(postDoc => {
+        const postData = postDoc.data();
+        const postId = postDoc.id;
+        const postTitle = postData.title || "No Title";
+        const postBody = postData.body || "";
+
+        let postMatches = false;
+        // Check if post title or body matches
+        if (postTitle.toLowerCase().includes(lowerKeyword) || postBody.toLowerCase().includes(lowerKeyword)) {
+          matchingPosts.push({ postId, ...postData });
+          postMatches = true; // Mark post as matched
+        }
+
+        // Regardless of post match, check its comments - queue fetch promise
+        const commentsRef = collection(db, postsCollectionName, postId, 'comments');
+        commentFetchPromises.push(
+            getDocs(commentsRef).then(commentsSnapshot => {
+                let commentsForThisPost = [];
+                commentsSnapshot.forEach(commentDoc => {
+                    const commentData = commentDoc.data();
+                    const commentBody = commentData.body || "";
+                    if (commentBody.toLowerCase().includes(lowerKeyword)) {
+                        commentsForThisPost.push({ commentData, commentId: commentDoc.id, postId, postTitle });
+                    }
+                });
+                return commentsForThisPost; // Return matched comments for this post
+            }).catch(error => {
+                console.error(`Error fetching comments for post ${postId}:`, error);
+                return []; // Return empty array on error for this post's comments
+            })
+        );
+      });
+
+      // Wait for all comment fetches to complete
+      const commentsResults = await Promise.all(commentFetchPromises);
+      
+      // Flatten the results from comment fetches
+       commentsResults.forEach(postComments => {
+           matchingComments.push(...postComments);
+       });
+
+
+      displaySearchResults(keyword, matchingPosts, matchingComments);
+
+    } catch (error) {
+      console.error("Error during keyword search:", error);
+      postDetailsContainer.innerHTML = `<p>An error occurred during the search. Please check the console.</p>`;
+    }
+  }
+
+  // Function to display search results
+  function displaySearchResults(keyword, posts, comments) {
+    if (posts.length === 0 && comments.length === 0) {
+      postDetailsContainer.innerHTML = `<p>No posts or comments found matching "${keyword}".</p>`;
+      return;
+    }
+
+    let html = `<h2>Search Results for "${keyword}"</h2>`;
+
+    // Display matching posts
+    if (posts.length > 0) {
+      html += `<h3>Matching Posts (${posts.length})</h3>`;
+      posts.forEach(postData => {
+        const postTitle = postData.title || "No Title";
+        const postBody = postData.body || "";
+        const author = postData.author || 'Unknown';
+         let date = new Date(); // Fallback
+         if (postData.created && postData.created.toDate) {
+             date = postData.created.toDate();
+         } else if (postData.created) {
+              try { date = new Date(postData.created); } catch(e) {}
+         }
+        const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        const url = postData.URL || '#';
+
+        html += `
+          <div class="search-result-post" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px;">
+            <h4><a href="${url}" target="_blank">${highlightKeyword(postTitle, keyword)}</a></h4>
+            <p style="font-size: 0.8em; color: #555;">By ${author} on ${formattedDate}</p>
+            <p>${highlightKeyword(postBody, keyword)}</p>
+            ${generateBadgesHtml(postData)}
+            <button class="view-full-post-btn" data-post-id="${postData.postId}" style="margin-top: 5px; padding: 3px 8px; font-size: 0.8em;">View Full Post & Comments</button>
+          </div>
+        `;
+      });
+    }
+
+    // Display matching comments
+    if (comments.length > 0) {
+      html += `<h3>Matching Comments (${comments.length})</h3>`;
+      comments.forEach(commentInfo => {
+        const commentData = commentInfo.commentData;
+        const commentBody = commentData.body || "";
+        const author = commentData.author || 'Unknown';
+         let date = new Date(); // Fallback
+         if (commentData.created && commentData.created.toDate) {
+             date = commentData.created.toDate();
+         } else if (commentData.created) {
+             try { date = new Date(commentData.created); } catch(e) {}
+         }
+        const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+        html += `
+          <div class="search-result-comment" style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px; background-color: #f9f9f9;">
+            <p style="font-size: 0.8em; color: #555;">Comment by ${author} on ${formattedDate} (in post: <a href="#" class="view-full-post-link" data-post-id="${commentInfo.postId}">${commentInfo.postTitle}</a>)</p>
+            <p>${highlightKeyword(commentBody, keyword)}</p>
+            ${generateCommentBadgesHtml(commentData)}
+          </div>
+        `;
+      });
+    }
+
+    postDetailsContainer.innerHTML = html;
+
+    // Add event listeners for the "View Full Post" buttons/links
+    postDetailsContainer.querySelectorAll('.view-full-post-btn, .view-full-post-link').forEach(button => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault(); // Prevent link navigation if it's an <a> tag
+        const postId = button.getAttribute('data-post-id');
+        if (postId) {
+          fetchAndDisplayPostDetails(postId); // Call existing function to show full details
+        }
+      });
+    });
+  }
+
+  // Helper function to generate badges HTML for a post (similar to fetchAndDisplayPostDetails)
+    function generateBadgesHtml(postData) {
+        const category = postData.category || 'N/A';
+        const emotion = postData.emotion || 'N/A';
+        const engagementScore = postData.engagementScore ?? 0;
+        const score = postData.score ?? 0;
+        const totalNegativeSentiments = postData.totalNegativeSentiments || 0;
+        const totalPositiveSentiments = postData.totalPositiveSentiments || 0;
+        const weightedSentimentScore = postData.weightedSentimentScore ?? 0;
+        const safeNumberStr = engagementScore.toFixed(2);
+
+        // Ensure values are strings before replacing hyphens for badge URLs
+        const scoreStr = score.toString();
+        const negSentStr = totalNegativeSentiments.toString();
+        const weightSentStr = weightedSentimentScore.toFixed(2).toString();
+
+
+        return `
+            <div class="shields-container" style="margin-top: 5px;">
+                <img src="https://img.shields.io/badge/category-${encodeURIComponent(category)}-blue?style=flat-square" alt="Category">
+                <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
+                <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
+                <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(scoreStr.replace(/-/g, '--'))}-brightgreen?style=flat-square" alt="Reddit Score">
+                <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
+                <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(negSentStr.replace(/-/g, '--'))}-red?style=flat-square" alt="Negative">
+                <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(weightSentStr.replace(/-/g, '--'))}-blueviolet?style=flat-square" alt="Weighted">
+            </div>
+        `;
+    }
+
+  // Helper function to generate badges HTML for a comment
+    function generateCommentBadgesHtml(commentData) {
+        const sentiment = commentData.sentiment ?? 0;
+        let sentimentColor = 'orange';
+        if (sentiment < 0) sentimentColor = 'red';
+        else if (sentiment > 0) sentimentColor = 'green';
+        const score = commentData.score ?? 0;
+        const emotion = commentData.emotion || 'N/A';
+
+        // Ensure values are strings for badge URLs
+        const scoreStr = score.toString();
+        const sentimentStr = sentiment.toFixed(2).toString(); // Use toFixed for consistency
+
+
+        return `
+             <div class="shields-container" style="margin-top: 5px;">
+                 <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(scoreStr.replace(/-/g, '--'))}-brightgreen?style=flat-square" alt="Reddit Score">
+                 <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(sentimentStr.replace(/-/g, '--'))}-${sentimentColor}?style=flat-square" alt="Sentiment">
+                 <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
+             </div>
+         `;
+    }
+
   // 10. Filter button
   document.getElementById('filter-btn').addEventListener('click', updateCharts);
+
+  // NEW: Search button listener
+  searchButton.addEventListener('click', searchByKeyword);
+
+  // NEW: Allow pressing Enter in keyword input to trigger search
+  keywordInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent potential form submission
+      searchByKeyword();
+    }
+  });
 
   // 11. Initial load
   updateCharts();
