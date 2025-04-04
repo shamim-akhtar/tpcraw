@@ -395,9 +395,10 @@ async def on_ready():
 
                         # Ensure parent doc
                         parent_ref = refs["posts"].document(parent_id)
-                        if not (await parent_ref.get()).exists:
+                        parent_doc = parent_ref.get()
+                        if not parent_doc.exists:
                             # create a stub
-                            parent_ref.set({"content": "[missing parent stub]", "created": message.created_at}, merge=True)
+                            parent_ref.set({"body": "[missing parent stub]", "created": message.created_at}, merge=True)
 
                         # Analyze
                         prompt = PROMPT_COMMENT + f"\nText: {message.content}"
@@ -420,8 +421,8 @@ async def on_ready():
                                 iit_flag = iit_flag_candidate
 
                         comment_doc = {
-                            "message_id": message.id,
-                            "content": message.content,
+                            # "message_id": message.id,
+                            "body": message.content,
                             "author": str(message.author) or "unknown",
                             "created": message.created_at,
                             "sentiment": sentiment,
@@ -474,7 +475,8 @@ async def on_ready():
 
                         post_doc = {
                             "message_id": message.id,
-                            "content": message.content,
+                            "body": message.content,
+                            "title": message.content[0:35],
                             "author": str(message.author) or "unknown",
                             "created": message.created_at,
                             "sentiment": post_sentiment,
