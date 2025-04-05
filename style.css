@@ -31,6 +31,7 @@ header h1 {
   margin: 20px auto;
   max-width: 1400px;
   justify-content: center;
+  align-items: center; /* Align items vertically */
 }
 
 .controls .date-range {
@@ -76,12 +77,20 @@ header h1 {
   background-color: #4CAF50;
   color: white;
   border: none;
-  padding: 12px 20px;
+  /* Set explicit height and remove vertical padding */
+  height: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
   border-radius: 6px;
   cursor: pointer;
   font-size: 1.1em;
   transition: background-color 0.3s ease;
   box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  /* Ensure text is centered vertically */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
 .controls button:hover {
@@ -90,6 +99,11 @@ header h1 {
 
 #search-btn{
   background-color: #007BFF;
+  /* Set explicit height and remove vertical padding */
+  height: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+  /* Inherit other styles from .controls button */
 }
 
 #search-btn:hover{
@@ -108,6 +122,8 @@ header h1 {
   font-size: 1em;
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
   width: 250px;
+  height: 40px; /* Match button height */
+  box-sizing: border-box; /* Include padding and border in element's total width and height */
 }
 
 .main-container {
