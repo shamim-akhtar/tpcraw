@@ -1084,20 +1084,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         let date = new Date(); // Fallback
         if (postData.created && postData.created.toDate) {
-            date = postData.created.toDate();
-        } else if (postData.created) {
-             try { date = new Date(postData.created); } catch(e) {}
+          date = postData.created.toDate();
+        } 
+        else if (postData.created) {
+          try { 
+            date = new Date(postData.created); 
+          } 
+          catch(e) {}
         }
         const formattedPostDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });        
         const postUrl = postData.URL || '#';
         html += `
-            <div class="search-result-post" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px;">
-                <h4><a href="${postUrl}" target="_blank">${postTitle}</a></h4>
-                <p style="font-size: 0.8em; color: #555;">By ${author} on ${formattedPostDate}</p>
-                <p>${postBody ? postBody.substring(0, 2000) + (postBody.length > 300 ? '...' : '') : '<i>No body content</i>'}</p>
-                ${generateBadgesHtml(postData)}
-                <button class="view-full-post-btn" data-post-id="${postId}" style="margin-top: 5px; padding: 3px 8px; font-size: 0.8em;">View Full Post & Comments</button>
-            </div>
+          <div class="search-result-post" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px;">
+            <h4><a href="${postUrl}" target="_blank">${postTitle}</a></h4>
+            <p style="font-size: 0.8em; color: #555;">By ${author} on ${formattedPostDate}</p>
+            <p>${postBody ? postBody : '<i>No body content</i>'}</p>
+            ${generateBadgesHtml(postData)}
+            <button class="view-full-post-btn" data-post-id="${postId}" style="margin-top: 5px; padding: 3px 8px; font-size: 0.8em;">
+              View Full Post & Comments
+            </button>
+          </div>
         `;
       }
     }
@@ -1116,20 +1122,27 @@ document.addEventListener('DOMContentLoaded', async () => {
           const commentPostId = commentSnap.ref.parent.parent.id; // *** Get postId from reference ***
           let date = new Date(); // Fallback
           if (commentData.created && commentData.created.toDate) {
-              date = commentData.created.toDate();
-          } else if (commentData.created) {
-              try { date = new Date(commentData.created); } catch(e) {}
+            date = commentData.created.toDate();
+          } 
+          else if (commentData.created) {
+            try { 
+              date = new Date(commentData.created); 
+            } 
+            catch(e) {}
           }
           const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
           html += `
           <div class="search-result-comment" style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px; background-color: #f9f9f9;">
-              <p style="font-size: 0.8em; color: #555;">
-                  Comment by ${author} on ${formattedDate}
-                  (in post: <a href="#" class="view-full-post-link" data-post-id="${commentPostId}">${commentPostId}</a>)
-              </p>
-              <p>${commentBody}</p>
-              ${generateCommentBadgesHtml(commentData)}
+            <p style="font-size: 0.8em; color: #555;">
+              Comment by ${author} on ${formattedDate}
+              (in post: <a href="#" class="view-full-post-link" data-post-id="${commentPostId}">${commentPostId}</a>)
+            </p>
+            <p>${commentBody}</p>
+            ${generateCommentBadgesHtml(commentData)}
+            <button class="view-full-post-btn" data-post-id="${commentPostId}" style="margin-top: 5px; padding: 3px 8px; font-size: 0.8em;">
+              View Full Post & Comments
+            </button>
           </div>
           `;
         }
@@ -1351,8 +1364,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       let startIndex = lowerText.indexOf(lowerKeyword);
       if (startIndex === -1) return text;
       let result = text.substring(0, startIndex) + 
-                  '<mark>' + text.substring(startIndex, startIndex + keyword.length) + '</mark>' +
-                  text.substring(startIndex + keyword.length);
+        '<mark>' + text.substring(startIndex, startIndex + keyword.length) + '</mark>' +
+        text.substring(startIndex + keyword.length);
       return result; // Only highlights first instance in fallback
     }
   }
@@ -1595,57 +1608,55 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Helper function to generate badges HTML for a post (similar to fetchAndDisplayPostDetails)
-    function generateBadgesHtml(postData) {
-        const category = postData.category || 'N/A';
-        const emotion = postData.emotion || 'N/A';
-        const engagementScore = postData.engagementScore ?? 0;
-        const score = postData.score ?? 0;
-        const totalNegativeSentiments = postData.totalNegativeSentiments || 0;
-        const totalPositiveSentiments = postData.totalPositiveSentiments || 0;
-        const weightedSentimentScore = postData.weightedSentimentScore ?? 0;
-        const safeNumberStr = engagementScore.toFixed(2);
+  function generateBadgesHtml(postData) {
+    const category = postData.category || 'N/A';
+    const emotion = postData.emotion || 'N/A';
+    const engagementScore = postData.engagementScore ?? 0;
+    const score = postData.score ?? 0;
+    const totalNegativeSentiments = postData.totalNegativeSentiments || 0;
+    const totalPositiveSentiments = postData.totalPositiveSentiments || 0;
+    const weightedSentimentScore = postData.weightedSentimentScore ?? 0;
+    const safeNumberStr = engagementScore.toFixed(2);
 
-        // Ensure values are strings before replacing hyphens for badge URLs
-        const scoreStr = score.toString();
-        const negSentStr = totalNegativeSentiments.toString();
-        const weightSentStr = weightedSentimentScore.toFixed(2).toString();
+    // Ensure values are strings before replacing hyphens for badge URLs
+    const scoreStr = score.toString();
+    const negSentStr = totalNegativeSentiments.toString();
+    const weightSentStr = weightedSentimentScore.toFixed(2).toString();
 
-
-        return `
-            <div class="shields-container" style="margin-top: 5px;">
-                <img src="https://img.shields.io/badge/category-${encodeURIComponent(category)}-blue?style=flat-square" alt="Category">
-                <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
-                <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
-                <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(scoreStr.replace(/-/g, '--'))}-brightgreen?style=flat-square" alt="Reddit Score">
-                <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
-                <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(negSentStr.replace(/-/g, '--'))}-red?style=flat-square" alt="Negative">
-                <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(weightSentStr.replace(/-/g, '--'))}-blueviolet?style=flat-square" alt="Weighted">
-            </div>
-        `;
-    }
+    return `
+      <div class="shields-container" style="margin-top: 5px;">
+        <img src="https://img.shields.io/badge/category-${encodeURIComponent(category)}-blue?style=flat-square" alt="Category">
+        <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
+        <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
+        <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(scoreStr.replace(/-/g, '--'))}-brightgreen?style=flat-square" alt="Reddit Score">
+        <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
+        <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(negSentStr.replace(/-/g, '--'))}-red?style=flat-square" alt="Negative">
+        <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(weightSentStr.replace(/-/g, '--'))}-blueviolet?style=flat-square" alt="Weighted">
+      </div>
+    `;
+  }
 
   // Helper function to generate badges HTML for a comment
-    function generateCommentBadgesHtml(commentData) {
-        const sentiment = commentData.sentiment ?? 0;
-        let sentimentColor = 'orange';
-        if (sentiment < 0) sentimentColor = 'red';
-        else if (sentiment > 0) sentimentColor = 'green';
-        const score = commentData.score ?? 0;
-        const emotion = commentData.emotion || 'N/A';
+  function generateCommentBadgesHtml(commentData) {
+    const sentiment = commentData.sentiment ?? 0;
+    let sentimentColor = 'orange';
+    if (sentiment < 0) sentimentColor = 'red';
+    else if (sentiment > 0) sentimentColor = 'green';
+    const score = commentData.score ?? 0;
+    const emotion = commentData.emotion || 'N/A';
 
-        // Ensure values are strings for badge URLs
-        const scoreStr = score.toString();
-        const sentimentStr = sentiment.toFixed(2).toString(); // Use toFixed for consistency
+    // Ensure values are strings for badge URLs
+    const scoreStr = score.toString();
+    const sentimentStr = sentiment.toFixed(2).toString(); // Use toFixed for consistency
 
-
-        return `
-             <div class="shields-container" style="margin-top: 5px;">
-                 <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(scoreStr.replace(/-/g, '--'))}-brightgreen?style=flat-square" alt="Reddit Score">
-                 <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(sentimentStr.replace(/-/g, '--'))}-${sentimentColor}?style=flat-square" alt="Sentiment">
-                 <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
-             </div>
-         `;
-    }
+    return `
+      <div class="shields-container" style="margin-top: 5px;">
+        <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(scoreStr.replace(/-/g, '--'))}-brightgreen?style=flat-square" alt="Reddit Score">
+        <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(sentimentStr.replace(/-/g, '--'))}-${sentimentColor}?style=flat-square" alt="Sentiment">
+        <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
+      </div>
+    `;
+  }
 
   // 10. Filter button
   document.getElementById('filter-btn').addEventListener('click', updateCharts);
@@ -1680,15 +1691,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       if (tabId === 'stackedTab') {
         renderSentimentStackChart(allPostsData);
-      } else if (tabId === 'weightedTab') {
+      } 
+      else if (tabId === 'weightedTab') {
         renderWeightedSentimentChart(allPostsData);
-      } else if (tabId === 'engagementTab') {
+      } 
+      else if (tabId === 'engagementTab') {
         renderEngagementScoreChart(allPostsData);
-      } else if (tabId === 'totalCommentsTab') {
+      } 
+      else if (tabId === 'totalCommentsTab') {
         renderCommentsCountChart(allPostsData);
-      } else if (tabId === 'authorsTab') {
+      } 
+      else if (tabId === 'authorsTab') {
         updateAuthorsChart();
-      } else if (tabId === 'timeSeriesTab') {
+      } 
+      else if (tabId === 'timeSeriesTab') {
         updateTimeSeriesChart();
       }
     });
@@ -1721,7 +1737,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (selectedSub === 'temasekpoly') {
       iitBox.style.display = 'inline-block';
       tpRelatedBox.style.display = 'none';
-    } else {
+    } 
+    else {
       iitBox.style.display = 'none';
       tpRelatedBox.style.display = 'inline-block';
     }
@@ -1740,6 +1757,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Get the labels associated with the checkboxes
   const iitLabel = document.querySelector('label[for="iit-filter"]');
   const tpLabel = document.querySelector('label[for="tp-related-filter"]');
+  
   function updateFilters() {
     // When "TemasekPoly" is selected, show IIT filter and hide TP-Related filter
     if (subredditSelect.value === "TemasekPoly") {
@@ -1747,7 +1765,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (iitLabel) { iitLabel.style.display = "inline-block"; }
       if (tpRelatedFilter) { tpRelatedFilter.style.display = "none"; }
       if (tpLabel) { tpLabel.style.display = "none"; }
-    } else {
+    } 
+    else {
       // For other subreddits, hide IIT filter and show TP-Related filter
       if (iitFilter) { iitFilter.style.display = "none"; }
       if (iitLabel) { iitLabel.style.display = "none"; }
