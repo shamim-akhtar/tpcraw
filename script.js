@@ -1916,7 +1916,119 @@ async function fetchAndDisplayPostsAndCommentsByAuthor(authorName) {
   }
 
   // Function to display search results
-  function displaySearchResults(keyword, posts, comments) {
+ function displaySearchResults(keyword, posts, comments) {
+  const postDetailsContainer = document.getElementById('post-details'); // Ensure this is defined in the scope
+
+  // Styled message for no results
+  if (posts.length === 0 && comments.length === 0) {
+      postDetailsContainer.innerHTML = `
+        <div class="search-results-wrapper" style="padding: 25px 30px; background-color: #f8f9fa; border-radius: 10px; border: 1px solid #dee2e6;">
+          <h2 style="margin-top: 0; margin-bottom: 15px; font-size: 1.6em; color: #495057;">Search Results</h2>
+          <p style="color: #6c757d; font-size: 1.1em;">No posts or comments found matching "<strong>${keyword}</strong>".</p>
+        </div>`;
+      return;
+  }
+
+  // Start building HTML with an outer wrapper and main heading
+  let html = `
+    <div class="search-results-wrapper" style="padding: 25px 30px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e7eaf3;">
+      <h2 style="margin-top: 0; margin-bottom: 25px; font-size: 1.8em; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+        Search Results for "${keyword}"
+      </h2>
+  `;
+
+  // --- Display matching posts ---
+  if (posts.length > 0) {
+      html += `<h3 style="margin-top: 0; margin-bottom: 15px; color: #34495e; font-size: 1.4em;">Matching Posts (${posts.length}):</h3>`;
+      posts.forEach(postData => {
+          const postId = postData.postId; // Ensure postId is available directly if not add it during search collection
+          const postTitle = postData.title || "No Title";
+          const postBody = postData.body || "";
+          const author = postData.author || 'Unknown';
+          let date = new Date(); // Fallback
+          if (postData.created?.toDate) date = postData.created.toDate();
+          else if (postData.created) try { date = new Date(postData.created); } catch(e) {}
+          const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); // Removed time for list view
+          const url = postData.URL || '#';
+
+          // Card styling for each post result
+          html += `
+            <div class="search-result-post search-item-card" style="background-color: #fdfdfe; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
+              <h4 style="margin-top: 0; margin-bottom: 5px; font-size: 1.2em;">
+                <a href="${url}" target="_blank" style="color: #2980b9; text-decoration: none; hover:{text-decoration: underline;}">${highlightKeyword(postTitle, keyword)}</a>
+              </h4>
+              <p style="font-size: 0.85em; color: #7f8c8d; margin-bottom: 15px;">By <strong>${author}</strong> on ${formattedDate}</p>
+              <p style="font-size: 0.95em; color: #34495e; line-height: 1.6; margin-bottom: 15px;">
+                ${highlightKeyword(postBody, keyword) || '<i>No body content</i>'}
+              </p>
+              <div style="margin-bottom: 10px;">${generateBadgesHtml(postData)}</div>
+              <button class="view-full-post-btn" data-post-id="${postId}" style="margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;">
+                View Full Post
+              </button>
+            </div>
+          `;
+      });
+  }
+
+  // --- Display matching comments ---
+  if (comments.length > 0) {
+      // Add separator if posts were also shown
+      const separatorStyle = posts.length > 0 ? 'border-top: 1px solid #eee; padding-top: 25px; margin-top: 30px;' : 'margin-top: 0;';
+      html += `<h3 style="${separatorStyle} margin-bottom: 15px; color: #34495e; font-size: 1.4em;">Matching Comments (${comments.length}):</h3>`;
+
+      comments.forEach(commentInfo => {
+          const commentData = commentInfo.commentData;
+          const commentBody = commentData.body || "";
+          const author = commentData.author || 'Unknown';
+          let date = new Date(); // Fallback
+          if (commentData.created?.toDate) date = commentData.created.toDate();
+          else if (commentData.created) try { date = new Date(commentData.created); } catch(e) {}
+          const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); // Removed time for list view
+          const commentPostId = commentInfo.postId; // postId of the parent post
+          const parentPostTitle = commentInfo.postTitle || 'Untitled Post'; // Title of the parent post
+
+          const commentBadges = generateCommentBadgesHtml(commentData);
+
+          // Card styling for each comment result
+          html += `
+            <div class="search-result-comment search-item-card" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <p style="font-size: 0.85em; color: #6b7280; margin-bottom: 8px;">
+                    Comment by <strong>${author}</strong> on ${formattedDate}
+                    (in post: <span style="font-style: italic;">"${parentPostTitle}"</span>) {/* Display parent post title */}
+                </p>
+                <p style="font-size: 0.95em; color: #1f2937; line-height: 1.6; margin-bottom: 10px;">
+                    ${highlightKeyword(commentBody, keyword) || '<i>No comment body.</i>'}
+                </p>
+                <div style="margin-bottom: 10px;">${commentBadges}</div>
+                <button class="view-full-post-btn" data-post-id="${commentPostId}" style="margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #5dade2; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;">
+                    View Post Thread
+                </button>
+            </div>
+          `;
+      });
+    }
+
+    // Close the main wrapper div
+    html += `</div>`;
+
+    postDetailsContainer.innerHTML = html;
+
+    // Re-Add event listeners for the dynamically added "View Full Post" buttons
+    postDetailsContainer.querySelectorAll('.view-full-post-btn').forEach(button => { // Only need button selector
+        button.addEventListener('click', (event) => {
+            // event.preventDefault(); // Not needed for button
+            const postId = button.getAttribute('data-post-id');
+            if (postId) {
+                fetchAndDisplayPostDetails(postId); // Call existing function to show full details
+            } else {
+                console.error("Missing data-post-id attribute on button:", button);
+            }
+        });
+    });
+  }
+
+  // Function to display search results
+  function displaySearchResults_old_styling(keyword, posts, comments) {
     if (posts.length === 0 && comments.length === 0) {
       postDetailsContainer.innerHTML = `<p>No posts or comments found matching "${keyword}".</p>`;
       return;
