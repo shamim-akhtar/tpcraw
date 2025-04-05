@@ -1755,6 +1755,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const iitFilter = document.getElementById("iit-filter");
   const tpRelatedFilter = document.getElementById("tp-related-filter");
   // Get the labels associated with the checkboxes
+
   const iitLabel = document.querySelector('label[for="iit-filter"]');
   const tpLabel = document.querySelector('label[for="tp-related-filter"]');
   
