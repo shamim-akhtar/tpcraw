@@ -548,8 +548,104 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ---------------------------------------------
   // Fetch & Display Post Details
   // ---------------------------------------------
+  // async function fetchAndDisplayPostDetails(postId) {
+  //   const postDetailsContainer = document.getElementById('post-details');
+
+  //   // Identify the posts collection
+  //   const subredditSelect = document.getElementById('subreddit-select');
+  //   const selectedSubreddit = subredditSelect.value;
+  //   const lowerSub = selectedSubreddit.toLowerCase();
+  //   const postsCollection = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
+
+  //   const postRef = doc(db, postsCollection, postId);
+  //   const postSnap = await getDoc(postRef);
+
+  //   if (!postSnap.exists()) {
+  //     postDetailsContainer.innerHTML = "<p>No details available for this post.</p>";
+  //     return;
+  //   }
+
+  //   const postData = postSnap.data();
+
+  //   const postTitle = postData.title || "No Title";
+  //   const author = postData.author || 'Unknown';
+
+  //   const date = postData.created.toDate ? postData.created.toDate() : new Date(postData.created);
+  //   const formattedDate = date.toLocaleString('en-GB', {
+  //     day: '2-digit', month: 'short', year: 'numeric',
+  //     hour: '2-digit', minute: '2-digit', hour12: false
+  //   }).replace(',', '');
+
+  //   const urlHtml = `<h3>Post Title: <a href="${postData.URL}" target="_blank">${postTitle}</a></h3>`;
+
+  //   // const summaryHtml = `
+  //   //   <h4>Summary and analysis of the post using Gen AI</h4>
+  //   //   <p style="font-size: 1.0em; color: #555;">${postData.summary}</p>`;
+
+  //   const summaryHtml = `
+  //   <div style="background-color: #f8f9fa; /* Light gray background */
+  //               border-left: 4px solid #0d6efd; /* Blue accent border */
+  //               padding: 15px;
+  //               margin-top: 15px;
+  //               margin-bottom: 20px; /* More space below */
+  //               border-radius: 5px;">
+  //     <h4 style="margin-top: 0; margin-bottom: 8px; color: #333;">Summary and analysis of the post using Gen AI</h4>
+  //     <p style="font-size: 0.95em; /* Slightly smaller text */ color: #555; line-height: 1.5;">
+  //       ${postData.summary || '<i>No summary provided.</i>'} {/* Added fallback */}
+  //     </p>
+  //   </div>`;
+
+  //   const badgesHtml = generateBadgesHtml(postData);
+  //   const bodyHtml = `
+  //     <div class="search-result-post" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px;">
+  //       <p style="font-size: 0.8em; color: #555;">By ${author} on ${formattedDate}</p>
+  //       <p>${postData.body}</p>
+  //     </div>
+  //   `;
+
+  //   // Fetch comments
+  //   const commentsRef = collection(db, `${postsCollection}/${postId}/comments`);
+  //   const commentsSnapshot = await getDocs(commentsRef);
+
+  //   let commentsHtml = `<h3>Comments (${commentsSnapshot.size}):</h3>`;
+  //   if (commentsSnapshot.size === 0) {
+  //     commentsHtml += `<p>No comments available.</p>`;
+  //   } 
+  //   else {
+  //     commentsSnapshot.forEach(commentDoc => {
+  //       const commentData = commentDoc.data();
+  //       const commentDate = commentData.created.toDate ? commentData.created.toDate() : new Date(commentData.created);
+  //       const commentAuthor = commentData.author || 'Unknown';
+  //       const formattedCommentDate = commentDate.toLocaleString('en-GB', {
+  //         day: '2-digit', month: 'short', year: 'numeric',
+  //         hour: '2-digit', minute: '2-digit', hour12: false
+  //       }).replace(',', '');
+
+  //       const sentiment = commentData.sentiment;
+  //       let sentimentColor = 'orange'; // default for neutral
+  //       if (sentiment < 0) {
+  //         sentimentColor = 'red';
+  //       } 
+  //       else if (sentiment > 0) {
+  //         sentimentColor = 'green';
+  //       }
+  //       commentsHtml += `
+  //         <div class="search-result-comment" style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px; background-color: #f9f9f9;">
+  //           <p style="font-size: 0.8em; color: #555;">Comment by ${commentAuthor} on ${formattedCommentDate}</p>
+  //           ${generateCommentBadgesHtml(commentData)}            
+  //           <p>${commentData.body}</p>
+  //         </div>
+  //         `;
+  //     });
+  //   }
+
+  //   postDetailsContainer.innerHTML = 
+  //     summaryHtml + badgesHtml + urlHtml + bodyHtml + commentsHtml;
+  // }
+
   async function fetchAndDisplayPostDetails(postId) {
     const postDetailsContainer = document.getElementById('post-details');
+    postDetailsContainer.innerHTML = '<p>Loading post details...</p>'; // Loading message
 
     // Identify the posts collection
     const subredditSelect = document.getElementById('subreddit-select');
@@ -561,86 +657,112 @@ document.addEventListener('DOMContentLoaded', async () => {
     const postSnap = await getDoc(postRef);
 
     if (!postSnap.exists()) {
-      postDetailsContainer.innerHTML = "<p>No details available for this post.</p>";
-      return;
+        postDetailsContainer.innerHTML = `<div style="padding: 20px; background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 8px; color: #664d03;">No details available for this post.</div>`;
+        return;
     }
 
     const postData = postSnap.data();
 
+    // --- Extract Data ---
     const postTitle = postData.title || "No Title";
     const author = postData.author || 'Unknown';
-
-    const date = postData.created.toDate ? postData.created.toDate() : new Date(postData.created);
+    const postUrl = postData.URL || '#'; // Use URL from postData
+    const date = postData.created?.toDate ? postData.created.toDate() : (postData.created ? new Date(postData.created) : new Date());
     const formattedDate = date.toLocaleString('en-GB', {
-      day: '2-digit', month: 'short', year: 'numeric',
-      hour: '2-digit', minute: '2-digit', hour12: false
+        day: '2-digit', month: 'short', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', hour12: false
     }).replace(',', '');
 
-    const urlHtml = `<h3>Post Title: <a href="${postData.URL}" target="_blank">${postTitle}</a></h3>`;
+    // --- Build HTML Sections with Enhanced Styles ---
 
-    // const summaryHtml = `
-    //   <h4>Summary and analysis of the post using Gen AI</h4>
-    //   <p style="font-size: 1.0em; color: #555;">${postData.summary}</p>`;
+    // 1. Title Section
+    const urlHtml = `
+        <h2 style="margin-top: 0; margin-bottom: 5px; font-size: 1.8em; color: #2c3e50;">
+            <a href="${postUrl}" target="_blank" style="color: inherit; text-decoration: none; hover: {color: #3498db;}">
+                ${postTitle}
+            </a>
+        </h2>`;
 
+    // 2. Metadata Section
+    const metaHtml = `
+        <p style="font-size: 0.9em; color: #7f8c8d; margin-bottom: 20px; border-bottom: 1px dashed #ecf0f1; padding-bottom: 10px;">
+            Posted by <strong>${author}</strong> on ${formattedDate}
+        </p>`;
+
+    // 3. Badges Section (add margin)
+    const badgesHtml = `
+        <div style="margin-bottom: 25px;">
+            ${generateBadgesHtml(postData)}
+        </div>`;
+
+    // 4. Summary Section (using the previously improved style)
     const summaryHtml = `
-    <div style="background-color: #f8f9fa; /* Light gray background */
-                border-left: 4px solid #0d6efd; /* Blue accent border */
-                padding: 15px;
-                margin-top: 15px;
-                margin-bottom: 20px; /* More space below */
-                border-radius: 5px;">
-      <h4 style="margin-top: 0; margin-bottom: 8px; color: #333;">Summary and analysis of the post using Gen AI</h4>
-      <p style="font-size: 0.95em; /* Slightly smaller text */ color: #555; line-height: 1.5;">
-        ${postData.summary || '<i>No summary provided.</i>'} {/* Added fallback */}
-      </p>
-    </div>`;
+      <div style="background-color: #ecf0f1; /* Slightly different gray */
+                  border-left: 5px solid #3498db; /* Different Blue */
+                  padding: 15px 20px;
+                  margin-bottom: 25px;
+                  border-radius: 5px;">
+        <h4 style="margin-top: 0; margin-bottom: 8px; color: #2980b9; font-weight: 600;">
+            💡 AI Generated Summary & Analysis
+        </h4>
+        <p style="font-size: 0.95em; color: #34495e; line-height: 1.6;">
+            ${postData.summary || '<i>No summary provided.</i>'}
+        </p>
+      </div>`;
 
-    const badgesHtml = generateBadgesHtml(postData);
+    // 5. Body Section (cleaner presentation)
     const bodyHtml = `
-      <div class="search-result-post" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px;">
-        <p style="font-size: 0.8em; color: #555;">By ${author} on ${formattedDate}</p>
-        <p>${postData.body}</p>
-      </div>
-    `;
+      <div class="post-body-content" style="margin-bottom: 30px;">
+        <h4 style="margin-top: 0; margin-bottom: 10px; color: #555; font-weight: 600;">Original Post Content:</h4>
+        <div style="font-size: 1.0em; color: #333; line-height: 1.7; background-color: #fff; padding: 15px; border-radius: 4px; border: 1px solid #eee;">
+            ${postData.body || '<i>No body content provided.</i>'}
+        </div>
+      </div>`;
 
-    // Fetch comments
+    // 6. Comments Section
     const commentsRef = collection(db, `${postsCollection}/${postId}/comments`);
     const commentsSnapshot = await getDocs(commentsRef);
 
-    let commentsHtml = `<h3>Comments (${commentsSnapshot.size}):</h3>`;
+    let commentsHtml = `
+        <h3 style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; color: #555; font-weight: 600;">
+            Comments (${commentsSnapshot.size}):
+        </h3>`;
+
     if (commentsSnapshot.size === 0) {
-      commentsHtml += `<p>No comments available.</p>`;
+        commentsHtml += `<p style="color: #7f8c8d; font-style: italic;">No comments available.</p>`;
     } 
     else {
       commentsSnapshot.forEach(commentDoc => {
         const commentData = commentDoc.data();
-        const commentDate = commentData.created.toDate ? commentData.created.toDate() : new Date(commentData.created);
+        const commentDate = commentData.created?.toDate ? commentData.created.toDate() : (commentData.created ? new Date(commentData.created) : new Date());
         const commentAuthor = commentData.author || 'Unknown';
         const formattedCommentDate = commentDate.toLocaleString('en-GB', {
-          day: '2-digit', month: 'short', year: 'numeric',
-          hour: '2-digit', minute: '2-digit', hour12: false
+            day: '2-digit', month: 'short', year: 'numeric',
+            hour: '2-digit', minute: '2-digit', hour12: false
         }).replace(',', '');
 
-        const sentiment = commentData.sentiment;
-        let sentimentColor = 'orange'; // default for neutral
-        if (sentiment < 0) {
-          sentimentColor = 'red';
-        } 
-        else if (sentiment > 0) {
-          sentimentColor = 'green';
-        }
+        // Note: generateCommentBadgesHtml is assumed to be defined elsewhere
+        const commentBadges = generateCommentBadgesHtml(commentData);
+
         commentsHtml += `
-          <div class="search-result-comment" style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px; background-color: #f9f9f9;">
-            <p style="font-size: 0.8em; color: #555;">Comment by ${commentAuthor} on ${formattedCommentDate}</p>
-            ${generateCommentBadgesHtml(commentData)}            
-            <p>${commentData.body}</p>
+          <div class="search-result-comment" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+              <p style="font-size: 0.85em; color: #6b7280; margin-bottom: 8px;">
+                  Comment by <strong>${commentAuthor}</strong> on ${formattedCommentDate}
+              </p>
+              <div style="margin-bottom: 10px;">${commentBadges}</div>
+              <p style="font-size: 0.95em; color: #1f2937; line-height: 1.6; margin-bottom: 0;">
+                  ${commentData.body || '<i>No comment body.</i>'}
+              </p>
           </div>
-          `;
+        `;
       });
     }
 
-    postDetailsContainer.innerHTML = 
-      summaryHtml + badgesHtml + urlHtml + bodyHtml + commentsHtml;
+    // --- Assemble Final HTML in a Styled Container ---
+    postDetailsContainer.innerHTML = `
+      <div class="post-details-wrapper" style="padding: 25px 30px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); border: 1px solid #e7eaf3;">
+          ${urlHtml}       ${metaHtml}      ${badgesHtml}    ${summaryHtml}   ${bodyHtml}      ${commentsHtml}  </div>
+    `;
   }
 
   // ---------------------------------------------
