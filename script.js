@@ -582,35 +582,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dateHtml = `<li class="post-date">Author: ${author}, ${formattedDate}</li>`;
     const urlHtml = `<li class="post-date"><a href="${url}" target="_blank">${url}</a></li>`;
 
-    // const category = postData.category;
-    // const emotion = postData.emotion;
-    // const engagementScore = postData.engagementScore ?? 0;
-    // const rawSentimentScore = postData.rawSentimentScore;
-    // const score = postData.score;
     const summary = postData.summary;
-    // const totalNegativeSentiments = postData.totalNegativeSentiments;
-    // const totalPositiveSentiments = postData.totalPositiveSentiments;
-    // const weightedSentimentScore = postData.weightedSentimentScore;
-
-    // const safeNumberStr = engagementScore.toFixed(2);
     const badgesHtml = `
         <div class="search-result-post" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px;">
           <p style="font-size: 0.8em; color: #555;">By ${author} on ${formattedDate}</p>
           ${generateBadgesHtml(postData)}
-          <button class="view-full-post-btn" data-post-id="${postData.postId}" style="margin-top: 5px; padding: 3px 8px; font-size: 0.8em;">View Full Post & Comments</button>
         </div>
       `;
-    // const badgesHtml = `
-    //   <div class="shields-container">
-    //     <img src="https://img.shields.io/badge/category-${encodeURIComponent(category)}-blue?style=flat-square" alt="Category">
-    //     <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
-    //     <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
-    //     <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(score.toString().replace(/-/g, '--'))}-brightgreen?style=flat-square" alt="Reddit Score">
-    //     <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
-    //     <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(totalNegativeSentiments.toString().replace(/-/g, '--'))}-red?style=flat-square" alt="Negative">
-    //     <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(weightedSentimentScore.toFixed(2).toString().replace(/-/g, '--'))}-blueviolet?style=flat-square" alt="Weighted">
-    //   </div>
-    // `;
 
     const postSummary = `<br><strong>Summary of the post using Gen AI</strong><br><p>${summary}</p>`;
     const postBodyHtml = `<p>${postData.body}</p>`;
