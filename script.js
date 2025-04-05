@@ -567,10 +567,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const postData = postSnap.data();
 
-    let analysisHtml = `<h3>Post Title: ${postData.title}</h3><ul>`;
-    const url = postData.URL;
     const postTitle = postData.title || "No Title";
-    const postBody = postData.body || "";
     const author = postData.author || 'Unknown';
 
     const date = postData.created.toDate ? postData.created.toDate() : new Date(postData.created);
@@ -579,19 +576,32 @@ document.addEventListener('DOMContentLoaded', async () => {
       hour: '2-digit', minute: '2-digit', hour12: false
     }).replace(',', '');
 
-    const dateHtml = `<li class="post-date">Author: ${author}, ${formattedDate}</li>`;
-    const urlHtml = `<li class="post-date"><a href="${url}" target="_blank">${url}</a></li>`;
+    const urlHtml = `<h3>Post Title: <a href="${postData.URL}" target="_blank">${postTitle}</a></h3>`;
 
-    const summary = postData.summary;
-    const badgesHtml = `
+    // const summaryHtml = `
+    //   <h4>Summary and analysis of the post using Gen AI</h4>
+    //   <p style="font-size: 1.0em; color: #555;">${postData.summary}</p>`;
+
+    const summaryHtml = `
+    <div style="background-color: #f8f9fa; /* Light gray background */
+                border-left: 4px solid #0d6efd; /* Blue accent border */
+                padding: 15px;
+                margin-top: 15px;
+                margin-bottom: 20px; /* More space below */
+                border-radius: 5px;">
+      <h4 style="margin-top: 0; margin-bottom: 8px; color: #333;">Summary and analysis of the post using Gen AI</h4>
+      <p style="font-size: 0.95em; /* Slightly smaller text */ color: #555; line-height: 1.5;">
+        ${postData.summary || '<i>No summary provided.</i>'} {/* Added fallback */}
+      </p>
+    </div>`;
+
+    const badgesHtml = generateBadgesHtml(postData);
+    const bodyHtml = `
       <div class="search-result-post" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px;">
         <p style="font-size: 0.8em; color: #555;">By ${author} on ${formattedDate}</p>
-        ${generateBadgesHtml(postData)}
+        <p>${postData.body}</p>
       </div>
     `;
-
-    const postSummary = `<br><strong>Summary of the post using Gen AI</strong><br><p>${summary}</p>`;
-    const postBodyHtml = `<p>${postData.body}</p>`;
 
     // Fetch comments
     const commentsRef = collection(db, `${postsCollection}/${postId}/comments`);
@@ -630,7 +640,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     postDetailsContainer.innerHTML = 
-      analysisHtml + urlHtml + postSummary + badgesHtml + dateHtml + postBodyHtml + commentsHtml;
+      summaryHtml + badgesHtml + urlHtml + bodyHtml + commentsHtml;
   }
 
   // ---------------------------------------------
@@ -1625,35 +1635,90 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     return `
       <div class="shields-container" style="margin-top: 5px;">
-        <img src="https://img.shields.io/badge/category-${encodeURIComponent(category)}-blue?style=flat-square" alt="Category">
-        <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
-        <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
         <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(scoreStr.replace(/-/g, '--'))}-brightgreen?style=flat-square" alt="Reddit Score">
         <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
         <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(negSentStr.replace(/-/g, '--'))}-red?style=flat-square" alt="Negative">
         <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(weightSentStr.replace(/-/g, '--'))}-blueviolet?style=flat-square" alt="Weighted">
+        <img src="https://img.shields.io/badge/category-${encodeURIComponent(category)}-blue?style=flat-square" alt="Category">
+        <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
+        <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
       </div>
     `;
   }
 
+  // // Helper function to generate badges HTML for a comment
+  // function generateCommentBadgesHtml(commentData) {
+  //   const sentiment = commentData.sentiment ?? 0;
+  //   let sentimentColor = 'orange';
+  //   if (sentiment < 0) sentimentColor = 'red';
+  //   else if (sentiment > 0) sentimentColor = 'green';
+  //   const score = commentData.score ?? 0;
+  //   const emotion = commentData.emotion || 'N/A';
+
+  //   // Ensure values are strings for badge URLs
+  //   const scoreStr = score.toString();
+  //   const sentimentStr = sentiment.toFixed(2).toString(); // Use toFixed for consistency
+
+  //   return `
+  //     <div class="shields-container" style="margin-top: 5px;">
+  //       <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(scoreStr.replace(/-/g, '--'))}-brightgreen?style=flat-square" alt="Reddit Score">
+  //       <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(sentimentStr.replace(/-/g, '--'))}-${sentimentColor}?style=flat-square" alt="Sentiment">
+  //       <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
+  //     </div>
+  //   `;
+  // }
+
+  // Helper function to format the value string for the badge
+  // Ensures the string is exactly 'width' characters long.
+  // Truncates if too long, pads with underscores on the left if too short (for right-align effect in shields.io).
+  function formatBadgeValue(valueStr, width = 4) {
+    let formatted = valueStr;
+
+    // Truncate if longer than width
+    if (formatted.length > width) {
+      // Prioritize keeping the sign and initial digits
+      formatted = formatted.substring(0, width);
+    }
+
+    // Pad with underscore on the left to achieve desired width and right-alignment effect
+    // Underscores generally render as spaces in shields.io badges
+    formatted = formatted.padStart(width, '\u00A0');
+
+    return formatted;
+  }
+
+
   // Helper function to generate badges HTML for a comment
   function generateCommentBadgesHtml(commentData) {
     const sentiment = commentData.sentiment ?? 0;
-    let sentimentColor = 'orange';
+    let sentimentColor = 'yellow';
     if (sentiment < 0) sentimentColor = 'red';
     else if (sentiment > 0) sentimentColor = 'green';
     const score = commentData.score ?? 0;
     const emotion = commentData.emotion || 'N/A';
 
-    // Ensure values are strings for badge URLs
+    // Convert to initial strings
     const scoreStr = score.toString();
-    const sentimentStr = sentiment.toFixed(2).toString(); // Use toFixed for consistency
+    // Keep reasonable precision for sentiment before formatting
+    const sentimentStr = sentiment.toString();
+
+    // --- Apply 4-character formatting ---
+    const formattedScore = formatBadgeValue(scoreStr, 4);
+    const formattedSentiment = formatBadgeValue(sentimentStr, 4);
+    // --- End formatting ---
+
+    // Prepare for URL: encode URI components and replace hyphens AFTER formatting
+    // Shields.io uses '--' to represent a literal hyphen in the text part.
+    const urlEncodedScore = encodeURIComponent(formattedScore.replace(/-/g, '--'));
+    const urlEncodedSentiment = encodeURIComponent(formattedSentiment.replace(/-/g, '--'));
+    // Emotion doesn't need special formatting, just encoding
+    const urlEncodedEmotion = encodeURIComponent(emotion);
 
     return `
       <div class="shields-container" style="margin-top: 5px;">
-        <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(scoreStr.replace(/-/g, '--'))}-brightgreen?style=flat-square" alt="Reddit Score">
-        <img src="https://img.shields.io/badge/sentiment-${encodeURIComponent(sentimentStr.replace(/-/g, '--'))}-${sentimentColor}?style=flat-square" alt="Sentiment">
-        <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
+        <img src="https://img.shields.io/badge/reddit_score-${urlEncodedScore}-brightgreen?style=flat-square" alt="Reddit Score">
+        <img src="https://img.shields.io/badge/sentiment-${urlEncodedSentiment}-${sentimentColor}?style=flat-square" alt="Sentiment">
+        <img src="https://img.shields.io/badge/emotion-${urlEncodedEmotion}-purple?style=flat-square" alt="Emotion">
       </div>
     `;
   }
