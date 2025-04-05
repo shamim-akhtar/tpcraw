@@ -545,104 +545,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // ---------------------------------------------
-  // Fetch & Display Post Details
-  // ---------------------------------------------
-  // async function fetchAndDisplayPostDetails(postId) {
-  //   const postDetailsContainer = document.getElementById('post-details');
-
-  //   // Identify the posts collection
-  //   const subredditSelect = document.getElementById('subreddit-select');
-  //   const selectedSubreddit = subredditSelect.value;
-  //   const lowerSub = selectedSubreddit.toLowerCase();
-  //   const postsCollection = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
-
-  //   const postRef = doc(db, postsCollection, postId);
-  //   const postSnap = await getDoc(postRef);
-
-  //   if (!postSnap.exists()) {
-  //     postDetailsContainer.innerHTML = "<p>No details available for this post.</p>";
-  //     return;
-  //   }
-
-  //   const postData = postSnap.data();
-
-  //   const postTitle = postData.title || "No Title";
-  //   const author = postData.author || 'Unknown';
-
-  //   const date = postData.created.toDate ? postData.created.toDate() : new Date(postData.created);
-  //   const formattedDate = date.toLocaleString('en-GB', {
-  //     day: '2-digit', month: 'short', year: 'numeric',
-  //     hour: '2-digit', minute: '2-digit', hour12: false
-  //   }).replace(',', '');
-
-  //   const urlHtml = `<h3>Post Title: <a href="${postData.URL}" target="_blank">${postTitle}</a></h3>`;
-
-  //   // const summaryHtml = `
-  //   //   <h4>Summary and analysis of the post using Gen AI</h4>
-  //   //   <p style="font-size: 1.0em; color: #555;">${postData.summary}</p>`;
-
-  //   const summaryHtml = `
-  //   <div style="background-color: #f8f9fa; /* Light gray background */
-  //               border-left: 4px solid #0d6efd; /* Blue accent border */
-  //               padding: 15px;
-  //               margin-top: 15px;
-  //               margin-bottom: 20px; /* More space below */
-  //               border-radius: 5px;">
-  //     <h4 style="margin-top: 0; margin-bottom: 8px; color: #333;">Summary and analysis of the post using Gen AI</h4>
-  //     <p style="font-size: 0.95em; /* Slightly smaller text */ color: #555; line-height: 1.5;">
-  //       ${postData.summary || '<i>No summary provided.</i>'} {/* Added fallback */}
-  //     </p>
-  //   </div>`;
-
-  //   const badgesHtml = generateBadgesHtml(postData);
-  //   const bodyHtml = `
-  //     <div class="search-result-post" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px;">
-  //       <p style="font-size: 0.8em; color: #555;">By ${author} on ${formattedDate}</p>
-  //       <p>${postData.body}</p>
-  //     </div>
-  //   `;
-
-  //   // Fetch comments
-  //   const commentsRef = collection(db, `${postsCollection}/${postId}/comments`);
-  //   const commentsSnapshot = await getDocs(commentsRef);
-
-  //   let commentsHtml = `<h3>Comments (${commentsSnapshot.size}):</h3>`;
-  //   if (commentsSnapshot.size === 0) {
-  //     commentsHtml += `<p>No comments available.</p>`;
-  //   } 
-  //   else {
-  //     commentsSnapshot.forEach(commentDoc => {
-  //       const commentData = commentDoc.data();
-  //       const commentDate = commentData.created.toDate ? commentData.created.toDate() : new Date(commentData.created);
-  //       const commentAuthor = commentData.author || 'Unknown';
-  //       const formattedCommentDate = commentDate.toLocaleString('en-GB', {
-  //         day: '2-digit', month: 'short', year: 'numeric',
-  //         hour: '2-digit', minute: '2-digit', hour12: false
-  //       }).replace(',', '');
-
-  //       const sentiment = commentData.sentiment;
-  //       let sentimentColor = 'orange'; // default for neutral
-  //       if (sentiment < 0) {
-  //         sentimentColor = 'red';
-  //       } 
-  //       else if (sentiment > 0) {
-  //         sentimentColor = 'green';
-  //       }
-  //       commentsHtml += `
-  //         <div class="search-result-comment" style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px; background-color: #f9f9f9;">
-  //           <p style="font-size: 0.8em; color: #555;">Comment by ${commentAuthor} on ${formattedCommentDate}</p>
-  //           ${generateCommentBadgesHtml(commentData)}            
-  //           <p>${commentData.body}</p>
-  //         </div>
-  //         `;
-  //     });
-  //   }
-
-  //   postDetailsContainer.innerHTML = 
-  //     summaryHtml + badgesHtml + urlHtml + bodyHtml + commentsHtml;
-  // }
-
   async function fetchAndDisplayPostDetails(postId) {
     const postDetailsContainer = document.getElementById('post-details');
     postDetailsContainer.innerHTML = '<p>Loading post details...</p>'; // Loading message
@@ -749,10 +651,10 @@ document.addEventListener('DOMContentLoaded', async () => {
               <p style="font-size: 0.85em; color: #6b7280; margin-bottom: 8px;">
                   Comment by <strong>${commentAuthor}</strong> on ${formattedCommentDate}
               </p>
-              <div style="margin-bottom: 10px;">${commentBadges}</div>
-              <p style="font-size: 0.95em; color: #1f2937; line-height: 1.6; margin-bottom: 0;">
+              <p style="font-size: 0.95em; color: #1f2937; line-height: 1.6; margin-bottom: 10px; padding-left: 10px; border-left: 3px solid #d1d5db;">
                   ${commentData.body || '<i>No comment body.</i>'}
               </p>
+              <div style="margin-bottom: 10px;">${commentBadges}</div>
           </div>
         `;
       });
@@ -1179,7 +1081,191 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // For clicking a data point in the time series chart
-  async function fetchAndDisplayPostsByCategoryAndDate(category, dateStr) {
+ async function fetchAndDisplayPostsByCategoryAndDate(category, dateStr) {
+  const container = document.getElementById('post-details');
+  // Loading message
+  container.innerHTML = `<div style="padding: 20px; text-align: center; color: #555;"><i>Loading activity for category "${category}" on ${dateStr}...</i></div>`;
+
+  const subredditSelect = document.getElementById('subreddit-select');
+  const selectedSubreddit = subredditSelect.value;
+  const lowerSub = selectedSubreddit.toLowerCase();
+  const postsCollection = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
+  const categoryCollection = (lowerSub === "temasekpoly") ? "category_stats" : `${lowerSub}_category_stats`;
+
+  try { // Added try block for fetching stats
+      const statsDocRef = doc(db, categoryCollection, dateStr);
+      const statsDocSnap = await getDoc(statsDocRef);
+
+      const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1); // Capitalize category
+
+      // Styled message if no stats data found for the date
+      if (!statsDocSnap.exists()) {
+          container.innerHTML = `<div style="padding: 20px; background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 8px; color: #664d03;">No activity data found for category <strong>${formattedCategory}</strong> on ${dateStr}.</div>`;
+          return;
+      }
+
+      const statsData = statsDocSnap.data();
+      // Styled message if no data for the specific category on that date
+      if (!statsData || !statsData[category]) {
+          container.innerHTML = `<div style="padding: 20px; background-color: #e9ecef; border: 1px solid #dee2e6; border-radius: 8px; color: #495057;">No posts or comments found specifically for category <strong>${formattedCategory}</strong> on ${dateStr}.</div>`;
+          return;
+      }
+
+      const postIds = statsData[category].postIds || [];
+      const commentsMap = statsData[category].comments || {};
+      const totalCommentCount = Object.keys(commentsMap).reduce((acc, key) => acc + commentsMap[key].length, 0); // Calculate total comments
+
+      // --- Pre-fetch Post Titles for Comments Context ---
+      let postTitlesMap = {};
+      let uniquePostIdsInComments = Object.keys(commentsMap);
+      if (uniquePostIdsInComments.length > 0) {
+         const uniquePostRefs = uniquePostIdsInComments.map(id => doc(db, postsCollection, id));
+         // Fetch titles concurrently, handling potential errors for individual fetches
+         const parentPostSnaps = await Promise.all(uniquePostRefs.map(ref => getDoc(ref).catch(e => { console.error(`Failed to fetch parent post ${ref.id} for category view`, e); return null; })));
+         parentPostSnaps.forEach(snap => {
+             if (snap && snap.exists()) {
+                 postTitlesMap[snap.id] = snap.data().title || 'Untitled Post';
+             } else if (snap) { // Doc ref exists but not the document itself
+                  postTitlesMap[snap.id] = 'Unknown Post (Deleted?)';
+             }
+             // If snap is null (fetch error), it's handled when looking up in the map later
+         });
+      }
+      // --- End Pre-fetch ---
+
+
+      // Start building HTML with an outer wrapper and main heading
+      let html = `
+        <div class="category-date-details-wrapper" style="padding: 25px 30px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e7eaf3;">
+          <h2 style="margin-top: 0; margin-bottom: 25px; font-size: 1.8em; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            Category: <span style="color: #3498db;">${formattedCategory}</span> <span style="color: #7f8c8d;">on ${dateStr}</span>
+          </h2>
+      `;
+
+      // --- Display Posts ---
+      html += `<h3 style="margin-top: 0; margin-bottom: 15px; color: #34495e; font-size: 1.4em;">Posts (${postIds.length}):</h3>`;
+      if (postIds.length === 0) {
+          html += `<p style="color: #7f8c8d; font-style: italic; margin-left: 10px; margin-bottom: 25px;">No posts found in this category on this date.</p>`;
+      } else {
+          // Fetch posts concurrently
+          const postPromises = postIds.map(postId => getDoc(doc(db, postsCollection, postId)).catch(e => { console.error(`Failed to fetch post ${postId}`, e); return null; }));
+          const postSnaps = await Promise.all(postPromises);
+
+          postSnaps.forEach(postSnap => {
+              if (postSnap && postSnap.exists()) { // Check if snap exists and fetch succeeded
+                  const postData = postSnap.data();
+                  const postId = postSnap.id;
+                  const postTitle = postData.title || "No Title";
+                  const postBody = postData.body || "";
+                  const author = postData.author || 'Unknown';
+                  const postUrl = postData.URL || '#';
+                  let date = new Date();
+                  if (postData.created?.toDate) date = postData.created.toDate();
+                  else if (postData.created) try { date = new Date(postData.created); } catch (e) {}
+                  const formattedPostDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); // Removed time for brevity in list view
+
+                  // Post card styling
+                  html += `
+                    <div class="search-result-post category-post-item" style="background-color: #fdfdfe; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
+                      <h4 style="margin-top: 0; margin-bottom: 5px; font-size: 1.2em;">
+                        <a href="${postUrl}" target="_blank" style="color: #2980b9; text-decoration: none; hover:{text-decoration: underline;}">${postTitle}</a>
+                      </h4>
+                      <p style="font-size: 0.85em; color: #7f8c8d; margin-bottom: 15px;">By <strong>${author}</strong> on ${formattedPostDate}</p>
+                      <p style="font-size: 0.95em; color: #34495e; line-height: 1.6; margin-bottom: 15px; max-height: 70px; overflow: hidden; text-overflow: ellipsis;">
+                        ${postBody || '<i>No body content</i>'}
+                      </p>
+                      <div style="margin-bottom: 10px;">${generateBadgesHtml(postData)}</div>
+                      <button class="view-full-post-btn" data-post-id="${postId}" style="margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;">
+                        View Full Post
+                      </button>
+                    </div>
+                  `;
+              } else {
+                  // Handle missing post or fetch error
+                   html += `<div style="border: 1px dashed #ccc; padding: 10px; margin-bottom: 15px; color: #777;"><em>Post data unavailable or failed to load.</em></div>`;
+              }
+          });
+      }
+
+      // --- Display Comments ---
+      html += `<h3 style="margin-top: 30px; margin-bottom: 15px; color: #34495e; font-size: 1.4em; border-top: 1px solid #eee; padding-top: 25px;">Comments (${totalCommentCount}):</h3>`;
+      if (totalCommentCount === 0) {
+          html += `<p style="color: #7f8c8d; font-style: italic; margin-left: 10px;">No comments found in this category on this date.</p>`;
+      } else {
+           // Fetch comments concurrently
+           let commentFetchPromises = [];
+           for (const postId in commentsMap) {
+               commentsMap[postId].forEach(commentId => {
+                   const commentRef = doc(db, `${postsCollection}/${postId}/comments`, commentId);
+                   commentFetchPromises.push(getDoc(commentRef).catch(e => { console.error(`Failed to fetch comment ${commentId} in post ${postId}`, e); return null; }));
+               });
+           }
+           const commentSnaps = await Promise.all(commentFetchPromises);
+
+           commentSnaps.forEach(commentSnap => {
+               if (commentSnap && commentSnap.exists()) { // Check if snap exists and fetch succeeded
+                  const commentData = commentSnap.data();
+                  const author = commentData.author || 'Unknown';
+                  const commentBody = commentData.body || "";
+                  const commentPostId = commentSnap.ref.parent.parent.id;
+                  const parentPostTitle = postTitlesMap[commentPostId] || 'Unknown Post'; // Use pre-fetched title
+
+                  let date = new Date();
+                  if (commentData.created?.toDate) date = commentData.created.toDate();
+                  else if (commentData.created) try { date = new Date(commentData.created); } catch (e) {}
+                  const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); // Removed time
+
+                  const commentBadges = generateCommentBadgesHtml(commentData);
+
+                  // Comment card styling
+                  html += `
+                    <div class="search-result-comment category-comment-item" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <p style="font-size: 0.85em; color: #6b7280; margin-bottom: 8px;">
+                            In Post: <span style="font-style: italic;">"${parentPostTitle}"</span> (Comment by <strong>${author}</strong> on ${formattedDate})
+                        </p>
+                        <p style="font-size: 0.95em; color: #1f2937; line-height: 1.6; margin-bottom: 10px; padding-left: 10px; border-left: 3px solid #d1d5db;">
+                            ${commentBody || '<i>No comment body.</i>'}
+                        </p>
+                        <div style="margin-bottom: 10px;">${commentBadges}</div>
+                         <button class="view-full-post-btn" data-post-id="${commentPostId}" style="margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #5dade2; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;">
+                             View Post Thread
+                         </button>
+                    </div>
+                  `;
+               } else {
+                   // Handle missing comment or fetch error (optional message)
+                   // html += `<p><em>Comment data unavailable or failed to load.</em></p>`;
+               }
+           });
+      }
+
+      // Close the main wrapper div
+      html += `</div>`;
+
+      container.innerHTML = html;
+
+      // Re-Add event listeners (Important!)
+      container.querySelectorAll('.view-full-post-btn').forEach(button => { // Only need this selector now
+          button.addEventListener('click', (event) => {
+              // event.preventDefault(); // Not needed for button element
+              const postId = button.getAttribute('data-post-id');
+              if (postId) {
+                  fetchAndDisplayPostDetails(postId);
+              } else {
+                  console.error("Could not find data-post-id on clicked element:", button);
+              }
+          });
+      });
+
+    } catch (error) { // Catch errors during initial stats fetch or processing
+        console.error(`Error fetching details for category ${category} on ${dateStr}:`, error);
+        // Styled error message
+        container.innerHTML = `<div style="padding: 20px; background-color: #f8d7da; border: 1px solid #f5c2c7; border-radius: 8px; color: #842029;">Error fetching activity details. Please check the console.</div>`;
+    }
+  } // End of function
+
+  // For clicking a data point in the time series chart
+  async function fetchAndDisplayPostsByCategoryAndDate_old_style(category, dateStr) {
     const container = document.getElementById('post-details');
     container.innerHTML = `<p>Loading posts and comments for ${category} on ${dateStr}...</p>`;
 
@@ -1296,9 +1382,188 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     });
   }
+// For clicking on the authors chart bars
+async function fetchAndDisplayPostsAndCommentsByAuthor(authorName) {
+  const container = document.getElementById('post-details');
+  // Loading message with basic styling
+  container.innerHTML = `<div style="padding: 20px; text-align: center; color: #555;"><i>Loading posts and comments for ${authorName}...</i></div>`;
 
+  const subredditSelect = document.getElementById('subreddit-select');
+  const selectedSubreddit = subredditSelect.value;
+  const lowerSub = selectedSubreddit.toLowerCase();
+  const postsCollectionName = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
+  const authorsCollectionName = (lowerSub === "temasekpoly") ? "authors" : `${lowerSub}_authors`;
+
+  try {
+      const authorRef = doc(db, authorsCollectionName, authorName);
+      const authorSnap = await getDoc(authorRef);
+
+      // Styled message if author not found
+      if (!authorSnap.exists()) {
+          container.innerHTML = `<div style="padding: 20px; background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 8px; color: #664d03;">No activity data found for author: <strong>${authorName}</strong>.</div>`;
+          return;
+      }
+
+      const authorData = authorSnap.data();
+      const postIds = authorData.posts || [];
+      const commentsMap = authorData.comments || {}; // { postId: [commentId1, commentId2], ... }
+
+      // Start building HTML with an outer wrapper and main heading
+      let html = `
+        <div class="author-details-wrapper" style="padding: 25px 30px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e7eaf3;">
+          <h2 style="margin-top: 0; margin-bottom: 25px; font-size: 1.8em; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+            Activity by ${authorName}
+          </h2>
+      `;
+
+      // --- Fetch and Display Posts ---
+      html += `<h3 style="margin-top: 0; margin-bottom: 15px; color: #34495e; font-size: 1.4em;">Posts (${postIds.length}):</h3>`;
+      if (postIds.length === 0) {
+          html += `<p style="color: #7f8c8d; font-style: italic; margin-left: 10px; margin-bottom: 25px;">No posts found by this author.</p>`;
+      } else {
+          const postPromises = postIds.map(postId => getDoc(doc(db, postsCollectionName, postId)));
+          const postSnaps = await Promise.all(postPromises);
+
+          postSnaps.forEach(postSnap => {
+              if (postSnap.exists()) {
+                  const postData = postSnap.data();
+                  const postId = postSnap.id;
+                  const postTitle = postData.title || "No Title";
+                  const postBody = postData.body || "";
+                  const postAuthor = postData.author || 'Unknown'; // Should match authorName
+                  const postUrl = postData.URL || '#';
+                  let postDate = new Date();
+                  if (postData.created?.toDate) postDate = postData.created.toDate();
+                  else if (postData.created) try { postDate = new Date(postData.created); } catch (e) {}
+                  const formattedPostDate = postDate.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', '');
+
+                  // Card styling for each post
+                  html += `
+                    <div class="search-result-post author-post-item" style="background-color: #fdfdfe; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
+                      <h4 style="margin-top: 0; margin-bottom: 5px; font-size: 1.2em;">
+                        <a href="${postUrl}" target="_blank" style="color: #2980b9; text-decoration: none; hover:{text-decoration: underline;}">${postTitle}</a>
+                      </h4>
+                      <p style="font-size: 0.85em; color: #7f8c8d; margin-bottom: 15px;">Posted on ${formattedPostDate}</p>
+                      <p style="font-size: 0.95em; color: #34495e; line-height: 1.6; margin-bottom: 15px; max-height: 100px; overflow: hidden; text-overflow: ellipsis;">
+                        ${postBody || '<i>No body content</i>'}
+                      </p>
+                      <div style="margin-bottom: 10px;">${generateBadgesHtml(postData)}</div>
+                      <button class="view-full-post-btn" data-post-id="${postId}" style="margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;">
+                        View Full Post
+                      </button>
+                    </div>
+                  `;
+              } else {
+                  console.warn(`Post document with ID ${postSnap.id} not found for author ${authorName}.`);
+                   html += `<div style="border: 1px dashed #ccc; padding: 10px; margin-bottom: 15px; color: #777;"><em>Post data unavailable.</em></div>`; // Simple notice for missing post
+              }
+          });
+      }
+
+      // --- Fetch and Display Comments ---
+      let commentFetchPromises = [];
+      let postTitlesMap = {}; // To store fetched post titles for comments {postId: title}
+      let parentPostIds = Object.keys(commentsMap);
+      let commentCount = 0;
+
+      // Pre-fetch needed parent post titles (reduces reads inside the comment loop)
+      if (parentPostIds.length > 0) {
+          const uniquePostRefs = parentPostIds.map(id => doc(db, postsCollectionName, id));
+          const parentPostSnaps = await Promise.all(uniquePostRefs.map(ref => getDoc(ref).catch(e => { console.error(`Failed to fetch parent post ${ref.id}`, e); return null; }))); // Fetch all parents, handle errors
+          parentPostSnaps.forEach(snap => {
+              if (snap && snap.exists()) {
+                  postTitlesMap[snap.id] = snap.data().title || 'Untitled Post';
+              } else if (snap) { // snap exists but document doesn't
+                   postTitlesMap[snap.id] = 'Unknown Post (Deleted?)';
+              }
+              // If snap is null due to fetch error, it won't be added, handled later
+          });
+      }
+
+      // Prepare comment fetch promises
+      for (const postId in commentsMap) {
+          const commentIds = commentsMap[postId];
+          commentCount += commentIds.length;
+          commentIds.forEach(commentId => {
+              const commentRef = doc(db, `${postsCollectionName}/${postId}/comments`, commentId);
+              commentFetchPromises.push(getDoc(commentRef));
+          });
+      }
+
+      // Comments Section Heading
+      html += `<h3 style="margin-top: 30px; margin-bottom: 15px; color: #34495e; font-size: 1.4em; border-top: 1px solid #eee; padding-top: 25px;">Comments (${commentCount}):</h3>`;
+
+      if (commentFetchPromises.length === 0) {
+          html += `<p style="color: #7f8c8d; font-style: italic; margin-left: 10px;">No comments found by this author.</p>`;
+      } else {
+          const commentSnaps = await Promise.all(commentFetchPromises);
+
+          commentSnaps.forEach(commentSnap => {
+              if (commentSnap && commentSnap.exists()) { // Check if snap itself exists
+                  const commentData = commentSnap.data();
+                  const commentBody = commentData.body || "";
+                  const commentAuthor = commentData.author || 'Unknown'; // Should match authorName
+                  const commentPostId = commentSnap.ref.parent.parent.id;
+                  const parentPostTitle = postTitlesMap[commentPostId] || 'Unknown Post'; // Get title from pre-fetched map
+
+                  let commentDate = new Date();
+                  if (commentData.created?.toDate) commentDate = commentData.created.toDate();
+                  else if (commentData.created) try { commentDate = new Date(commentData.created); } catch (e) {}
+                  const formattedCommentDate = commentDate.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', '');
+
+                  const commentBadges = generateCommentBadgesHtml(commentData);
+
+                  // Card styling for each comment
+                  html += `
+                    <div class="search-result-comment author-comment-item" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                        <p style="font-size: 0.85em; color: #6b7280; margin-bottom: 8px;">
+                            In Post: <span style="font-style: italic;">"${parentPostTitle}"</span> (On ${formattedCommentDate})
+                        </p>
+                        <p style="font-size: 0.95em; color: #1f2937; line-height: 1.6; margin-bottom: 10px; padding-left: 10px; border-left: 3px solid #d1d5db;">
+                            ${commentBody || '<i>No comment body.</i>'}
+                        </p>
+                        <div style="margin-bottom: 10px;">${commentBadges}</div>
+                         <button class="view-full-post-btn" data-post-id="${commentPostId}" style="margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #5dade2; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;">
+                             View Post Thread
+                         </button>
+                    </div>
+                  `;
+              } else {
+                  // Handle case where a commentId listed doesn't exist or fetch failed
+                  console.warn(`Comment snapshot unavailable for author ${authorName}.`);
+                  // Optionally add a placeholder in HTML, but might clutter if many fail
+                  // html += `<p><em>Error: Comment data unavailable.</em></p>`
+              }
+          });
+      }
+
+      // Close the main wrapper div
+      html += `</div>`;
+
+      container.innerHTML = html;
+
+      // Re-Add event listeners (Important!)
+      container.querySelectorAll('.view-full-post-btn').forEach(button => { // Simplified selector
+          button.addEventListener('click', (event) => {
+              // event.preventDefault(); // Not strictly needed for buttons
+              const postId = button.getAttribute('data-post-id');
+              if (postId) {
+                  fetchAndDisplayPostDetails(postId);
+              } else {
+                  console.error("Missing data-post-id on button:", button);
+              }
+          });
+      });
+
+    } 
+    catch (error) {
+        console.error(`Error fetching details for author ${authorName}:`, error);
+        // Styled error message
+        container.innerHTML = `<div style="padding: 20px; background-color: #f8d7da; border: 1px solid #f5c2c7; border-radius: 8px; color: #842029;">Error fetching details for <strong>${authorName}</strong>. Please check the console.</div>`;
+    }
+  }
   // For clicking on the authors chart bars
-  async function fetchAndDisplayPostsAndCommentsByAuthor(authorName) {
+  async function fetchAndDisplayPostsAndCommentsByAuthor_old_styling(authorName) {
     const container = document.getElementById('post-details');
     container.innerHTML = `<p>Loading posts and comments for ${authorName}...</p>`;
 
