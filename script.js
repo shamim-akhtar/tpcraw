@@ -85,9 +85,41 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Show the target content section
       const activeContent = document.getElementById(targetTab);
       if (activeContent) {
-          activeContent.style.display = 'block';
-          activeContent.classList.add('active');
-      }
+        activeContent.style.display = 'block'; // Make container visible FIRST
+        activeContent.classList.add('active');
+
+        // --- FIX: Call resize() on the specific chart AFTER its container is visible ---
+        // This gives Chart.js the correct dimensions to work with immediately.
+        try { // Add try...catch for safety if a chart instance is unexpectedly null
+            if (targetTab === 'weightedTab' && weightedSentimentChart) {
+              weightedSentimentChart.resize();
+            } 
+            else if (targetTab === 'stackedTab' && commentsSentimentChart) {
+              commentsSentimentChart.resize();
+            } 
+            else if (targetTab === 'totalCommentsTab' && totalCommentsChart) {
+              totalCommentsChart.resize();
+            } 
+            else if (targetTab === 'engagementTab' && engagementScoreChart) {
+              engagementScoreChart.resize();
+            } 
+            else if (targetTab === 'authorsTab' && window.authorsChartInstance) { 
+              //updateAuthorsChart(); // Fetch latest data if needed
+              if(window.authorsChartInstance) window.authorsChartInstance.resize();
+            } 
+            else if (targetTab === 'timeSeriesTab' && timeSeriesChart) {
+              //updateTimeSeriesChart(); // Fetch latest data for time series chart
+              timeSeriesChart.resize();
+            }
+        } 
+        catch (err) {
+           console.error("Error resizing chart:", err);
+        }
+
+    } 
+    else {
+        console.warn(`Tab content not found for id: ${targetTab}`);
+    }
   }
 
   // Add event listener to the container
