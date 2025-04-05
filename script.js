@@ -53,6 +53,88 @@ document.addEventListener('DOMContentLoaded', async () => {
   const searchButton = document.getElementById('search-btn');
   const postDetailsContainer = document.getElementById('post-details'); // Reference to the display area
   
+  const tabs = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+  const tabContainer = document.querySelector('.tab-container'); // Parent for event delegation
+
+  // Function to switch tabs
+  function switchTab(event) {
+      // Check if the clicked element is a tab button
+      if (!event.target.classList.contains('tab-button')) return;
+
+      const targetTab = event.target.dataset.tab;
+
+      // Update button styles
+      tabs.forEach(button => {
+          button.classList.remove('active');
+          button.style.borderBottom = '3px solid transparent'; // Reset border
+          button.style.fontWeight = 'normal'; // Reset font weight
+      });
+      event.target.classList.add('active');
+      event.target.style.borderBottom = '3px solid #4CAF50'; // Highlight active tab
+      event.target.style.fontWeight = '500'; // Make active tab bold
+
+      // Hide all content sections
+      tabContents.forEach(content => {
+          content.style.display = 'none';
+          content.classList.remove('active');
+      });
+
+      // Show the target content section
+      const activeContent = document.getElementById(targetTab);
+      if (activeContent) {
+          activeContent.style.display = 'block';
+          activeContent.classList.add('active');
+          
+          // Re-initialize or update charts if necessary when tab becomes visible
+          // Example: if (window.myCharts && window.myCharts[targetTab]) {
+          //     window.myCharts[targetTab].resize(); 
+          //     window.myCharts[targetTab].update(); 
+          // }
+      }
+  }
+
+  // --------------------------------------------------------------
+  // Add event listener to the container
+  if (tabContainer) {
+      tabContainer.addEventListener('click', switchTab);
+  }
+
+  // Initial setup: Ensure the default active tab's content is visible
+  const initiallyActiveButton = document.querySelector('.tab-button.active');
+  if (initiallyActiveButton) {
+      const initialTabId = initiallyActiveButton.dataset.tab;
+      const initialContent = document.getElementById(initialTabId);
+      if (initialContent) {
+          initialContent.style.display = 'block';
+      }
+  }
+  
+  // Add basic hover effect via JS if needed (alternative to CSS :hover)
+  tabs.forEach(tab => {
+      tab.addEventListener('mouseover', () => {
+          if (!tab.classList.contains('active')) {
+              tab.style.color = '#007BFF'; // Example hover color
+          }
+      });
+      tab.addEventListener('mouseout', () => {
+           if (!tab.classList.contains('active')) {
+              tab.style.color = '#333'; // Restore original color
+          }
+      });
+  });
+
+  // Example: Add hover effect to reset zoom buttons
+  const resetButtons = document.querySelectorAll('[id^="resetZoom"]');
+  resetButtons.forEach(button => {
+       button.addEventListener('mouseover', () => {
+           button.style.filter = 'brightness(90%)';
+       });
+       button.addEventListener('mouseout', () => {
+           button.style.filter = 'brightness(100%)';
+       });
+  });
+  // --------------------------------------------------------------
 
   // --------------------------------------------------------------
   // FETCH FIRESTORE POSTS - with filters for subreddit & checkboxes

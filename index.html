@@ -38,13 +38,13 @@
 
         <button id="filter-btn" style="background-color: #4CAF50; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 1.1em; transition: background-color 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15);  &:hover { background-color: #45a049; }">Filter</button>
 
-        <div style="display: flex; gap: 10px; align-items: center;">
+        <!-- <div style="display: flex; gap: 10px; align-items: center;">
             <label for="subreddit-select" style="font-size: 1.1em; color: #444;"></label>
             <select id="subreddit-select" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 1em; width: 180px; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);">
                 <option value="TemasekPoly">TemasekPoly</option>
                 <option value="sgExams">SGExams</option>
             </select>
-        </div>
+        </div> -->
 
         <div style="display: flex; gap: 10px; align-items: center;">
             <label for="keyword-search" style="font-size: 1.1em; color: #444;">Keyword:</label>
@@ -54,13 +54,20 @@
     </section>
 
     <div class="main-container" style="display: flex; gap: 25px; padding: 10px; box-sizing: border-box; flex-wrap: wrap; align-items: stretch; max-width: 1400px; margin: 0 auto;">
-        <div class="left-div" style="flex: 1; display: flex; flex-direction: column; gap: 25px; min-width: 280px;">
+        <div class="left-div" style="flex: 2; display: flex; flex-direction: column; gap: 25px; min-width: 280px;">
+            <div style="background-color: #ffffff; border-radius: 12px; padding: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                <div class="postCount-title-large" style="font-size: 1.2em; color: #555; margin-bottom: 20px; font-weight: 600; text-align: center;">Select Subreddit</div>
+                <select id="subreddit-select" style="padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 1em; width: 100%; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); box-sizing: border-box;">
+                    <option value="TemasekPoly">TemasekPoly</option>
+                    <option value="sgExams">SGExams</option>
+                </select>
+           </div>
             <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: space-between;">
-                <div id="postCount" class="dashboard-box" style="background-color: #ffffff; border-radius: 12px; padding: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 130px; flex: 1;">
+                <div id="postCount" class="dashboard-box" style="background-color: #ffffff; border-radius: 12px; padding: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 100px; flex: 1;">
                     <div class="postCount-title" style="font-size: 1em; color: #555; margin-bottom: 8px; font-weight: 500;">Posts</div>
                     <div class="postCount-number" style="font-size: 2.2em; font-weight: bold; color: #2c3e50;">0</div>
                 </div>
-                <div id="commentsCount" class="dashboard-box" style="background-color: #ffffff; border-radius: 12px; padding: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 130px; flex: 1;">
+                <div id="commentsCount" class="dashboard-box" style="background-color: #ffffff; border-radius: 12px; padding: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 100px; flex: 1;">
                     <div class="postCount-title" style="font-size: 1em; color: #555; margin-bottom: 8px;">Comments</div>
                     <div id="commentsCountNumber" class="postCount-number" style="font-size: 2.2em; font-weight: bold; color: #2c3e50;">0</div>
                 </div>
@@ -74,25 +81,25 @@
                 <canvas id="sentimentPieChart" style="width: 100%; max-width: 350px; height: auto;"></canvas> </div>
         </div>
 
-        <div class="right-div" style="flex: 3; display: flex; flex-direction: column; min-width: 300px;">
-            <div class="tab-container" style="display: flex; justify-content: space-between; margin-bottom: 25px; border-bottom: 2px solid #ddd;">
-                <button class="tab-button active" data-tab="weightedTab" style="padding: 12px 18px; border: none; background-color: transparent; font-size: 1em; color: #333; cursor: pointer; border-bottom: 3px solid #4CAF50; transition: border-bottom 0.3s ease, color 0.3s ease; font-weight: 500;">Weighted Sentiments</button>
-                <button class="tab-button" data-tab="stackedTab" style="padding: 12px 18px; border: none; background-color: transparent; font-size: 1em; color: #333; cursor: pointer;  transition: border-bottom 0.3s ease, color 0.3s ease;">Comment Sentiments</button>
-                <button class="tab-button" data-tab="totalCommentsTab" style="padding: 12px 18px; border: none; background-color: transparent; font-size: 1em; color: #333; cursor: pointer;  transition: border-bottom 0.3s ease, color 0.3s ease;">Total Comments</button>
-                <button class="tab-button" data-tab="engagementTab" style="padding: 12px 18px; border: none; background-color: transparent; font-size: 1em; color: #333; cursor: pointer;  transition: border-bottom 0.3s ease, color 0.3s ease;">Engagement Scores</button>
-                <button class="tab-button" data-tab="topPosts" style="padding: 12px 18px; border: none; background-color: transparent; font-size: 1em; color: #333; cursor: pointer;  transition: border-bottom 0.3s ease, color 0.3s ease;">Top 10 Posts</button>
-                <button class="tab-button" data-tab="authorsTab" style="padding: 12px 18px; border: none; background-color: transparent; font-size: 1em; color: #333; cursor: pointer;  transition: border-bottom 0.3s ease, color 0.3s ease;">Author Stats</button>
-                <button class="tab-button" data-tab="timeSeriesTab" style="padding: 12px 18px; border: none; background-color: transparent; font-size: 1em; color: #333; cursor: pointer;  transition: border-bottom 0.3s ease, color 0.3s ease;">Category Time Series</button>
+        <div class="right-div" style="flex: 7; display: flex; flex-direction: column; min-width: 300px;">
+            <div class="tab-container" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 10px; /* Reduced from 25px */ border-bottom: 2px solid #ddd;">
+                <button class="tab-button active" data-tab="weightedTab" style="padding: 10px 10px; border: none; background-color: transparent; font-size: 0.85em; color: #333; cursor: pointer; border-bottom: 3px solid #4CAF50; transition: border-bottom 0.3s ease, color 0.3s ease; font-weight: 500; margin-bottom: -2px;">Weighted Sentiments</button>
+                <button class="tab-button" data-tab="stackedTab" style="padding: 10px 10px; border: none; background-color: transparent; font-size: 0.85em; color: #333; cursor: pointer; transition: border-bottom 0.3s ease, color 0.3s ease; border-bottom: 3px solid transparent;">Comment Sentiments</button>
+                <button class="tab-button" data-tab="totalCommentsTab" style="padding: 10px 10px; border: none; background-color: transparent; font-size: 0.85em; color: #333; cursor: pointer; transition: border-bottom 0.3s ease, color 0.3s ease; border-bottom: 3px solid transparent;">Total Comments</button>
+                <button class="tab-button" data-tab="engagementTab" style="padding: 10px 10px; border: none; background-color: transparent; font-size: 0.85em; color: #333; cursor: pointer; transition: border-bottom 0.3s ease, color 0.3s ease; border-bottom: 3px solid transparent;">Engagement Scores</button>
+                <button class="tab-button" data-tab="topPosts" style="padding: 10px 10px; border: none; background-color: transparent; font-size: 0.85em; color: #333; cursor: pointer; transition: border-bottom 0.3s ease, color 0.3s ease; border-bottom: 3px solid transparent;">Top 10 Posts</button>
+                <button class="tab-button" data-tab="authorsTab" style="padding: 10px 10px; border: none; background-color: transparent; font-size: 0.85em; color: #333; cursor: pointer; transition: border-bottom 0.3s ease, color 0.3s ease; border-bottom: 3px solid transparent;">Author Stats</button>
+                <button class="tab-button" data-tab="timeSeriesTab" style="padding: 10px 10px; border: none; background-color: transparent; font-size: 0.85em; color: #333; cursor: pointer; transition: border-bottom 0.3s ease, color 0.3s ease; border-bottom: 3px solid transparent;">Category Time Series</button>
             </div>
 
             <section id="weightedTab" class="chart-section tab-content active" style="background-color: white; border-radius: 12px; padding: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 25px;">
                 <!-- <h3 style="margin-top: 0; font-size: 1.6em; color: #2c3e50; margin-bottom: 20px; font-weight: 600;">Weighted Sentiments</h3> -->
                 <canvas id="weightedSentimentChart" style="width: 100%; height: auto;" width="1600"
-                height="800"></canvas>
+                height="820"></canvas>
                 <div style="margin: 20px 0; display: flex; align-items: center; gap: 15px;">
                     <button
                         id="resetZoomWeightedBtn"
-                        style="background-color: #3498db; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 1.1em; transition: background-color 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15);  &:hover { background-color: #2980b9; }"
+                        style="background-color: #3498db; color: white; border: none; padding: 8px 18px; /* Reduced padding */ border-radius: 6px; cursor: pointer; font-size: 1em; /* Reduced font size */ transition: background-color 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15);"
                     >
                         Reset Zoom
                     </button>
@@ -101,8 +108,7 @@
                     </span>
                 </div>
                 <p style="font-size: 0.95em; color: #555; text-align: left; line-height: 1.7;">
-                    This chart shows Weighted Sentiment Scores for posts based on selected filters.
-                    Positive scores reflect favorable sentiment; negative scores highlight critical feedback.
+                    This bar chart compares the weighted sentiment score for each individual post within the selected filters.
                 </p>
             </section>
 
@@ -111,12 +117,12 @@
                 
                 <canvas id="stackedSentimentChart"
                     style="width: 100%; height: auto;" width="1600"
-                    height="800" >
+                    height="820" >
                 </canvas>
                  <div style="margin: 20px 0; display: flex; align-items: center; gap: 15px;">
                     <button
                         id="resetZoomStackedBtn"
-                        style="background-color: #3498db; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 1.1em; transition: background-color 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15);  &:hover { background-color: #2980b9; }"
+                        style="background-color: #3498db; color: white; border: none; padding: 8px 18px; /* Reduced padding */ border-radius: 6px; cursor: pointer; font-size: 1em; /* Reduced font size */ transition: background-color 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15);"
                     >
                         Reset Zoom
                     </button>
@@ -125,19 +131,18 @@
                     </span>
                 </div>
                 <p style="font-size: 0.95em; color: #555; text-align: left; line-height: 1.7;">
-                    This stacked sentiment chart shows positive (green) and negative (red)
-                    comment sentiments for each post. More green means favorable response; more red indicates negative feedback.
+                    This stacked bar chart visualizes the count of positive versus negative sentiment indicators derived from the content of each post.
                 </p>
             </section>
 
             <section id="totalCommentsTab" class="chart-section tab-content" style="display: none; background-color: white; border-radius: 12px; padding: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 25px;">
                 <!-- <h3 style="margin-top: 0; font-size: 1.6em; color: #2c3e50; margin-bottom: 20px; font-weight: 600;">Total Comments</h3> -->
                 <canvas id="totalCommentsChart" style="width: 100%; height: auto;" width="1600"
-                height="800"></canvas>
+                height="820"></canvas>
                 <div style="margin: 20px 0; display: flex; align-items: center; gap: 15px;">
                     <button
-                        id="resetZoomCommentsBtn"
-                        style="background-color: #3498db; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 1.1em; transition: background-color 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15);  &:hover { background-color: #2980b9; }"
+                        id="resetZoomTotalCommentsBtn"
+                        style="background-color: #3498db; color: white; border: none; padding: 8px 18px; /* Reduced padding */ border-radius: 6px; cursor: pointer; font-size: 1em; /* Reduced font size */ transition: background-color 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15);"
                     >
                         Reset Zoom
                     </button>
@@ -153,11 +158,11 @@
             <section id="engagementTab" class="chart-section tab-content" style="display: none; background-color: white; border-radius: 12px; padding: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 25px;">
                 <!-- <h3 style="margin-top: 0; font-size: 1.6em; color: #2c3e50; margin-bottom: 20px; font-weight: 600;">Engagement Scores</h3> -->
                 <canvas id="engagementScoreChart" style="width: 100%; height: auto;" width="1600"
-                height="800"></canvas>
+                height="820"></canvas>
                 <div style="margin: 20px 0; display: flex; align-items: center; gap: 15px;">
                     <button
                         id="resetZoomEngagementBtn"
-                        style="background-color: #3498db; color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-size: 1.1em; transition: background-color 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15);  &:hover { background-color: #2980b9; }"
+                        style="background-color: #3498db; color: white; border: none; padding: 8px 18px; /* Reduced padding */ border-radius: 6px; cursor: pointer; font-size: 1em; /* Reduced font size */ transition: background-color 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15);"
                     >
                         Reset Zoom
                     </button>
@@ -166,7 +171,7 @@
                     </span>
                 </div>
                 <p style="font-size: 0.95em; color: #555; text-align: left; line-height: 1.7;">
-                    Engagement Score highlights how active/relevant a post is, factoring in comments and upvotes.
+                    This chart shows how active/relevant a post is, factoring in comments and upvotes.
                 </p>
             </section>
 
@@ -189,7 +194,7 @@
             <section id="authorsTab" class="chart-section tab-content" style="display: none; background-color: white; border-radius: 12px; padding: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 25px;">
                 <!-- <h3 style="margin-top: 0; font-size: 1.6em; color: #2c3e50; margin-bottom: 20px; font-weight: 600;">Author Stats</h3> -->
                 <canvas id="authorsChart" style="width: 100%; height: auto;" width="1600"
-                height="800"></canvas>
+                height="820"></canvas>
                 <p style="font-size: 0.95em; color: #555; text-align: left; line-height: 1.7;">
                     This chart displays the top 10 authors with a stacked breakdown of positive (green) and negative (red) sentiment counts.
                 </p>
@@ -198,7 +203,20 @@
             <section id="timeSeriesTab" class="chart-section tab-content" style="display: none; background-color: white; border-radius: 12px; padding: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); margin-bottom: 25px;">
                  <!-- <h3 style="margin-top: 0; font-size: 1.6em; color: #2c3e50; margin-bottom: 20px; font-weight: 600;">Category Time Series</h3> -->
                 <canvas id="timeSeriesChart" style="width: 100%; height: auto;" width="1600"
-                height="800"></canvas> <p style="font-size: 0.95em; color: #555; text-align: left; line-height: 1.7;">
+                height="820"></canvas> 
+                
+                <div style="margin: 20px 0; display: flex; align-items: center; gap: 15px;">
+                    <button
+                        id="resetZoomTimeSeriesBtn"
+                        style="background-color: #3498db; color: white; border: none; padding: 8px 18px; border-radius: 6px; cursor: pointer; font-size: 1em; transition: background-color 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15);"
+                    >
+                        Reset Zoom
+                    </button>
+                    <span style="font-size: 0.9em; color: #777;">
+                        To zoom, click and drag on the chart or pinch on touch devices.
+                    </span>
+                </div>
+                <p style="font-size: 0.95em; color: #555; text-align: left; line-height: 1.7;">
                     This chart displays a time series of average sentiment by category over time. Raw data is light and a 7-day moving average is solid.
                 </p>
             </section>
