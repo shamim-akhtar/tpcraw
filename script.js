@@ -584,11 +584,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const summary = postData.summary;
     const badgesHtml = `
-        <div class="search-result-post" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px;">
-          <p style="font-size: 0.8em; color: #555;">By ${author} on ${formattedDate}</p>
-          ${generateBadgesHtml(postData)}
-        </div>
-      `;
+      <div class="search-result-post" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px;">
+        <p style="font-size: 0.8em; color: #555;">By ${author} on ${formattedDate}</p>
+        ${generateBadgesHtml(postData)}
+      </div>
+    `;
 
     const postSummary = `<br><strong>Summary of the post using Gen AI</strong><br><p>${summary}</p>`;
     const postBodyHtml = `<p>${postData.body}</p>`;
@@ -600,10 +600,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     let commentsHtml = `<h3>Comments (${commentsSnapshot.size}):</h3>`;
     if (commentsSnapshot.size === 0) {
       commentsHtml += `<p>No comments available.</p>`;
-    } else {
+    } 
+    else {
       commentsSnapshot.forEach(commentDoc => {
         const commentData = commentDoc.data();
         const commentDate = commentData.created.toDate ? commentData.created.toDate() : new Date(commentData.created);
+        const commentAuthor = commentData.author || 'Unknown';
         const formattedCommentDate = commentDate.toLocaleString('en-GB', {
           day: '2-digit', month: 'short', year: 'numeric',
           hour: '2-digit', minute: '2-digit', hour12: false
@@ -613,14 +615,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         let sentimentColor = 'orange'; // default for neutral
         if (sentiment < 0) {
           sentimentColor = 'red';
-        } else if (sentiment > 0) {
+        } 
+        else if (sentiment > 0) {
           sentimentColor = 'green';
         }
         commentsHtml += `
           <div class="search-result-comment" style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px; background-color: #f9f9f9;">
-            <p style="font-size: 0.8em; color: #555;">Comment by ${author} on ${formattedDate}</p>
-            ${generateCommentBadgesHtml(commentData)}
-            
+            <p style="font-size: 0.8em; color: #555;">Comment by ${commentAuthor} on ${formattedCommentDate}</p>
+            ${generateCommentBadgesHtml(commentData)}            
             <p>${commentData.body}</p>
           </div>
           `;
@@ -1136,7 +1138,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="search-result-comment" style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px; background-color: #f9f9f9;">
             <p style="font-size: 0.8em; color: #555;">
               Comment by ${author} on ${formattedDate}
-              (in post: <a href="#" class="view-full-post-link" data-post-id="${commentPostId}">${commentPostId}</a>)
             </p>
             <p>${commentBody}</p>
             ${generateCommentBadgesHtml(commentData)}
@@ -1305,8 +1306,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             html += `
               <div class="search-result-comment" style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px; background-color: #f9f9f9;">
                 <p style="font-size: 0.8em; color: #555;">
-                  Comment by ${commentAuthor} on ${formattedCommentDate} (in post: 
-                    <a href="#" class="view-full-post-link" data-post-id="${commentPostId}">${commentPostId}</a>)
+                  Comment by ${commentAuthor} on ${formattedCommentDate}
                 </p>
                 <p>${commentBody}</p>
                 ${generateCommentBadgesHtml(commentData)}
@@ -1755,6 +1755,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const iitFilter = document.getElementById("iit-filter");
   const tpRelatedFilter = document.getElementById("tp-related-filter");
   // Get the labels associated with the checkboxes
+
   const iitLabel = document.querySelector('label[for="iit-filter"]');
   const tpLabel = document.querySelector('label[for="tp-related-filter"]');
   
