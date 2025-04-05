@@ -21,19 +21,18 @@ header h1 {
 }
 
 .controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  padding: 10px; /* Keep padding here for spacing controls */
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
-  margin: 20px auto; /* Standardized margin */
-  max-width: 1400px;
-  justify-content: center;
-  align-items: center; /* Align items vertically */
-  box-sizing: border-box; /* Make padding part of max-width */
-  /* border: 1px solid red; */ /* --- DEBUG BORDER REMOVED --- */
+  display: flex; /* Use flexbox for layout */
+  flex-wrap: wrap; /* Allow items to wrap onto the next line on smaller screens */
+  gap: 15px; /* Spacing between control groups (date, filters, search) */
+  padding: 10px; /* Padding inside the controls container */
+  background-color: #ffffff; /* White background for the controls bar */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 1px 6px rgba(0,0,0,0.1); /* Subtle shadow */
+  margin: 20px auto; /* Center the controls section horizontally with top/bottom margin */
+  max-width: 1400px; /* Limit the maximum width of the controls bar */
+  justify-content: space-between; /* Distribute space between the control groups */
+  align-items: center; /* Align items vertically in the center */
+  box-sizing: border-box; /* Include padding in the element's total width and height */
 }
 
 .controls .date-range {
@@ -48,84 +47,101 @@ header h1 {
   font-weight: 500;
 }
 
+/* Date input styling */
 .controls .date-range input[type="date"] {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1em;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  padding: 10px; /* Padding inside the date input */
+  border: 1px solid #ddd; /* Light grey border */
+  border-radius: 6px; /* Rounded corners */
+  font-size: 1em; /* Standard font size */
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); /* Subtle inner shadow */
+  height: 40px; /* Set height to match buttons */
+  box-sizing: border-box; /* Include padding/border in height calculation */
 }
 
-.controls div {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+/* Styling for generic div containers within controls (used for checkbox groups) */
+/* This targets the divs directly inside .controls, like the filter checkboxes container */
+.controls div:not(.date-range):not(.keyword-search):not(.controls-middle-group) {
+  display: flex; /* Use flexbox */
+  gap: 10px; /* Spacing between items (e.g., checkbox and label) */
+  align-items: center; /* Align items vertically */
+}/* Styling for labels within generic div containers (specifically targeting filter labels) */
+.controls .controls-middle-group div label {
+  font-size: 1.1em; /* Slightly larger font */
+  color: #444; /* Dark grey text */
 }
 
-.controls div label {
-  font-size: 1.1em;
-  color: #444;
+/* Styling for checkboxes */
+.controls input[type="checkbox"] {
+  margin: 0; /* Remove default margin */
+  cursor: pointer; /* Pointer cursor on hover */
+  border: 1px solid #ccc; /* Medium grey border */
+  border-radius: 3px; /* Slightly rounded corners */
+  width: 16px; /* Explicit width */
+  height: 16px; /* Explicit height */
+  vertical-align: middle; /* Align checkbox vertically with label */
 }
 
-.controls div input[type="checkbox"] {
-  margin: 0;
-  cursor: pointer;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-
+/* General button styling within controls (applies to Filter and Search buttons) */
 .controls button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  /* Set explicit height and remove vertical padding */
-  height: 40px;
-  padding-left: 20px;
+  background-color: #4CAF50; /* Default green background (Filter button) */
+  color: white; /* White text */
+  border: none; /* No border */
+  height: 40px; /* Explicit height */
+  padding-left: 20px; /* Horizontal padding */
   padding-right: 20px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1.1em;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-  /* Ensure text is centered vertically */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box; /* Include padding and border in element's total width and height */
+  border-radius: 6px; /* Rounded corners */
+  cursor: pointer; /* Pointer cursor on hover */
+  font-size: 1.1em; /* Slightly larger font */
+  transition: background-color 0.3s ease; /* Smooth background color transition on hover */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15); /* Subtle shadow */
+  display: inline-flex; /* Use inline-flex for alignment */
+  align-items: center; /* Center text vertically */
+  justify-content: center; /* Center text horizontally */
+  box-sizing: border-box; /* Include padding/border in height calculation */
 }
 
+/* Hover effect for general buttons */
 .controls button:hover {
-  background-color: #45a049;
+  background-color: #45a049; /* Darker green on hover */
 }
 
-#search-btn{
-  background-color: #007BFF;
-  /* Set explicit height and remove vertical padding */
-  height: 40px;
-  padding-left: 20px;
-  padding-right: 20px;
-  /* Inherit other styles from .controls button */
+/* Specific styling for the search button (#search-btn) */
+#search-btn {
+  background-color: #007BFF; /* Blue background */
+  /* Height, padding, etc., are inherited from the general .controls button style */
 }
 
-#search-btn:hover{
-  background-color: #0056b3;
+/* Hover effect for the search button */
+#search-btn:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }
 
+/* Keyword search container styling */
 .controls .keyword-search {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+  display: flex; /* Use flexbox */
+  gap: 10px; /* Spacing between the input field and the search button */
+  align-items: center; /* Align items vertically */
+  flex-grow: 1; /* Allow this container to grow and take available horizontal space */
+  min-width: 200px; /* Minimum width to prevent excessive shrinking on small screens */
 }
+
+/* Keyword search input styling */
 .controls .keyword-search input[type="text"] {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1em;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
-  width: 250px;
+  padding: 10px; /* Padding inside the input field */
+  border: 1px solid #ddd; /* Light grey border */
+  border-radius: 6px; /* Rounded corners */
+  font-size: 1em; /* Standard font size */
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); /* Subtle inner shadow */
+  flex-grow: 1; /* Allow the input field to grow and fill the container */
   height: 40px; /* Match button height */
   box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+/* Container for the middle group of controls (filters) */
+.controls .controls-middle-group {
+    display: flex;
+    gap: 15px; /* Spacing between filter items and button */
+    align-items: center;
 }
 
 .main-container {
