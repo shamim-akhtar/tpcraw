@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let engagementScoreChart = null;
   let totalCommentsChart = null;
   let commentsSentimentChart = null;
+  let timeSeriesChart = null;
 
   // 6. Global array to store fetched posts
   let allPostsData = [];
@@ -52,7 +53,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const keywordInput = document.getElementById('keyword-search');
   const searchButton = document.getElementById('search-btn');
   const postDetailsContainer = document.getElementById('post-details'); // Reference to the display area
-  
+
+  //--------------------TABS
   const tabs = document.querySelectorAll('.tab-button');
   const tabContents = document.querySelectorAll('.tab-content');
   const tabContainer = document.querySelector('.tab-container'); // Parent for event delegation
@@ -94,7 +96,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
   }
 
-  // --------------------------------------------------------------
   // Add event listener to the container
   if (tabContainer) {
       tabContainer.addEventListener('click', switchTab);
@@ -118,7 +119,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
       });
       tab.addEventListener('mouseout', () => {
-           if (!tab.classList.contains('active')) {
+            if (!tab.classList.contains('active')) {
               tab.style.color = '#333'; // Restore original color
           }
       });
@@ -127,14 +128,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Example: Add hover effect to reset zoom buttons
   const resetButtons = document.querySelectorAll('[id^="resetZoom"]');
   resetButtons.forEach(button => {
-       button.addEventListener('mouseover', () => {
-           button.style.filter = 'brightness(90%)';
-       });
-       button.addEventListener('mouseout', () => {
-           button.style.filter = 'brightness(100%)';
-       });
+        button.addEventListener('mouseover', () => {
+            button.style.filter = 'brightness(90%)';
+        });
+        button.addEventListener('mouseout', () => {
+            button.style.filter = 'brightness(100%)';
+        });
   });
-  // --------------------------------------------------------------
+  
 
   // --------------------------------------------------------------
   // FETCH FIRESTORE POSTS - with filters for subreddit & checkboxes
@@ -1052,12 +1053,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     }
 
-    if (window.timeSeriesChartInstance) {
-      window.timeSeriesChartInstance.destroy();
+    if (timeSeriesChart) {
+      timeSeriesChart.destroy();
     }
 
     const ctx = document.getElementById('timeSeriesChart').getContext('2d');
-    window.timeSeriesChartInstance = new Chart(ctx, {
+    timeSeriesChart = new Chart(ctx, {
       type: 'line',
       data: { datasets: datasets },
       options: {
@@ -1068,6 +1069,18 @@ document.addEventListener('DOMContentLoaded', async () => {
             text: 'Time Series of Average Sentiment by Category',
             align: 'start',
             font: { size: 18, weight: '600' }
+          },
+          zoom: {
+            pan: {
+              enabled: true,
+              mode: 'x',
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              drag: { enabled: true },
+              pinch: { enabled: true },
+              mode: 'x',
+            },
           },
           tooltip: {
             mode: 'index',
@@ -1140,7 +1153,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const element = elements[0];
             const datasetIndex = element.datasetIndex;
             const index = element.index;
-            const dataset = window.timeSeriesChartInstance.data.datasets[datasetIndex];
+            const dataset = timeSeriesChart.data.datasets[datasetIndex];
             const categoryLabel = dataset.label.split(" ")[0];
             const category = categoryLabel.toLowerCase();
             const dataPoint = dataset.data[index];
@@ -2366,11 +2379,14 @@ async function fetchAndDisplayPostsAndCommentsByAuthor(authorName) {
   document.getElementById('resetZoomStackedBtn').addEventListener('click', () => {
     if (commentsSentimentChart) commentsSentimentChart.resetZoom();
   });
-  document.getElementById('resetZoomCommentsBtn').addEventListener('click', () => {
+  document.getElementById('resetZoomTotalCommentsBtn').addEventListener('click', () => {
     if (totalCommentsChart) totalCommentsChart.resetZoom();
   });
   document.getElementById('resetZoomEngagementBtn').addEventListener('click', () => {
     if (engagementScoreChart) engagementScoreChart.resetZoom();
+  });
+  document.getElementById('resetZoomTimeSeriesBtn').addEventListener('click', () => {
+    if (timeSeriesChart) timeSeriesChart.resetZoom();
   });
 
   // Listen for subreddit dropdown changes
