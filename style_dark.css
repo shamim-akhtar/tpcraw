@@ -1,352 +1,355 @@
 /* Dark Theme CSS - Layout and Functionality Preserved */
 
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0 0 60px 0; /* Added bottom padding to prevent footer overlap */
-    background-color: #1a1a1a; /* Dark background */
-    color: #e0e0e0; /* Light base text color */
-  }
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0 0 60px 0; /* Layout Match: Light CSS */
+  background-color: #1a1a1a; /* Dark Theme Color */
+  color: #e0e0e0; /* Dark Theme Color */
+}
   
-  header {
-    background-color: #222c3a; /* Slightly adjusted dark header */
-    padding: 30px 10px;
-    text-align: center;
-    color: white; /* Kept white text */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Adjusted shadow for dark */
-    border-bottom: 1px solid #445466; /* Slightly lighter border for separation */
-  }
+header {
+  background-color: #222c3a; /* Dark Theme Color */
+  padding: 30px 10px; /* Layout Match: Light CSS */
+  text-align: center; /* Layout Match: Light CSS */
+  color: white; /* Dark Theme Color (Same as Light) */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Dark Theme Style */
+  border-bottom: 1px solid #445466; /* Dark Theme Color */
+}
   
   header h1 {
-    margin: 0;
-    font-size: 2.5em;
-    font-weight: 600;
+  margin: 0; /* Layout Match: Light CSS */
+  font-size: 2.5em; /* Layout Match: Light CSS */
+  font-weight: 600; /* Layout Match: Light CSS */
   }
   
   .controls {
-    display: flex; /* Use flexbox for layout */
-    flex-wrap: wrap; /* Allow items to wrap onto the next line on smaller screens */
-    gap: 15px; /* Spacing between control groups (date, filters, search) */
-    padding: 10px; /* Padding inside the controls container */
-    background-color: #2c2c2c; /* Darker background for controls bar */
-    border-radius: 12px; /* Rounded corners */
-    box-shadow: 0 1px 6px rgba(255, 255, 255, 0.05); /* Subtle light shadow for depth */
-    margin: 20px auto; /* Center the controls section horizontally with top/bottom margin */
-    max-width: 1400px; /* Limit the maximum width of the controls bar */
-    justify-content: space-between; /* Distribute space between the control groups */
-    align-items: center; /* Align items vertically in the center */
-    box-sizing: border-box; /* Include padding in the element's total width and height */
+  display: flex; /* Layout Match: Light CSS */
+  flex-wrap: wrap; /* Layout Match: Light CSS */
+  gap: 15px; /* Layout Match: Light CSS */
+  padding: 10px; /* Layout Match: Light CSS */
+  background-color: #2c2c2c; /* Dark Theme Color */
+  border-radius: 12px; /* Layout Match: Light CSS */
+  box-shadow: 0 1px 6px rgba(255, 255, 255, 0.05); /* Dark Theme Style */
+  margin: 20px auto; /* Layout Match: Light CSS */
+  max-width: 1400px; /* Layout Match: Light CSS */
+  justify-content: space-between; /* Layout Match: Light CSS */
+  align-items: center; /* Layout Match: Light CSS */
+  box-sizing: border-box; /* Layout Match: Light CSS */
   }
   
   .controls .date-range {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+  display: flex; /* Layout Match: Light CSS */
+  gap: 10px; /* Layout Match: Light CSS */
+  align-items: center; /* Layout Match: Light CSS */
   }
   
   .controls .date-range label {
-    font-size: 1.1em;
-    color: #cccccc; /* Lighter text color */
-    font-weight: 500;
+  font-size: 1.1em; /* Layout Match: Light CSS */
+  color: #cccccc; /* Dark Theme Color */
+  font-weight: 500; /* Layout Match: Light CSS */
   }
   
   /* Date input styling */
   .controls .date-range input[type="date"] {
-    padding: 10px; /* Padding inside the date input */
-    border: 1px solid #555555; /* Darker border */
-    border-radius: 6px; /* Rounded corners */
-    font-size: 1em; /* Standard font size */
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); /* Adjusted inner shadow */
-    height: 40px; /* Set height to match buttons */
-    box-sizing: border-box; /* Include padding/border in height calculation */
-    background-color: #333333; /* Dark input background */
-    color: #e0e0e0; /* Light input text */
-    color-scheme: dark; /* Hint for browser styling (calendar picker) */
+  padding: 10px; /* Layout Match: Light CSS */
+  border: 1px solid #555555; /* Dark Theme Color */
+  border-radius: 6px; /* Layout Match: Light CSS */
+  font-size: 1em; /* Layout Match: Light CSS */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); /* Dark Theme Style */
+  height: 40px; /* Layout Match: Light CSS */
+  box-sizing: border-box; /* Layout Match: Light CSS */
+  background-color: #333333; /* Dark Theme Color */
+  color: #e0e0e0; /* Dark Theme Color */
+  color-scheme: dark; /* Dark Theme Style */
   }
   
   /* Styling for generic div containers within controls (used for checkbox groups) */
-  /* This targets the divs directly inside .controls, like the filter checkboxes container */
   .controls div:not(.date-range):not(.keyword-search):not(.controls-middle-group) {
-    display: flex; /* Use flexbox */
-    gap: 10px; /* Spacing between items (e.g., checkbox and label) */
-    align-items: center; /* Align items vertically */
+  display: flex; /* Layout Match: Light CSS */
+  gap: 10px; /* Layout Match: Light CSS */
+  align-items: center; /* Layout Match: Light CSS */
   }
   
   /* Styling for labels within generic div containers (specifically targeting filter labels) */
   .controls .controls-middle-group div label {
-    font-size: 1.1em; /* Slightly larger font */
-    color: #cccccc; /* Lighter text color */
+  font-size: 1.1em; /* Layout Match: Light CSS */
+  color: #cccccc; /* Dark Theme Color */
   }
   
   /* Styling for checkboxes */
   .controls input[type="checkbox"] {
-    margin: 0; /* Remove default margin */
-    cursor: pointer; /* Pointer cursor on hover */
-    border: 1px solid #666666; /* Darker border */
-    border-radius: 3px; /* Slightly rounded corners */
-    width: 16px; /* Explicit width */
-    height: 16px; /* Explicit height */
-    vertical-align: middle; /* Align checkbox vertically with label */
-    background-color: #333333; /* Dark background */
-    accent-color: #4CAF50; /* Use accent color for the checkmark */
+  margin: 0; /* Layout Match: Light CSS */
+  cursor: pointer; /* Layout Match: Light CSS */
+  border: 1px solid #666666; /* Dark Theme Color */
+  border-radius: 3px; /* Layout Match: Light CSS */
+  width: 16px; /* Layout Match: Light CSS */
+  height: 16px; /* Layout Match: Light CSS */
+  vertical-align: middle; /* Layout Match: Light CSS */
+  background-color: #333333; /* Dark Theme Color */
+  accent-color: #4CAF50; /* Dark Theme Style */
   }
   
   /* General button styling within controls (applies to Filter and Search buttons) */
   .controls button {
-    background-color: #4CAF50; /* Keep green background (Filter button) */
-    color: white; /* White text */
-    border: none; /* No border */
-    height: 40px; /* Explicit height */
-    padding-left: 20px; /* Horizontal padding */
-    padding-right: 20px;
-    border-radius: 6px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    font-size: 1.1em; /* Slightly larger font */
-    transition: background-color 0.3s ease; /* Smooth background color transition on hover */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25); /* Adjusted shadow */
-    display: inline-flex; /* Use inline-flex for alignment */
-    align-items: center; /* Center text vertically */
-    justify-content: center; /* Center text horizontally */
-    box-sizing: border-box; /* Include padding/border in height calculation */
+  background-color: #4CAF50; /* Dark Theme Color (Accent Kept) */
+  color: white; /* Dark Theme Color (Accent Kept) */
+  border: none; /* Layout Match: Light CSS */
+  height: 40px; /* Layout Match: Light CSS */
+  padding-left: 20px; /* Layout Match: Light CSS */
+  padding-right: 20px; /* Layout Match: Light CSS */
+  border-radius: 6px; /* Layout Match: Light CSS */
+  cursor: pointer; /* Layout Match: Light CSS */
+  font-size: 1.1em; /* Layout Match: Light CSS */
+  transition: background-color 0.3s ease; /* Layout Match: Light CSS */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25); /* Dark Theme Style */
+  display: inline-flex; /* Layout Match: Light CSS */
+  align-items: center; /* Layout Match: Light CSS */
+  justify-content: center; /* Layout Match: Light CSS */
+  box-sizing: border-box; /* Layout Match: Light CSS */
   }
   
   /* Hover effect for general buttons */
   .controls button:hover {
-    background-color: #45a049; /* Darker green on hover */
+  background-color: #45a049; /* Dark Theme Color (Accent Kept) */
   }
   
   /* Specific styling for the search button (#search-btn) */
   #search-btn {
-    background-color: #007BFF; /* Keep blue background */
-    /* Height, padding, etc., are inherited from the general .controls button style */
+  background-color: #007BFF; /* Dark Theme Color (Accent Kept) */
   }
   
   /* Hover effect for the search button */
   #search-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+  background-color: #0056b3; /* Dark Theme Color (Accent Kept) */
   }
   
   /* Keyword search container styling */
   .controls .keyword-search {
-    display: flex; /* Use flexbox */
-    gap: 10px; /* Spacing between the input field and the search button */
-    align-items: center; /* Align items vertically */
-    flex-grow: 1; /* Allow this container to grow and take available horizontal space */
-    min-width: 200px; /* Minimum width to prevent excessive shrinking on small screens */
+  display: flex; /* Layout Match: Light CSS */
+  gap: 10px; /* Layout Match: Light CSS */
+  align-items: center; /* Layout Match: Light CSS */
+  flex-grow: 1; /* Layout Match: Light CSS */
+  min-width: 200px; /* Layout Match: Light CSS */
   }
   
   /* Keyword search input styling */
   .controls .keyword-search input[type="text"] {
-    padding: 10px; /* Padding inside the input field */
-    border: 1px solid #555555; /* Darker border */
-    border-radius: 6px; /* Rounded corners */
-    font-size: 1em; /* Standard font size */
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); /* Adjusted inner shadow */
-    flex-grow: 1; /* Allow the input field to grow and fill the container */
-    height: 40px; /* Match button height */
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
-    background-color: #333333; /* Dark input background */
-    color: #e0e0e0; /* Light input text */
+  padding: 10px; /* Layout Match: Light CSS */
+  border: 1px solid #555555; /* Dark Theme Color */
+  border-radius: 6px; /* Layout Match: Light CSS */
+  font-size: 1em; /* Layout Match: Light CSS */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); /* Dark Theme Style */
+  flex-grow: 1; /* Layout Match: Light CSS */
+  height: 40px; /* Layout Match: Light CSS */
+  box-sizing: border-box; /* Layout Match: Light CSS */
+  background-color: #333333; /* Dark Theme Color */
+  color: #e0e0e0; /* Dark Theme Color */
   }
   
   /* Container for the middle group of controls (filters) */
   .controls .controls-middle-group {
-    display: flex;
-    gap: 15px; /* Spacing between filter items and button */
-    align-items: center;
+  display: flex; /* Layout Match: Light CSS */
+  gap: 15px; /* Layout Match: Light CSS */
+  align-items: center; /* Layout Match: Light CSS */
   }
   
   .main-container {
-    display: flex;
-    gap: 25px;
-    padding: 0; /* --- REMOVED PADDING --- */
-    box-sizing: border-box;
-    flex-wrap: wrap;
-    align-items: stretch;
-    max-width: 1400px;
-    margin: 20px auto; /* Standardized margin */
-    /* border: 1px solid blue; */ /* --- DEBUG BORDER REMOVED --- */
+  display: flex; /* Layout Match: Light CSS */
+  gap: 25px; /* Layout Match: Light CSS */
+  padding: 0; /* Layout Match: Light CSS */
+  box-sizing: border-box; /* Layout Match: Light CSS */
+  flex-wrap: wrap; /* Layout Match: Light CSS */
+  align-items: stretch; /* Layout Match: Light CSS */
+  max-width: 1400px; /* Layout Match: Light CSS */
+  margin: 20px auto; /* Layout Match: Light CSS */
   }
   
   .left-div {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-    min-width: 280px;
+  flex: 2; /* Layout Match: Light CSS */
+  display: flex; /* Layout Match: Light CSS */
+  flex-direction: column; /* Layout Match: Light CSS */
+  gap: 25px; /* Layout Match: Light CSS */
+  min-width: 280px; /* Layout Match: Light CSS */
   }
   
   .left-div .subreddit-select-container {
-    background-color: #2c2c2c; /* Dark container background */
-    border-radius: 12px;
-    padding: 15px; /* Keep inner padding */
-    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
+  background-color: #2c2c2c; /* Dark Theme Color */
+  border-radius: 12px; /* Layout Match: Light CSS */
+  padding: 15px; /* Layout Match: Light CSS */
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Dark Theme Style */
   }
   
   .left-div .subreddit-select-container .postCount-title-large {
-    font-size: 1.2em;
-    color: #cccccc; /* Lighter text */
-    margin-bottom: 20px;
-    font-weight: 600;
-    text-align: center;
+  font-size: 1.2em; /* Layout Match: Light CSS */
+  color: #cccccc; /* Dark Theme Color */
+  margin-bottom: 20px; /* Layout Match: Light CSS */
+  font-weight: 600; /* Layout Match: Light CSS */
+  text-align: center; /* Layout Match: Light CSS */
   }
   
   #subreddit-select {
-    padding: 10px;
-    border: 1px solid #555555; /* Darker border */
-    border-radius: 6px;
-    font-size: 1em;
-    width: 100%;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); /* Adjusted inner shadow */
-    box-sizing: border-box;
-    background-color: #333333; /* Dark select background */
-    color: #e0e0e0; /* Light select text */
+  padding: 10px; /* Layout Match: Light CSS */
+  border: 1px solid #555555; /* Dark Theme Color */
+  border-radius: 6px; /* Layout Match: Light CSS */
+  font-size: 1em; /* Layout Match: Light CSS */
+  width: 100%; /* Layout Match: Light CSS */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); /* Dark Theme Style */
+  box-sizing: border-box; /* Layout Match: Light CSS */
+  background-color: #333333; /* Dark Theme Color */
+  color: #e0e0e0; /* Dark Theme Color */
   }
   
   .left-div .post-comments-count-container {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    justify-content: space-between;
+  display: flex; /* Layout Match: Light CSS */
+  gap: 20px; /* Layout Match: Light CSS */
+  flex-wrap: wrap; /* Layout Match: Light CSS */
+  justify-content: space-between; /* Layout Match: Light CSS */
   }
   
   .dashboard-box {
-    background-color: #2c2c2c; /* Dark box background */
-    border-radius: 12px;
-    padding: 10px; /* Keep inner padding */
-    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-width: 100px;
-    flex: 1;
+  background-color: #2c2c2c; /* Dark Theme Color */
+  border-radius: 12px; /* Layout Match: Light CSS */
+  padding: 10px; /* Layout Match: Light CSS */
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Dark Theme Style */
+  display: flex; /* Layout Match: Light CSS */
+  flex-direction: column; /* Layout Match: Light CSS */
+  align-items: center; /* Layout Match: Light CSS */
+  justify-content: center; /* Layout Match: Light CSS */
+  min-width: 100px; /* Layout Match: Light CSS */
+  flex: 1; /* Layout Match: Light CSS */
   }
   
   .dashboard-box .postCount-title {
-    font-size: 1em;
-    color: #cccccc; /* Lighter text */
-    margin-bottom: 8px;
-    font-weight: 500;
+  font-size: 1em; /* Layout Match: Light CSS */
+  color: #cccccc; /* Dark Theme Color */
+  margin-bottom: 8px; /* Layout Match: Light CSS */
+  font-weight: 500; /* Layout Match: Light CSS */
   }
   
   .dashboard-box .postCount-number {
-    font-size: 2.2em;
-    font-weight: bold;
-    color: #e0e0e0; /* Lighter number color */
+  font-size: 2.2em; /* Layout Match: Light CSS */
+  font-weight: bold; /* Layout Match: Light CSS */
+  color: #e0e0e0; /* Dark Theme Color */
   }
   
   .dashboard-box-wide {
-    background-color: #2c2c2c; /* Dark box background */
-    border-radius: 12px;
-    padding: 10px; /* Keep inner padding */
-    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
-    text-align: center;
+  background-color: #2c2c2c; /* Dark Theme Color */
+  border-radius: 12px; /* Layout Match: Light CSS */
+  padding: 10px; /* Layout Match: Light CSS */
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Dark Theme Style */
+  text-align: center; /* Layout Match: Light CSS */
   }
   
   .dashboard-box-wide .postCount-title {
-    font-size: 1em;
-    color: #cccccc; /* Lighter text */
-    margin-bottom: 8px;
-    font-weight: 500;
+  font-size: 1em; /* Layout Match: Light CSS */
+  color: #cccccc; /* Dark Theme Color */
+  margin-bottom: 8px; /* Layout Match: Light CSS */
+  font-weight: 500; /* Layout Match: Light CSS */
   }
   
   .dashboard-box-wide .postCount-number-wide {
-    font-size: 3em;
-    font-weight: bold;
-    color: #e0e0e0; /* Lighter number color */
+  font-size: 3em; /* Layout Match: Light CSS */
+  font-weight: bold; /* Layout Match: Light CSS */
+  color: #e0e0e0; /* Dark Theme Color */
   }
   
   .dashboard-box-large {
-    background-color: #2c2c2c; /* Dark box background */
-    border-radius: 12px;
-    padding: 10px; /* Keep inner padding */
-    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
+  background-color: #2c2c2c; /* Dark Theme Color */
+  border-radius: 12px; /* Layout Match: Light CSS */
+  padding: 10px; /* Layout Match: Light CSS */
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Dark Theme Style */
+  display: flex; /* Layout Match: Light CSS */
+  flex-direction: column; /* Layout Match: Light CSS */
+  align-items: center; /* Layout Match: Light CSS */
+  position: relative; /* Layout Match: Light CSS */
   }
   
   .dashboard-box-large .postCount-title-large {
-    font-size: 1.2em;
-    color: #cccccc; /* Lighter text */
-    margin-bottom: 20px;
-    font-weight: 600;
+  font-size: 1.2em; /* Layout Match: Light CSS */
+  color: #cccccc; /* Dark Theme Color */
+  margin-bottom: 20px; /* Layout Match: Light CSS */
+  font-weight: 600; /* Layout Match: Light CSS */
   }
   
   #sentimentPieChart {
-    width: 100%;
-    max-width: 350px;
-    height: auto;
-    /* Note: Chart.js or similar library colors will need separate dark theme configuration */
+  width: 100%; /* Layout Match: Light CSS */
+  max-width: 350px; /* Layout Match: Light CSS */
+  height: auto; /* Layout Match: Light CSS */
   }
   
   .right-div {
-    flex: 7;
-    display: flex;
-    flex-direction: column;
-    min-width: 300px;
+  flex: 7; /* Layout Match: Light CSS */
+  display: flex; /* Layout Match: Light CSS */
+  flex-direction: column; /* Layout Match: Light CSS */
+  min-width: 300px; /* Layout Match: Light CSS */
   }
   
   .tab-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    border-bottom: 2px solid #444444; /* Darker border */
-    /* Add padding to align tab content with controls content */
-    padding-left: 10px;
-    padding-right: 10px;
-    box-sizing: border-box;
+  display: flex; /* Layout Match: Light CSS */
+  flex-wrap: wrap; /* Layout Match: Light CSS */
+  justify-content: space-between; /* Layout Match: Light CSS */
+  margin-bottom: 10px; /* Layout Match: Light CSS */
+  border-bottom: 2px solid #444444; /* Dark Theme Color */
+  padding-left: 10px; /* Layout Match: Light CSS */
+  padding-right: 10px; /* Layout Match: Light CSS */
+  box-sizing: border-box; /* Layout Match: Light CSS */
   }
   
   .tab-button {
-    padding: 10px 10px;
-    border: none;
-    background-color: transparent;
-    font-size: 0.85em;
-    color: #bbbbbb; /* Lighter inactive tab color */
-    cursor: pointer;
-    transition: border-bottom 0.3s ease, color 0.3s ease;
-    font-weight: 500;
-    margin-bottom: -2px;
-    border-bottom: 3px solid transparent;
+  padding: 10px 10px; /* Layout Match: Light CSS */
+  border: none; /* Layout Match: Light CSS */
+  background-color: transparent; /* Dark Theme Color (Same) */
+  font-size: 0.85em; /* Layout Match: Light CSS */
+  color: #bbbbbb; /* Dark Theme Color */
+  cursor: pointer; /* Layout Match: Light CSS */
+  transition: border-bottom 0.3s ease, color 0.3s ease, font-weight 0.3s ease; /* Layout Match: Light CSS (Added font-weight) */
+  font-weight: normal; /* Layout Match: Light CSS (Ensure normal weight default) */
+  margin-bottom: -2px; /* Layout Match: Light CSS */
+  border-bottom: 3px solid transparent; /* Layout Match: Light CSS */
   }
   
   .tab-button.active {
-    border-bottom: 3px solid #4CAF50; /* Keep accent color */
-    color: #ffffff; /* Bright text for active tab */
+  border-bottom: 3px solid #4CAF50; /* Dark Theme Color (Accent Kept) */
+  color: #ffffff; /* Dark Theme Color */
+      font-weight: 500; /* Layout Match: Light CSS */
   }
   
-  .tab-button:hover {
-    border-bottom: 3px solid #4CAF50; /* Keep accent color */
-    color: #ffffff; /* Bright text on hover */
+  .tab-button:hover { /* Combined hover for active/inactive as per Dark CSS example */
+  border-bottom: 3px solid #4CAF50; /* Dark Theme Color (Accent Kept) */
+  color: #ffffff; /* Dark Theme Color */
   }
+  
+  /* Added hover state for non-active only to match light */
+  .tab-button:hover:not(.active) {
+     border-bottom-color: #4CAF50; /* Match light theme hover border */
+     color: #ffffff; /* Brighter text on hover (Dark theme adaptation) */
+     /* Or use a specific dark theme hover color like #64b5f6 if preferred */
+  }
+  
   
   .chart-section {
-    display: none;
-    background-color: #2c2c2c; /* Dark section background */
-    border-radius: 12px;
-    padding: 10px; /* Keep inner padding */
-    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
-    margin-bottom: 25px;
-    /* Add margin to align chart sections with controls content */
-    margin-left: 10px;
-    margin-right: 10px;
-    box-sizing: border-box;
+  display: none; /* Layout Match: Light CSS */
+  background-color: #2c2c2c; /* Dark Theme Color */
+  border-radius: 12px; /* Layout Match: Light CSS */
+  padding: 10px; /* Layout Match: Light CSS */
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Dark Theme Style */
+  margin-bottom: 25px; /* Layout Match: Light CSS */
+  margin-left: 10px; /* Layout Match: Light CSS */
+  margin-right: 10px; /* Layout Match: Light CSS */
+  box-sizing: border-box; /* Layout Match: Light CSS */
   }
   
   .chart-section.active {
-    display: block;
+  display: block; /* Layout Match: Light CSS */
   }
   
   .chart-section h3 {
-    margin-top: 0;
-    font-size: 1.6em;
-    color: #e0e0e0; /* Light heading color */
-    margin-bottom: 20px;
-    font-weight: 600;
+  margin-top: 0; /* Layout Match: Light CSS */
+  font-size: 1.6em; /* Layout Match: Light CSS */
+  color: #e0e0e0; /* Dark Theme Color */
+  margin-bottom: 20px; /* Layout Match: Light CSS */
+  font-weight: 600; /* Layout Match: Light CSS */
   }
   
   #weightedSentimentChart,
@@ -355,117 +358,662 @@ body {
   #engagementScoreChart,
   #authorsChart,
   #timeSeriesChart {
-    width: 100%;
-    height: auto;
-    /* Note: Chart.js or similar library colors will need separate dark theme configuration */
+  width: 100%; /* Layout Match: Light CSS */
+  height: auto; /* Layout Match: Light CSS */
   }
   
   .chart-controls {
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-    gap: 15px;
+  margin: 20px 0; /* Layout Match: Light CSS */
+  display: flex; /* Layout Match: Light CSS */
+  align-items: center; /* Layout Match: Light CSS */
+  gap: 15px; /* Layout Match: Light CSS */
   }
   
   .chart-controls button {
-    background-color: #3498db; /* Keep blue accent */
-    color: white;
-    border: none;
-    padding: 8px 18px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25); /* Adjusted shadow */
+  background-color: #3498db; /* Dark Theme Color (Accent Kept) */
+  color: white; /* Dark Theme Color (Accent Kept) */
+  border: none; /* Layout Match: Light CSS */
+  padding: 8px 18px; /* Layout Match: Light CSS */
+  border-radius: 6px; /* Layout Match: Light CSS */
+  cursor: pointer; /* Layout Match: Light CSS */
+  font-size: 1em; /* Layout Match: Light CSS */
+  transition: background-color 0.3s ease; /* Layout Match: Light CSS */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25); /* Dark Theme Style */
   }
   
   .chart-controls button:hover {
-    background-color: #2980b9; /* Darker blue on hover */
+  background-color: #2980b9; /* Dark Theme Color (Accent Kept) */
   }
   
   .chart-controls span {
-    font-size: 0.9em;
-    color: #aaaaaa; /* Lighter secondary text */
+  font-size: 0.9em; /* Layout Match: Light CSS */
+  color: #aaaaaa; /* Dark Theme Color */
   }
   
   .chart-description {
-    font-size: 0.95em;
-    color: #cccccc; /* Lighter text */
-    text-align: left;
-    line-height: 1.7;
+  font-size: 0.95em; /* Layout Match: Light CSS */
+  color: #cccccc; /* Dark Theme Color */
+  text-align: left; /* Layout Match: Light CSS */
+  line-height: 1.7; /* Layout Match: Light CSS */
   }
   
   #topPosts .card {
-    border: none;
-    padding: 0; /* Keep inner padding */
-    /* Background will be inherited from .chart-section */
+  border: none; /* Layout Match: Light CSS */
+  padding: 0; /* Layout Match: Light CSS */
   }
   
   #topPosts label {
-    display: block;
-    margin-bottom: 12px;
-    font-size: 1em;
-    color: #cccccc; /* Lighter text */
-    font-weight: 600;
+  display: block; /* Layout Match: Light CSS */
+  margin-bottom: 12px; /* Layout Match: Light CSS */
+  font-size: 1em; /* Layout Match: Light CSS */
+  color: #cccccc; /* Dark Theme Color */
+  font-weight: 600; /* Layout Match: Light CSS */
   }
   
   #topPosts select {
-    padding: 10px;
-    border: 1px solid #555555; /* Darker border */
-    border-radius: 6px;
-    font-size: 1em;
-    width: 100%;
-    max-width: 350px;
-    margin-bottom: 20px;
-    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); /* Adjusted inner shadow */
-    background-color: #333333; /* Dark select background */
-    color: #e0e0e0; /* Light select text */
+  padding: 10px; /* Layout Match: Light CSS */
+  border: 1px solid #555555; /* Dark Theme Color */
+  border-radius: 6px; /* Layout Match: Light CSS */
+  font-size: 1em; /* Layout Match: Light CSS */
+  width: 100%; /* Layout Match: Light CSS */
+  max-width: 350px; /* Layout Match: Light CSS */
+  margin-bottom: 20px; /* Layout Match: Light CSS */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); /* Dark Theme Style */
+  background-color: #333333; /* Dark Theme Color */
+  color: #e0e0e0; /* Dark Theme Color */
   }
   
   #topPosts #postListContainer {
-    font-size: 0.95em;
-    color: #cccccc; /* Lighter text */
-    line-height: 1.6;
+  font-size: 0.95em; /* Layout Match: Light CSS */
+  color: #cccccc; /* Dark Theme Color */
+  line-height: 1.6; /* Layout Match: Light CSS */
   }
   
   #post-details-container {
-    background-color: #2c2c2c; /* Dark container background */
-    border-radius: 12px;
-    padding: 10px; /* Add padding back here for inner content */
-    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
-    margin: 20px auto; /* Standardized margin */
-    max-width: 1400px;
-    box-sizing: border-box;
-    /* border: 1px solid green; */ /* --- DEBUG BORDER REMOVED --- */
+  background-color: #2c2c2c; /* Dark Theme Color */
+  border-radius: 12px; /* Layout Match: Light CSS */
+  padding: 10px; /* Layout Match: Light CSS */
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Dark Theme Style */
+  margin: 20px auto; /* Layout Match: Light CSS */
+  max-width: 1400px; /* Layout Match: Light CSS */
+  box-sizing: border-box; /* Layout Match: Light CSS */
   }
   
   #post-details {
-    font-size: 1em;
-    color: #cccccc; /* Lighter text */
-    line-height: 1.6;
+  font-size: 1em; /* Layout Match: Light CSS */
+  color: #cccccc; /* Dark Theme Color */
+  line-height: 1.6; /* Layout Match: Light CSS */
   }
   
   footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #222222; /* Dark footer background */
-    font-size: 0.9em;
-    text-align: center;
-    padding: 15px 20px;
-    border-top: 1px solid #333333; /* Darker top border */
-    z-index: 1000;
-    box-sizing: border-box;
-    color: #aaaaaa; /* Lighter footer text */
-    margin-top: 20px; /* This might get hidden by fixed footer, added padding-bottom to body */
+  position: fixed; /* Layout Match: Light CSS */
+  bottom: 0; /* Layout Match: Light CSS */
+  left: 0; /* Layout Match: Light CSS */
+  width: 100%; /* Layout Match: Light CSS */
+  background: #222222; /* Dark Theme Color */
+  font-size: 0.9em; /* Layout Match: Light CSS */
+  text-align: center; /* Layout Match: Light CSS */
+  padding: 15px 20px; /* Layout Match: Light CSS */
+  border-top: 1px solid #333333; /* Dark Theme Color */
+  z-index: 1000; /* Layout Match: Light CSS */
+  box-sizing: border-box; /* Layout Match: Light CSS */
+  color: #aaaaaa; /* Dark Theme Color */
+  margin-top: 20px; /* Layout Match: Light CSS */
   }
   
   footer div {
-    max-width: 1000px;
-    margin: 0 auto;
+  max-width: 1000px; /* Layout Match: Light CSS */
+  margin: 0 auto; /* Layout Match: Light CSS */
   }
   
   footer p {
-    margin: 0;
+  margin: 0; /* Layout Match: Light CSS */
+  }
+  
+  
+  /* ========================================= */
+  /* == NEW STYLES (Extracted from JS) ====== */
+  /* ========================================= */
+  /* This section needs careful comparison against Light CSS's equivalent section */
+  
+  /* --- Tab Styles --- */
+  /* .tab-button definition already covered above, ensure layout properties match */
+  /* .tab-button.active definition already covered above, ensure layout properties match */
+  /* .tab-button:hover:not(.active) needs correction to match Light CSS hover behavior */
+  .dark-theme .tab-button:hover:not(.active) { /* Specificity for dark theme */
+      color: #64b5f6; /* Dark Theme Color (previously defined, ok) */
+      /* border-bottom-color: #424242; */ /* Remove border change on hover unless desired */
+      border-bottom-color: transparent; /* Explicitly match light theme non-border change */
+   }
+   /* Restore general hover to match Light CSS (affects border) */
+   .dark-theme .tab-button:hover {
+      border-bottom: 3px solid #4CAF50; /* Use accent color like light theme */
+      color: #ffffff; /* Keep bright text on hover */
+   }
+  
+  
+  /* Tab Content Visibility */
+  .tab-content {
+    display: none; /* Layout Match: Light CSS */
+  }
+  .tab-content.active {
+    display: block; /* Layout Match: Light CSS */
+  }
+  
+  /* --- Reset Zoom Button Hover --- */
+  [id^="resetZoom"]:hover {
+      filter: brightness(90%); /* Layout Match: Light CSS (Filter is visual style) */
+  }
+  
+  
+  /* --- Post Details Styling --- */
+  .post-details-wrapper {
+      padding: 25px 30px; /* Layout Match: Light CSS */
+      background-color: #2c2c2e; /* Dark Theme Color */
+      border-radius: 10px; /* Layout Match: Light CSS */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Dark Theme Style Adjust */
+      border: 1px solid #444446; /* Dark Theme Color */
+  }
+  
+  /* Message styles */
+  .details-message {
+      padding: 20px; /* Layout Match: Light CSS */
+      border-radius: 8px; /* Layout Match: Light CSS */
+      margin-bottom: 20px; /* Layout Match: Light CSS */
+      text-align: center; /* Layout Match: Light CSS */
+  }
+  .details-message.loading {
+      color: #e0e0e0; /* Dark Theme Color */
+      background-color: #3a3a3c; /* Dark Theme Color */
+  }
+  .details-message.error {
+      background-color: #5c1a21; /* Dark Theme Color */
+      border: 1px solid #7c2a31; /* Dark Theme Color */
+      color: #f8d7da; /* Dark Theme Color */
+  }
+  .details-message.error-partial {
+      background-color: #4d3a0a; /* Dark Theme Color */
+      border: 1px solid #6b500f; /* Dark Theme Color */
+      color: #fff3cd; /* Dark Theme Color */
+      margin: 10px 0; /* Layout Match: Light CSS */
+      padding: 10px; /* Layout Match: Light CSS */
+      font-style: italic; /* Layout Match: Light CSS */
+  }
+  .details-message.info {
+      background-color: #3a3f44; /* Dark Theme Color */
+      border: 1px solid #4a4f54; /* Dark Theme Color */
+      color: #e9ecef; /* Dark Theme Color */
+  }
+  
+  /* Post Title */
+  .post-details-title {
+      margin-top: 0; /* Layout Match: Light CSS */
+      margin-bottom: 5px; /* Layout Match: Light CSS */
+      font-size: 1.8em; /* Layout Match: Light CSS */
+      color: #f5f5f5; /* Dark Theme Color */
+  }
+  .post-details-title a {
+      color: inherit; /* Dark Theme Color */
+      text-decoration: none; /* Layout Match: Light CSS */
+  }
+  .post-details-title a:hover {
+      color: #64b5f6; /* Dark Theme Color */
+      text-decoration: underline; /* Layout Match: Light CSS */
+  }
+  
+  /* Post Metadata */
+  .post-details-meta {
+      font-size: 0.9em; /* Layout Match: Light CSS */
+      color: #a0a0a0; /* Dark Theme Color */
+      margin-bottom: 20px; /* Layout Match: Light CSS */
+      border-bottom: 1px dashed #444446; /* Dark Theme Color & Style Match: Light CSS */
+      padding-bottom: 10px; /* Layout Match: Light CSS */
+  }
+  
+  /* Post Badges Container */
+  .post-details-badges {
+      margin-bottom: 25px; /* Layout Match: Light CSS */
+  }
+  
+  /* Post Summary */
+  .post-details-summary {
+      background-color: #3a3a3c; /* Dark Theme Color */
+      border-left: 5px solid #3498db; /* Dark Theme Color (Accent Kept) */
+      padding: 15px 20px; /* Layout Match: Light CSS */
+      margin-bottom: 25px; /* Layout Match: Light CSS */
+      border-radius: 5px; /* Layout Match: Light CSS */
+  }
+  .summary-title {
+      margin-top: 0; /* Layout Match: Light CSS */
+      margin-bottom: 8px; /* Layout Match: Light CSS */
+      color: #64b5f6; /* Dark Theme Color */
+      font-weight: 600; /* Layout Match: Light CSS */
+  }
+  .summary-text {
+      font-size: 0.95em; /* Layout Match: Light CSS */
+      color: #d0d0d0; /* Dark Theme Color */
+      line-height: 1.6; /* Layout Match: Light CSS */
+      margin: 0; /* Layout Match: Light CSS */
+  }
+  
+  /* Post Body */
+  .post-details-body-container {
+      margin-bottom: 30px; /* Layout Match: Light CSS */
+  }
+  .body-title {
+      margin-top: 0; /* Layout Match: Light CSS */
+      margin-bottom: 10px; /* Layout Match: Light CSS */
+      color: #cccccc; /* Dark Theme Color */
+      font-weight: 600; /* Layout Match: Light CSS */
+  }
+  .body-content {
+      font-size: 1.0em; /* Layout Match: Light CSS */
+      color: #e0e0e0; /* Dark Theme Color */
+      line-height: 1.7; /* Layout Match: Light CSS */
+      background-color: #1e1e1e; /* Dark Theme Color */
+      padding: 15px; /* Layout Match: Light CSS */
+      border-radius: 4px; /* Layout Match: Light CSS */
+      border: 1px solid #444446; /* Dark Theme Color */
+      word-wrap: break-word; /* Layout Match: Light CSS */
+  }
+  
+  /* Post Comments */
+  .post-details-comments-title {
+      margin-top: 30px; /* Layout Match: Light CSS */
+      padding-top: 20px; /* Layout Match: Light CSS */
+      border-top: 2px solid #444446; /* Dark Theme Color & Style Match: Light CSS */
+      color: #cccccc; /* Dark Theme Color */
+      font-weight: 600; /* Layout Match: Light CSS */
+  }
+  .no-comments-message {
+      color: #a0a0a0; /* Dark Theme Color */
+      font-style: italic; /* Layout Match: Light CSS */
+  }
+  .post-details-comment {
+      background-color: #3a3a3c; /* Dark Theme Color */
+      border: 1px solid #555557; /* Dark Theme Color */
+      border-radius: 6px; /* Layout Match: Light CSS */
+      padding: 15px; /* Layout Match: Light CSS */
+      margin-bottom: 15px; /* Layout Match: Light CSS */
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Dark Theme Style */
+  }
+  .comment-meta {
+      font-size: 0.85em; /* Layout Match: Light CSS */
+      color: #b0b0b0; /* Dark Theme Color */
+      margin-top: 0; /* Layout Match: Light CSS */
+      margin-bottom: 8px; /* Layout Match: Light CSS */
+  }
+  .comment-body {
+      font-size: 0.95em; /* Layout Match: Light CSS */
+      color: #e0e0e0; /* Dark Theme Color */
+      line-height: 1.6; /* Layout Match: Light CSS */
+      margin-top: 0; /* Layout Match: Light CSS */
+      margin-bottom: 10px; /* Layout Match: Light CSS */
+      padding-left: 10px; /* Layout Match: Light CSS */
+      border-left: 3px solid #666; /* Dark Theme Color */
+      word-wrap: break-word; /* Layout Match: Light CSS */
+  }
+  .comment-badges {
+      margin-bottom: 10px; /* Layout Match: Light CSS */
+  }
+  
+  
+  /* --- Post List Table --- */
+  .post-list-table {
+      width: 100%; /* Layout Match: Light CSS */
+      border-collapse: collapse; /* Layout Match: Light CSS */
+      margin-top: 15px; /* Layout Match: Light CSS */
+  }
+  .post-list-table th,
+  .post-list-table td {
+      border: 1px solid #555; /* Dark Theme Color */
+      padding: 8px 12px; /* Layout Match: Light CSS */
+      text-align: left; /* Layout Match: Light CSS */
+      color: #e0e0e0; /* Dark Theme Color */
+  }
+  .post-list-table th {
+      background-color: #424242; /* Dark Theme Color */
+      font-weight: 600; /* Layout Match: Light CSS */
+      color: #f5f5f5; /* Dark Theme Color */
+  }
+  .post-list-row {
+      cursor: pointer; /* Layout Match: Light CSS */
+      transition: background-color 0.2s ease; /* Layout Match: Light CSS */
+  }
+  .post-list-row:hover {
+      background-color: #424242; /* Dark Theme Color */
+  }
+  .post-list-row.selected {
+      background-color: #2a4a6a; /* Dark Theme Color */
+      font-weight: 500; /* Layout Match: Light CSS */
+      color: #ffffff; /* Dark Theme Color */
+  }
+  .no-posts-message {
+      color: #a0a0a0; /* Dark Theme Color */
+      font-style: italic; /* Layout Match: Light CSS */
+      margin-top: 15px; /* Layout Match: Light CSS */
+  }
+  
+  /* --- Category/Date Details View --- */
+  .category-date-details-wrapper {
+      padding: 25px 30px; /* Layout Match: Light CSS */
+      background-color: #2c2c2e; /* Dark Theme Color */
+      border-radius: 10px; /* Layout Match: Light CSS */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* Dark Theme Style */
+      border: 1px solid #444446; /* Dark Theme Color */
+  }
+  .category-date-title {
+      margin-top: 0; /* Layout Match: Light CSS */
+      margin-bottom: 25px; /* Layout Match: Light CSS */
+      font-size: 1.8em; /* Layout Match: Light CSS */
+      color: #f5f5f5; /* Dark Theme Color */
+      border-bottom: 1px solid #444446; /* Dark Theme Color */
+      padding-bottom: 10px; /* Layout Match: Light CSS */
+  }
+  .category-date-title .category-name {
+      color: #64b5f6; /* Dark Theme Color */
+  }
+  .category-date-title .date-info {
+      color: #a0a0a0; /* Dark Theme Color */
+      font-weight: normal; /* Layout Match: Light CSS */
+      font-size: 0.9em; /* Layout Match: Light CSS */
+  }
+  
+  .posts-section-title,
+  .comments-section-title {
+      margin-top: 0; /* Layout Match: Light CSS */
+      margin-bottom: 15px; /* Layout Match: Light CSS */
+      color: #d0d0d0; /* Dark Theme Color */
+      font-size: 1.4em; /* Layout Match: Light CSS */
+  }
+  
+  .comments-section-title {
+       margin-top: 30px; /* Layout Match: Light CSS */
+       padding-top: 25px; /* Layout Match: Light CSS */
+       border-top: 1px solid #444446; /* Dark Theme Color */
+  }
+  
+  /* Specific post/comment item styling */
+  .category-post-item,
+  .category-comment-item {
+      background-color: #3a3a3c; /* Dark Theme Color (Post) */
+      border: 1px solid #555557; /* Dark Theme Color */
+      border-radius: 8px; /* Layout Match: Light CSS */
+      padding: 15px 20px; /* Layout Match: Light CSS */
+      margin-bottom: 20px; /* Layout Match: Light CSS */
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); /* Dark Theme Style */
+  }
+  .category-comment-item {
+      background-color: #424242; /* Dark Theme Color (Comment) */
+      border: 1px solid #666668; /* Dark Theme Color */
+      border-radius: 6px; /* Layout Match: Light CSS */
+      padding: 15px; /* Layout Match: Light CSS */
+      margin-bottom: 15px; /* Layout Match: Light CSS */
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); /* Dark Theme Style */
+  }
+  
+  /* Shared elements within category/date view items */
+  .category-post-item .post-title,
+  .category-comment-item .comment-meta {
+      margin-top: 0; /* Layout Match: Light CSS */
+  }
+  .category-post-item .post-title a {
+      color: #82c7ff; /* Dark Theme Color */
+      text-decoration: none; /* Layout Match: Light CSS */
+      font-size: 1.2em; /* Layout Match: Light CSS */
+      margin-bottom: 5px; /* Layout Match: Light CSS - This was on h4 in light, apply here */
+  }
+  .category-post-item .post-title a:hover {
+      text-decoration: underline; /* Layout Match: Light CSS */
+       color: #a2d7ff; /* Dark Theme hover color */
+  }
+  .category-post-item .post-meta {
+      font-size: 0.85em; /* Layout Match: Light CSS */
+      color: #b0b0b0; /* Dark Theme Color */
+      margin-bottom: 15px; /* Layout Match: Light CSS */
+  }
+  .category-post-item .post-body-excerpt {
+      font-size: 0.95em; /* Layout Match: Light CSS */
+      color: #d0d0d0; /* Dark Theme Color */
+      line-height: 1.6; /* Layout Match: Light CSS */
+      margin-bottom: 15px; /* Layout Match: Light CSS */
+      max-height: 70px; /* Layout Match: Light CSS */
+      overflow: hidden; /* Layout Match: Light CSS */
+      text-overflow: ellipsis; /* Layout Match: Light CSS */
+      word-wrap: break-word; /* Layout Match: Light CSS */
+  }
+  .category-post-item .post-badges {
+      margin-bottom: 10px; /* Layout Match: Light CSS */
+  }
+  
+  .category-comment-item .comment-meta {
+      font-size: 0.85em; /* Layout Match: Light CSS */
+      color: #b0b0b0; /* Dark Theme Color */
+      margin-bottom: 8px; /* Layout Match: Light CSS */
+  }
+  .category-comment-item .parent-post-title {
+      font-style: italic; /* Layout Match: Light CSS */
+       color: #c0c0c0; /* Dark Theme Color */
+  }
+  .category-comment-item .comment-body {
+      font-size: 0.95em; /* Layout Match: Light CSS */
+      color: #e0e0e0; /* Dark Theme Color */
+      line-height: 1.6; /* Layout Match: Light CSS */
+      margin-bottom: 10px; /* Layout Match: Light CSS */
+      padding-left: 10px; /* Layout Match: Light CSS */
+      border-left: 3px solid #666; /* Dark Theme Color */
+      word-wrap: break-word; /* Layout Match: Light CSS */
+  }
+  .category-comment-item .comment-badges {
+      margin-bottom: 10px; /* Layout Match: Light CSS */
+  }
+  
+  /* Buttons within category/date view */
+  .category-post-item .view-full-post-btn,
+  .category-comment-item .view-full-post-btn {
+      margin-top: 5px; /* Layout Match: Light CSS */
+      padding: 6px 14px; /* Layout Match: Light CSS */
+      font-size: 0.9em; /* Layout Match: Light CSS */
+      color: white; /* Dark Theme Color (Accent Kept) */
+      border: none; /* Layout Match: Light CSS */
+      border-radius: 5px; /* Layout Match: Light CSS */
+      cursor: pointer; /* Layout Match: Light CSS */
+      transition: background-color 0.2s ease; /* Layout Match: Light CSS */
+  }
+  .category-post-item .view-full-post-btn {
+      background-color: #0a84ff; /* Dark Theme Color */
+  }
+  .category-post-item .view-full-post-btn:hover {
+      background-color: #349eff; /* Dark Theme Color */
+  }
+  .category-comment-item .view-full-post-btn { /* Also targets .view-thread-btn */
+      background-color: #5e5ce6; /* Dark Theme Color */
+  }
+  .category-comment-item .view-full-post-btn:hover {
+      background-color: #7878f0; /* Dark Theme Color */
+  }
+  
+  
+  /* --- Author Details View --- */
+  .author-details-wrapper {
+      padding: 25px 30px; /* Layout Match: Light CSS */
+      background-color: #2c2c2e; /* Dark Theme Color */
+      border-radius: 10px; /* Layout Match: Light CSS */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* Dark Theme Style */
+      border: 1px solid #444446; /* Dark Theme Color */
+  }
+  .author-details-title {
+      margin-top: 0; /* Layout Match: Light CSS */
+      margin-bottom: 25px; /* Layout Match: Light CSS */
+      font-size: 1.8em; /* Layout Match: Light CSS */
+      color: #f5f5f5; /* Dark Theme Color */
+      border-bottom: 1px solid #444446; /* Dark Theme Color */
+      padding-bottom: 10px; /* Layout Match: Light CSS */
+  }
+  
+  /* Specific item styling for author view */
+  .author-post-item {
+      background-color: #3a3a3c; /* Dark Theme Color */
+      border: 1px solid #555557; /* Dark Theme Color */
+      border-radius: 8px; /* Layout Match: Light CSS */
+      padding: 15px 20px; /* Layout Match: Light CSS */
+      margin-bottom: 20px; /* Layout Match: Light CSS */
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); /* Dark Theme Style */
+  }
+  .author-comment-item {
+      background-color: #424242; /* Dark Theme Color */
+      border: 1px solid #666668; /* Dark Theme Color */
+      border-radius: 6px; /* Layout Match: Light CSS */
+      padding: 15px; /* Layout Match: Light CSS */
+      margin-bottom: 15px; /* Layout Match: Light CSS */
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); /* Dark Theme Style */
+  }
+  
+  /* Apply styles using common classes where possible (Layout matches already verified) */
+  .author-post-item .post-title {
+      margin-top: 0; margin-bottom: 5px; font-size: 1.2em; /* Layout Match: Light CSS */
+  }
+  .author-post-item .post-title a { color: #82c7ff; text-decoration: none; } /* Dark Theme Color */
+  .author-post-item .post-title a:hover { text-decoration: underline; color: #a2d7ff; } /* Dark Theme Color */
+  .author-post-item .post-meta { font-size: 0.85em; color: #b0b0b0; margin-bottom: 15px; } /* Dark Theme Color */
+  .author-post-item .post-body-excerpt {
+      font-size: 0.95em; color: #d0d0d0; line-height: 1.6; margin-bottom: 15px; /* Dark Theme Color */
+      max-height: 100px; overflow: hidden; text-overflow: ellipsis; word-wrap: break-word; /* Layout Match: Light CSS */
+  }
+  .author-post-item .post-badges { margin-bottom: 10px; } /* Layout Match: Light CSS */
+  .author-post-item .view-full-post-btn { /* Use generic dark button style */
+       margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #0a84ff; /* Dark Theme Color */
+       color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;
+  }
+  .author-post-item .view-full-post-btn:hover { background-color: #349eff; } /* Dark Theme Color */
+  
+  .author-comment-item .comment-meta { font-size: 0.85em; color: #b0b0b0; margin-bottom: 8px; } /* Dark Theme Color */
+  .author-comment-item .parent-post-title { font-style: italic; color: #c0c0c0; } /* Dark Theme Color */
+  .author-comment-item .comment-body {
+      font-size: 0.95em; color: #e0e0e0; line-height: 1.6; margin-bottom: 10px; /* Dark Theme Color */
+      padding-left: 10px; border-left: 3px solid #666; word-wrap: break-word; /* Layout Match + Dark Theme Border */
+  }
+  .author-comment-item .comment-badges { margin-bottom: 10px; } /* Layout Match: Light CSS */
+  .author-comment-item .view-full-post-btn { /* Includes view-thread-btn */
+       margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #5e5ce6; /* Dark Theme Color */
+       color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;
+  }
+  .author-comment-item .view-full-post-btn:hover { background-color: #7878f0; } /* Dark Theme Color */
+  
+  
+  /* --- Keyword Search Results --- */
+  .search-results-wrapper {
+      padding: 25px 30px; /* Layout Match: Light CSS */
+      background-color: #2c2c2e; /* Dark Theme Color */
+      border-radius: 10px; /* Layout Match: Light CSS */
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* Dark Theme Style */
+      border: 1px solid #444446; /* Dark Theme Color */
+  }
+  .search-results-wrapper.no-results {
+      background-color: #1e1e1e; /* Dark Theme Color */
+      border: 1px solid #333333; /* Dark Theme Color */
+      box-shadow: none; /* Layout Match: Light CSS */
+  }
+  
+  .search-results-title {
+      margin-top: 0; /* Layout Match: Light CSS */
+      margin-bottom: 25px; /* Layout Match: Light CSS */
+      font-size: 1.8em; /* Layout Match: Light CSS */
+      color: #f5f5f5; /* Dark Theme Color */
+      border-bottom: 1px solid #444446; /* Dark Theme Color */
+      padding-bottom: 10px; /* Layout Match: Light CSS */
+  }
+  .search-results-wrapper.no-results .search-results-title {
+      margin-bottom: 15px; /* Layout Match: Light CSS */
+      font-size: 1.6em; /* Layout Match: Light CSS */
+      color: #cccccc; /* Dark Theme Color */
+      border-bottom: none; /* Layout Match: Light CSS */
+      padding-bottom: 0; /* Layout Match: Light CSS */
+  }
+  .search-no-results-message {
+      color: #a0a0a0; /* Dark Theme Color */
+      font-size: 1.1em; /* Layout Match: Light CSS */
+      margin: 0; /* Layout Match: Light CSS */
+  }
+  
+  .comments-section-title.with-separator {
+      border-top: 1px solid #444446; /* Dark Theme Color */
+      padding-top: 25px; /* Layout Match: Light CSS */
+      margin-top: 30px; /* Layout Match: Light CSS */
+  }
+  
+  /* Search Item Cards */
+  .search-item-card {
+      border-radius: 8px; /* Layout Match: Light CSS */
+      padding: 15px 20px; /* Layout Match: Light CSS */
+      margin-bottom: 20px; /* Layout Match: Light CSS */
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2); /* Dark Theme Style */
+  }
+  .search-result-post.search-item-card {
+      background-color: #3a3a3c; /* Dark Theme Color */
+      border: 1px solid #555557; /* Dark Theme Color */
+  }
+  .search-result-comment.search-item-card {
+      background-color: #424242; /* Dark Theme Color */
+      border: 1px solid #666668; /* Dark Theme Color */
+      border-radius: 6px; /* Layout Match: Light CSS */
+      padding: 15px; /* Layout Match: Light CSS */
+      margin-bottom: 15px; /* Layout Match: Light CSS */
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); /* Dark Theme Style */
+  }
+  
+  /* Buttons in search results - Use generic dark button styles defined earlier */
+  .search-item-card .view-full-post-btn {
+      margin-top: 5px; /* Layout Match: Light CSS */
+      padding: 6px 14px; /* Layout Match: Light CSS */
+      font-size: 0.9em; /* Layout Match: Light CSS */
+      /* Colors inherited from generic .view-full-post-btn / .view-thread-btn dark theme styles */
+  }
+  /* No need for specific background colors here if relying on generic dark theme button styles */
+  
+  
+  /* --- Badges Containers --- */
+  .shields-container {
+      margin-top: 5px; /* Layout Match: Light CSS */
+      display: flex; /* Layout Match: Light CSS */
+      flex-wrap: wrap; /* Layout Match: Light CSS */
+      gap: 4px; /* Layout Match: Light CSS */
+  }
+  .shields-container img {
+      vertical-align: middle; /* Layout Match: Light CSS */
+      /* filter: brightness(0.9) contrast(1.1); */ /* Optional Dark Theme Style */
+  }
+  
+  /* --- Filter Visibility --- */
+  #iit-filter-container,
+  #tp-related-filter-container {
+      transition: opacity 0.3s ease, max-height 0.3s ease; /* Layout Match: Light CSS */
+      overflow: hidden; /* Layout Match: Light CSS */
+      max-height: 50px; /* Layout Match: Light CSS */
+      opacity: 1; /* Layout Match: Light CSS */
+      display: inline-flex; /* Layout Match: Light CSS */
+      align-items: center; /* Layout Match: Light CSS */
+      gap: 5px; /* Layout Match: Light CSS */
+  }
+  
+  .filter-hidden {
+      opacity: 0; /* Layout Match: Light CSS */
+      max-height: 0; /* Layout Match: Light CSS */
+      margin: 0; /* Layout Match: Light CSS */
+      padding: 0; /* Layout Match: Light CSS */
+      border: none; /* Layout Match: Light CSS */
+  }
+  
+  .filter-visible {
+     opacity: 1; /* Layout Match: Light CSS */
+     max-height: 50px; /* Layout Match: Light CSS */
+  }
+  
+  /* --- Highlighted Search Term --- */
+  mark {
+    background-color: #5a4b1d; /* Dark Theme Color */
+    padding: 0.1em 0.2em; /* Layout Match: Light CSS */
+    border-radius: 3px; /* Layout Match: Light CSS */
+    color: #fff3cd; /* Dark Theme Color */
+    font-weight: 600; /* Layout Match: Light CSS */
   }
