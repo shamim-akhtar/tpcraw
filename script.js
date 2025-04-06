@@ -12,7 +12,7 @@ import {
   doc
 } from 'https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js';
 
-console.log("Script is loaded and running.");
+// console.log("Script is loaded and running.");
 
 const MAX_LABEL_LENGTH = 30;
 
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // 2. Firebase config
   const firebaseConfig = {
-    apiKey: "AIzaSyByJtrvblZlThYxcL57BQReT3Tk48CjnBA",
+    apiKey: "AIzaSyByJtrvblZlThYxcL57BQReT3Tk48CjnBA", // Consider securing this
     authDomain: "tpcraw-3ef8f.firebaseapp.com",
     projectId: "tpcraw-3ef8f",
     storageBucket: "tpcraw-3ef8f.firebasestorage.app",
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   //--------------------TABS
   const tabs = document.querySelectorAll('.tab-button');
-  const tabContents = document.querySelectorAll('.tab-content');
+  const tabContents = document.querySelectorAll('.tab-content'); // Ensure tab content elements have this class
   const tabContainer = document.querySelector('.tab-container'); // Parent for event delegation
 
   // Function to switch tabs
@@ -69,57 +69,49 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Update button styles
       tabs.forEach(button => {
           button.classList.remove('active');
-          button.style.borderBottom = '3px solid transparent'; // Reset border
-          button.style.fontWeight = 'normal'; // Reset font weight
+          // CSS will handle the active state styles (.tab-button.active)
       });
       event.target.classList.add('active');
-      event.target.style.borderBottom = '3px solid #4CAF50'; // Highlight active tab
-      event.target.style.fontWeight = '500'; // Make active tab bold
 
       // Hide all content sections
       tabContents.forEach(content => {
-          content.style.display = 'none';
-          content.classList.remove('active');
+          content.classList.remove('active'); // Use class to control display
       });
 
       // Show the target content section
       const activeContent = document.getElementById(targetTab);
       if (activeContent) {
-        activeContent.style.display = 'block'; // Make container visible FIRST
-        activeContent.classList.add('active');
+        activeContent.classList.add('active'); // Use class to control display
 
         // --- FIX: Call resize() on the specific chart AFTER its container is visible ---
-        // This gives Chart.js the correct dimensions to work with immediately.
-        try { // Add try...catch for safety if a chart instance is unexpectedly null
-            if (targetTab === 'weightedTab' && weightedSentimentChart) {
-              weightedSentimentChart.resize();
-            } 
-            else if (targetTab === 'stackedTab' && commentsSentimentChart) {
-              commentsSentimentChart.resize();
-            } 
-            else if (targetTab === 'totalCommentsTab' && totalCommentsChart) {
-              totalCommentsChart.resize();
-            } 
-            else if (targetTab === 'engagementTab' && engagementScoreChart) {
-              engagementScoreChart.resize();
-            } 
-            else if (targetTab === 'authorsTab' && window.authorsChartInstance) { 
-              //updateAuthorsChart(); // Fetch latest data if needed
-              if(window.authorsChartInstance) window.authorsChartInstance.resize();
-            } 
-            else if (targetTab === 'timeSeriesTab' && timeSeriesChart) {
-              //updateTimeSeriesChart(); // Fetch latest data for time series chart
-              timeSeriesChart.resize();
-            }
-        } 
+        try {
+          if (targetTab === 'weightedTab' && weightedSentimentChart) {
+            weightedSentimentChart.resize();
+          }
+          else if (targetTab === 'stackedTab' && commentsSentimentChart) {
+            commentsSentimentChart.resize();
+          }
+          else if (targetTab === 'totalCommentsTab' && totalCommentsChart) {
+            totalCommentsChart.resize();
+          }
+          else if (targetTab === 'engagementTab' && engagementScoreChart) {
+            engagementScoreChart.resize();
+          }
+          else if (targetTab === 'authorsTab' && window.authorsChartInstance) {
+            if(window.authorsChartInstance) window.authorsChartInstance.resize();
+          }
+          else if (targetTab === 'timeSeriesTab' && timeSeriesChart) {
+            timeSeriesChart.resize();
+          }
+        }
         catch (err) {
-           console.error("Error resizing chart:", err);
+            console.error("Error resizing chart:", err);
         }
 
-    } 
-    else {
-        console.warn(`Tab content not found for id: ${targetTab}`);
-    }
+      }
+      else {
+          console.warn(`Tab content not found for id: ${targetTab}`);
+      }
   }
 
   // Add event listener to the container
@@ -133,41 +125,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       const initialTabId = initiallyActiveButton.dataset.tab;
       const initialContent = document.getElementById(initialTabId);
       if (initialContent) {
-          initialContent.style.display = 'block';
+        initialContent.classList.add('active'); // Use class
       }
   }
-  
-  // Add basic hover effect via JS if needed (alternative to CSS :hover)
-  tabs.forEach(tab => {
-      tab.addEventListener('mouseover', () => {
-          if (!tab.classList.contains('active')) {
-              tab.style.color = '#007BFF'; // Example hover color
-          }
-      });
-      tab.addEventListener('mouseout', () => {
-            if (!tab.classList.contains('active')) {
-              tab.style.color = '#333'; // Restore original color
-          }
-      });
-  });
 
-  // Example: Add hover effect to reset zoom buttons
-  const resetButtons = document.querySelectorAll('[id^="resetZoom"]');
-  resetButtons.forEach(button => {
-        button.addEventListener('mouseover', () => {
-            button.style.filter = 'brightness(90%)';
-        });
-        button.addEventListener('mouseout', () => {
-            button.style.filter = 'brightness(100%)';
-        });
-  });
-  
+  // Note: Hover effects are better handled purely in CSS with :hover pseudo-class
+  // Removing JS hover effects for tabs and reset buttons as they should be in CSS.
 
   // --------------------------------------------------------------
   // FETCH FIRESTORE POSTS - with filters for subreddit & checkboxes
   // --------------------------------------------------------------
   async function fetchPostsInRange() {
-    console.log("fetchPostsInRange() called");
+    // console.log("fetchPostsInRange() called");
 
     const startDateValue = document.getElementById('start-date').value;
     const endDateValue = document.getElementById('end-date').value;
@@ -185,12 +154,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     const lowerSub = selectedSubreddit.toLowerCase();
 
     // For TemasekPoly, the collection is "posts", else "{lowerSub}_posts"
-    const postsCollection = (lowerSub === "temasekpoly") 
+    const postsCollection = (lowerSub === "temasekpoly")
       ? "posts"
       : `${lowerSub}_posts`;
 
-    console.log("Selected subreddit:", selectedSubreddit);
-    console.log("Using posts collection:", postsCollection);
+    // console.log("Selected subreddit:", selectedSubreddit);
+    // console.log("Using posts collection:", postsCollection);
 
     const startDate = new Date(startDateValue);
     const endDate = new Date(endDateValue);
@@ -212,20 +181,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (lowerSub === "temasekpoly") {
       if (isIitChecked) {
         q = query(q, where('iit', '==', 'yes'));
-        console.log("IIT filter applied: iit == yes");
+        // console.log("IIT filter applied: iit == yes");
       }
     }
     // Otherwise, for non-TemasekPoly subreddits, use the "relatedToTemasekPoly" filter if checked
     else {
       if (isTpRelatedChecked) {
         q = query(q, where('relatedToTemasekPoly', '==', true));
-        console.log("TP-related filter applied: relatedToTemasekPoly == true");
+        // console.log("TP-related filter applied: relatedToTemasekPoly == true");
       }
     }
 
     // Now fetch posts
     const snapshot = await getDocs(q);
-    console.log("Fetched posts, snapshot size:", snapshot.size);
+    // console.log("Fetched posts, snapshot size:", snapshot.size);
 
     // Build the data array
     const dataArray = [];
@@ -270,7 +239,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         emotion: emotion,
         summary: summary,
         iit: iit,
-        postDetails: postData
+        postDetails: postData // Keep full data for details view
       });
     });
 
@@ -305,7 +274,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       window.sentimentPieChartInstance.destroy();
     }
 
-    ctx.canvas.width = 260;
+    ctx.canvas.width = 260; // Keep explicit sizing if needed for layout
     ctx.canvas.height = 260;
 
     window.sentimentPieChartInstance = new Chart(ctx, {
@@ -314,11 +283,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         labels: ['Positive', 'Neutral', 'Negative'],
         datasets: [{
           data: [positivePercent, neutralPercent, negativePercent],
-          backgroundColor: ['#4CAF50', '#FFC107', '#F44336'],
+          backgroundColor: ['#4CAF50', '#FFC107', '#F44336'], // Colors remain hardcoded here as they are chart data
         }]
       },
       options: {
-        responsive: false,
+        responsive: false, // Keep false if explicit size is intended
         plugins: {
           legend: {
             display: false,
@@ -337,326 +306,271 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ---------------------------------------------
   // Chart 2: WEIGHTED SENTIMENT
   // ---------------------------------------------
-  function renderWeightedSentimentChart(data) {
+   function renderWeightedSentimentChart(data) {
     const labels = data.map(post => {
-      const { title } = post;
-      if (title.length > MAX_LABEL_LENGTH) {
-        return title.slice(0, MAX_LABEL_LENGTH) + '…';
-      } else {
-        return title.padStart(MAX_LABEL_LENGTH, ' ');
-      }
+        const { title } = post;
+        // Keep label truncation logic
+        if (title.length > MAX_LABEL_LENGTH) {
+            return title.slice(0, MAX_LABEL_LENGTH) + '…';
+        } else {
+            // Padding logic might be better handled via CSS if possible, but keep if needed
+            return title.padStart(MAX_LABEL_LENGTH, ' ');
+        }
     });
     const weightedScores = data.map(item => item.weightedSentimentScore);
 
-    // Bar color: red if negative, green if >= 0
+    // Bar color logic remains in JS as it's data-dependent
     const backgroundColors = weightedScores.map(score =>
-      score < 0 ? 'rgba(255, 99, 132, 0.8)' : 'rgba(75, 192, 192, 0.8)'
+        score < 0 ? 'rgba(255, 99, 132, 0.8)' : 'rgba(75, 192, 192, 0.8)'
     );
 
     if (weightedSentimentChart) {
-      weightedSentimentChart.destroy();
+        weightedSentimentChart.destroy();
     }
 
     const ctx = document.getElementById('weightedSentimentChart').getContext('2d');
     weightedSentimentChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Weighted Sentiment Score',
-          data: weightedScores,
-          backgroundColor: backgroundColors
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Weighted Sentiment Breakdown by Post',
-            align: 'start',
-            font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
-            color: '#333',
-            padding: { top: 10, bottom: 20 }
-          },
-          zoom: {
-            pan: {
-              enabled: true,
-              mode: 'x',
-              modifierKey: 'ctrl',
-            },
-            zoom: {
-              drag: { enabled: true },
-              pinch: { enabled: true },
-              mode: 'x',
-            },
-          }
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Weighted Sentiment Score',
+                data: weightedScores,
+                backgroundColor: backgroundColors // Use dynamic colors
+            }]
         },
-        scales: {
-          x: {
-            ticks: {
-              maxRotation: 60,
-              minRotation: 60,
-              align: 'center'
+        options: { // Chart options remain largely the same
+            responsive: true,
+            plugins: {
+                title: { // Title styling can often be done via Chart.js options
+                    display: true,
+                    text: 'Weighted Sentiment Breakdown by Post',
+                    align: 'start',
+                    font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
+                    color: '#333',
+                    padding: { top: 10, bottom: 20 }
+                },
+                zoom: { // Zoom plugin configuration
+                    pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
+                    zoom: { drag: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
+                }
+            },
+            scales: {
+                x: { ticks: { maxRotation: 60, minRotation: 60, align: 'center' } },
+                y: { beginAtZero: true }
+            },
+            onClick: (evt, elements) => { // Click handler remains
+                if (elements.length > 0) {
+                    const barIndex = elements[0].index;
+                    const item = data[barIndex];
+                    fetchAndDisplayPostDetails(item.postId);
+                }
             }
-          },
-          y: { beginAtZero: true }
-        },
-        onClick: (evt, elements) => {
-          if (elements.length > 0) {
-            const barIndex = elements[0].index;
-            const item = data[barIndex];
-            fetchAndDisplayPostDetails(item.postId);
-          }
         }
-      }
     });
   }
 
   // ---------------------------------------------
-  // Chart 3: RAW SENTIMENT STACK
+  // Chart 3: RAW SENTIMENT STACK (Stacked Sentiment)
   // ---------------------------------------------
   function renderSentimentStackChart(data) {
-    const labels = data.map(post => {
-      const { title } = post;
-      if (title.length > MAX_LABEL_LENGTH) {
-        return title.slice(0, MAX_LABEL_LENGTH) + '…';
-      } else {
-        return title.padStart(MAX_LABEL_LENGTH, ' ');
+      const labels = data.map(post => {
+          const { title } = post;
+          if (title.length > MAX_LABEL_LENGTH) {
+              return title.slice(0, MAX_LABEL_LENGTH) + '…';
+          } else {
+              return title.padStart(MAX_LABEL_LENGTH, ' ');
+          }
+      });
+      const positiveData = data.map(post => post.totalPositiveSentiments);
+      const negativeData = data.map(post => post.totalNegativeSentiments);
+
+      const ctx = document.getElementById('stackedSentimentChart').getContext('2d');
+
+      if (commentsSentimentChart) {
+          commentsSentimentChart.destroy();
       }
-    });
-    const positiveData = data.map(post => post.totalPositiveSentiments);
-    const negativeData = data.map(post => post.totalNegativeSentiments);
 
-    const ctx = document.getElementById('stackedSentimentChart').getContext('2d');
-
-    if (commentsSentimentChart) {
-      commentsSentimentChart.destroy();
-    }
-
-    commentsSentimentChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Positive Sentiments',
-            data: positiveData,
-            backgroundColor: 'rgba(75, 192, 192, 0.8)',
-            stack: 'Stack 0'
+      commentsSentimentChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: labels,
+              datasets: [
+                  {
+                      label: 'Positive Sentiments',
+                      data: positiveData,
+                      backgroundColor: 'rgba(75, 192, 192, 0.8)', // Color part of data config
+                      stack: 'Stack 0'
+                  },
+                  {
+                      label: 'Negative Sentiments',
+                      data: negativeData,
+                      backgroundColor: 'rgba(255, 99, 132, 0.8)', // Color part of data config
+                      stack: 'Stack 0'
+                  }
+              ]
           },
-          {
-            label: 'Negative Sentiments',
-            data: negativeData,
-            backgroundColor: 'rgba(255, 99, 132, 0.8)',
-            stack: 'Stack 0'
+          options: { // Options remain largely the same
+              responsive: true,
+              plugins: {
+                  title: {
+                      display: true,
+                      text: 'Sentiment Breakdown by Post',
+                      align: 'start',
+                      font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
+                      color: '#333',
+                      padding: { top: 10, bottom: 20 }
+                  },
+                  zoom: {
+                      pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
+                      zoom: { drag: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
+                  }
+              },
+              scales: {
+                  x: { stacked: true, ticks: { maxRotation: 60, minRotation: 60, align: 'center' } },
+                  y: { stacked: true, beginAtZero: true }
+              },
+              onClick: (evt, elements) => { // Click handler remains
+                  if (elements.length > 0) {
+                      const barIndex = elements[0].index;
+                      const item = data[barIndex];
+                      fetchAndDisplayPostDetails(item.postId);
+                  }
+              }
           }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Sentiment Breakdown by Post',
-            align: 'start',
-            font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
-            color: '#333',
-            padding: { top: 10, bottom: 20 }
-          },
-          zoom: {
-            pan: {
-              enabled: true,
-              mode: 'x',
-              modifierKey: 'ctrl',
-            },
-            zoom: {
-              drag: { enabled: true },
-              pinch: { enabled: true },
-              mode: 'x',
-            },
-          }
-        },
-        scales: {
-          x: {
-            stacked: true,
-            ticks: {
-              maxRotation: 60,
-              minRotation: 60,
-              align: 'center'
-            },
-          },
-          y: {
-            stacked: true,
-            beginAtZero: true
-          }
-        },
-        onClick: (evt, elements) => {
-          if (elements.length > 0) {
-            const barIndex = elements[0].index;
-            const item = data[barIndex];
-            fetchAndDisplayPostDetails(item.postId);
-          }
-        }
-      }
-    });
+      });
   }
 
   // ---------------------------------------------
   // Chart 4: ENGAGEMENT SCORE
   // ---------------------------------------------
   function renderEngagementScoreChart(data) {
-    const labels = data.map(post => {
-      const { title } = post;
-      if (title.length > MAX_LABEL_LENGTH) {
-        return title.slice(0, MAX_LABEL_LENGTH) + '…';
-      } else {
-        return title.padStart(MAX_LABEL_LENGTH, ' ');
-      }
-    });
-    const engagementScores = data.map(item => item.engagementScore);
-
-    const backgroundColors = engagementScores.map(() => 'rgba(153, 102, 255, 0.8)');
-
-    if (engagementScoreChart) {
-      engagementScoreChart.destroy();
-    }
-
-    const ctx = document.getElementById('engagementScoreChart').getContext('2d');
-    engagementScoreChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Engagement Score',
-          data: engagementScores,
-          backgroundColor: backgroundColors
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Engagement Score per Post',
-            align: 'start',
-            font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
-            color: '#333',
-            padding: { top: 10, bottom: 20 }
-          },
-          zoom: {
-            pan: {
-              enabled: true,
-              mode: 'x',
-              modifierKey: 'ctrl',
-            },
-            zoom: {
-              drag: { enabled: true },
-              pinch: { enabled: true },
-              mode: 'x',
-            },
+      const labels = data.map(post => {
+          const { title } = post;
+          if (title.length > MAX_LABEL_LENGTH) {
+              return title.slice(0, MAX_LABEL_LENGTH) + '…';
+          } else {
+              return title.padStart(MAX_LABEL_LENGTH, ' ');
           }
-        },
-        scales: {
-          x: {
-            ticks: {
-              maxRotation: 60,
-              minRotation: 60,
-              align: 'center'
-            }
-          },
-          y: { beginAtZero: true }
-        },
-        onClick: (evt, elements) => {
-          if (elements.length > 0) {
-            const barIndex = elements[0].index;
-            const item = data[barIndex];
-            fetchAndDisplayPostDetails(item.postId);
-          }
-        }
+      });
+      const engagementScores = data.map(item => item.engagementScore);
+
+      // Color remains here
+      const backgroundColors = engagementScores.map(() => 'rgba(153, 102, 255, 0.8)');
+
+      if (engagementScoreChart) {
+          engagementScoreChart.destroy();
       }
-    });
+
+      const ctx = document.getElementById('engagementScoreChart').getContext('2d');
+      engagementScoreChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: labels,
+              datasets: [{
+                  label: 'Engagement Score',
+                  data: engagementScores,
+                  backgroundColor: backgroundColors
+              }]
+          },
+          options: { // Options remain largely the same
+              responsive: true,
+              plugins: {
+                  title: {
+                      display: true,
+                      text: 'Engagement Score per Post',
+                      align: 'start',
+                      font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
+                      color: '#333',
+                      padding: { top: 10, bottom: 20 }
+                  },
+                  zoom: {
+                      pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
+                      zoom: { drag: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
+                  }
+              },
+              scales: {
+                  x: { ticks: { maxRotation: 60, minRotation: 60, align: 'center' } },
+                  y: { beginAtZero: true }
+              },
+              onClick: (evt, elements) => { // Click handler remains
+                  if (elements.length > 0) {
+                      const barIndex = elements[0].index;
+                      const item = data[barIndex];
+                      fetchAndDisplayPostDetails(item.postId);
+                  }
+              }
+          }
+      });
   }
 
   // ---------------------------------------------
   // Chart 5: TOTAL COMMENTS
   // ---------------------------------------------
   function renderCommentsCountChart(data) {
-    const labels = data.map(post => {
-      const { title } = post;
-      if (title.length > MAX_LABEL_LENGTH) {
-        return title.slice(0, MAX_LABEL_LENGTH) + '…';
-      } else {
-        return title.padStart(MAX_LABEL_LENGTH, ' ');
-      }
-    });
-    const totalComments = data.map(item => item.totalComments);
-
-    const backgroundColors = totalComments.map(() => 'rgba(153, 102, 255, 0.8)');
-
-    if (totalCommentsChart) {
-      totalCommentsChart.destroy();
-    }
-
-    const ctx = document.getElementById('totalCommentsChart').getContext('2d');
-    totalCommentsChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Total Comments',
-          data: totalComments,
-          backgroundColor: backgroundColors
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Comments per Post',
-            align: 'start',
-            font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
-            color: '#333',
-            padding: { top: 10, bottom: 20 }
-          },
-          zoom: {
-            pan: {
-              enabled: true,
-              mode: 'x',
-              modifierKey: 'ctrl',
-            },
-            zoom: {
-              drag: { enabled: true },
-              pinch: { enabled: true },
-              mode: 'x',
-            },
+      const labels = data.map(post => {
+          const { title } = post;
+          if (title.length > MAX_LABEL_LENGTH) {
+              return title.slice(0, MAX_LABEL_LENGTH) + '…';
+          } else {
+              return title.padStart(MAX_LABEL_LENGTH, ' ');
           }
-        },
-        scales: {
-          x: {
-            ticks: {
-              maxRotation: 60,
-              minRotation: 60,
-              align: 'center'
-            }
-          },
-          y: { beginAtZero: true }
-        },
-        onClick: (evt, elements) => {
-          if (elements.length > 0) {
-            const barIndex = elements[0].index;
-            const item = data[barIndex];
-            fetchAndDisplayPostDetails(item.postId);
-          }
-        }
+      });
+      const totalComments = data.map(item => item.totalComments);
+
+      // Color remains here
+      const backgroundColors = totalComments.map(() => 'rgba(153, 102, 255, 0.8)'); // Consider a different color?
+
+      if (totalCommentsChart) {
+          totalCommentsChart.destroy();
       }
-    });
+
+      const ctx = document.getElementById('totalCommentsChart').getContext('2d');
+      totalCommentsChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+              labels: labels,
+              datasets: [{
+                  label: 'Total Comments',
+                  data: totalComments,
+                  backgroundColor: backgroundColors
+              }]
+          },
+          options: { // Options remain largely the same
+              responsive: true,
+              plugins: {
+                  title: {
+                      display: true,
+                      text: 'Comments per Post',
+                      align: 'start',
+                      font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
+                      color: '#333',
+                      padding: { top: 10, bottom: 20 }
+                  },
+                  zoom: {
+                      pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
+                      zoom: { drag: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
+                  }
+              },
+              scales: {
+                  x: { ticks: { maxRotation: 60, minRotation: 60, align: 'center' } },
+                  y: { beginAtZero: true }
+              },
+              onClick: (evt, elements) => { // Click handler remains
+                  if (elements.length > 0) {
+                      const barIndex = elements[0].index;
+                      const item = data[barIndex];
+                      fetchAndDisplayPostDetails(item.postId);
+                  }
+              }
+          }
+      });
   }
+
 
   async function fetchAndDisplayPostDetails(postId) {
     const postDetailsContainer = document.getElementById('post-details');
-    postDetailsContainer.innerHTML = '<p>Loading post details...</p>'; // Loading message
+    postDetailsContainer.innerHTML = '<p class="loading-message">Loading post details...</p>'; // Add class for styling
 
     // Identify the posts collection
     const subredditSelect = document.getElementById('subreddit-select');
@@ -668,7 +582,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const postSnap = await getDoc(postRef);
 
     if (!postSnap.exists()) {
-        postDetailsContainer.innerHTML = `<div style="padding: 20px; background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 8px; color: #664d03;">No details available for this post.</div>`;
+        // Add class for styling
+        postDetailsContainer.innerHTML = `<div class="details-message error">No details available for this post.</div>`;
         return;
     }
 
@@ -677,55 +592,51 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- Extract Data ---
     const postTitle = postData.title || "No Title";
     const author = postData.author || 'Unknown';
-    const postUrl = postData.URL || '#'; // Use URL from postData
+    const postUrl = postData.URL || '#';
     const date = postData.created?.toDate ? postData.created.toDate() : (postData.created ? new Date(postData.created) : new Date());
     const formattedDate = date.toLocaleString('en-GB', {
         day: '2-digit', month: 'short', year: 'numeric',
         hour: '2-digit', minute: '2-digit', hour12: false
     }).replace(',', '');
 
-    // --- Build HTML Sections with Enhanced Styles ---
+    // --- Build HTML Sections (Removed inline styles, using classes) ---
 
     // 1. Title Section
     const urlHtml = `
-        <h2 style="margin-top: 0; margin-bottom: 5px; font-size: 1.8em; color: #2c3e50;">
-            <a href="${postUrl}" target="_blank" style="color: inherit; text-decoration: none; hover: {color: #3498db;}">
+        <h2 class="post-details-title">
+            <a href="${postUrl}" target="_blank">
                 ${postTitle}
             </a>
         </h2>`;
 
     // 2. Metadata Section
     const metaHtml = `
-        <p style="font-size: 0.9em; color: #7f8c8d; margin-bottom: 20px; border-bottom: 1px dashed #ecf0f1; padding-bottom: 10px;">
+        <p class="post-details-meta">
             Posted by <strong>${author}</strong> on ${formattedDate}
         </p>`;
 
-    // 3. Badges Section (add margin)
+    // 3. Badges Section
     const badgesHtml = `
-        <div style="margin-bottom: 25px;">
+        <div class="post-details-badges">
             ${generateBadgesHtml(postData)}
         </div>`;
 
-    // 4. Summary Section (using the previously improved style)
+    // 4. Summary Section
     const summaryHtml = `
-      <div style="background-color: #ecf0f1; /* Slightly different gray */
-                  border-left: 5px solid #3498db; /* Different Blue */
-                  padding: 15px 20px;
-                  margin-bottom: 25px;
-                  border-radius: 5px;">
-        <h4 style="margin-top: 0; margin-bottom: 8px; color: #2980b9; font-weight: 600;">
+      <div class="post-details-summary">
+        <h4 class="summary-title">
             💡 AI Generated Summary & Analysis
         </h4>
-        <p style="font-size: 0.95em; color: #34495e; line-height: 1.6;">
+        <p class="summary-text">
             ${postData.summary || '<i>No summary provided.</i>'}
         </p>
       </div>`;
 
-    // 5. Body Section (cleaner presentation)
+    // 5. Body Section
     const bodyHtml = `
-      <div class="post-body-content" style="margin-bottom: 30px;">
-        <h4 style="margin-top: 0; margin-bottom: 10px; color: #555; font-weight: 600;">Original Post Content:</h4>
-        <div style="font-size: 1.0em; color: #333; line-height: 1.7; background-color: #fff; padding: 15px; border-radius: 4px; border: 1px solid #eee;">
+      <div class="post-details-body-container">
+        <h4 class="body-title">Original Post Content:</h4>
+        <div class="body-content">
             ${postData.body || '<i>No body content provided.</i>'}
         </div>
       </div>`;
@@ -735,46 +646,53 @@ document.addEventListener('DOMContentLoaded', async () => {
     const commentsSnapshot = await getDocs(commentsRef);
 
     let commentsHtml = `
-        <h3 style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; color: #555; font-weight: 600;">
+        <h3 class="post-details-comments-title">
             Comments (${commentsSnapshot.size}):
         </h3>`;
 
     if (commentsSnapshot.size === 0) {
-        commentsHtml += `<p style="color: #7f8c8d; font-style: italic;">No comments available.</p>`;
-    } 
+        commentsHtml += `<p class="no-comments-message">No comments available.</p>`;
+    }
     else {
-      commentsSnapshot.forEach(commentDoc => {
-        const commentData = commentDoc.data();
-        const commentDate = commentData.created?.toDate ? commentData.created.toDate() : (commentData.created ? new Date(commentData.created) : new Date());
-        const commentAuthor = commentData.author || 'Unknown';
-        const formattedCommentDate = commentDate.toLocaleString('en-GB', {
-            day: '2-digit', month: 'short', year: 'numeric',
-            hour: '2-digit', minute: '2-digit', hour12: false
-        }).replace(',', '');
+        commentsSnapshot.forEach(commentDoc => {
+            const commentData = commentDoc.data();
+            const commentDate = commentData.created?.toDate ? commentData.created.toDate() : (commentData.created ? new Date(commentData.created) : new Date());
+            const commentAuthor = commentData.author || 'Unknown';
+            const formattedCommentDate = commentDate.toLocaleString('en-GB', {
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', hour12: false
+            }).replace(',', '');
 
-        // Note: generateCommentBadgesHtml is assumed to be defined elsewhere
-        const commentBadges = generateCommentBadgesHtml(commentData);
+            const commentBadges = generateCommentBadgesHtml(commentData); // Assumes this generates HTML with classes now
 
-        commentsHtml += `
-          <div class="search-result-comment" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-              <p style="font-size: 0.85em; color: #6b7280; margin-bottom: 8px;">
-                  Comment by <strong>${commentAuthor}</strong> on ${formattedCommentDate}
-              </p>
-              <p style="font-size: 0.95em; color: #1f2937; line-height: 1.6; margin-bottom: 10px; padding-left: 10px; border-left: 3px solid #d1d5db;">
-                  ${commentData.body || '<i>No comment body.</i>'}
-              </p>
-              <div style="margin-bottom: 10px;">${commentBadges}</div>
-          </div>
-        `;
-      });
+            commentsHtml += `
+              <div class="post-details-comment">
+                  <p class="comment-meta">
+                      Comment by <strong>${commentAuthor}</strong> on ${formattedCommentDate}
+                  </p>
+                  <p class="comment-body">
+                      ${commentData.body || '<i>No comment body.</i>'}
+                  </p>
+                  <div class="comment-badges">${commentBadges}</div>
+              </div>
+            `;
+        });
     }
 
     // --- Assemble Final HTML in a Styled Container ---
+    // Removed inline styles from the wrapper
     postDetailsContainer.innerHTML = `
-      <div class="post-details-wrapper" style="padding: 25px 30px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); border: 1px solid #e7eaf3;">
-          ${urlHtml}       ${metaHtml}      ${badgesHtml}    ${summaryHtml}   ${bodyHtml}      ${commentsHtml}  </div>
+      <div class="post-details-wrapper">
+          ${urlHtml}
+          ${metaHtml}
+          ${badgesHtml}
+          ${summaryHtml}
+          ${bodyHtml}
+          ${commentsHtml}
+      </div>
     `;
-  }
+}
+
 
   // ---------------------------------------------
   // Post List Dropdown / Table
@@ -836,10 +754,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function buildPostsTable(posts) {
     if (!posts || posts.length === 0) {
-      return `<p>No posts found for this filter.</p>`;
+      return `<p class="no-posts-message">No posts found for this filter.</p>`; // Add class
     }
     let html = `
-      <table>
+      <table class="post-list-table">
         <thead>
           <tr>
             <th>Title</th>
@@ -851,8 +769,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         <tbody>
     `;
     for (const p of posts) {
+      // Removed inline style="cursor: pointer;" - handled by CSS :hover on the class
       html += `
-        <tr data-post-id="${p.postId}" style="cursor: pointer;">
+        <tr data-post-id="${p.postId}" class="post-list-row"> 
           <td>${p.title}</td>
           <td>${p.weightedSentimentScore.toFixed(2)}</td>
           <td>${p.engagementScore.toFixed(2)}</td>
@@ -863,6 +782,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     html += `</tbody></table>`;
     return html;
   }
+
 
   // ---------------------------------------------
   // Author Stats & Chart
@@ -905,16 +825,16 @@ document.addEventListener('DOMContentLoaded', async () => {
           {
             label: 'Positive Count',
             data: positiveCounts,
-            backgroundColor: 'rgba(75, 192, 192, 0.8)',
+            backgroundColor: 'rgba(75, 192, 192, 0.8)', // Color remains
           },
           {
             label: 'Negative Count',
             data: negativeCounts,
-            backgroundColor: 'rgba(255, 99, 132, 0.8)',
+            backgroundColor: 'rgba(255, 99, 132, 0.8)', // Color remains
           }
         ]
       },
-      options: {
+      options: { // Options remain
         responsive: true,
         plugins: {
           title: {
@@ -934,20 +854,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         },
         scales: {
-          x: {
-            stacked: true,
-            ticks: {
-              maxRotation: 60,
-              minRotation: 60,
-              align: 'center'
-            }
-          },
-          y: {
-            stacked: true,
-            beginAtZero: true
-          }
+          x: { stacked: true, ticks: { maxRotation: 60, minRotation: 60, align: 'center' } },
+          y: { stacked: true, beginAtZero: true }
         },
-        onClick: (evt, elements) => {
+        onClick: (evt, elements) => { // Click handler remains
           if (elements.length > 0) {
             const authorName = labels[elements[0].index];
             fetchAndDisplayPostsAndCommentsByAuthor(authorName);
@@ -969,7 +879,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ---------------------------------------------
   // Category Time Series
   // ---------------------------------------------
-  // Helper function to fetch the time-series data from "category_stats" or "{sub}_category_stats"
   async function fetchTimeSeriesData() {
     const startDateValue = document.getElementById('start-date').value;
     const endDateValue = document.getElementById('end-date').value;
@@ -988,7 +897,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     catStatsSnapshot.forEach(docSnap => {
       const dateStr = docSnap.id; // YYYY-MM-DD doc ID
       const docDate = new Date(dateStr);
-      if (docDate >= startDate && docDate <= endDate) {
+      // Ensure date parsing is robust or adjust based on actual ID format
+      if (!isNaN(docDate) && docDate >= startDate && docDate <= endDate) {
         const data = docSnap.data();
         for (let category in data) {
           if (!timeSeriesData[category]) {
@@ -1009,75 +919,89 @@ document.addEventListener('DOMContentLoaded', async () => {
     return timeSeriesData;
   }
 
-  // Compute a simple moving average
-  function computeMovingAverage(dataPoints, windowSize = 7) {
+   // Compute a simple moving average
+   function computeMovingAverage(dataPoints, windowSize = 7) {
     let maPoints = [];
     for (let i = 0; i < dataPoints.length; i++) {
-      let start = Math.max(0, i - windowSize + 1);
-      let sum = 0;
-      let count = 0;
-      for (let j = start; j <= i; j++) {
-        sum += dataPoints[j].y;
-        count++;
-      }
-      let avg = sum / count;
-      maPoints.push({ x: dataPoints[i].x, y: avg });
+        let start = Math.max(0, i - windowSize + 1);
+        let sum = 0;
+        let count = 0;
+        for (let j = start; j <= i; j++) {
+            // Check if dataPoints[j] and its y value exist
+            if (dataPoints[j] && typeof dataPoints[j].y === 'number') {
+                sum += dataPoints[j].y;
+                count++;
+            } else {
+                // Handle cases where data might be missing or malformed for a point
+                // console.warn(`Skipping point in moving average calculation due to missing data: index ${j}`);
+            }
+        }
+        // Only calculate average if count is greater than 0 to avoid division by zero
+        let avg = count > 0 ? sum / count : 0; // Default to 0 or handle as needed
+        maPoints.push({ x: dataPoints[i].x, y: avg });
     }
     return maPoints;
   }
 
   function setAlpha(rgba, alpha) {
-    return rgba.replace(/, 1\)/, `, ${alpha})`);
+    if(typeof rgba !== 'string') return 'rgba(0,0,0,0.1)'; // Fallback color
+    return rgba.replace(/, ?([\d\.]+)\)/, `, ${alpha})`).replace('rgb(', 'rgba(');
   }
 
   const PREDEFINED_CATEGORY_COLORS = {
-    academic: "#0070F2", 
-    exams: "#A93E00",
-    internship: "#5DC122",
-    facilities: "#BA066C",
-    subjects: "#256F3A",
-    administration: "#8B47D7",
-    career: "#798C77",
-    admission: "#AA0808",
-    results: "#470CED",
-    lecturer: "#DA6C6C",
-    "student life": "#049F9A",
-    infrastructure: "#4DB6AC",
-    classroom: "#354A5F",
-    events: "#00BCD4",
-    cca: "#7800A4"
+    academic: "rgba(0, 112, 242, 1)",
+    exams: "rgba(169, 62, 0, 1)",
+    internship: "rgba(93, 193, 34, 1)",
+    facilities: "rgba(186, 6, 108, 1)",
+    subjects: "rgba(37, 111, 58, 1)",
+    administration: "rgba(139, 71, 215, 1)",
+    career: "rgba(121, 140, 119, 1)",
+    admission: "rgba(170, 8, 8, 1)",
+    results: "rgba(71, 12, 237, 1)",
+    lecturer: "rgba(218, 108, 108, 1)",
+    "student life": "rgba(4, 159, 154, 1)",
+    infrastructure: "rgba(77, 182, 172, 1)",
+    classroom: "rgba(53, 74, 95, 1)",
+    events: "rgba(0, 188, 212, 1)",
+    cca: "rgba(120, 0, 164, 1)"
   };
+
   function getCategoryColor(category) {
     const key = category.toLowerCase();
-    return PREDEFINED_CATEGORY_COLORS[key] || "#26C6DA";
+    return PREDEFINED_CATEGORY_COLORS[key] || "rgba(38, 198, 218, 1)"; // Fallback RGBA
   }
 
   function renderTimeSeriesChart(data) {
     let datasets = [];
-    for (let category in data) {
-      const color = getCategoryColor(category);
+    const initialVisibleCategory = 'academic'; // Define which category is visible initially
 
-      // (raw) data
-      datasets.push({
-        label: category + " (raw)",
-        data: data[category],
-        fill: false,
-        borderColor: setAlpha(color, 0.3),
-        tension: 0.1,
-        borderWidth: 0.5,
-        hidden: (category.toLowerCase() !== 'academic')
-      });
-      // 7-day MA
-      datasets.push({
-        label: category + " (7-day MA)",
-        data: computeMovingAverage(data[category], 7),
-        fill: false,
-        borderColor: color,
-        borderWidth: 2.0,
-        tension: 0.5,
-        hidden: (category.toLowerCase() !== 'academic')
-      });
+    for (let category in data) {
+        const color = getCategoryColor(category);
+        const isVisible = category.toLowerCase() === initialVisibleCategory;
+
+        // Raw data dataset
+        datasets.push({
+            label: category + " (raw)",
+            data: data[category],
+            fill: false,
+            borderColor: setAlpha(color, 0.3), // Use alpha function
+            tension: 0.1,
+            borderWidth: 0.5,
+            hidden: !isVisible // Set hidden based on initial visibility
+        });
+
+        // 7-day Moving Average dataset
+        datasets.push({
+            label: category + " (7-day MA)",
+            data: computeMovingAverage(data[category], 7),
+            fill: false,
+            borderColor: color, // Base color
+            borderWidth: 2.0,
+            tension: 0.5,
+            hidden: !isVisible // Set hidden based on initial visibility
+        });
     }
+
 
     if (timeSeriesChart) {
       timeSeriesChart.destroy();
@@ -1085,110 +1009,91 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const ctx = document.getElementById('timeSeriesChart').getContext('2d');
     timeSeriesChart = new Chart(ctx, {
-      type: 'line',
-      data: { datasets: datasets },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Time Series of Average Sentiment by Category',
-            align: 'start',
-            font: { size: 18, weight: '600' }
-          },
-          zoom: {
-            pan: {
-              enabled: true,
-              mode: 'x',
-              modifierKey: 'ctrl',
-            },
-            zoom: {
-              drag: { enabled: true },
-              pinch: { enabled: true },
-              mode: 'x',
-            },
-          },
-          tooltip: {
-            mode: 'index',
-            intersect: false,
-          },
-          legend: {
-            labels: {
-              generateLabels: function(chart) {
-                const dsets = chart.data.datasets;
-                const seenCategories = {};
-                const labels = [];
-                dsets.forEach((dataset, i) => {
-                  const cat = dataset.label.split(" ")[0];
-                  if (seenCategories[cat] === undefined) {
-                    seenCategories[cat] = i;
-                    labels.push({
-                      text: cat,
-                      fillStyle: dataset.borderColor,
-                      hidden: !chart.isDatasetVisible(i),
-                      datasetIndex: i
-                    });
-                  }
-                });
-                // Sort labels alphabetically
-                labels.sort((a, b) => a.text.localeCompare(b.text));
-                return labels;
-              }
-            },
-            onClick: function(e, legendItem, legend) {
-              const category = legendItem.text.toLowerCase();
-              const chart = legend.chart;
-              chart.data.datasets.forEach((dataset, i) => {
-                const dsCategory = dataset.label.split(" ")[0].toLowerCase();
-                if (dsCategory === category) {
-                  const meta = chart.getDatasetMeta(i);
-                  meta.hidden = meta.hidden === null ? !chart.data.datasets[i].hidden : !meta.hidden;
+        type: 'line',
+        data: { datasets: datasets },
+        options: { // Options remain largely the same
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Time Series of Average Sentiment by Category',
+                    align: 'start',
+                    font: { size: 18, weight: '600' }
+                },
+                zoom: {
+                    pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
+                    zoom: { drag: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
+                },
+                tooltip: { mode: 'index', intersect: false },
+                legend: { // Legend customization remains
+                    labels: {
+                        generateLabels: function(chart) {
+                            const dsets = chart.data.datasets;
+                            const seenCategories = {};
+                            const labels = [];
+                            dsets.forEach((dataset, i) => {
+                                // Extract category name robustly (handle spaces)
+                                const labelParts = dataset.label.split(" (");
+                                const cat = labelParts[0];
+                                if (seenCategories[cat] === undefined) {
+                                    seenCategories[cat] = i;
+                                    labels.push({
+                                        text: cat,
+                                        fillStyle: dataset.borderColor,
+                                        // Correctly determine hidden status based on the *first* dataset for this category
+                                        hidden: !chart.isDatasetVisible(seenCategories[cat]),
+                                        datasetIndex: seenCategories[cat] // Point to the first dataset index for this category
+                                    });
+                                }
+                            });
+                            labels.sort((a, b) => a.text.localeCompare(b.text));
+                            return labels;
+                        }
+                    },
+                     onClick: function(e, legendItem, legend) {
+                        const category = legendItem.text; // Use the exact legend text
+                        const chart = legend.chart;
+                        chart.data.datasets.forEach((dataset, i) => {
+                            const dsCategory = dataset.label.split(" (")[0];
+                            if (dsCategory === category) {
+                                // Toggle visibility for both raw and MA datasets of this category
+                                const meta = chart.getDatasetMeta(i);
+                                meta.hidden = !legendItem.hidden; // Toggle based on the *clicked* legend item's desired state
+                            }
+                        });
+                        chart.update();
+                    }
                 }
-              });
-              chart.update();
-            }
-          }
-        },
-        scales: {
-          x: {
-            type: 'time',
-            time: {
-              parser: 'yyyy-MM-dd',
-              unit: 'day',
-              displayFormats: {
-                day: 'MMM d'
-              }
             },
-            title: {
-              display: true,
-              text: 'Date'
+            scales: {
+                x: {
+                    type: 'time',
+                    time: { parser: 'yyyy-MM-dd', unit: 'day', displayFormats: { day: 'MMM d' } },
+                    title: { display: true, text: 'Date' }
+                },
+                y: {
+                    min: -1.2, max: 1.2, beginAtZero: false,
+                    title: { display: true, text: 'Average Sentiment' }
+                }
+            },
+            onClick: async (evt, elements) => { // Click handler remains
+                if (elements.length > 0) {
+                    const element = elements[0];
+                    const datasetIndex = element.datasetIndex;
+                    const index = element.index;
+                    const dataset = timeSeriesChart.data.datasets[datasetIndex];
+                    const categoryLabel = dataset.label.split(" (")[0]; // Extract category name
+                    const dataPoint = dataset.data[index];
+                    if (dataPoint && dataPoint.x) { // Ensure data point exists
+                      const dateStr = dataPoint.x;
+                      // console.log(`Clicked on Category: ${categoryLabel}, Date: ${dateStr}`);
+                      await fetchAndDisplayPostsByCategoryAndDate(categoryLabel, dateStr); // Pass original label
+                    } else {
+                      console.warn("Clicked element missing data point information.");
+                    }
+                }
             }
-          },
-          y: {
-            min: -1.2,
-            max: 1.2,
-            beginAtZero: false,
-            title: {
-              display: true,
-              text: 'Average Sentiment'
-            }
-          }
-        },
-        onClick: async (evt, elements) => {
-          if (elements.length > 0) {
-            const element = elements[0];
-            const datasetIndex = element.datasetIndex;
-            const index = element.index;
-            const dataset = timeSeriesChart.data.datasets[datasetIndex];
-            const categoryLabel = dataset.label.split(" ")[0];
-            const category = categoryLabel.toLowerCase();
-            const dataPoint = dataset.data[index];
-            const dateStr = dataPoint.x;
-            console.log(`Clicked on Category: ${category}, Date: ${dateStr}`);
-            await fetchAndDisplayPostsByCategoryAndDate(category, dateStr);
-          }
         }
-      }
     });
   }
 
@@ -1202,194 +1107,189 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // For clicking a data point in the time series chart
- async function fetchAndDisplayPostsByCategoryAndDate(category, dateStr) {
-  const container = document.getElementById('post-details');
-  // Loading message
-  container.innerHTML = `<div style="padding: 20px; text-align: center; color: #555;"><i>Loading activity for category "${category}" on ${dateStr}...</i></div>`;
+  async function fetchAndDisplayPostsByCategoryAndDate(category, dateStr) { // category is now passed directly
+      const container = document.getElementById('post-details');
+      // Use class for loading message
+      container.innerHTML = `<div class="details-message loading"><i>Loading activity for category "${category}" on ${dateStr}...</i></div>`;
 
-  const subredditSelect = document.getElementById('subreddit-select');
-  const selectedSubreddit = subredditSelect.value;
-  const lowerSub = selectedSubreddit.toLowerCase();
-  const postsCollection = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
-  const categoryCollection = (lowerSub === "temasekpoly") ? "category_stats" : `${lowerSub}_category_stats`;
+      const subredditSelect = document.getElementById('subreddit-select');
+      const selectedSubreddit = subredditSelect.value;
+      const lowerSub = selectedSubreddit.toLowerCase();
+      const postsCollection = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
+      const categoryCollection = (lowerSub === "temasekpoly") ? "category_stats" : `${lowerSub}_category_stats`;
+      const lowerCategory = category.toLowerCase(); // Use lowercase for lookup in statsData
 
-  try { // Added try block for fetching stats
-      const statsDocRef = doc(db, categoryCollection, dateStr);
-      const statsDocSnap = await getDoc(statsDocRef);
+      try {
+          const statsDocRef = doc(db, categoryCollection, dateStr);
+          const statsDocSnap = await getDoc(statsDocRef);
 
-      const formattedCategory = category.charAt(0).toUpperCase() + category.slice(1); // Capitalize category
+          // Use original category casing for display
+          const formattedCategory = category;
 
-      // Styled message if no stats data found for the date
-      if (!statsDocSnap.exists()) {
-          container.innerHTML = `<div style="padding: 20px; background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 8px; color: #664d03;">No activity data found for category <strong>${formattedCategory}</strong> on ${dateStr}.</div>`;
-          return;
-      }
+          if (!statsDocSnap.exists()) {
+              // Use class for message
+              container.innerHTML = `<div class="details-message info">No activity data found for category <strong>${formattedCategory}</strong> on ${dateStr}.</div>`;
+              return;
+          }
 
-      const statsData = statsDocSnap.data();
-      // Styled message if no data for the specific category on that date
-      if (!statsData || !statsData[category]) {
-          container.innerHTML = `<div style="padding: 20px; background-color: #e9ecef; border: 1px solid #dee2e6; border-radius: 8px; color: #495057;">No posts or comments found specifically for category <strong>${formattedCategory}</strong> on ${dateStr}.</div>`;
-          return;
-      }
+          const statsData = statsDocSnap.data();
+          // Look up using lowercase category key
+          if (!statsData || !statsData[lowerCategory]) {
+              // Use class for message
+              container.innerHTML = `<div class="details-message info">No posts or comments found specifically for category <strong>${formattedCategory}</strong> on ${dateStr}.</div>`;
+              return;
+          }
 
-      const postIds = statsData[category].postIds || [];
-      const commentsMap = statsData[category].comments || {};
-      const totalCommentCount = Object.keys(commentsMap).reduce((acc, key) => acc + commentsMap[key].length, 0); // Calculate total comments
+          // Use lowercase category key to access data
+          const postIds = statsData[lowerCategory].postIds || [];
+          const commentsMap = statsData[lowerCategory].comments || {};
+          const totalCommentCount = Object.keys(commentsMap).reduce((acc, key) => acc + commentsMap[key].length, 0);
 
-      // --- Pre-fetch Post Titles for Comments Context ---
-      let postTitlesMap = {};
-      let uniquePostIdsInComments = Object.keys(commentsMap);
-      if (uniquePostIdsInComments.length > 0) {
-         const uniquePostRefs = uniquePostIdsInComments.map(id => doc(db, postsCollection, id));
-         // Fetch titles concurrently, handling potential errors for individual fetches
-         const parentPostSnaps = await Promise.all(uniquePostRefs.map(ref => getDoc(ref).catch(e => { console.error(`Failed to fetch parent post ${ref.id} for category view`, e); return null; })));
-         parentPostSnaps.forEach(snap => {
-             if (snap && snap.exists()) {
-                 postTitlesMap[snap.id] = snap.data().title || 'Untitled Post';
-             } else if (snap) { // Doc ref exists but not the document itself
-                  postTitlesMap[snap.id] = 'Unknown Post (Deleted?)';
-             }
-             // If snap is null (fetch error), it's handled when looking up in the map later
-         });
-      }
-      // --- End Pre-fetch ---
+          // --- Pre-fetch Post Titles --- (No style changes needed here)
+           let postTitlesMap = {};
+            let uniquePostIdsInComments = Object.keys(commentsMap);
+            if (uniquePostIdsInComments.length > 0) {
+                const uniquePostRefs = uniquePostIdsInComments.map(id => doc(db, postsCollection, id));
+                const parentPostSnaps = await Promise.all(uniquePostRefs.map(ref => getDoc(ref).catch(e => { console.error(`Failed to fetch parent post ${ref.id} for category view`, e); return null; })));
+                parentPostSnaps.forEach(snap => {
+                    if (snap && snap.exists()) {
+                        postTitlesMap[snap.id] = snap.data().title || 'Untitled Post';
+                    } else if (snap) {
+                        postTitlesMap[snap.id] = 'Unknown Post (Deleted?)';
+                    }
+                });
+            }
+          // --- End Pre-fetch ---
 
+          // Start building HTML (removed inline styles, using classes)
+          let html = `
+            <div class="category-date-details-wrapper">
+              <h2 class="category-date-title">
+                Category: <span class="category-name">${formattedCategory}</span> <span class="date-info">on ${dateStr}</span>
+              </h2>
+          `;
 
-      // Start building HTML with an outer wrapper and main heading
-      let html = `
-        <div class="category-date-details-wrapper" style="padding: 25px 30px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e7eaf3;">
-          <h2 style="margin-top: 0; margin-bottom: 25px; font-size: 1.8em; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-            Category: <span style="color: #3498db;">${formattedCategory}</span> <span style="color: #7f8c8d;">on ${dateStr}</span>
-          </h2>
-      `;
+          // --- Display Posts ---
+          html += `<h3 class="posts-section-title">Posts (${postIds.length}):</h3>`;
+          if (postIds.length === 0) {
+              html += `<p class="no-posts-message">No posts found in this category on this date.</p>`;
+          } else {
+              const postPromises = postIds.map(postId => getDoc(doc(db, postsCollection, postId)).catch(e => { console.error(`Failed to fetch post ${postId}`, e); return null; }));
+              const postSnaps = await Promise.all(postPromises);
 
-      // --- Display Posts ---
-      html += `<h3 style="margin-top: 0; margin-bottom: 15px; color: #34495e; font-size: 1.4em;">Posts (${postIds.length}):</h3>`;
-      if (postIds.length === 0) {
-          html += `<p style="color: #7f8c8d; font-style: italic; margin-left: 10px; margin-bottom: 25px;">No posts found in this category on this date.</p>`;
-      } else {
-          // Fetch posts concurrently
-          const postPromises = postIds.map(postId => getDoc(doc(db, postsCollection, postId)).catch(e => { console.error(`Failed to fetch post ${postId}`, e); return null; }));
-          const postSnaps = await Promise.all(postPromises);
+              postSnaps.forEach(postSnap => {
+                  if (postSnap && postSnap.exists()) {
+                      const postData = postSnap.data();
+                      const postId = postSnap.id;
+                      const postTitle = postData.title || "No Title";
+                      const postBody = postData.body || "";
+                      const author = postData.author || 'Unknown';
+                      const postUrl = postData.URL || '#';
+                      let date = new Date();
+                      if (postData.created?.toDate) date = postData.created.toDate();
+                      else if (postData.created) try { date = new Date(postData.created); } catch (e) {}
+                      const formattedPostDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
-          postSnaps.forEach(postSnap => {
-              if (postSnap && postSnap.exists()) { // Check if snap exists and fetch succeeded
-                  const postData = postSnap.data();
-                  const postId = postSnap.id;
-                  const postTitle = postData.title || "No Title";
-                  const postBody = postData.body || "";
-                  const author = postData.author || 'Unknown';
-                  const postUrl = postData.URL || '#';
-                  let date = new Date();
-                  if (postData.created?.toDate) date = postData.created.toDate();
-                  else if (postData.created) try { date = new Date(postData.created); } catch (e) {}
-                  const formattedPostDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); // Removed time for brevity in list view
+                      // Removed inline styles, added classes
+                      html += `
+                        <div class="search-result-post category-post-item">
+                          <h4 class="post-title">
+                            <a href="${postUrl}" target="_blank">${postTitle}</a>
+                          </h4>
+                          <p class="post-meta">By <strong>${author}</strong> on ${formattedPostDate}</p>
+                          <p class="post-body-excerpt">
+                            ${postBody || '<i>No body content</i>'}
+                          </p>
+                          <div class="post-badges">${generateBadgesHtml(postData)}</div>
+                          <button class="view-full-post-btn" data-post-id="${postId}">
+                            View Full Post
+                          </button>
+                        </div>
+                      `;
+                  } else {
+                     // Use class for message
+                      html += `<div class="details-message error-partial"><em>Post data unavailable or failed to load.</em></div>`;
+                  }
+              });
+          }
 
-                  // Post card styling
-                  html += `
-                    <div class="search-result-post category-post-item" style="background-color: #fdfdfe; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
-                      <h4 style="margin-top: 0; margin-bottom: 5px; font-size: 1.2em;">
-                        <a href="${postUrl}" target="_blank" style="color: #2980b9; text-decoration: none; hover:{text-decoration: underline;}">${postTitle}</a>
-                      </h4>
-                      <p style="font-size: 0.85em; color: #7f8c8d; margin-bottom: 15px;">By <strong>${author}</strong> on ${formattedPostDate}</p>
-                      <p style="font-size: 0.95em; color: #34495e; line-height: 1.6; margin-bottom: 15px; max-height: 70px; overflow: hidden; text-overflow: ellipsis;">
-                        ${postBody || '<i>No body content</i>'}
-                      </p>
-                      <div style="margin-bottom: 10px;">${generateBadgesHtml(postData)}</div>
-                      <button class="view-full-post-btn" data-post-id="${postId}" style="margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;">
-                        View Full Post
-                      </button>
-                    </div>
-                  `;
-              } else {
-                  // Handle missing post or fetch error
-                   html += `<div style="border: 1px dashed #ccc; padding: 10px; margin-bottom: 15px; color: #777;"><em>Post data unavailable or failed to load.</em></div>`;
+          // --- Display Comments ---
+          html += `<h3 class="comments-section-title">Comments (${totalCommentCount}):</h3>`;
+          if (totalCommentCount === 0) {
+              html += `<p class="no-comments-message">No comments found in this category on this date.</p>`;
+          } else {
+              let commentFetchPromises = [];
+              for (const postId in commentsMap) {
+                  commentsMap[postId].forEach(commentId => {
+                      const commentRef = doc(db, `${postsCollection}/${postId}/comments`, commentId);
+                      commentFetchPromises.push(getDoc(commentRef).catch(e => { console.error(`Failed to fetch comment ${commentId} in post ${postId}`, e); return null; }));
+                  });
               }
+              const commentSnaps = await Promise.all(commentFetchPromises);
+
+              commentSnaps.forEach(commentSnap => {
+                  if (commentSnap && commentSnap.exists()) {
+                      const commentData = commentSnap.data();
+                      const author = commentData.author || 'Unknown';
+                      const commentBody = commentData.body || "";
+                      const commentPostId = commentSnap.ref.parent.parent.id;
+                      const parentPostTitle = postTitlesMap[commentPostId] || 'Unknown Post';
+
+                      let date = new Date();
+                      if (commentData.created?.toDate) date = commentData.created.toDate();
+                      else if (commentData.created) try { date = new Date(commentData.created); } catch (e) {}
+                      const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+                      const commentBadges = generateCommentBadgesHtml(commentData);
+
+                      // Removed inline styles, added classes
+                      html += `
+                        <div class="search-result-comment category-comment-item">
+                            <p class="comment-meta">
+                                In Post: <span class="parent-post-title">"${parentPostTitle}"</span> (Comment by <strong>${author}</strong> on ${formattedDate})
+                            </p>
+                            <p class="comment-body">
+                                ${commentBody || '<i>No comment body.</i>'}
+                            </p>
+                            <div class="comment-badges">${commentBadges}</div>
+                             <button class="view-full-post-btn" data-post-id="${commentPostId}">
+                                View Post Thread
+                             </button>
+                        </div>
+                      `;
+                  } else {
+                      // Optional: Handle missing comment message
+                  }
+              });
+          }
+
+          html += `</div>`; // Close wrapper
+          container.innerHTML = html;
+
+          // Re-Add event listeners
+          container.querySelectorAll('.view-full-post-btn').forEach(button => {
+              button.addEventListener('click', (event) => {
+                  const postId = button.getAttribute('data-post-id');
+                  if (postId) {
+                      fetchAndDisplayPostDetails(postId);
+                  } else {
+                      console.error("Could not find data-post-id on clicked element:", button);
+                  }
+              });
           });
+
+      } catch (error) {
+          console.error(`Error fetching details for category ${category} on ${dateStr}:`, error);
+          // Use class for error message
+          container.innerHTML = `<div class="details-message error">Error fetching activity details. Please check the console.</div>`;
       }
-
-      // --- Display Comments ---
-      html += `<h3 style="margin-top: 30px; margin-bottom: 15px; color: #34495e; font-size: 1.4em; border-top: 1px solid #eee; padding-top: 25px;">Comments (${totalCommentCount}):</h3>`;
-      if (totalCommentCount === 0) {
-          html += `<p style="color: #7f8c8d; font-style: italic; margin-left: 10px;">No comments found in this category on this date.</p>`;
-      } else {
-           // Fetch comments concurrently
-           let commentFetchPromises = [];
-           for (const postId in commentsMap) {
-               commentsMap[postId].forEach(commentId => {
-                   const commentRef = doc(db, `${postsCollection}/${postId}/comments`, commentId);
-                   commentFetchPromises.push(getDoc(commentRef).catch(e => { console.error(`Failed to fetch comment ${commentId} in post ${postId}`, e); return null; }));
-               });
-           }
-           const commentSnaps = await Promise.all(commentFetchPromises);
-
-           commentSnaps.forEach(commentSnap => {
-               if (commentSnap && commentSnap.exists()) { // Check if snap exists and fetch succeeded
-                  const commentData = commentSnap.data();
-                  const author = commentData.author || 'Unknown';
-                  const commentBody = commentData.body || "";
-                  const commentPostId = commentSnap.ref.parent.parent.id;
-                  const parentPostTitle = postTitlesMap[commentPostId] || 'Unknown Post'; // Use pre-fetched title
-
-                  let date = new Date();
-                  if (commentData.created?.toDate) date = commentData.created.toDate();
-                  else if (commentData.created) try { date = new Date(commentData.created); } catch (e) {}
-                  const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); // Removed time
-
-                  const commentBadges = generateCommentBadgesHtml(commentData);
-
-                  // Comment card styling
-                  html += `
-                    <div class="search-result-comment category-comment-item" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                        <p style="font-size: 0.85em; color: #6b7280; margin-bottom: 8px;">
-                            In Post: <span style="font-style: italic;">"${parentPostTitle}"</span> (Comment by <strong>${author}</strong> on ${formattedDate})
-                        </p>
-                        <p style="font-size: 0.95em; color: #1f2937; line-height: 1.6; margin-bottom: 10px; padding-left: 10px; border-left: 3px solid #d1d5db;">
-                            ${commentBody || '<i>No comment body.</i>'}
-                        </p>
-                        <div style="margin-bottom: 10px;">${commentBadges}</div>
-                         <button class="view-full-post-btn" data-post-id="${commentPostId}" style="margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #5dade2; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;">
-                             View Post Thread
-                         </button>
-                    </div>
-                  `;
-               } else {
-                   // Handle missing comment or fetch error (optional message)
-                   // html += `<p><em>Comment data unavailable or failed to load.</em></p>`;
-               }
-           });
-      }
-
-      // Close the main wrapper div
-      html += `</div>`;
-
-      container.innerHTML = html;
-
-      // Re-Add event listeners (Important!)
-      container.querySelectorAll('.view-full-post-btn').forEach(button => { // Only need this selector now
-          button.addEventListener('click', (event) => {
-              // event.preventDefault(); // Not needed for button element
-              const postId = button.getAttribute('data-post-id');
-              if (postId) {
-                  fetchAndDisplayPostDetails(postId);
-              } else {
-                  console.error("Could not find data-post-id on clicked element:", button);
-              }
-          });
-      });
-
-    } catch (error) { // Catch errors during initial stats fetch or processing
-        console.error(`Error fetching details for category ${category} on ${dateStr}:`, error);
-        // Styled error message
-        container.innerHTML = `<div style="padding: 20px; background-color: #f8d7da; border: 1px solid #f5c2c7; border-radius: 8px; color: #842029;">Error fetching activity details. Please check the console.</div>`;
-    }
   } // End of function
 
   // For clicking on the authors chart bars
   async function fetchAndDisplayPostsAndCommentsByAuthor(authorName) {
     const container = document.getElementById('post-details');
-    // Loading message with basic styling
-    container.innerHTML = `<div style="padding: 20px; text-align: center; color: #555;"><i>Loading posts and comments for ${authorName}...</i></div>`;
+    // Use class for loading message
+    container.innerHTML = `<div class="details-message loading"><i>Loading posts and comments for ${authorName}...</i></div>`;
 
     const subredditSelect = document.getElementById('subreddit-select');
     const selectedSubreddit = subredditSelect.value;
@@ -1401,9 +1301,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const authorRef = doc(db, authorsCollectionName, authorName);
         const authorSnap = await getDoc(authorRef);
 
-        // Styled message if author not found
         if (!authorSnap.exists()) {
-            container.innerHTML = `<div style="padding: 20px; background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 8px; color: #664d03;">No activity data found for author: <strong>${authorName}</strong>.</div>`;
+            // Use class for message
+            container.innerHTML = `<div class="details-message info">No activity data found for author: <strong>${authorName}</strong>.</div>`;
             return;
         }
 
@@ -1411,77 +1311,77 @@ document.addEventListener('DOMContentLoaded', async () => {
         const postIds = authorData.posts || [];
         const commentsMap = authorData.comments || {}; // { postId: [commentId1, commentId2], ... }
 
-        // Start building HTML with an outer wrapper and main heading
+        // Start building HTML (removed inline styles, using classes)
         let html = `
-          <div class="author-details-wrapper" style="padding: 25px 30px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e7eaf3;">
-            <h2 style="margin-top: 0; margin-bottom: 25px; font-size: 1.8em; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+          <div class="author-details-wrapper">
+            <h2 class="author-details-title">
               Activity by ${authorName}
             </h2>
         `;
 
         // --- Fetch and Display Posts ---
-        html += `<h3 style="margin-top: 0; margin-bottom: 15px; color: #34495e; font-size: 1.4em;">Posts (${postIds.length}):</h3>`;
+        html += `<h3 class="posts-section-title">Posts (${postIds.length}):</h3>`;
         if (postIds.length === 0) {
-            html += `<p style="color: #7f8c8d; font-style: italic; margin-left: 10px; margin-bottom: 25px;">No posts found by this author.</p>`;
+            html += `<p class="no-posts-message">No posts found by this author.</p>`;
         } else {
-            const postPromises = postIds.map(postId => getDoc(doc(db, postsCollectionName, postId)));
+            const postPromises = postIds.map(postId => getDoc(doc(db, postsCollectionName, postId)).catch(e => { console.error("Post fetch error:", e); return null; })); // Add catch
             const postSnaps = await Promise.all(postPromises);
 
             postSnaps.forEach(postSnap => {
-                if (postSnap.exists()) {
+                if (postSnap && postSnap.exists()) { // Check snap exists
                     const postData = postSnap.data();
                     const postId = postSnap.id;
                     const postTitle = postData.title || "No Title";
                     const postBody = postData.body || "";
-                    const postAuthor = postData.author || 'Unknown'; // Should match authorName
+                    const postAuthor = postData.author || 'Unknown';
                     const postUrl = postData.URL || '#';
                     let postDate = new Date();
                     if (postData.created?.toDate) postDate = postData.created.toDate();
                     else if (postData.created) try { postDate = new Date(postData.created); } catch (e) {}
                     const formattedPostDate = postDate.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }).replace(',', '');
 
-                    // Card styling for each post
+                    // Removed inline styles, added classes
                     html += `
-                      <div class="search-result-post author-post-item" style="background-color: #fdfdfe; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
-                        <h4 style="margin-top: 0; margin-bottom: 5px; font-size: 1.2em;">
-                          <a href="${postUrl}" target="_blank" style="color: #2980b9; text-decoration: none; hover:{text-decoration: underline;}">${postTitle}</a>
+                      <div class="search-result-post author-post-item">
+                        <h4 class="post-title">
+                          <a href="${postUrl}" target="_blank">${postTitle}</a>
                         </h4>
-                        <p style="font-size: 0.85em; color: #7f8c8d; margin-bottom: 15px;">Posted on ${formattedPostDate}</p>
-                        <p style="font-size: 0.95em; color: #34495e; line-height: 1.6; margin-bottom: 15px; max-height: 100px; overflow: hidden; text-overflow: ellipsis;">
+                        <p class="post-meta">Posted on ${formattedPostDate}</p>
+                        <p class="post-body-excerpt">
                           ${postBody || '<i>No body content</i>'}
                         </p>
-                        <div style="margin-bottom: 10px;">${generateBadgesHtml(postData)}</div>
-                        <button class="view-full-post-btn" data-post-id="${postId}" style="margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;">
+                        <div class="post-badges">${generateBadgesHtml(postData)}</div>
+                        <button class="view-full-post-btn" data-post-id="${postId}">
                           View Full Post
                         </button>
                       </div>
                     `;
                 } else {
-                    console.warn(`Post document with ID ${postSnap.id} not found for author ${authorName}.`);
-                    html += `<div style="border: 1px dashed #ccc; padding: 10px; margin-bottom: 15px; color: #777;"><em>Post data unavailable.</em></div>`; // Simple notice for missing post
+                    // Use class for message
+                     html += `<div class="details-message error-partial"><em>Post data unavailable.</em></div>`;
                 }
             });
         }
 
         // --- Fetch and Display Comments ---
         let commentFetchPromises = [];
-        let postTitlesMap = {}; // To store fetched post titles for comments {postId: title}
+        let postTitlesMap = {};
         let parentPostIds = Object.keys(commentsMap);
         let commentCount = 0;
 
-        // Pre-fetch needed parent post titles (reduces reads inside the comment loop)
+        // Pre-fetch needed parent post titles (No style changes needed here)
         if (parentPostIds.length > 0) {
             const uniquePostRefs = parentPostIds.map(id => doc(db, postsCollectionName, id));
-            const parentPostSnaps = await Promise.all(uniquePostRefs.map(ref => getDoc(ref).catch(e => { console.error(`Failed to fetch parent post ${ref.id}`, e); return null; }))); // Fetch all parents, handle errors
-            parentPostSnaps.forEach(snap => {
-                if (snap && snap.exists()) {
-                    postTitlesMap[snap.id] = snap.data().title || 'Untitled Post';
-                } else if (snap) { // snap exists but document doesn't
-                    postTitlesMap[snap.id] = 'Unknown Post (Deleted?)';
-                }
-                // If snap is null due to fetch error, it won't be added, handled later
-            });
+             const parentPostSnaps = await Promise.all(uniquePostRefs.map(ref => getDoc(ref).catch(e => { console.error(`Failed to fetch parent post ${ref.id}`, e); return null; })));
+             parentPostSnaps.forEach(snap => {
+                 if (snap && snap.exists()) {
+                     postTitlesMap[snap.id] = snap.data().title || 'Untitled Post';
+                 } else if (snap) {
+                     postTitlesMap[snap.id] = 'Unknown Post (Deleted?)';
+                 }
+             });
         }
+
 
         // Prepare comment fetch promises
         for (const postId in commentsMap) {
@@ -1489,25 +1389,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             commentCount += commentIds.length;
             commentIds.forEach(commentId => {
                 const commentRef = doc(db, `${postsCollectionName}/${postId}/comments`, commentId);
-                commentFetchPromises.push(getDoc(commentRef));
+                 commentFetchPromises.push(getDoc(commentRef).catch(e => { console.error("Comment fetch error:", e); return null; })); // Add catch
             });
         }
 
         // Comments Section Heading
-        html += `<h3 style="margin-top: 30px; margin-bottom: 15px; color: #34495e; font-size: 1.4em; border-top: 1px solid #eee; padding-top: 25px;">Comments (${commentCount}):</h3>`;
+        html += `<h3 class="comments-section-title">Comments (${commentCount}):</h3>`;
 
         if (commentFetchPromises.length === 0) {
-            html += `<p style="color: #7f8c8d; font-style: italic; margin-left: 10px;">No comments found by this author.</p>`;
+            html += `<p class="no-comments-message">No comments found by this author.</p>`;
         } else {
             const commentSnaps = await Promise.all(commentFetchPromises);
 
             commentSnaps.forEach(commentSnap => {
-                if (commentSnap && commentSnap.exists()) { // Check if snap itself exists
+                if (commentSnap && commentSnap.exists()) { // Check snap exists
                     const commentData = commentSnap.data();
                     const commentBody = commentData.body || "";
-                    const commentAuthor = commentData.author || 'Unknown'; // Should match authorName
+                    const commentAuthor = commentData.author || 'Unknown';
                     const commentPostId = commentSnap.ref.parent.parent.id;
-                    const parentPostTitle = postTitlesMap[commentPostId] || 'Unknown Post'; // Get title from pre-fetched map
+                    const parentPostTitle = postTitlesMap[commentPostId] || 'Unknown Post';
 
                     let commentDate = new Date();
                     if (commentData.created?.toDate) commentDate = commentData.created.toDate();
@@ -1516,39 +1416,33 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                     const commentBadges = generateCommentBadgesHtml(commentData);
 
-                    // Card styling for each comment
+                    // Removed inline styles, added classes
                     html += `
-                      <div class="search-result-comment author-comment-item" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                          <p style="font-size: 0.85em; color: #6b7280; margin-bottom: 8px;">
-                              In Post: <span style="font-style: italic;">"${parentPostTitle}"</span> (On ${formattedCommentDate})
+                      <div class="search-result-comment author-comment-item">
+                          <p class="comment-meta">
+                              In Post: <span class="parent-post-title">"${parentPostTitle}"</span> (On ${formattedCommentDate})
                           </p>
-                          <p style="font-size: 0.95em; color: #1f2937; line-height: 1.6; margin-bottom: 10px; padding-left: 10px; border-left: 3px solid #d1d5db;">
+                          <p class="comment-body">
                               ${commentBody || '<i>No comment body.</i>'}
                           </p>
-                          <div style="margin-bottom: 10px;">${commentBadges}</div>
-                          <button class="view-full-post-btn" data-post-id="${commentPostId}" style="margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #5dade2; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;">
+                          <div class="comment-badges">${commentBadges}</div>
+                          <button class="view-full-post-btn view-thread-btn" data-post-id="${commentPostId}"> {/* Added view-thread-btn class */}
                               View Post Thread
                           </button>
                       </div>
                     `;
                 } else {
-                    // Handle case where a commentId listed doesn't exist or fetch failed
-                    console.warn(`Comment snapshot unavailable for author ${authorName}.`);
-                    // Optionally add a placeholder in HTML, but might clutter if many fail
-                    // html += `<p><em>Error: Comment data unavailable.</em></p>`
+                    // Optional: Handle missing comment
                 }
             });
         }
 
-        // Close the main wrapper div
-        html += `</div>`;
-
+        html += `</div>`; // Close wrapper
         container.innerHTML = html;
 
-        // Re-Add event listeners (Important!)
-        container.querySelectorAll('.view-full-post-btn').forEach(button => { // Simplified selector
+        // Re-Add event listeners
+        container.querySelectorAll('.view-full-post-btn').forEach(button => {
             button.addEventListener('click', (event) => {
-                // event.preventDefault(); // Not strictly needed for buttons
                 const postId = button.getAttribute('data-post-id');
                 if (postId) {
                     fetchAndDisplayPostDetails(postId);
@@ -1558,38 +1452,303 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         });
 
-      } 
-      catch (error) {
-          console.error(`Error fetching details for author ${authorName}:`, error);
-          // Styled error message
-          container.innerHTML = `<div style="padding: 20px; background-color: #f8d7da; border: 1px solid #f5c2c7; border-radius: 8px; color: #842029;">Error fetching details for <strong>${authorName}</strong>. Please check the console.</div>`;
-      }
-  }
+    }
+    catch (error) {
+        console.error(`Error fetching details for author ${authorName}:`, error);
+         // Use class for error message
+        container.innerHTML = `<div class="details-message error">Error fetching details for <strong>${authorName}</strong>. Please check the console.</div>`;
+    }
+}
+
 
   // ---------------------------------------------
   // NEW: KEYWORD SEARCH FUNCTIONALITY
   // ---------------------------------------------
 
-  // Function to highlight keyword in text
+  // Function to highlight keyword in text (remains the same)
   function highlightKeyword(text, keyword) {
     if (!text || !keyword) return text;
     try {
-      // Use RegExp for case-insensitive highlighting of the whole word/phrase
-      const regex = new RegExp(`(${keyword.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi'); 
+      const regex = new RegExp(`(${keyword.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
       return text.replace(regex, '<mark>$1</mark>');
-    } 
+    }
     catch (e) {
       console.error("Regex error during highlighting:", e);
-      // Fallback to simple includes highlighting if regex fails
-      const lowerText = text.toLowerCase();
-      const lowerKeyword = keyword.toLowerCase();
-      let startIndex = lowerText.indexOf(lowerKeyword);
-      if (startIndex === -1) return text;
-      let result = text.substring(0, startIndex) + 
-        '<mark>' + text.substring(startIndex, startIndex + keyword.length) + '</mark>' +
-        text.substring(startIndex + keyword.length);
-      return result; // Only highlights first instance in fallback
+      // Basic fallback
+      return text.replace(new RegExp(keyword, 'gi'), `<mark>${keyword}</mark>`);
     }
+  }
+
+  // Function to perform search across posts and comments
+  async function searchByKeyword() {
+    const keyword = keywordInput.value.trim();
+    if (!keyword) {
+      postDetailsContainer.innerHTML = '<p class="details-message info">Please enter a keyword to search.</p>'; // Add class
+      return;
+    }
+
+    postDetailsContainer.innerHTML = `<p class="details-message loading">Searching for "${keyword}"...</p>`; // Add class
+
+    const subredditSelect = document.getElementById('subreddit-select');
+    const selectedSubreddit = subredditSelect.value;
+    const lowerSub = selectedSubreddit.toLowerCase();
+    const postsCollectionName = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
+    const lowerKeyword = keyword.toLowerCase();
+
+    let matchingPosts = [];
+    let matchingComments = []; // Will store { commentData, commentId, postId, postTitle }
+
+    try {
+        // Fetch posts within date range (as before)
+        const startDateValue = document.getElementById('start-date').value;
+        const endDateValue = document.getElementById('end-date').value;
+        const startDate = new Date(startDateValue);
+        const endDate = new Date(endDateValue);
+        endDate.setHours(23, 59, 59, 999);
+
+        let postsQuery = query(collection(db, postsCollectionName),
+            orderBy('created', 'desc'),
+            where('created', '>=', startDate),
+            where('created', '<=', endDate)
+        );
+
+        const postsSnapshot = await getDocs(postsQuery);
+        // console.log(`Keyword search: Found ${postsSnapshot.size} posts in date range.`);
+
+        const commentFetchPromises = [];
+        const postDataMap = new Map(); // Store post data temporarily
+
+        postsSnapshot.forEach(postDoc => {
+            const postData = postDoc.data();
+            const postId = postDoc.id;
+            postDataMap.set(postId, { postId, ...postData }); // Store full post data with ID
+
+            const postTitle = postData.title || "No Title";
+            const postBody = postData.body || "";
+
+            // Check if post title or body matches
+            if (postTitle.toLowerCase().includes(lowerKeyword) || postBody.toLowerCase().includes(lowerKeyword)) {
+                matchingPosts.push({ postId, ...postData }); // Add matched post
+            }
+
+            // Queue comment fetches
+            const commentsRef = collection(db, postsCollectionName, postId, 'comments');
+            commentFetchPromises.push(
+                getDocs(commentsRef).then(commentsSnapshot => {
+                    let commentsForThisPost = [];
+                    commentsSnapshot.forEach(commentDoc => {
+                        const commentData = commentDoc.data();
+                        const commentBody = commentData.body || "";
+                        if (commentBody.toLowerCase().includes(lowerKeyword)) {
+                            commentsForThisPost.push({ commentData, commentId: commentDoc.id, postId, postTitle });
+                        }
+                    });
+                    return commentsForThisPost;
+                }).catch(error => {
+                    console.error(`Error fetching comments for post ${postId}:`, error);
+                    return [];
+                })
+            );
+        });
+
+        // Wait for all comment fetches
+        const commentsResults = await Promise.all(commentFetchPromises);
+
+        // Flatten results and add comments to matchingComments
+        commentsResults.forEach(postComments => {
+            matchingComments.push(...postComments);
+        });
+
+        displaySearchResults(keyword, matchingPosts, matchingComments); // Pass the collected data
+    }
+    catch (error) {
+        console.error("Error during keyword search:", error);
+        postDetailsContainer.innerHTML = `<p class="details-message error">An error occurred during the search. Please check the console.</p>`; // Add class
+    }
+  }
+
+
+  // Function to display search results (using classes)
+  function displaySearchResults(keyword, posts, comments) {
+    const postDetailsContainer = document.getElementById('post-details');
+
+    if (posts.length === 0 && comments.length === 0) {
+        // Use classes for styling
+        postDetailsContainer.innerHTML = `
+          <div class="search-results-wrapper no-results">
+            <h2 class="search-results-title">Search Results</h2>
+            <p class="search-no-results-message">No posts or comments found matching "<strong>${keyword}</strong>".</p>
+          </div>`;
+        return;
+    }
+
+    // Use classes for styling
+    let html = `
+      <div class="search-results-wrapper">
+        <h2 class="search-results-title">
+          Search Results for "${keyword}"
+        </h2>
+    `;
+
+    // --- Display matching posts ---
+    if (posts.length > 0) {
+        html += `<h3 class="posts-section-title">Matching Posts (${posts.length}):</h3>`;
+        posts.forEach(postData => {
+            const postId = postData.postId; // postId should be available here
+            const postTitle = postData.title || "No Title";
+            const postBody = postData.body || "";
+            const author = postData.author || 'Unknown';
+            let date = new Date();
+            if (postData.created?.toDate) date = postData.created.toDate();
+            else if (postData.created) try { date = new Date(postData.created); } catch(e) {}
+            const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            const url = postData.URL || '#';
+
+            // Removed inline styles, added classes
+            html += `
+              <div class="search-result-post search-item-card">
+                <h4 class="post-title">
+                  <a href="${url}" target="_blank">${highlightKeyword(postTitle, keyword)}</a>
+                </h4>
+                <p class="post-meta">By <strong>${author}</strong> on ${formattedDate}</p>
+                <p class="post-body-excerpt">
+                  ${highlightKeyword(postBody, keyword) || '<i>No body content</i>'}
+                </p>
+                <div class="post-badges">${generateBadgesHtml(postData)}</div>
+                <button class="view-full-post-btn" data-post-id="${postId}">
+                  View Full Post
+                </button>
+              </div>
+            `;
+        });
+    }
+
+    // --- Display matching comments ---
+    if (comments.length > 0) {
+        // Add separator class if needed (handled by CSS)
+        const separatorClass = posts.length > 0 ? 'with-separator' : '';
+        html += `<h3 class="comments-section-title ${separatorClass}">Matching Comments (${comments.length}):</h3>`;
+
+        comments.forEach(commentInfo => {
+            const commentData = commentInfo.commentData;
+            const commentBody = commentData.body || "";
+            const author = commentData.author || 'Unknown';
+            let date = new Date();
+            if (commentData.created?.toDate) date = commentData.created.toDate();
+            else if (commentData.created) try { date = new Date(commentData.created); } catch(e) {}
+            const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            const commentPostId = commentInfo.postId;
+            const parentPostTitle = commentInfo.postTitle || 'Untitled Post';
+
+            const commentBadges = generateCommentBadgesHtml(commentData);
+
+            // Removed inline styles, added classes
+            html += `
+              <div class="search-result-comment search-item-card">
+                  <p class="comment-meta">
+                      Comment by <strong>${author}</strong> on ${formattedDate}
+                      (in post: <span class="parent-post-title">"${parentPostTitle}"</span>)
+                  </p>
+                  <p class="comment-body">
+                      ${highlightKeyword(commentBody, keyword) || '<i>No comment body.</i>'}
+                  </p>
+                  <div class="comment-badges">${commentBadges}</div>
+                  <button class="view-full-post-btn view-thread-btn" data-post-id="${commentPostId}">
+                      View Post Thread
+                  </button>
+              </div>
+            `;
+        });
+    }
+
+    html += `</div>`; // Close wrapper
+    postDetailsContainer.innerHTML = html;
+
+    // Re-Add event listeners
+    postDetailsContainer.querySelectorAll('.view-full-post-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            const postId = button.getAttribute('data-post-id');
+            if (postId) {
+                fetchAndDisplayPostDetails(postId);
+            } else {
+                console.error("Missing data-post-id attribute on button:", button);
+            }
+        });
+    });
+  }
+
+  // Remove the `displaySearchResults_old_styling` function as it seems unused/deprecated.
+
+  // Helper function to generate badges HTML (removed inline style from wrapper)
+  function generateBadgesHtml(postData) {
+    const category = postData.category || 'N/A';
+    const emotion = postData.emotion || 'N/A';
+    const engagementScore = postData.engagementScore ?? 0;
+    const score = postData.score ?? 0;
+    const totalNegativeSentiments = postData.totalNegativeSentiments || 0;
+    const totalPositiveSentiments = postData.totalPositiveSentiments || 0;
+    const weightedSentimentScore = postData.weightedSentimentScore ?? 0;
+    const safeNumberStr = engagementScore.toFixed(2);
+
+    const scoreStr = score.toString();
+    const negSentStr = totalNegativeSentiments.toString();
+    const weightSentStr = weightedSentimentScore.toFixed(2).toString();
+
+    // Add class to the container div
+    return `
+      <div class="shields-container post-badges-container">
+        <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(scoreStr.replace(/-/g, '--'))}-brightgreen?style=flat-square" alt="Reddit Score">
+        <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
+        <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(negSentStr.replace(/-/g, '--'))}-red?style=flat-square" alt="Negative">
+        <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(weightSentStr.replace(/-/g, '--'))}-blueviolet?style=flat-square" alt="Weighted">
+        <img src="https://img.shields.io/badge/category-${encodeURIComponent(category)}-blue?style=flat-square" alt="Category">
+        <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
+        <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
+      </div>
+    `;
+  }
+
+  // Helper function formatBadgeValue (remains the same)
+  function formatBadgeValue(valueStr, width = 4) {
+    let formatted = String(valueStr); // Ensure it's a string
+
+    if (formatted.length > width) {
+        formatted = formatted.substring(0, width);
+    }
+    // Use non-breaking space for padding in URLs if needed, or adjust as required by shields.io
+    formatted = formatted.padStart(width, '\u00A0'); // Using non-breaking space
+
+    return formatted;
+  }
+
+
+  // Helper function generateCommentBadgesHtml (removed inline style from wrapper)
+  function generateCommentBadgesHtml(commentData) {
+    const sentiment = commentData.sentiment ?? 0;
+    let sentimentColor = 'yellow';
+    if (sentiment < 0) sentimentColor = 'red';
+    else if (sentiment > 0) sentimentColor = 'green';
+    const score = commentData.score ?? 0;
+    const emotion = commentData.emotion || 'N/A';
+
+    const scoreStr = score.toString();
+    const sentimentStr = sentiment.toFixed(2).toString(); // Ensure consistent precision before formatting
+
+    const formattedScore = formatBadgeValue(scoreStr, 4);
+    const formattedSentiment = formatBadgeValue(sentimentStr, 4);
+
+    const urlEncodedScore = encodeURIComponent(formattedScore.replace(/-/g, '--'));
+    const urlEncodedSentiment = encodeURIComponent(formattedSentiment.replace(/-/g, '--'));
+    const urlEncodedEmotion = encodeURIComponent(emotion.replace(/-/g, '--')); // Also replace hyphens in emotion
+
+    // Add class to the container div
+    return `
+      <div class="shields-container comment-badges-container">
+        <img src="https://img.shields.io/badge/reddit_score-${urlEncodedScore}-brightgreen?style=flat-square" alt="Reddit Score">
+        <img src="https://img.shields.io/badge/sentiment-${urlEncodedSentiment}-${sentimentColor}?style=flat-square" alt="Sentiment">
+        <img src="https://img.shields.io/badge/emotion-${urlEncodedEmotion}-purple?style=flat-square" alt="Emotion">
+      </div>
+    `;
   }
 
   // ---------------------------------------------
@@ -1620,392 +1779,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       renderEngagementScoreChart(allPostsData);
       renderCommentsCountChart(allPostsData);
 
-      // Time Series
+      // Time Series & Authors
       updateTimeSeriesChart();
-      updateAuthorsChart();
+      updateAuthorsChart(); // Make sure this fetches data for the current subreddit
 
-      // Default post list = "lowestRaw"
-      postListDropdown.value = 'lowestRaw';
-      renderPostList(allPostsData, 'lowestRaw');
-    } 
+      // Default post list
+      postListDropdown.value = 'lowestRaw'; // Or keep current selection if desired
+      renderPostList(allPostsData, postListDropdown.value); // Update list with new data
+    }
     catch (error) {
       console.error("Error building charts:", error);
+       // Maybe display an error message to the user in a dedicated area
+       postDetailsContainer.innerHTML = `<p class="details-message error">Error loading dashboard data. Please check filters and try again.</p>`;
     }
   }
 
-  // Function to perform search across posts and comments
-  async function searchByKeyword() {
-    const keyword = keywordInput.value.trim();
-    if (!keyword) {
-      postDetailsContainer.innerHTML = "<p>Please enter a keyword to search.</p>";
-      return;
-    }
-
-    postDetailsContainer.innerHTML = `<p>Searching for "${keyword}"...</p>`;
-
-    const subredditSelect = document.getElementById('subreddit-select');
-    const selectedSubreddit = subredditSelect.value;
-    const lowerSub = selectedSubreddit.toLowerCase();
-    const postsCollectionName = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
-    const lowerKeyword = keyword.toLowerCase();
-
-    let matchingPosts = [];
-    let matchingComments = []; // Will store { commentData, postId, postTitle }
-
-    try {
-      // Strategy: Fetch all posts within the date range (simpler than complex backend search)
-      // Note: This might be slow for very large date ranges/subreddits.
-      // Consider adding limits or using a backend search service for production.
-      const startDateValue = document.getElementById('start-date').value;
-      const endDateValue = document.getElementById('end-date').value;
-      const startDate = new Date(startDateValue);
-      const endDate = new Date(endDateValue);
-      endDate.setHours(23, 59, 59, 999);
-
-      let postsQuery = query(collection(db, postsCollectionName),
-          orderBy('created', 'desc'), // Keep ordering consistent
-          where('created', '>=', startDate),
-          where('created', '<=', endDate)
-      );
-
-      const postsSnapshot = await getDocs(postsQuery);
-      console.log(`Keyword search: Found ${postsSnapshot.size} posts in date range.`);
-
-      const commentFetchPromises = [];
-
-      postsSnapshot.forEach(postDoc => {
-        const postData = postDoc.data();
-        const postId = postDoc.id;
-        const postTitle = postData.title || "No Title";
-        const postBody = postData.body || "";
-
-        let postMatches = false;
-        // Check if post title or body matches
-        if (postTitle.toLowerCase().includes(lowerKeyword) || postBody.toLowerCase().includes(lowerKeyword)) {
-          matchingPosts.push({ postId, ...postData });
-          postMatches = true; // Mark post as matched
-        }
-
-        // Regardless of post match, check its comments - queue fetch promise
-        const commentsRef = collection(db, postsCollectionName, postId, 'comments');
-        commentFetchPromises.push(
-          getDocs(commentsRef).then(commentsSnapshot => {
-            let commentsForThisPost = [];
-            commentsSnapshot.forEach(commentDoc => {
-              const commentData = commentDoc.data();
-              const commentBody = commentData.body || "";
-              if (commentBody.toLowerCase().includes(lowerKeyword)) {
-                  commentsForThisPost.push({ commentData, commentId: commentDoc.id, postId, postTitle });
-              }
-            });
-            return commentsForThisPost; // Return matched comments for this post
-          }).catch(error => {
-            console.error(`Error fetching comments for post ${postId}:`, error);
-            return []; // Return empty array on error for this post's comments
-          })
-        );
-      });
-
-      // Wait for all comment fetches to complete
-      const commentsResults = await Promise.all(commentFetchPromises);
-      
-      // Flatten the results from comment fetches
-      commentsResults.forEach(postComments => {
-          matchingComments.push(...postComments);
-      });
-
-      displaySearchResults(keyword, matchingPosts, matchingComments);
-    } 
-    catch (error) {
-      console.error("Error during keyword search:", error);
-      postDetailsContainer.innerHTML = `<p>An error occurred during the search. Please check the console.</p>`;
-    }
-  }
-
-  // Function to display search results
- function displaySearchResults(keyword, posts, comments) {
-  const postDetailsContainer = document.getElementById('post-details'); // Ensure this is defined in the scope
-
-  // Styled message for no results
-  if (posts.length === 0 && comments.length === 0) {
-      postDetailsContainer.innerHTML = `
-        <div class="search-results-wrapper" style="padding: 25px 30px; background-color: #f8f9fa; border-radius: 10px; border: 1px solid #dee2e6;">
-          <h2 style="margin-top: 0; margin-bottom: 15px; font-size: 1.6em; color: #495057;">Search Results</h2>
-          <p style="color: #6c757d; font-size: 1.1em;">No posts or comments found matching "<strong>${keyword}</strong>".</p>
-        </div>`;
-      return;
-  }
-
-  // Start building HTML with an outer wrapper and main heading
-  let html = `
-    <div class="search-results-wrapper" style="padding: 25px 30px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid #e7eaf3;">
-      <h2 style="margin-top: 0; margin-bottom: 25px; font-size: 1.8em; color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-        Search Results for "${keyword}"
-      </h2>
-  `;
-
-  // --- Display matching posts ---
-  if (posts.length > 0) {
-      html += `<h3 style="margin-top: 0; margin-bottom: 15px; color: #34495e; font-size: 1.4em;">Matching Posts (${posts.length}):</h3>`;
-      posts.forEach(postData => {
-          const postId = postData.postId; // Ensure postId is available directly if not add it during search collection
-          const postTitle = postData.title || "No Title";
-          const postBody = postData.body || "";
-          const author = postData.author || 'Unknown';
-          let date = new Date(); // Fallback
-          if (postData.created?.toDate) date = postData.created.toDate();
-          else if (postData.created) try { date = new Date(postData.created); } catch(e) {}
-          const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); // Removed time for list view
-          const url = postData.URL || '#';
-
-          // Card styling for each post result
-          html += `
-            <div class="search-result-post search-item-card" style="background-color: #fdfdfe; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);">
-              <h4 style="margin-top: 0; margin-bottom: 5px; font-size: 1.2em;">
-                <a href="${url}" target="_blank" style="color: #2980b9; text-decoration: none; hover:{text-decoration: underline;}">${highlightKeyword(postTitle, keyword)}</a>
-              </h4>
-              <p style="font-size: 0.85em; color: #7f8c8d; margin-bottom: 15px;">By <strong>${author}</strong> on ${formattedDate}</p>
-              <p style="font-size: 0.95em; color: #34495e; line-height: 1.6; margin-bottom: 15px;">
-                ${highlightKeyword(postBody, keyword) || '<i>No body content</i>'}
-              </p>
-              <div style="margin-bottom: 10px;">${generateBadgesHtml(postData)}</div>
-              <button class="view-full-post-btn" data-post-id="${postId}" style="margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;">
-                View Full Post
-              </button>
-            </div>
-          `;
-      });
-  }
-
-  // --- Display matching comments ---
-  if (comments.length > 0) {
-      // Add separator if posts were also shown
-      const separatorStyle = posts.length > 0 ? 'border-top: 1px solid #eee; padding-top: 25px; margin-top: 30px;' : 'margin-top: 0;';
-      html += `<h3 style="${separatorStyle} margin-bottom: 15px; color: #34495e; font-size: 1.4em;">Matching Comments (${comments.length}):</h3>`;
-
-      comments.forEach(commentInfo => {
-          const commentData = commentInfo.commentData;
-          const commentBody = commentData.body || "";
-          const author = commentData.author || 'Unknown';
-          let date = new Date(); // Fallback
-          if (commentData.created?.toDate) date = commentData.created.toDate();
-          else if (commentData.created) try { date = new Date(commentData.created); } catch(e) {}
-          const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); // Removed time for list view
-          const commentPostId = commentInfo.postId; // postId of the parent post
-          const parentPostTitle = commentInfo.postTitle || 'Untitled Post'; // Title of the parent post
-
-          const commentBadges = generateCommentBadgesHtml(commentData);
-
-          // Card styling for each comment result
-          html += `
-            <div class="search-result-comment search-item-card" style="background-color: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 15px; margin-bottom: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
-                <p style="font-size: 0.85em; color: #6b7280; margin-bottom: 8px;">
-                    Comment by <strong>${author}</strong> on ${formattedDate}
-                    (in post: <span style="font-style: italic;">"${parentPostTitle}"</span>) {/* Display parent post title */}
-                </p>
-                <p style="font-size: 0.95em; color: #1f2937; line-height: 1.6; margin-bottom: 10px;">
-                    ${highlightKeyword(commentBody, keyword) || '<i>No comment body.</i>'}
-                </p>
-                <div style="margin-bottom: 10px;">${commentBadges}</div>
-                <button class="view-full-post-btn" data-post-id="${commentPostId}" style="margin-top: 5px; padding: 6px 14px; font-size: 0.9em; background-color: #5dade2; color: white; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.2s ease;">
-                    View Post Thread
-                </button>
-            </div>
-          `;
-      });
-    }
-
-    // Close the main wrapper div
-    html += `</div>`;
-
-    postDetailsContainer.innerHTML = html;
-
-    // Re-Add event listeners for the dynamically added "View Full Post" buttons
-    postDetailsContainer.querySelectorAll('.view-full-post-btn').forEach(button => { // Only need button selector
-        button.addEventListener('click', (event) => {
-            // event.preventDefault(); // Not needed for button
-            const postId = button.getAttribute('data-post-id');
-            if (postId) {
-                fetchAndDisplayPostDetails(postId); // Call existing function to show full details
-            } else {
-                console.error("Missing data-post-id attribute on button:", button);
-            }
-        });
-    });
-  }
-
-  // Function to display search results
-  function displaySearchResults_old_styling(keyword, posts, comments) {
-    if (posts.length === 0 && comments.length === 0) {
-      postDetailsContainer.innerHTML = `<p>No posts or comments found matching "${keyword}".</p>`;
-      return;
-    }
-
-    let html = `<h2>Search Results for "${keyword}"</h2>`;
-
-    // Display matching posts
-    if (posts.length > 0) {
-      html += `<h3>Matching Posts (${posts.length})</h3>`;
-      posts.forEach(postData => {
-        const postTitle = postData.title || "No Title";
-        const postBody = postData.body || "";
-        const author = postData.author || 'Unknown';
-         let date = new Date(); // Fallback
-         if (postData.created && postData.created.toDate) {
-            date = postData.created.toDate();
-         } 
-         else if (postData.created) {
-          try { 
-            date = new Date(postData.created); 
-          } 
-          catch(e) {}
-         }
-        const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-        const url = postData.URL || '#';
-
-        html += `
-          <div class="search-result-post" style="border: 1px solid #ddd; padding: 10px; margin-bottom: 15px;">
-            <h4><a href="${url}" target="_blank">${highlightKeyword(postTitle, keyword)}</a></h4>
-            <p style="font-size: 0.8em; color: #555;">By ${author} on ${formattedDate}</p>
-            <p>${highlightKeyword(postBody, keyword)}</p>
-            ${generateBadgesHtml(postData)}
-            <button class="view-full-post-btn" data-post-id="${postData.postId}" style="margin-top: 5px; padding: 3px 8px; font-size: 0.8em;">
-              View Full Post & Comments
-            </button>
-          </div>
-        `;
-      });
-    }
-
-    // Display matching comments
-    if (comments.length > 0) {
-      html += `<h3>Matching Comments (${comments.length})</h3>`;
-      comments.forEach(commentInfo => {
-        const commentData = commentInfo.commentData;
-        const commentBody = commentData.body || "";
-        const author = commentData.author || 'Unknown';
-        let date = new Date(); // Fallback
-        if (commentData.created && commentData.created.toDate) {
-          date = commentData.created.toDate();
-        } 
-        else if (commentData.created) {
-          try { 
-            date = new Date(commentData.created); 
-          } 
-          catch(e) {}
-        }
-        const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-
-        html += `
-          <div class="search-result-comment" style="border: 1px solid #eee; padding: 10px; margin-bottom: 10px; background-color: #f9f9f9;">
-            <p style="font-size: 0.8em; color: #555;">Comment by ${author} on ${formattedDate} (in post: <a href="#" class="view-full-post-link" data-post-id="${commentInfo.postId}">${commentInfo.postTitle}</a>)</p>
-            <p>${highlightKeyword(commentBody, keyword)}</p>
-            ${generateCommentBadgesHtml(commentData)}
-            <button class="view-full-post-btn" data-post-id="${commentInfo.postId}" style="margin-top: 5px; padding: 3px 8px; font-size: 0.8em;">
-              View Full Post & Comments
-            </button>            
-          </div>
-        `;
-      });
-    }
-
-    postDetailsContainer.innerHTML = html;
-
-    // Add event listeners for the "View Full Post" buttons/links
-    postDetailsContainer.querySelectorAll('.view-full-post-btn, .view-full-post-link').forEach(button => {
-      button.addEventListener('click', (event) => {
-        event.preventDefault(); // Prevent link navigation if it's an <a> tag
-        const postId = button.getAttribute('data-post-id');
-        if (postId) {
-          fetchAndDisplayPostDetails(postId); // Call existing function to show full details
-        }
-      });
-    });
-  }
-
-  // Helper function to generate badges HTML for a post (similar to fetchAndDisplayPostDetails)
-  function generateBadgesHtml(postData) {
-    const category = postData.category || 'N/A';
-    const emotion = postData.emotion || 'N/A';
-    const engagementScore = postData.engagementScore ?? 0;
-    const score = postData.score ?? 0;
-    const totalNegativeSentiments = postData.totalNegativeSentiments || 0;
-    const totalPositiveSentiments = postData.totalPositiveSentiments || 0;
-    const weightedSentimentScore = postData.weightedSentimentScore ?? 0;
-    const safeNumberStr = engagementScore.toFixed(2);
-
-    // Ensure values are strings before replacing hyphens for badge URLs
-    const scoreStr = score.toString();
-    const negSentStr = totalNegativeSentiments.toString();
-    const weightSentStr = weightedSentimentScore.toFixed(2).toString();
-
-    return `
-      <div class="shields-container" style="margin-top: 5px;">
-        <img src="https://img.shields.io/badge/reddit_score-${encodeURIComponent(scoreStr.replace(/-/g, '--'))}-brightgreen?style=flat-square" alt="Reddit Score">
-        <img src="https://img.shields.io/badge/positive_sentiments-${totalPositiveSentiments}-green?style=flat-square" alt="Positive">
-        <img src="https://img.shields.io/badge/negative_sentiments-${encodeURIComponent(negSentStr.replace(/-/g, '--'))}-red?style=flat-square" alt="Negative">
-        <img src="https://img.shields.io/badge/weighted_sentiment-${encodeURIComponent(weightSentStr.replace(/-/g, '--'))}-blueviolet?style=flat-square" alt="Weighted">
-        <img src="https://img.shields.io/badge/category-${encodeURIComponent(category)}-blue?style=flat-square" alt="Category">
-        <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
-        <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
-      </div>
-    `;
-  }
-
-  // Helper function to format the value string for the badge
-  // Ensures the string is exactly 'width' characters long.
-  // Truncates if too long, pads with underscores on the left if too short (for right-align effect in shields.io).
-  function formatBadgeValue(valueStr, width = 4) {
-    let formatted = valueStr;
-
-    // Truncate if longer than width
-    if (formatted.length > width) {
-      // Prioritize keeping the sign and initial digits
-      formatted = formatted.substring(0, width);
-    }
-
-    // Pad with underscore on the left to achieve desired width and right-alignment effect
-    // Underscores generally render as spaces in shields.io badges
-    formatted = formatted.padStart(width, '\u00A0');
-
-    return formatted;
-  }
-
-
-  // Helper function to generate badges HTML for a comment
-  function generateCommentBadgesHtml(commentData) {
-    const sentiment = commentData.sentiment ?? 0;
-    let sentimentColor = 'yellow';
-    if (sentiment < 0) sentimentColor = 'red';
-    else if (sentiment > 0) sentimentColor = 'green';
-    const score = commentData.score ?? 0;
-    const emotion = commentData.emotion || 'N/A';
-
-    // Convert to initial strings
-    const scoreStr = score.toString();
-    // Keep reasonable precision for sentiment before formatting
-    const sentimentStr = sentiment.toString();
-
-    // --- Apply 4-character formatting ---
-    const formattedScore = formatBadgeValue(scoreStr, 4);
-    const formattedSentiment = formatBadgeValue(sentimentStr, 4);
-    // --- End formatting ---
-
-    // Prepare for URL: encode URI components and replace hyphens AFTER formatting
-    // Shields.io uses '--' to represent a literal hyphen in the text part.
-    const urlEncodedScore = encodeURIComponent(formattedScore.replace(/-/g, '--'));
-    const urlEncodedSentiment = encodeURIComponent(formattedSentiment.replace(/-/g, '--'));
-    // Emotion doesn't need special formatting, just encoding
-    const urlEncodedEmotion = encodeURIComponent(emotion);
-
-    return `
-      <div class="shields-container" style="margin-top: 5px;">
-        <img src="https://img.shields.io/badge/reddit_score-${urlEncodedScore}-brightgreen?style=flat-square" alt="Reddit Score">
-        <img src="https://img.shields.io/badge/sentiment-${urlEncodedSentiment}-${sentimentColor}?style=flat-square" alt="Sentiment">
-        <img src="https://img.shields.io/badge/emotion-${urlEncodedEmotion}-purple?style=flat-square" alt="Emotion">
-      </div>
-    `;
-  }
 
   // 10. Filter button
   document.getElementById('filter-btn').addEventListener('click', updateCharts);
@@ -2024,10 +1812,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 11. Initial load
   updateCharts();
 
-  // Set default active tab on load
-  document.querySelector('.tab-button.active').click();
+  // Set default active tab on load - Handled by CSS and initial HTML structure now
+  // Ensure the initially active tab button has the 'active' class in HTML
+  // And the corresponding tab content also has the 'active' class in HTML
 
-  // Reset Zoom Buttons
+  // Reset Zoom Buttons (Listeners remain the same)
   document.getElementById('resetZoomWeightedBtn').addEventListener('click', () => {
     if (weightedSentimentChart) weightedSentimentChart.resetZoom();
   });
@@ -2044,20 +1833,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (timeSeriesChart) timeSeriesChart.resetZoom();
   });
 
-  // On load, hide the TP-Related filter if we start with TemasekPoly
-  if (document.getElementById('subreddit-select').value.toLowerCase() === 'temasekpoly') {
-    document.getElementById('tp-related-filter').style.display = 'none';
-  }
-  
+  // --- Filter Visibility Logic ---
   const subredditSelect = document.getElementById("subreddit-select");
+  // const iitFilterContainer = document.getElementById("iit-filter-container"); // Assuming label and input are wrapped
+  // const tpRelatedFilterContainer = document.getElementById("tp-related-filter-container"); // Assuming label and input are wrapped
   const iitFilter = document.getElementById("iit-filter");
   const tpRelatedFilter = document.getElementById("tp-related-filter");
   // Get the labels associated with the checkboxes
 
   const iitLabel = document.querySelector('label[for="iit-filter"]');
   const tpLabel = document.querySelector('label[for="tp-related-filter"]');
-  
-  function updateFilters() {
+
+  function updateFilterVisibility() {
     // When "TemasekPoly" is selected, show IIT filter and hide TP-Related filter
     if (subredditSelect.value === "TemasekPoly") {
       if (iitFilter) { iitFilter.style.display = "inline-block"; }
@@ -2074,10 +1861,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  updateFilters();
-  // Update filters (and charts) when the subreddit selection changes
+  // Initial call to set visibility based on default selection
+  updateFilterVisibility();
+
+  // Update filters and charts when the subreddit selection changes
   subredditSelect.addEventListener("change", () => {
-    updateFilters();
-    updateCharts(); // This will re-run your chart updates
+    updateFilterVisibility(); // Update visibility first
+    updateCharts(); // Then update charts based on new selection and filters
   });
-});
+
+}); // End DOMContentLoaded
