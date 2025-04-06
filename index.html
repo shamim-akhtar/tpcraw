@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Sentiment Dashboard</title>
+
+    <!-- Chart.js dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.0/dist/chartjs-plugin-zoom.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
@@ -12,19 +14,96 @@
         Chart.register(ChartZoom);
     </script>
     <script type="module" src="script.js"></script>
-    <link rel="stylesheet" href="style.css">
+
+    <!-- Default to light theme -->
+    <link id="themeStylesheet" rel="stylesheet" href="style.css">
+
+    <!-- Example CSS for new vertical dividers, switch, and icon button -->
+    <style>
+
+        /* Vertical divider styling */
+        .vertical-divider {
+            width: 2px;
+            background-color: #ccc;
+            height: 2.5rem; /* Adjust as needed */
+            margin: 0 0.5rem;
+        }
+
+        /* Switch styling */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 2.5rem;
+            height: 1.4rem;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0; 
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 1.4rem;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 1rem;
+            width: 1rem;
+            left: 0.2rem;
+            bottom: 0.2rem;
+            background-color: #fff;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        .switch input:checked + .slider {
+            background-color: #2196f3;
+        }
+        .switch input:checked + .slider:before {
+            transform: translateX(1.1rem);
+        }
+
+        /* Icon button for About */
+        .icon-button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Layout tweak so the theme + about container sits in a row */
+        .theme-about-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+    </style>
 </head>
+
 <body>
     <header>
         <h1>r/TemasekPoly Sentiment Dashboard</h1>
     </header>
 
     <section class="controls">
+        <!-- Date range group -->
         <div class="date-range">
             <label for="start-date">Start:</label>
-            <input type="date" id="start-date" value="2025-01-01"> <label for="end-date">End:</label>
-            <input type="date" id="end-date"> </div>
+            <input type="date" id="start-date" value="2025-01-01">
+            <label for="end-date">End:</label>
+            <input type="date" id="end-date">
+        </div>
+        <!-- First vertical divider -->
+        <div class="vertical-divider"></div>
 
+        <!-- Filter group -->
         <div class="controls-middle-group">
             <div>
                 <label for="iit-filter">IIT</label>
@@ -36,36 +115,62 @@
             </div>
             <button id="filter-btn">Filter</button>
         </div>
+        <!-- Second vertical divider -->
+        <div class="vertical-divider"></div>
 
+        <!-- Search group -->
         <div class="keyword-search">
             <input type="text" id="keyword-search" placeholder="Enter keyword...">
             <button id="search-btn">Search</button>
+        </div>
+        <!-- Third vertical divider -->
+        <div class="vertical-divider"></div>
+
+        <!-- Theme Toggle Switch + About Icon -->
+        <div class="theme-about-container">
+            <!-- Theme Toggle Switch -->
+            <label class="switch" title="Toggle Dark/Light Theme">
+                <input type="checkbox" id="themeToggle">
+                <span class="slider"></span>
+            </label>
+
+            <!-- Icon button for About -->
+            <button class="icon-button" id="aboutBtn" title="About this app">
+                ?
+            </button>
         </div>
     </section>
 
     <div class="main-container">
         <div class="left-div">
-             <div class="subreddit-select-container">
+            <div class="subreddit-select-container">
                 <div class="postCount-title-large">Select Subreddit</div>
                 <select id="subreddit-select">
                     <option value="TemasekPoly">TemasekPoly</option>
                     <option value="sgExams">SGExams</option>
                 </select>
             </div>
+
             <div class="post-comments-count-container">
                 <div id="postCount" class="dashboard-box">
                     <div class="postCount-title">Posts</div>
-                    <div class="postCount-number">0</div> </div>
+                    <div class="postCount-number">0</div>
+                </div>
                 <div id="commentsCount" class="dashboard-box">
                     <div class="postCount-title">Comments</div>
-                    <div id="commentsCountNumber" class="postCount-number">0</div> </div>
+                    <div id="commentsCountNumber" class="postCount-number">0</div>
+                </div>
             </div>
+
             <div id="avgWeightedScoreBox" class="dashboard-box-wide">
                 <div class="postCount-title">Avg Weighted Sentiment</div>
-                <div id="avgWeightedScoreNumber" class="postCount-number-wide">0.00</div> </div>
+                <div id="avgWeightedScoreNumber" class="postCount-number-wide">0.00</div>
+            </div>
+
             <div id="sentimentPieBox" class="dashboard-box-large">
                 <div class="postCount-title-large">Sentiments Distribution</div>
-                <canvas id="sentimentPieChart"></canvas> </div>
+                <canvas id="sentimentPieChart"></canvas>
+            </div>
         </div>
 
         <div class="right-div">
@@ -79,6 +184,7 @@
                 <button class="tab-button" data-tab="timeSeriesTab">Category Time Series</button>
             </div>
 
+            <!-- Weighted Sentiments Section -->
             <section id="weightedTab" class="chart-section tab-content active">
                 <canvas id="weightedSentimentChart"></canvas>
                 <div class="chart-controls">
@@ -88,15 +194,17 @@
                 <p class="chart-description">This bar chart compares the weighted sentiment score for each individual post within the selected filters.</p>
             </section>
 
+            <!-- Stacked Sentiments Section -->
             <section id="stackedTab" class="chart-section tab-content">
                 <canvas id="stackedSentimentChart"></canvas>
-                 <div class="chart-controls">
+                <div class="chart-controls">
                     <button id="resetZoomStackedBtn">Reset Zoom</button>
                     <span class="zoom-instructions">To zoom, click and drag on the chart or pinch on touch devices.</span>
                 </div>
-                <p class="chart-description">This stacked bar chart visualizes the count of positive versus negative sentiment indicators derived from the content of each post.</p>
+                <p class="chart-description">This stacked bar chart visualizes the count of positive versus negative sentiment indicators derived from each post.</p>
             </section>
 
+            <!-- Total Comments Section -->
             <section id="totalCommentsTab" class="chart-section tab-content">
                 <canvas id="totalCommentsChart"></canvas>
                 <div class="chart-controls">
@@ -106,6 +214,7 @@
                 <p class="chart-description">This chart uses purple bars to show the number of comments per post.</p>
             </section>
 
+            <!-- Engagement Scores Section -->
             <section id="engagementTab" class="chart-section tab-content">
                 <canvas id="engagementScoreChart"></canvas>
                 <div class="chart-controls">
@@ -115,29 +224,33 @@
                 <p class="chart-description">This chart shows how active/relevant a post is, factoring in comments and upvotes.</p>
             </section>
 
+            <!-- Top 10 Posts Section -->
             <section id="topPosts" class="chart-section tab-content">
                 <h3>Top 10 Posts</h3>
-                <div class="card"> <label for="postListDropdown">Select Criteria:</label>
+                <div class="card">
+                    <label for="postListDropdown">Select Criteria:</label>
                     <select id="postListDropdown">
                         <option value="topEngaged">Top 10 Engaged Posts</option>
                         <option value="lowestWs">Lowest 10 Weighted Sentiment Posts</option>
                         <option value="lowestRaw">Lowest 10 Raw Sentiment Posts</option>
                         <option value="highestWs">Highest 10 Weighted Sentiment Posts</option>
                         <option value="highestRaw">Highest 10 Raw Sentiment Posts</option>
-                         <option value="recentPosts">Top 10 Most Recent Posts</option>
+                        <option value="recentPosts">Top 10 Most Recent Posts</option>
                     </select>
                     <div id="postListContainer"></div>
                 </div>
             </section>
 
+            <!-- Authors Tab -->
             <section id="authorsTab" class="chart-section tab-content">
                 <canvas id="authorsChart"></canvas>
-                <p class="chart-description">This chart displays the top 10 authors with a stacked breakdown of positive (green) and negative (red) sentiment counts.</p>
+                <p class="chart-description">This chart displays the top 10 authors with a stacked breakdown of positive and negative sentiment counts.</p>
             </section>
 
-             <section id="timeSeriesTab" class="chart-section tab-content">
+            <!-- Time Series Tab -->
+            <section id="timeSeriesTab" class="chart-section tab-content">
                 <canvas id="timeSeriesChart"></canvas>
-                 <div class="chart-controls">
+                <div class="chart-controls">
                     <button id="resetZoomTimeSeriesBtn">Reset Zoom</button>
                     <span class="zoom-instructions">To zoom, click and drag on the chart or pinch on touch devices.</span>
                 </div>
@@ -146,7 +259,8 @@
         </div>
     </div>
 
-    <div id="post-details-container" class="card"> <div id="post-details">Click on any bar or data point to see analysis for that specific post or date.</div>
+    <div id="post-details-container" class="card">
+        <div id="post-details">Click on any bar or data point to see analysis for that specific post or date.</div>
     </div>
 
     <footer>
@@ -154,5 +268,26 @@
             <p><strong>Disclaimer:</strong> This dashboard uses the Google Gemini API to analyze Reddit posts. Results may not be fully accurate.</p>
         </div>
     </footer>
+
+    <!-- Script to handle theme toggling and about button -->
+    <script>
+        const themeToggleCheckbox = document.getElementById("themeToggle");
+        const themeStylesheet = document.getElementById("themeStylesheet");
+
+        // Switch to dark theme if checked; otherwise light
+        themeToggleCheckbox.addEventListener("change", () => {
+            if (themeToggleCheckbox.checked) {
+                themeStylesheet.setAttribute("href", "style_dark.css");
+            } else {
+                themeStylesheet.setAttribute("href", "style.css");
+            }
+        });
+
+        // About button click
+        document.getElementById("aboutBtn").addEventListener("click", () => {
+            // Example: navigate to about.html
+            window.location.href = "about.html";
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,471 @@
+/* Dark Theme CSS - Layout and Functionality Preserved */
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0 0 60px 0; /* Added bottom padding to prevent footer overlap */
+    background-color: #1a1a1a; /* Dark background */
+    color: #e0e0e0; /* Light base text color */
+  }
+  
+  header {
+    background-color: #222c3a; /* Slightly adjusted dark header */
+    padding: 30px 10px;
+    text-align: center;
+    color: white; /* Kept white text */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Adjusted shadow for dark */
+    border-bottom: 1px solid #445466; /* Slightly lighter border for separation */
+  }
+  
+  header h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: 600;
+  }
+  
+  .controls {
+    display: flex; /* Use flexbox for layout */
+    flex-wrap: wrap; /* Allow items to wrap onto the next line on smaller screens */
+    gap: 15px; /* Spacing between control groups (date, filters, search) */
+    padding: 10px; /* Padding inside the controls container */
+    background-color: #2c2c2c; /* Darker background for controls bar */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 1px 6px rgba(255, 255, 255, 0.05); /* Subtle light shadow for depth */
+    margin: 20px auto; /* Center the controls section horizontally with top/bottom margin */
+    max-width: 1400px; /* Limit the maximum width of the controls bar */
+    justify-content: space-between; /* Distribute space between the control groups */
+    align-items: center; /* Align items vertically in the center */
+    box-sizing: border-box; /* Include padding in the element's total width and height */
+  }
+  
+  .controls .date-range {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .controls .date-range label {
+    font-size: 1.1em;
+    color: #cccccc; /* Lighter text color */
+    font-weight: 500;
+  }
+  
+  /* Date input styling */
+  .controls .date-range input[type="date"] {
+    padding: 10px; /* Padding inside the date input */
+    border: 1px solid #555555; /* Darker border */
+    border-radius: 6px; /* Rounded corners */
+    font-size: 1em; /* Standard font size */
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); /* Adjusted inner shadow */
+    height: 40px; /* Set height to match buttons */
+    box-sizing: border-box; /* Include padding/border in height calculation */
+    background-color: #333333; /* Dark input background */
+    color: #e0e0e0; /* Light input text */
+    color-scheme: dark; /* Hint for browser styling (calendar picker) */
+  }
+  
+  /* Styling for generic div containers within controls (used for checkbox groups) */
+  /* This targets the divs directly inside .controls, like the filter checkboxes container */
+  .controls div:not(.date-range):not(.keyword-search):not(.controls-middle-group) {
+    display: flex; /* Use flexbox */
+    gap: 10px; /* Spacing between items (e.g., checkbox and label) */
+    align-items: center; /* Align items vertically */
+  }
+  
+  /* Styling for labels within generic div containers (specifically targeting filter labels) */
+  .controls .controls-middle-group div label {
+    font-size: 1.1em; /* Slightly larger font */
+    color: #cccccc; /* Lighter text color */
+  }
+  
+  /* Styling for checkboxes */
+  .controls input[type="checkbox"] {
+    margin: 0; /* Remove default margin */
+    cursor: pointer; /* Pointer cursor on hover */
+    border: 1px solid #666666; /* Darker border */
+    border-radius: 3px; /* Slightly rounded corners */
+    width: 16px; /* Explicit width */
+    height: 16px; /* Explicit height */
+    vertical-align: middle; /* Align checkbox vertically with label */
+    background-color: #333333; /* Dark background */
+    accent-color: #4CAF50; /* Use accent color for the checkmark */
+  }
+  
+  /* General button styling within controls (applies to Filter and Search buttons) */
+  .controls button {
+    background-color: #4CAF50; /* Keep green background (Filter button) */
+    color: white; /* White text */
+    border: none; /* No border */
+    height: 40px; /* Explicit height */
+    padding-left: 20px; /* Horizontal padding */
+    padding-right: 20px;
+    border-radius: 6px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    font-size: 1.1em; /* Slightly larger font */
+    transition: background-color 0.3s ease; /* Smooth background color transition on hover */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25); /* Adjusted shadow */
+    display: inline-flex; /* Use inline-flex for alignment */
+    align-items: center; /* Center text vertically */
+    justify-content: center; /* Center text horizontally */
+    box-sizing: border-box; /* Include padding/border in height calculation */
+  }
+  
+  /* Hover effect for general buttons */
+  .controls button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
+  
+  /* Specific styling for the search button (#search-btn) */
+  #search-btn {
+    background-color: #007BFF; /* Keep blue background */
+    /* Height, padding, etc., are inherited from the general .controls button style */
+  }
+  
+  /* Hover effect for the search button */
+  #search-btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Keyword search container styling */
+  .controls .keyword-search {
+    display: flex; /* Use flexbox */
+    gap: 10px; /* Spacing between the input field and the search button */
+    align-items: center; /* Align items vertically */
+    flex-grow: 1; /* Allow this container to grow and take available horizontal space */
+    min-width: 200px; /* Minimum width to prevent excessive shrinking on small screens */
+  }
+  
+  /* Keyword search input styling */
+  .controls .keyword-search input[type="text"] {
+    padding: 10px; /* Padding inside the input field */
+    border: 1px solid #555555; /* Darker border */
+    border-radius: 6px; /* Rounded corners */
+    font-size: 1em; /* Standard font size */
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); /* Adjusted inner shadow */
+    flex-grow: 1; /* Allow the input field to grow and fill the container */
+    height: 40px; /* Match button height */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    background-color: #333333; /* Dark input background */
+    color: #e0e0e0; /* Light input text */
+  }
+  
+  /* Container for the middle group of controls (filters) */
+  .controls .controls-middle-group {
+    display: flex;
+    gap: 15px; /* Spacing between filter items and button */
+    align-items: center;
+  }
+  
+  .main-container {
+    display: flex;
+    gap: 25px;
+    padding: 0; /* --- REMOVED PADDING --- */
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    align-items: stretch;
+    max-width: 1400px;
+    margin: 20px auto; /* Standardized margin */
+    /* border: 1px solid blue; */ /* --- DEBUG BORDER REMOVED --- */
+  }
+  
+  .left-div {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    min-width: 280px;
+  }
+  
+  .left-div .subreddit-select-container {
+    background-color: #2c2c2c; /* Dark container background */
+    border-radius: 12px;
+    padding: 15px; /* Keep inner padding */
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
+  }
+  
+  .left-div .subreddit-select-container .postCount-title-large {
+    font-size: 1.2em;
+    color: #cccccc; /* Lighter text */
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  #subreddit-select {
+    padding: 10px;
+    border: 1px solid #555555; /* Darker border */
+    border-radius: 6px;
+    font-size: 1em;
+    width: 100%;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); /* Adjusted inner shadow */
+    box-sizing: border-box;
+    background-color: #333333; /* Dark select background */
+    color: #e0e0e0; /* Light select text */
+  }
+  
+  .left-div .post-comments-count-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .dashboard-box {
+    background-color: #2c2c2c; /* Dark box background */
+    border-radius: 12px;
+    padding: 10px; /* Keep inner padding */
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    flex: 1;
+  }
+  
+  .dashboard-box .postCount-title {
+    font-size: 1em;
+    color: #cccccc; /* Lighter text */
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  
+  .dashboard-box .postCount-number {
+    font-size: 2.2em;
+    font-weight: bold;
+    color: #e0e0e0; /* Lighter number color */
+  }
+  
+  .dashboard-box-wide {
+    background-color: #2c2c2c; /* Dark box background */
+    border-radius: 12px;
+    padding: 10px; /* Keep inner padding */
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
+    text-align: center;
+  }
+  
+  .dashboard-box-wide .postCount-title {
+    font-size: 1em;
+    color: #cccccc; /* Lighter text */
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  
+  .dashboard-box-wide .postCount-number-wide {
+    font-size: 3em;
+    font-weight: bold;
+    color: #e0e0e0; /* Lighter number color */
+  }
+  
+  .dashboard-box-large {
+    background-color: #2c2c2c; /* Dark box background */
+    border-radius: 12px;
+    padding: 10px; /* Keep inner padding */
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+  
+  .dashboard-box-large .postCount-title-large {
+    font-size: 1.2em;
+    color: #cccccc; /* Lighter text */
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  #sentimentPieChart {
+    width: 100%;
+    max-width: 350px;
+    height: auto;
+    /* Note: Chart.js or similar library colors will need separate dark theme configuration */
+  }
+  
+  .right-div {
+    flex: 7;
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+  }
+  
+  .tab-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #444444; /* Darker border */
+    /* Add padding to align tab content with controls content */
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+  }
+  
+  .tab-button {
+    padding: 10px 10px;
+    border: none;
+    background-color: transparent;
+    font-size: 0.85em;
+    color: #bbbbbb; /* Lighter inactive tab color */
+    cursor: pointer;
+    transition: border-bottom 0.3s ease, color 0.3s ease;
+    font-weight: 500;
+    margin-bottom: -2px;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .tab-button.active {
+    border-bottom: 3px solid #4CAF50; /* Keep accent color */
+    color: #ffffff; /* Bright text for active tab */
+  }
+  
+  .tab-button:hover {
+    border-bottom: 3px solid #4CAF50; /* Keep accent color */
+    color: #ffffff; /* Bright text on hover */
+  }
+  
+  .chart-section {
+    display: none;
+    background-color: #2c2c2c; /* Dark section background */
+    border-radius: 12px;
+    padding: 10px; /* Keep inner padding */
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
+    margin-bottom: 25px;
+    /* Add margin to align chart sections with controls content */
+    margin-left: 10px;
+    margin-right: 10px;
+    box-sizing: border-box;
+  }
+  
+  .chart-section.active {
+    display: block;
+  }
+  
+  .chart-section h3 {
+    margin-top: 0;
+    font-size: 1.6em;
+    color: #e0e0e0; /* Light heading color */
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  #weightedSentimentChart,
+  #stackedSentimentChart,
+  #totalCommentsChart,
+  #engagementScoreChart,
+  #authorsChart,
+  #timeSeriesChart {
+    width: 100%;
+    height: auto;
+    /* Note: Chart.js or similar library colors will need separate dark theme configuration */
+  }
+  
+  .chart-controls {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .chart-controls button {
+    background-color: #3498db; /* Keep blue accent */
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25); /* Adjusted shadow */
+  }
+  
+  .chart-controls button:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+  }
+  
+  .chart-controls span {
+    font-size: 0.9em;
+    color: #aaaaaa; /* Lighter secondary text */
+  }
+  
+  .chart-description {
+    font-size: 0.95em;
+    color: #cccccc; /* Lighter text */
+    text-align: left;
+    line-height: 1.7;
+  }
+  
+  #topPosts .card {
+    border: none;
+    padding: 0; /* Keep inner padding */
+    /* Background will be inherited from .chart-section */
+  }
+  
+  #topPosts label {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 1em;
+    color: #cccccc; /* Lighter text */
+    font-weight: 600;
+  }
+  
+  #topPosts select {
+    padding: 10px;
+    border: 1px solid #555555; /* Darker border */
+    border-radius: 6px;
+    font-size: 1em;
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 20px;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2); /* Adjusted inner shadow */
+    background-color: #333333; /* Dark select background */
+    color: #e0e0e0; /* Light select text */
+  }
+  
+  #topPosts #postListContainer {
+    font-size: 0.95em;
+    color: #cccccc; /* Lighter text */
+    line-height: 1.6;
+  }
+  
+  #post-details-container {
+    background-color: #2c2c2c; /* Dark container background */
+    border-radius: 12px;
+    padding: 10px; /* Add padding back here for inner content */
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05); /* Adjusted shadow */
+    margin: 20px auto; /* Standardized margin */
+    max-width: 1400px;
+    box-sizing: border-box;
+    /* border: 1px solid green; */ /* --- DEBUG BORDER REMOVED --- */
+  }
+  
+  #post-details {
+    font-size: 1em;
+    color: #cccccc; /* Lighter text */
+    line-height: 1.6;
+  }
+  
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #222222; /* Dark footer background */
+    font-size: 0.9em;
+    text-align: center;
+    padding: 15px 20px;
+    border-top: 1px solid #333333; /* Darker top border */
+    z-index: 1000;
+    box-sizing: border-box;
+    color: #aaaaaa; /* Lighter footer text */
+    margin-top: 20px; /* This might get hidden by fixed footer, added padding-bottom to body */
+  }
+  
+  footer div {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  footer p {
+    margin: 0;
+  }
