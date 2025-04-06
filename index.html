@@ -15,19 +15,20 @@
     </script>
     <script type="module" src="script.js"></script>
 
-    <!-- By default, load the light theme -->
+    <!-- Default to light theme -->
     <link id="themeStylesheet" rel="stylesheet" href="style.css">
 
-    <!-- Example CSS just for the new switch and icon button -->
+    <!-- Example CSS for new vertical dividers, switch, and icon button -->
     <style>
-        /* Container for the theme toggle switch and About icon */
-        .theme-about-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-left: 1rem; /* Adjust to fit your layout */
+
+        /* Vertical divider styling */
+        .vertical-divider {
+            width: 2px;
+            background-color: #ccc;
+            height: 2.5rem; /* Adjust as needed */
+            margin: 0 0.5rem;
         }
-        
+
         /* Switch styling */
         .switch {
             position: relative;
@@ -35,14 +36,11 @@
             width: 2.5rem;
             height: 1.4rem;
         }
-
         .switch input {
             opacity: 0;
-            width: 0;
+            width: 0; 
             height: 0;
         }
-
-        /* Slider track */
         .slider {
             position: absolute;
             cursor: pointer;
@@ -54,21 +52,17 @@
             transition: .4s;
             border-radius: 1.4rem;
         }
-
-        /* Slider knob */
         .slider:before {
             position: absolute;
             content: "";
-            height: 1rem; 
+            height: 1rem;
             width: 1rem;
-            left: 0.2rem; 
+            left: 0.2rem;
             bottom: 0.2rem;
             background-color: #fff;
             transition: .4s;
             border-radius: 50%;
         }
-
-        /* When the checkbox is checked, move the knob to the right */
         .switch input:checked + .slider {
             background-color: #2196f3;
         }
@@ -76,18 +70,19 @@
             transform: translateX(1.1rem);
         }
 
-        /* Optional label for theme text (e.g., "Dark Mode") */
-        .theme-label {
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        /* Icon button for "About" */
+        /* Icon button for About */
         .icon-button {
             border: none;
             background: none;
             cursor: pointer;
             font-size: 1.2rem;
+        }
+
+        /* Layout tweak so the theme + about container sits in a row */
+        .theme-about-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
     </style>
 </head>
@@ -98,13 +93,17 @@
     </header>
 
     <section class="controls">
+        <!-- Date range group -->
         <div class="date-range">
             <label for="start-date">Start:</label>
             <input type="date" id="start-date" value="2025-01-01">
             <label for="end-date">End:</label>
             <input type="date" id="end-date">
         </div>
+        <!-- First vertical divider -->
+        <div class="vertical-divider"></div>
 
+        <!-- Filter group -->
         <div class="controls-middle-group">
             <div>
                 <label for="iit-filter">IIT</label>
@@ -116,25 +115,29 @@
             </div>
             <button id="filter-btn">Filter</button>
         </div>
+        <!-- Second vertical divider -->
+        <div class="vertical-divider"></div>
 
+        <!-- Search group -->
         <div class="keyword-search">
             <input type="text" id="keyword-search" placeholder="Enter keyword...">
             <button id="search-btn">Search</button>
+        </div>
+        <!-- Third vertical divider -->
+        <div class="vertical-divider"></div>
 
-            <!-- NEW: Theme Toggle Switch + About Icon -->
-            <div class="theme-about-container">
-                
-                <!-- Theme Toggle Switch -->
-                <label class="switch" title="Toggle Dark/Light Theme">
-                    <input type="checkbox" id="themeToggle">
-                    <span class="slider"></span>
-                </label>
+        <!-- Theme Toggle Switch + About Icon -->
+        <div class="theme-about-container">
+            <!-- Theme Toggle Switch -->
+            <label class="switch" title="Toggle Dark/Light Theme">
+                <input type="checkbox" id="themeToggle">
+                <span class="slider"></span>
+            </label>
 
-                <!-- Icon button for About (using "?" as placeholder icon) -->
-                <button class="icon-button" id="aboutBtn" title="About this app">
-                    ?
-                </button>
-            </div>
+            <!-- Icon button for About -->
+            <button class="icon-button" id="aboutBtn" title="About this app">
+                ?
+            </button>
         </div>
     </section>
 
@@ -198,7 +201,7 @@
                     <button id="resetZoomStackedBtn">Reset Zoom</button>
                     <span class="zoom-instructions">To zoom, click and drag on the chart or pinch on touch devices.</span>
                 </div>
-                <p class="chart-description">This stacked bar chart visualizes the count of positive versus negative sentiment indicators derived from the content of each post.</p>
+                <p class="chart-description">This stacked bar chart visualizes the count of positive versus negative sentiment indicators derived from each post.</p>
             </section>
 
             <!-- Total Comments Section -->
@@ -238,13 +241,13 @@
                 </div>
             </section>
 
-            <!-- Authors Stats Section -->
+            <!-- Authors Tab -->
             <section id="authorsTab" class="chart-section tab-content">
                 <canvas id="authorsChart"></canvas>
                 <p class="chart-description">This chart displays the top 10 authors with a stacked breakdown of positive and negative sentiment counts.</p>
             </section>
 
-            <!-- Time Series Section -->
+            <!-- Time Series Tab -->
             <section id="timeSeriesTab" class="chart-section tab-content">
                 <canvas id="timeSeriesChart"></canvas>
                 <div class="chart-controls">
@@ -266,12 +269,12 @@
         </div>
     </footer>
 
-    <!-- Inline script to handle theme toggling and about button -->
+    <!-- Script to handle theme toggling and about button -->
     <script>
         const themeToggleCheckbox = document.getElementById("themeToggle");
         const themeStylesheet = document.getElementById("themeStylesheet");
 
-        // Switch to dark theme if checked; otherwise, light
+        // Switch to dark theme if checked; otherwise light
         themeToggleCheckbox.addEventListener("change", () => {
             if (themeToggleCheckbox.checked) {
                 themeStylesheet.setAttribute("href", "style_dark.css");
@@ -280,8 +283,9 @@
             }
         });
 
-        // About button click behavior (replace alert with your own logic or a link)
+        // About button click
         document.getElementById("aboutBtn").addEventListener("click", () => {
+            // Example: navigate to about.html
             window.location.href = "about.html";
         });
     </script>
