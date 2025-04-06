@@ -1,5 +1,5 @@
 # TPCraw - TemasekPoly Reddit Sentiment Analysis 
-[![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_v2-2_01.PNG)](https://shamim-akhtar.github.io/tpcraw/)
+[![](https://github.com/shamim-akhtar/tpcraw/blob/main/images/image_01_2.PNG)](https://shamim-akhtar.github.io/tpcraw/)
 TPCraw is a Python-based project that crawls posts and comments from the r/TemasekPoly subreddit and then analyzes them using Google’s Generative AI (Gemini). The project produces sentiment analyses, summaries, and visualizations (via a web-based dashboard) to gain insights into discussions about Temasek Polytechnic on Reddit.
 
 [View the Dashboard](https://shamim-akhtar.github.io/tpcraw/).
