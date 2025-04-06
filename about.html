@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Sentiment Dashboard</title>
+    <style>
+        /* --- Base & Typography --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.7; /* Increased for better readability */
+            margin: 0; /* Remove default margin */
+            background-color: #f8f9fa; /* Slightly lighter gray background */
+            color: #343a40; /* Softer black for text */
+            font-size: 16px; /* Base font size */
+        }
+
+        .container {
+            max-width: 950px; /* Slightly wider */
+            margin: 40px auto; /* More vertical space */
+            background: #ffffff;
+            padding: 40px 50px; /* More padding */
+            border-radius: 12px; /* Softer corners */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08); /* More pronounced shadow */
+            border: 1px solid #e9ecef; /* Subtle border */
+        }
+
+        /* --- Headings --- */
+        h1, h2, h3 {
+            color: #0056b3; /* Consistent darker blue */
+            margin-bottom: 0.8em; /* Space below headings */
+            padding-bottom: 0.4em; /* Space between text and border */
+            border-bottom: 1px solid #dee2e6; /* Lighter border */
+            line-height: 1.3; /* Tighter line height for headings */
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.2em; /* Larger main title */
+            color: #004085; /* Darkest blue */
+            border-bottom-width: 2px; /* Thicker border */
+            margin-top: 0;
+            margin-bottom: 1.2em;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-top: 2em; /* More space above section titles */
+        }
+
+        h3 {
+            font-size: 1.4em;
+            color: #007bff; /* Primary blue for sub-sections */
+            border-bottom: none; /* Remove border for H3 */
+            margin-top: 1.8em;
+        }
+
+        /* --- Paragraphs & Links --- */
+        p {
+            margin-bottom: 1.2em;
+            color: #495057; /* Slightly lighter text for paragraphs */
+        }
+
+        a {
+            color: #007bff; /* Primary blue */
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: #0056b3; /* Darken on hover */
+            text-decoration: underline;
+        }
+
+        /* --- Lists --- */
+        ul {
+            margin-left: 5px; /* Reduced default indent */
+            list-style: none; /* Remove default bullets */
+            padding-left: 25px; /* Custom indent */
+        }
+        ul li {
+            margin-bottom: 0.8em; /* Space between list items */
+            position: relative; /* For custom bullet */
+        }
+        /* Custom bullet style */
+        ul li::before {
+            content: '•'; /* Bullet character */
+            color: #007bff; /* Primary blue bullet */
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1.3em; /* Position left */
+            position: absolute;
+            top: 1px; /* Fine-tune vertical alignment */
+        }
+        /* Nested lists */
+        ul ul {
+            margin-top: 0.5em;
+            margin-left: 10px; /* Indent nested lists further */
+        }
+        ul ul li::before {
+            content: '◦'; /* Open circle for nested */
+            color: #6c757d; /* Gray for nested bullets */
+        }
+
+
+        /* --- Code & Formulas --- */
+        code {
+            background-color: #eef2f7; /* Lighter blueish-gray */
+            padding: 0.25em 0.5em;
+            margin: 0 2px;
+            font-size: 0.88em; /* Slightly smaller code font */
+            border-radius: 5px;
+            font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            color: #41546b; /* Darker text for code */
+            border: 1px solid #d6dde5; /* Subtle border */
+        }
+
+        .formula {
+            font-style: normal; /* Override browser default if needed */
+            color: #495057;
+            margin: 1em 0 1.5em 0; /* More vertical margin */
+            padding: 1em 1.5em; /* More padding */
+            background-color: #f8f9fa; /* Light gray background */
+            border-left: 4px solid #17a2b8; /* Info blue border */
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle shadow */
+        }
+        .formula code { /* Style code within formulas slightly differently */
+             background-color: #fff;
+             border: 1px solid #e9ecef;
+        }
+
+
+        /* --- Specific Elements --- */
+        .section {
+            margin-bottom: 3em; /* More space between sections */
+        }
+        .section.intro p {
+            font-size: 1.1em; /* Slightly larger intro text */
+            color: #343a40;
+        }
+
+        .tech-stack-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        .tech-stack-list li {
+            display: inline-block;
+            background-color: #e2e6ea; /* Light gray */
+            color: #495057; /* Dark gray text */
+            padding: 6px 12px;
+            margin: 5px 5px 5px 0;
+            border-radius: 15px; /* Pill shape */
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+        .tech-stack-list li:hover {
+             background-color: #6c757d; /* Darker gray on hover */
+             color: #fff;
+        }
+         .tech-stack-list li::before {
+             content: none; /* Remove bullets for tech stack */
+         }
+
+        .disclaimer {
+            margin-top: 3em;
+            padding: 1.2em 1.5em;
+            background-color: #fff3cd; /* Softer yellow */
+            border: 1px solid #ffeeba;
+            border-left: 5px solid #ffc107; /* Yellow left border */
+            border-radius: 6px;
+            color: #664d03; /* Darker text for contrast */
+        }
+        .disclaimer strong {
+            color: #594502; /* Even darker for emphasis */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>About the Reddit Sentiment Dashboard</h1>
+
+        <div class="section intro">
+            <p>This dashboard provides insights into the sentiment, topics, and engagement levels within specific Reddit communities (subreddits), with a particular focus on discussions relevant to Temasek Polytechnic (TP) and its School of Informatics & IT (IIT).</p>
+            <p>It automatically collects, analyzes, and visualizes data from Reddit posts and comments, allowing users to explore trends, identify key concerns, and understand the overall mood related to various aspects of student life, academics, and administration.</p>
+        </div>
+
+        <div class="section backend">
+            <h2>How It Works: The Backend Crawler</h2>
+            <p>The core of the data collection and analysis is a Python script (<code>crawler.py</code>) designed to interact with Reddit and process the information.</p>
+
+            <h3>1. Data Source & Collection</h3>
+            <ul>
+                <li>The crawler uses the <strong>PRAW (Python Reddit API Wrapper)</strong> library to connect to the Reddit API and fetch posts and comments.</li>
+                <li>It targets specific subreddits defined in a configuration file (<code>subreddits.txt</code>). Currently, this includes subreddits like <code>r/TemasekPoly</code> and <code>r/SGExams</code>, among others listed in the file.</li>
+                <li>It operates incrementally, remembering the timestamp of the last processed post for each subreddit (stored in Firebase) to avoid fetching the same data repeatedly.</li>
+                <li>It fetches new posts since the last run and also scans recent comments across the subreddit to find new comments added to older posts, ensuring updates are captured.</li>
+            </ul>
+
+            <h3>2. Automation</h3>
+            <ul>
+                <li>The crawler script is configured to run automatically using <strong>GitHub Actions</strong>.</li>
+                <li>It is scheduled to execute <strong>daily at 5:00 AM Singapore Time (SGT)</strong>.</li>
+            </ul>
+
+            <h3>3. AI-Powered Analysis (Google Gemini)</h3>
+            <ul>
+                <li>The application leverages Google's <strong>Gemini AI</strong> model for sophisticated text analysis.</li>
+                <li><strong>Sentiment Analysis:</strong> For each comment and for the overall post (including its comments), Gemini determines a sentiment score: <code>1</code> (positive), <code>-1</code> (negative), or <code>0</code> (neutral).</li>
+                <li><strong>Emotion Detection:</strong> It identifies the dominant emotion expressed (e.g., <code>happy</code>, <code>stress</code>, <code>frustration</code>, <code>neutral</code>, etc.).</li>
+                <li><strong>Categorization:</strong> Text is classified into relevant categories like <code>academic</code>, <code>exams</code>, <code>facilities</code>, <code>student life</code>, <code>CCA</code>, <code>career</code>, <code>administration</code>, etc.</li>
+                <li><strong>IIT Relevance (for r/TemasekPoly):</strong> A specific check (<code>iit</code> flag: <code>yes</code>/<code>no</code>) determines if the content relates to TP's School of Informatics & IT, including diplomas like Big Data Analytics (BDA), Applied AI (AAI), IT, Cybersecurity & Digital Forensics (CDF), Immersive Media & Game Development (IGD), and Common ICT (CICT).</li>
+                 <li><strong>TP Relevance (for other subreddits):</strong> For subreddits other than <code>r/TemasekPoly</code>, a regex check (<code>detect_temasek_poly_related</code>) flags posts/comments mentioning "Temasek Poly", "TP", etc. (field: <code>relatedToTemasekPoly</code>).</li>
+               <li><strong>Summarization:</strong> Gemini generates a concise 3-paragraph summary for each post (including its comments), covering key topics, overall sentiment/tone, and any potential concerns or suggestions raised.</li>
+                 <li>Specific prompts (<code>PROMPT_COMMENT</code>, <code>PROMPT_POST_COMMENTS</code>, <code>PROMPT_SUMMARY</code>) guide the AI's analysis to ensure consistent output format.</li>
+            </ul>
+
+             <h3>4. Calculations</h3>
+            <ul>
+                <li><strong>Weighted Sentiment Score (Per Post):</strong> This score aims to give more importance to comments with higher engagement (upvotes). It's calculated for each post based on its comments:
+                    <div class="formula">
+                        <code>Weighted Score = Σ(comment_sentiment * weight) / Σ(weight)</code><br>
+                        where <code>weight = 1 + log2(max(comment_score, 0) + 1)</code>
+                    </div>
+                    This means comments with more upvotes contribute more significantly to the post's overall weighted sentiment. The <code>log2</code> function dampens the effect of extremely high scores.
+                </li>
+                 <li><strong>Engagement Score (Per Post):</strong> This metric combines a post's upvotes (score) and the number of comments it received to gauge its overall activity and relevance.
+                     <div class="formula">
+                         <code>Engagement Score = (post_score + 1) * log2(total_comments + 1)</code>
+                     </div>
+                      The <code>+1</code> ensures posts/comments with zero score/count are included, and <code>log2</code> scales down the impact of a very high comment count.
+                </li>
+                <li><strong>Raw Sentiment Score (Per Post):</strong> This is the simple sum of the sentiment scores (<code>1</code>, <code>-1</code>, <code>0</code>) of all comments under a post.</li>
+                <li><strong>Category Average Sentiment (Per Day):</strong> The system calculates the average sentiment score for all posts/comments tagged within a specific category for each day.</li>
+            </ul>
+
+            <h3>5. Data Storage (Firebase)</h3>
+            <ul>
+                <li>All processed data is stored securely in <strong>Google Firebase Firestore</strong>, a NoSQL cloud database.</li>
+                <li>Data is organized into collections. Based on the selected subreddit (e.g., "TemasekPoly" or "sgExams"):
+                     <ul>
+                        <li><code>posts</code> or <code>{subreddit}_posts</code>: Stores information about each Reddit post, including its title, author, body, score, URL, creation date, the AI-generated summary, calculated scores (weighted, engagement, raw sentiment), overall category, emotion, IIT flag, TP-related flag, and aggregated comment counts/sentiments.</li>
+                        <li><code>comments</code> (sub-collection within each post document): Stores details for each comment under that post, including its body, author, score, creation date, and the AI-analyzed sentiment, emotion, category, and IIT flag.</li>
+                         <li><code>authors</code> or <code>{subreddit}_authors</code>: Tracks statistics for each unique author, aggregating their total sentiment score, post/comment counts, positive/negative counts, average sentiment, and lists of their posts/comments.</li>
+                        <li><code>category_stats</code> or <code>{subreddit}_category_stats</code>: Stores daily aggregated statistics for each category, including total sentiment, count, positive/negative counts, average sentiment, and lists of associated post/comment IDs for that day.</li>
+                        <li><code>meta</code>: Contains metadata, such as the <code>last_timestamp</code> for each subreddit to manage incremental crawling.</li>
+                    </ul>
+                </li>
+                 <li>The crawler uses efficient batch writes and in-memory aggregation to update Firestore, minimizing database operations.</li>
+            </ul>
+        </div>
+
+        <div class="section frontend">
+            <h2>The Dashboard: Visualization & Interaction</h2>
+            <p>The frontend is a web-based interface designed to make the collected data accessible and understandable through interactive visualizations.</p>
+
+            <h3>1. Technology Stack</h3>
+            <ul class="tech-stack-list">
+                 <li>HTML</li>
+                 <li>CSS (including styles for light/dark themes)</li>
+                 <li>JavaScript (Modular ES6)</li>
+                 <li>Chart.js</li>
+                 <li>Chart.js Zoom Plugin</li>
+                 <li>chartjs-adapter-date-fns</li>
+                 <li>Firebase SDK (v9 Modular)</li>
+            </ul>
+
+             <h3>2. Functionality & UI Components</h3>
+            <ul>
+                <li><strong>Subreddit Selection:</strong> A dropdown allows users to switch between the different subreddits being monitored (e.g., <code>TemasekPoly</code>, <code>sgExams</code>).</li>
+                <li><strong>Filtering:</strong>
+                     <ul>
+                        <li><strong>Date Range:</strong> Users can select a start and end date to focus the analysis on a specific period.</li>
+                        <li><strong>IIT Filter (for r/TemasekPoly):</strong> A checkbox to show only posts/comments flagged as related to the School of IIT.</li>
+                        <li><strong>TP-Related Filter (for other subreddits):</strong> A checkbox to show only posts/comments detected as relating to Temasek Poly.</li>
+                         <li>The appropriate filter (IIT or TP-Related) is automatically shown/hidden based on the selected subreddit.</li>
+                        <li>A "Filter" button applies the selected criteria.</li>
+                    </ul>
+                </li>
+                 <li><strong>Keyword Search:</strong> Users can enter keywords to search across post titles, bodies, and comment bodies within the selected date range and subreddit. Results are displayed in the details section with keywords highlighted.</li>
+                <li><strong>Dashboard Overview (Left Panel):</strong>
+                    <ul>
+                        <li>Displays the total count of posts and comments matching the current filters.</li>
+                        <li>Shows the average Weighted Sentiment Score for the filtered posts.</li>
+                         <li>Presents a Pie Chart visualizing the distribution of posts based on their Weighted Sentiment (Positive, Neutral, Negative percentages).</li>
+                    </ul>
+                 </li>
+                <li><strong>Detailed Charts (Right Panel - Tabs):</strong>
+                     <ul>
+                        <li><strong>Weighted Sentiments:</strong> Bar chart showing the calculated Weighted Sentiment Score for each individual post. Bars are colored green (positive/neutral) or red (negative).</li>
+                        <li><strong>Comment Sentiments:</strong> Stacked bar chart showing the count of positive vs. negative comments (based on AI analysis) for each post.</li>
+                         <li><strong>Total Comments:</strong> Bar chart displaying the number of comments per post.</li>
+                        <li><strong>Engagement Scores:</strong> Bar chart showing the calculated Engagement Score for each post.</li>
+                         <li><strong>Top 10 Posts:</strong> A sortable table displaying posts based on selected criteria (e.g., Highest/Lowest Engagement, Highest/Lowest Weighted/Raw Sentiment, Most Recent).</li>
+                        <li><strong>Author Stats:</strong> Stacked bar chart showing the Top 10 authors with the most negative sentiments, broken down by their positive and negative interaction counts.</li>
+                        <li><strong>Category Time Series:</strong> Line chart plotting the daily average sentiment score for different categories over time. It shows both raw daily data and a 7-day moving average. Users can toggle categories on/off via the legend.</li>
+                    </ul>
+                </li>
+                 <li><strong>Chart Interactivity:</strong>
+                    <ul>
+                        <li>Most bar and line charts support zooming (click-drag or pinch) and panning (Ctrl+drag) on the X-axis.</li>
+                         <li>"Reset Zoom" buttons are provided for each zoomable chart.</li>
+                        <li>Clicking on a bar, point, or item in most charts (Weighted, Stacked, Comments, Engagement, Top Posts list, Author bars, Time Series points) triggers the display of detailed information in the section below.</li>
+                    </ul>
+                </li>
+                <li><strong>Post / Item Details:</strong> A dedicated section at the bottom dynamically displays detailed information when an item is selected from a chart or list. This includes:
+                    <ul>
+                        <li><strong>Post Details:</strong> Full title (linked to Reddit), author, date, AI-generated summary, original post body, and a list of all comments with their details.</li>
+                         <li><strong>Author Details:</strong> Lists all posts and comments made by the selected author within the database.</li>
+                        <li><strong>Category/Date Details:</strong> Lists all posts and comments associated with a specific category on a specific date (when clicking the time series chart).</li>
+                         <li><strong>Search Results:</strong> Displays matching posts and comments from a keyword search.</li>
+                        <li><strong>Badges:</strong> Relevant metrics (scores, sentiment, category, emotion) are displayed visually using Shields.io badges for both posts and comments within the details view.</li>
+                    </ul>
+                </li>
+                <li><strong>Theme Toggle:</strong> A switch allows users to toggle between light and dark visual themes for the dashboard.</li>
+                 <li><strong>About Button:</strong> Links to this informational page.</li>
+            </ul>
+        </div>
+
+        <div class="disclaimer">
+             <strong>Disclaimer:</strong> This dashboard uses the Google Gemini API for analysis. While powerful, AI analysis may not always be perfectly accurate or capture the full nuance of human language. Interpret the results with this context in mind.
+        </div>
+    </div>
+</body>
+</html>
