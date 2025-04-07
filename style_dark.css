@@ -10,7 +10,7 @@ body {
   
 header {
   background-color: #222c3a; /* Dark Theme Color */
-  padding: 30px 10px; /* Layout Match: Light CSS */
+  padding: 20px 10px; /* Layout Match: Light CSS */
   text-align: center; /* Layout Match: Light CSS */
   color: white; /* Dark Theme Color (Same as Light) */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); /* Dark Theme Style */
