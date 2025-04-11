@@ -364,6 +364,10 @@ def update_category_stats_memory(category_updates, date_str, category, sentiment
     # Ensure category is always lowercase
     category = category.lower()
 
+    # special case for CCA
+    if category == "cca":
+        category = "CCA"
+
     # (date_str, category) is our 'key' for grouping changes in memory
     key = (date_str, category)
 

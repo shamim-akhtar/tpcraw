@@ -900,14 +900,32 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Ensure date parsing is robust or adjust based on actual ID format
       if (!isNaN(docDate) && docDate >= startDate && docDate <= endDate) {
         const data = docSnap.data();
-        for (let category in data) {
-          if (!timeSeriesData[category]) {
-            timeSeriesData[category] = [];
-          }
-          timeSeriesData[category].push({
-            x: dateStr,
-            y: data[category].averageSentiment || 0
-          });
+        // for (let category in data) {
+        //   if (!timeSeriesData[category]) {
+        //     timeSeriesData[category] = [];
+        //   }
+        //   timeSeriesData[category].push({
+        //     x: dateStr,
+        //     y: data[category].averageSentiment || 0
+        //   });
+        // }
+        for (let originalCategory in data) {
+            // --- MODIFICATION START ---
+            // Convert the category key from Firestore to lowercase for consistent grouping
+            const lowerCaseCategory = originalCategory.toLowerCase();
+
+            // Initialize the array for this lowercase category if it doesn't exist yet
+            if (!timeSeriesData[lowerCaseCategory]) {
+                timeSeriesData[lowerCaseCategory] = [];
+            }
+
+            // Push the data point into the array corresponding to the LOWERCASE category key
+            // Retrieve the actual averageSentiment using the ORIGINAL category key from the Firestore data
+            timeSeriesData[lowerCaseCategory].push({
+                x: dateStr, // Keep the date string
+                y: data[originalCategory].averageSentiment || 0 // Use originalCategory to access Firestore data
+            });
+          // --- MODIFICATION END ---
         }
       }
     });
