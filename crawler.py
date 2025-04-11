@@ -360,6 +360,9 @@ def update_category_stats_memory(category_updates, date_str, category, sentiment
     # If there is no category or no date, do nothing
     if not category or not date_str:
         return
+    
+    # Ensure category is always lowercase
+    category = category.lower()
 
     # (date_str, category) is our 'key' for grouping changes in memory
     key = (date_str, category)
