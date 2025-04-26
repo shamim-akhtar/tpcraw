@@ -569,7 +569,7 @@ def crawl_subreddit(subreddit_name, model):
         # 1. Process NEW posts and their comments
         # =============================================
         print(f"[{subreddit_name}] Fetching new submissions...")
-        for submission in sub.new(limit=500): # Adjust limit as needed
+        for submission in sub.new(limit=100): # Adjust limit as needed
             submission_time = submission.created_utc
             if submission_time <= last_timestamp:
                 # print(f"[{subreddit_name}] Skipping post {submission.id} (already processed or older)")
@@ -845,7 +845,7 @@ def crawl_subreddit(subreddit_name, model):
 
         try:
             # Limit might need adjustment based on comment frequency vs. run frequency
-            for comment in sub.comments(limit=500):
+            for comment in sub.comments(limit=200):
                 if not hasattr(comment, 'created_utc') or not hasattr(comment, 'id') or not hasattr(comment, 'submission'):
                     continue # Skip malformed
 
