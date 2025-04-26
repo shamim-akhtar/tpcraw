@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
     // Otherwise, for non-TemasekPoly subreddits, use the "relatedToTemasekPoly" filter if checked
-    else {
+    else if(lowerSub === "sgExams"){
       if (isTpRelatedChecked) {
         q = query(q, where('relatedToTemasekPoly', '==', true));
         // console.log("TP-related filter applied: relatedToTemasekPoly == true");
@@ -2148,12 +2148,20 @@ function escapeHtml(unsafe) {
       if (tpRelatedFilter) { tpRelatedFilter.style.display = "none"; }
       if (tpLabel) { tpLabel.style.display = "none"; }
     } 
-    else {
-      // For other subreddits, hide IIT filter and show TP-Related filter
+    else if (subredditSelect.value === "sgExams") {
+      // If sgExams then hide IIT filter and show TP-Related filter
       if (iitFilter) { iitFilter.style.display = "none"; }
       if (iitLabel) { iitLabel.style.display = "none"; }
       if (tpRelatedFilter) { tpRelatedFilter.style.display = "inline-block"; }
       if (tpLabel) { tpLabel.style.display = "inline-block"; }
+    }
+    else{
+      if (iitFilter) { iitFilter.style.display = "none"; }
+      if (iitLabel) { iitLabel.style.display = "none"; }
+      if (tpRelatedFilter) { tpRelatedFilter.style.display = "none"; }
+      if (tpLabel) { tpLabel.style.display = "none"; }
+      //const filterBtn = document.getElementById('filter-btn');
+      //if (filterBtn) { filterBtn.style.display = "none"; }
     }
   }
 
