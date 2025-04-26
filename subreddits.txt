@@ -1,5 +1,6 @@
 TemasekPoly
 sgexams
+NYP
 nanyangpoly
 republicpolytechnic
 SingaporePoly
