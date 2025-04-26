@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
     // Otherwise, for non-TemasekPoly subreddits, use the "relatedToTemasekPoly" filter if checked
-    else if(lowerSub === "sgExams"){
+    else if(lowerSub === "sgexams"){
       if (isTpRelatedChecked) {
         q = query(q, where('relatedToTemasekPoly', '==', true));
         // console.log("TP-related filter applied: relatedToTemasekPoly == true");
