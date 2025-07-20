@@ -1,84 +1,155 @@
+import os
+import sys
 import firebase_admin
 from firebase_admin import credentials, firestore
-from vertexai.language_models import TextEmbeddingModel
+import vertexai
 import chromadb
 from tqdm import tqdm
+import logging
+from typing import Optional, Tuple
 
-# --- Init Firebase ---
-cred = credentials.Certificate("firebase-credentials.json")
-firebase_admin.initialize_app(cred)
-db = firestore.client()
+# ===== Config =====
+PERSIST_DIR = "./chroma"
+COLLECTION_NAME = "reddit_posts"
+MAX_CHARS = 20000
+TRUNCATE_SUFFIX = "\n...[TRUNCATED FOR EMBEDDING]"
+SKIP_IF_EXISTS = True
+ADD_FIRESTORE_FLAG = False
+LOG_FILE = "backfill_embeddings.log"
+EMBED_DIM = 256
 
-# --- Init ChromaDB ---
-chroma_client = chromadb.Client()
-embedding_collection = chroma_client.get_or_create_collection("reddit_posts")
+# Test controls (set via env; leave unset for full run)
+TEST_LIMIT = int(os.getenv("BACKFILL_LIMIT", "0"))            # e.g. 5
+TEST_COLLECTION = os.getenv("BACKFILL_TEST_COLLECTION", "")   # e.g. "reddit_posts_test"
+DRY_RUN = os.getenv("BACKFILL_DRY_RUN", "0") == "1"
 
-# --- Init Gemini Embedding Model ---
-embedding_model = TextEmbeddingModel.from_pretrained("textembedding-gecko@001")
+logging.basicConfig(filename=LOG_FILE, level=logging.INFO,
+                    format="%(asctime)s %(levelname)s: %(message)s")
 
-def get_embedding(text):
+# ===== Firebase =====
+try:
+    cred = credentials.Certificate("firebase-credentials.json")
+    firebase_admin.initialize_app(cred)
+    db = firestore.client()
+    print("✅ Firebase initialized.")
+except Exception as e:
+    print(f"CRITICAL: Firebase init failed: {e}")
+    sys.exit(1)
+
+# ===== Vertex + Embedding Model (preview → legacy fallback) =====
+GCP_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
+GCP_LOCATION = os.getenv("GOOGLE_CLOUD_REGION", "us-central1")
+if not GCP_PROJECT:
+    print("CRITICAL: GOOGLE_CLOUD_PROJECT not set.")
+    sys.exit(1)
+
+vertexai.init(project=GCP_PROJECT, location=GCP_LOCATION)
+try:
+    from vertexai.preview import text_embedding
+    API_MODE = "preview"
+    _model = text_embedding.TextEmbeddingModel.from_pretrained("text-embedding-004")
+except ImportError:
+    from vertexai.language_models import TextEmbeddingModel, TextEmbeddingInput
+    API_MODE = "legacy"
+    _model = TextEmbeddingModel.from_pretrained("text-embedding-004")
+print(f"✅ Embedding model loaded (mode={API_MODE}).")
+
+def get_embedding(text: str):
     try:
-        return embedding_model.get_embeddings([text])[0].values
+        if API_MODE == "preview":
+            inp = text_embedding.TextEmbeddingInput(text=text, task_type="RETRIEVAL_DOCUMENT")
+        else:
+            inp = TextEmbeddingInput(text=text, task_type="RETRIEVAL_DOCUMENT")
+        return _model.get_embeddings([inp], output_dimensionality=EMBED_DIM)[0].values
     except Exception as e:
-        print(f"Error generating embedding: {e}")
+        logging.error(f"Embedding error: {e}")
         return None
 
-def fetch_all_post_ids(collection_name):
-    posts_ref = db.collection(collection_name)
-    return [doc.id for doc in posts_ref.stream()]
+# ===== Chroma =====
+try:
+    chroma_client = chromadb.PersistentClient(path=PERSIST_DIR)
+    effective_collection = TEST_COLLECTION or COLLECTION_NAME
+    embedding_collection = chroma_client.get_or_create_collection(effective_collection)
+    print(f"✅ Chroma collection: {effective_collection}")
+    if DRY_RUN:
+        print("🟡 DRY RUN: No writes will be performed.")
+except Exception as e:
+    print(f"CRITICAL: Chroma init failed: {e}")
+    sys.exit(1)
 
-def fetch_post_data(collection_name, post_id):
-    post_ref = db.collection(collection_name).document(post_id)
-    post_doc = post_ref.get()
-    if not post_doc.exists:
+# ===== Helpers =====
+def normalize_subreddit(name: str) -> Tuple[str, str]:
+    sub = name.lower()
+    coll = "posts" if sub == "temasekpoly" else f"{sub}_posts"
+    return sub, coll
+
+def safe_combine(title: str, body: str, comments: str, summary: str) -> str:
+    combined = f"{title}\n\n{body}\n\n{comments}\n\n{summary}"
+    return combined[:MAX_CHARS] + TRUNCATE_SUFFIX if MAX_CHARS and len(combined) > MAX_CHARS else combined
+
+def fetch_post_data(coll: str, post_id: str) -> Optional[Tuple[str,str,str]]:
+    snap = db.collection(coll).document(post_id).get()
+    if not snap.exists:
         return None
+    data = snap.to_dict() or {}
+    title = data.get("title",""); body = data.get("body",""); summary = data.get("summary","")
+    comments_ref = db.collection(coll).document(post_id).collection("comments")
+    comments = "\n".join([c.to_dict().get("body","") for c in comments_ref.stream()])
+    return safe_combine(title, body, comments, summary), title, summary
 
-    data = post_doc.to_dict()
-    summary = data.get("summary", "")
-    title = data.get("title", "")
-    body = data.get("body", "")
+def list_post_ids(coll: str):
+    return [d.id for d in db.collection(coll).stream()]
 
-    comments_ref = post_ref.collection("comments")
-    comments = "\n".join([c.to_dict().get("body", "") for c in comments_ref.stream()])
+def already_embedded(post_id: str) -> bool:
+    try:
+        res = embedding_collection.get(ids=[post_id])
+        return len(res.get("ids", [])) > 0
+    except Exception:
+        return False
 
-    combined_text = f"{title}\n\n{body}\n\n{comments}\n\n{summary}"
-    return combined_text, title, summary
-
-def backfill_embeddings(subreddit_name):
-    collection_name = "posts" if subreddit_name == "temasekpoly" else f"{subreddit_name.lower()}_posts"
-    post_ids = fetch_all_post_ids(collection_name)
-    print(f"[{subreddit_name}] Found {len(post_ids)} posts to backfill.")
-
-    for post_id in tqdm(post_ids):
+def backfill(subreddit: str):
+    sub_lower, coll = normalize_subreddit(subreddit)
+    print(f"\n=== {subreddit} ({coll}) ===")
+    # Limit newest N if TEST_LIMIT set
+    if TEST_LIMIT > 0:
         try:
-            # Check if already in ChromaDB
-            existing = embedding_collection.get(ids=[post_id])
-            if existing["ids"]:
-                continue  # Skip already embedded
+            q = db.collection(coll).order_by("created", direction=firestore.Query.DESCENDING).limit(TEST_LIMIT)
+            post_ids = [d.id for d in q.stream()]
+            print(f"Limiting to newest {len(post_ids)} posts.")
+        except Exception:
+            post_ids = list_post_ids(coll)
+            post_ids = post_ids[:TEST_LIMIT]
+            print(f"Fallback limit first {len(post_ids)} posts.")
+    else:
+        post_ids = list_post_ids(coll)
 
-            data = fetch_post_data(collection_name, post_id)
-            if not data:
-                continue
-
-            combined_text, title, summary = data
-            embedding = get_embedding(combined_text)
-            if not embedding:
-                continue
-
+    total = embedded = skipped = failed = 0
+    for pid in tqdm(post_ids):
+        total += 1
+        if SKIP_IF_EXISTS and already_embedded(pid):
+            skipped += 1
+            continue
+        fetched = fetch_post_data(coll, pid)
+        if not fetched:
+            continue
+        combined, title, summary = fetched
+        emb = get_embedding(combined)
+        if not emb:
+            failed += 1
+            continue
+        if not DRY_RUN:
             embedding_collection.add(
-                documents=[combined_text],
-                ids=[post_id],
-                embeddings=[embedding],
-                metadatas=[{
-                    "subreddit": subreddit_name,
-                    "title": title,
-                    "summary": summary
-                }]
+                documents=[combined], ids=[pid], embeddings=[emb],
+                metadatas=[{"subreddit": sub_lower, "title": title, "summary": summary}]
             )
-        except Exception as e:
-            print(f"Failed to backfill for post {post_id}: {e}")
+        embedded += 1
 
+    print(f"[{subreddit}] Total={total} New={embedded} Skipped={skipped} Fail={failed}")
+    logging.info(f"{subreddit}: total={total} embedded={embedded} skipped={skipped} failed={failed}")
+
+# ===== Main =====
 if __name__ == "__main__":
-    subreddits = ["TemasekPoly", "sgexams", "NYP", "nanyangpoly", "republicpolytechnic", "SingaporePoly", "NgeeAnnPoly"]  # Replace with your list
-    for subreddit in subreddits:
-        backfill_embeddings(subreddit)
+    subreddits = ["TemasekPoly"]  # Add more after testing
+    for s in subreddits:
+        backfill(s)
+    print("\n✅ Backfill complete.")

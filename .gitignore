@@ -171,3 +171,7 @@ cython_debug/
 .pypirc
 firebase-credentials.json
 firebase_encoded.txt
+chroma/0e0fc26a-a6c3-4317-a05c-d75cab9308e3/link_lists.bin
+chroma/0e0fc26a-a6c3-4317-a05c-d75cab9308e3/data_level0.bin
+chroma/0e0fc26a-a6c3-4317-a05c-d75cab9308e3/header.bin
+chroma/0e0fc26a-a6c3-4317-a05c-d75cab9308e3/length.bin
