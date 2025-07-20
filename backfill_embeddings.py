@@ -79,6 +79,6 @@ def backfill_embeddings(subreddit_name):
             print(f"Failed to backfill for post {post_id}: {e}")
 
 if __name__ == "__main__":
-    subreddits = ["temasekpoly", "sgexams", "nyp", "np", "sp"]  # Replace with your list
+    subreddits = ["TemasekPoly", "sgexams", "NYP", "nanyangpoly", "republicpolytechnic", "SingaporePoly", "NgeeAnnPoly"]  # Replace with your list
     for subreddit in subreddits:
         backfill_embeddings(subreddit)
