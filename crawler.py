@@ -1099,7 +1099,7 @@ if __name__ == "__main__":
         #     # ... other categories
         # ]
         # model = genai.GenerativeModel(safety_settings=safety_settings)
-        model = genai.GenerativeModel("gemini-2.5-flash") # Default settings
+        model = genai.GenerativeModel("gemini-2.5-flash-lite") # Default settings
       
         print("Google Gemini Configured.")
     except Exception as e:
