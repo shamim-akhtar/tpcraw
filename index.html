@@ -181,8 +181,8 @@
 
         <div class="right-div">
             <div class="tab-container">
-                <button class="tab-button active" data-tab="weightedTab">Weighted Sentiments</button>
-                <button class="tab-button" data-tab="stackedTab">Comment Sentiments</button>
+                <button class="tab-button active" data-tab="stackedTab">Sentiments</button>
+                <button class="tab-button" data-tab="weightedTab">Weighted Sentiments</button>
                 <button class="tab-button" data-tab="totalCommentsTab">Total Comments</button>
                 <button class="tab-button" data-tab="engagementTab">Engagement Scores</button>
                 <button class="tab-button" data-tab="topPosts">Top 10 Posts</button>
@@ -191,7 +191,7 @@
             </div>
 
             <!-- Weighted Sentiments Section -->
-            <section id="weightedTab" class="chart-section tab-content active">
+            <section id="weightedTab" class="chart-section tab-content">
                 <canvas id="weightedSentimentChart"></canvas>
                 <div class="chart-controls">
                     <button id="resetZoomWeightedBtn">Reset Zoom</button>
@@ -201,7 +201,7 @@
             </section>
 
             <!-- Stacked Sentiments Section -->
-            <section id="stackedTab" class="chart-section tab-content">
+            <section id="stackedTab" class="chart-section tab-content active">
                 <canvas id="stackedSentimentChart"></canvas>
                 <div class="chart-controls">
                     <button id="resetZoomStackedBtn">Reset Zoom</button>
