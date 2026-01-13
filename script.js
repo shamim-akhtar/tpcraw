@@ -20,13 +20,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   // --- 1. DRAWER ELEMENTS ---
   const drawer = document.getElementById('post-details-container');
   const overlay = document.getElementById('drawer-overlay');
+  const postDetailsContent = document.getElementById('post-details');
 
-  function closeDrawer() {
-    drawer.classList.remove('open');
-    overlay.classList.remove('active');
+  function openDrawer() {
+      drawer.classList.add('open');
+      overlay.classList.add('active');
   }
 
-  // Close drawer when clicking the overlay
+  function closeDrawer() {
+      drawer.classList.remove('open');
+      overlay.classList.remove('active');
+      lastListContent = null; 
+  }
+
   overlay.addEventListener('click', closeDrawer);
 
   // --- 1. SET DYNAMIC DATE RANGE (6 MONTHS) ---
@@ -1399,10 +1405,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   // } // End of function
 
   async function fetchAndDisplayPostsByCategoryAndDate(category, dateStr) {
+    // Open the modal
+    openDrawer();
     const container = document.getElementById('post-details');
-    // Use original category casing for display messages
-    const formattedCategory = category;
-    container.innerHTML = `<div class="details-message loading"><i>Loading activity for category "${formattedCategory}" on ${dateStr}...</i></div>`;
+    container.innerHTML = `<div class="details-message loading">Loading activity...</div>`;
 
     const subredditSelect = document.getElementById('subreddit-select');
     const selectedSubreddit = subredditSelect.value;
@@ -1511,11 +1517,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // --- Start building HTML ---
         // (Display title uses formattedCategory)
+        const closeBtnHtml = `<button class="close-drawer-btn" id="closeCatModalX">✕ Close</button>`;
         let html = `
             <div class="category-date-details-wrapper">
-                <h2 class="category-date-title">
-                    Category: <span class="category-name">${formattedCategory}</span> <span class="date-info">on ${dateStr}</span>
-                </h2>
+                ${closeBtnHtml}
+                <h2 class="category-date-title">Category: ${category} on ${dateStr}</h2>
         `;
 
         // --- Display Posts (using combined postIds) ---
@@ -1643,19 +1649,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         // --- Finalize HTML and add listeners ---
         html += `</div>`; // Close wrapper
         container.innerHTML = html;
-
-        // Re-Add event listeners for the 'View Full Post'/'View Post Thread' buttons
-        container.querySelectorAll('.view-full-post-btn').forEach(button => {
-            button.addEventListener('click', (event) => {
-                const postId = button.getAttribute('data-post-id');
-                if (postId) {
-                    // Assuming fetchAndDisplayPostDetails is defined elsewhere
-                    fetchAndDisplayPostDetails(postId);
-                } else {
-                    console.error("Could not find data-post-id on clicked element:", button);
-                    alert("Error: Could not determine which post to view.");
-                }
-            });
+        document.getElementById('closeCatModalX').addEventListener('click', closeDrawer);
+        
+        // Re-attach view full post listeners
+        container.querySelectorAll('.view-full-post-btn').forEach(btn => {
+            btn.addEventListener('click', () => fetchAndDisplayPostDetails(btn.dataset.postId));
         });
 
     } catch (error) {
@@ -1677,9 +1675,9 @@ function escapeHtml(unsafe) {
 
   // For clicking on the authors chart bars
   async function fetchAndDisplayPostsAndCommentsByAuthor(authorName) {
+    openDrawer();
     const container = document.getElementById('post-details');
-    // Use class for loading message
-    container.innerHTML = `<div class="details-message loading"><i>Loading posts and comments for ${authorName}...</i></div>`;
+    container.innerHTML = `<div class="details-message loading">Loading ${authorName}'s activity...</div>`;
 
     const subredditSelect = document.getElementById('subreddit-select');
     const selectedSubreddit = subredditSelect.value;
@@ -1702,11 +1700,11 @@ function escapeHtml(unsafe) {
         const commentsMap = authorData.comments || {}; // { postId: [commentId1, commentId2], ... }
 
         // Start building HTML (removed inline styles, using classes)
+        const closeBtnHtml = `<button class="close-drawer-btn" id="closeAuthModalX">✕ Close</button>`;
         let html = `
           <div class="author-details-wrapper">
-            <h2 class="author-details-title">
-              Activity by ${authorName}
-            </h2>
+            ${closeBtnHtml}
+            <h2 class="author-details-title">Activity by ${authorName}</h2>
         `;
 
         // --- Fetch and Display Posts ---
@@ -1816,7 +1814,7 @@ function escapeHtml(unsafe) {
                               ${commentBody || '<i>No comment body.</i>'}
                           </p>
                           <div class="comment-badges">${commentBadges}</div>
-                          <button class="view-full-post-btn view-thread-btn" data-post-id="${commentPostId}"> {/* Added view-thread-btn class */}
+                          <button class="view-full-post-btn view-thread-btn" data-post-id="${commentPostId}">
                               View Post Thread
                           </button>
                       </div>
@@ -1829,17 +1827,10 @@ function escapeHtml(unsafe) {
 
         html += `</div>`; // Close wrapper
         container.innerHTML = html;
-
-        // Re-Add event listeners
-        container.querySelectorAll('.view-full-post-btn').forEach(button => {
-            button.addEventListener('click', (event) => {
-                const postId = button.getAttribute('data-post-id');
-                if (postId) {
-                    fetchAndDisplayPostDetails(postId);
-                } else {
-                    console.error("Missing data-post-id on button:", button);
-                }
-            });
+        document.getElementById('closeAuthModalX').addEventListener('click', closeDrawer);
+        
+        container.querySelectorAll('.view-full-post-btn').forEach(btn => {
+            btn.addEventListener('click', () => fetchAndDisplayPostDetails(btn.dataset.postId));
         });
 
     }
@@ -1871,13 +1862,14 @@ function escapeHtml(unsafe) {
 
   // Function to perform search across posts and comments
   async function searchByKeyword() {
-    const keyword = keywordInput.value.trim();
-    if (!keyword) {
-      postDetailsContainer.innerHTML = '<p class="details-message info">Please enter a keyword to search.</p>'; // Add class
+    const keyword = keywordInput.value.trim();if (!keyword) {
+      alert("Please enter a keyword to search.");
       return;
     }
-
-    postDetailsContainer.innerHTML = `<p class="details-message loading">Searching for "${keyword}"...</p>`; // Add class
+    // Open the modal immediately and show loading
+    openDrawer();
+    const postDetailsContainer = document.getElementById('post-details');
+    postDetailsContainer.innerHTML = `<p class="loading-message">Searching for "${keyword}"...</p>`;
 
     const subredditSelect = document.getElementById('subreddit-select');
     const selectedSubreddit = subredditSelect.value;
@@ -1961,23 +1953,24 @@ function escapeHtml(unsafe) {
   // Function to display search results (using classes)
   function displaySearchResults(keyword, posts, comments) {
     const postDetailsContainer = document.getElementById('post-details');
+    // Create the Close Button HTML
+    const closeBtnHtml = `<button class="close-drawer-btn" id="closeSearchModalX">✕ Close</button>`;
 
     if (posts.length === 0 && comments.length === 0) {
-        // Use classes for styling
         postDetailsContainer.innerHTML = `
           <div class="search-results-wrapper no-results">
+            ${closeBtnHtml}
             <h2 class="search-results-title">Search Results</h2>
-            <p class="search-no-results-message">No posts or comments found matching "<strong>${keyword}</strong>".</p>
+            <p class="search-no-results-message">No results found matching "<strong>${keyword}</strong>".</p>
           </div>`;
+        document.getElementById('closeSearchModalX').addEventListener('click', closeDrawer);
         return;
     }
 
-    // Use classes for styling
     let html = `
       <div class="search-results-wrapper">
-        <h2 class="search-results-title">
-          Search Results for "${keyword}"
-        </h2>
+        ${closeBtnHtml}
+        <h2 class="search-results-title">Search Results for "${keyword}"</h2>
     `;
 
     // --- Display matching posts ---
@@ -2051,18 +2044,16 @@ function escapeHtml(unsafe) {
         });
     }
 
-    html += `</div>`; // Close wrapper
+    html += `</div>`;
     postDetailsContainer.innerHTML = html;
 
-    // Re-Add event listeners
+    // Attach event listeners
+    document.getElementById('closeSearchModalX').addEventListener('click', closeDrawer);
+    
     postDetailsContainer.querySelectorAll('.view-full-post-btn').forEach(button => {
-        button.addEventListener('click', (event) => {
+        button.addEventListener('click', () => {
             const postId = button.getAttribute('data-post-id');
-            if (postId) {
-                fetchAndDisplayPostDetails(postId);
-            } else {
-                console.error("Missing data-post-id attribute on button:", button);
-            }
+            fetchAndDisplayPostDetails(postId); // This will refresh the modal with the post
         });
     });
   }
