@@ -2069,8 +2069,15 @@ function escapeHtml(unsafe) {
 
       if (allPostsData.length > 0) {
         const sum = allPostsData.reduce((acc, post) => acc + post.weightedSentimentScore, 0);
-        const avg = sum / allPostsData.length;
-        document.getElementById("avgWeightedScoreNumber").textContent = avg.toFixed(2);
+        let avg = sum / allPostsData.length;
+
+        // STRICTOR FIX: If the rounded value is 0, force it to be positive 0
+        let formattedAvg = avg.toFixed(2);
+        if (formattedAvg === "-0.00" || formattedAvg === "-0.0") {
+            formattedAvg = "0.00";
+        }
+      
+      document.getElementById("avgWeightedScoreNumber").textContent = formattedAvg;
 
         const totalComments = allPostsData.reduce((acc, post) => acc + post.totalComments, 0);
         document.getElementById("commentsCountNumber").textContent = totalComments;
