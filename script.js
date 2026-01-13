@@ -423,6 +423,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           },
           options: { // Options remain largely the same
               responsive: true,
+              interaction: {
+                  mode: 'index', // This detects clicks anywhere on the vertical axis of the bar
+                  intersect: false // Allows clicking even if the mouse isn't directly touching a colored bar
+              },
               plugins: {
                   title: {
                       display: true,
