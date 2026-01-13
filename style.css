@@ -1027,3 +1027,62 @@ mark {
   color: #8a6d3b; /* Dark yellow text */
   font-weight: 600;
 }
+
+/* Side Drawer Styling */
+#post-details-container {
+    position: fixed;
+    top: 0;
+    right: -500px; /* Hidden by default off-screen */
+    width: 450px;
+    height: 100%;
+    background-color: white;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    z-index: 2000; /* High z-index to stay above charts and footer */
+    transition: right 0.3s ease-in-out;
+    overflow-y: auto; /* Enable scrolling within the drawer */
+    padding: 0; /* Let the inner wrapper handle padding */
+    margin: 0;
+    border-radius: 0; /* Remove rounded corners for full-height look */
+}
+
+/* Dark theme specific adjustment if using style_dark.css */
+body.dark-theme #post-details-container {
+    background-color: #2c2c2c;
+    border-left: 1px solid #444;
+}
+
+#post-details-container.open {
+    right: 0; /* Slide in */
+}
+
+/* Close Button Styling */
+.close-drawer-btn {
+    position: sticky;
+    top: 10px;
+    left: 10px;
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    z-index: 2100;
+    margin-bottom: 10px;
+}
+
+/* Overlay to dim the background when drawer is open */
+#drawer-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+    z-index: 1999;
+}
+
+#drawer-overlay.active {
+    display: block;
+}

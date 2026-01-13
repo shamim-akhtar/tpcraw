@@ -17,6 +17,23 @@ import {
 const MAX_LABEL_LENGTH = 30;
 
 document.addEventListener('DOMContentLoaded', async () => {
+  // --- 1. DRAWER ELEMENTS ---
+  const drawer = document.getElementById('post-details-container');
+  const overlay = document.getElementById('drawer-overlay');
+
+  function openDrawer() {
+    drawer.classList.add('open');
+    overlay.classList.add('active');
+  }
+
+  function closeDrawer() {
+    drawer.classList.remove('open');
+    overlay.classList.remove('active');
+  }
+
+  // Close drawer when clicking the overlay
+  overlay.addEventListener('click', closeDrawer);
+
   // --- 1. SET DYNAMIC DATE RANGE (6 MONTHS) ---
   const startDateInput = document.getElementById('start-date');
   const endDateInput = document.getElementById('end-date');
@@ -582,8 +599,137 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
   }
 
-
   async function fetchAndDisplayPostDetails(postId) {
+    // Open the drawer immediately
+    openDrawer();
+    
+    const postDetailsContent = document.getElementById('post-details');
+    postDetailsContent.innerHTML = '<p class="loading-message">Loading post details...</p>';
+
+    const subredditSelect = document.getElementById('subreddit-select');
+    const selectedSubreddit = subredditSelect.value;
+    const lowerSub = selectedSubreddit.toLowerCase();
+    const postsCollection = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
+
+    const postRef = doc(db, postsCollection, postId); // Uses local 'db' instance
+    const postSnap = await getDoc(postRef);
+
+    if (!postSnap.exists()) {
+        postDetailsContent.innerHTML = `<div class="details-message error">No details available.</div>`;
+        return;
+    }
+
+    const postData = postSnap.data();
+
+    // --- Extract Data ---
+    const postTitle = postData.title || "No Title";
+    const author = postData.author || 'Unknown';
+    const postUrl = postData.URL || '#';
+    const date = postData.created?.toDate ? postData.created.toDate() : (postData.created ? new Date(postData.created) : new Date());
+    const formattedDate = date.toLocaleString('en-GB', {
+        day: '2-digit', month: 'short', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', hour12: false
+    }).replace(',', '');
+
+    // --- Build HTML Sections (Removed inline styles, using classes) ---
+
+    // 1. Title Section
+    const urlHtml = `
+        <h2 class="post-details-title">
+            <a href="${postUrl}" target="_blank">
+                ${postTitle}
+            </a>
+        </h2>`;
+
+    // 2. Metadata Section
+    const metaHtml = `
+        <p class="post-details-meta">
+            Posted by <strong>${author}</strong> on ${formattedDate}
+        </p>`;
+
+    // 3. Badges Section
+    const badgesHtml = `
+        <div class="post-details-badges">
+            ${generateBadgesHtml(postData)}
+        </div>`;
+
+    // 4. Summary Section
+    const summaryHtml = `
+      <div class="post-details-summary">
+        <h4 class="summary-title">
+            💡 AI Generated Summary & Analysis
+        </h4>
+        <p class="summary-text">
+            ${postData.summary || '<i>No summary provided.</i>'}
+        </p>
+      </div>`;
+
+    // 5. Body Section
+    const bodyHtml = `
+      <div class="post-details-body-container">
+        <h4 class="body-title">Original Post Content:</h4>
+        <div class="body-content">
+            ${postData.body || '<i>No body content provided.</i>'}
+        </div>
+      </div>`;
+
+    // 6. Comments Section
+    const commentsRef = collection(db, `${postsCollection}/${postId}/comments`);
+    const commentsSnapshot = await getDocs(commentsRef);
+
+    let commentsHtml = `
+        <h3 class="post-details-comments-title">
+            Comments (${commentsSnapshot.size}):
+        </h3>`;
+
+    if (commentsSnapshot.size === 0) {
+        commentsHtml += `<p class="no-comments-message">No comments available.</p>`;
+    }
+    else {
+        commentsSnapshot.forEach(commentDoc => {
+            const commentData = commentDoc.data();
+            const commentDate = commentData.created?.toDate ? commentData.created.toDate() : (commentData.created ? new Date(commentData.created) : new Date());
+            const commentAuthor = commentData.author || 'Unknown';
+            const formattedCommentDate = commentDate.toLocaleString('en-GB', {
+                day: '2-digit', month: 'short', year: 'numeric',
+                hour: '2-digit', minute: '2-digit', hour12: false
+            }).replace(',', '');
+
+            const commentBadges = generateCommentBadgesHtml(commentData); // Assumes this generates HTML with classes now
+
+            commentsHtml += `
+              <div class="post-details-comment">
+                  <p class="comment-meta">
+                      Comment by <strong>${commentAuthor}</strong> on ${formattedCommentDate}
+                  </p>
+                  <p class="comment-body">
+                      ${commentData.body || '<i>No comment body.</i>'}
+                  </p>
+                  <div class="comment-badges">${commentBadges}</div>
+              </div>
+            `;
+        });
+    }
+
+    // Assemble Final HTML with the Close Button
+    const closeBtnHtml = `<button class="close-drawer-btn" id="closeDrawerX">✕ Close</button>`;
+    
+    postDetailsContent.innerHTML = `
+      <div class="post-details-wrapper">
+          ${closeBtnHtml}
+          ${urlHtml}
+          ${metaHtml}
+          ${badgesHtml}
+          ${summaryHtml}
+          ${bodyHtml}
+          ${commentsHtml}
+      </div>`;
+
+    // Attach the close listener to the new button
+    document.getElementById('closeDrawerX').addEventListener('click', closeDrawer);
+  }
+
+  async function fetchAndDisplayPostDetails_old(postId) {
     const postDetailsContainer = document.getElementById('post-details');
     postDetailsContainer.innerHTML = '<p class="loading-message">Loading post details...</p>'; // Add class for styling
 
