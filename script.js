@@ -1245,186 +1245,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // For clicking a data point in the time series chart
-  // async function fetchAndDisplayPostsByCategoryAndDate(category, dateStr) { // category is now passed directly
-  //     const container = document.getElementById('post-details');
-  //     // Use class for loading message
-  //     container.innerHTML = `<div class="details-message loading"><i>Loading activity for category "${category}" on ${dateStr}...</i></div>`;
-
-  //     const subredditSelect = document.getElementById('subreddit-select');
-  //     const selectedSubreddit = subredditSelect.value;
-  //     const lowerSub = selectedSubreddit.toLowerCase();
-  //     const postsCollection = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
-  //     const categoryCollection = (lowerSub === "temasekpoly") ? "category_stats" : `${lowerSub}_category_stats`;
-  //     const lowerCategory = category.toLowerCase(); // Use lowercase for lookup in statsData
-  //     const upperCategory = category.toUpperCase();
-
-  //     try {
-  //         const statsDocRef = doc(db, categoryCollection, dateStr);
-  //         const statsDocSnap = await getDoc(statsDocRef);
-
-  //         // Use original category casing for display
-  //         const formattedCategory = category;
-
-  //         if (!statsDocSnap.exists()) {
-  //             // Use class for message
-  //             container.innerHTML = `<div class="details-message info">No activity data found for category <strong>${formattedCategory}</strong> on ${dateStr}.</div>`;
-  //             return;
-  //         }
-
-  //         const statsData = statsDocSnap.data();
-  //         // Look up using lowercase category key
-  //         if (!statsData || !statsData[lowerCategory] || !statsData[upperCategory]) {
-  //             // Use class for message
-  //             container.innerHTML = `<div class="details-message info">No posts or comments found specifically for category <strong>${formattedCategory}</strong> on ${dateStr}.</div>`;
-  //             return;
-  //         }
-
-  //         // Use lowercase category key to access data
-  //         const postIds = statsData[lowerCategory].postIds || [];
-  //         const commentsMap = statsData[lowerCategory].comments || {};
-  //         const totalCommentCount = Object.keys(commentsMap).reduce((acc, key) => acc + commentsMap[key].length, 0);
-
-  //         // --- Pre-fetch Post Titles --- (No style changes needed here)
-  //          let postTitlesMap = {};
-  //           let uniquePostIdsInComments = Object.keys(commentsMap);
-  //           if (uniquePostIdsInComments.length > 0) {
-  //               const uniquePostRefs = uniquePostIdsInComments.map(id => doc(db, postsCollection, id));
-  //               const parentPostSnaps = await Promise.all(uniquePostRefs.map(ref => getDoc(ref).catch(e => { console.error(`Failed to fetch parent post ${ref.id} for category view`, e); return null; })));
-  //               parentPostSnaps.forEach(snap => {
-  //                   if (snap && snap.exists()) {
-  //                       postTitlesMap[snap.id] = snap.data().title || 'Untitled Post';
-  //                   } else if (snap) {
-  //                       postTitlesMap[snap.id] = 'Unknown Post (Deleted?)';
-  //                   }
-  //               });
-  //           }
-  //         // --- End Pre-fetch ---
-
-  //         // Start building HTML (removed inline styles, using classes)
-  //         let html = `
-  //           <div class="category-date-details-wrapper">
-  //             <h2 class="category-date-title">
-  //               Category: <span class="category-name">${formattedCategory}</span> <span class="date-info">on ${dateStr}</span>
-  //             </h2>
-  //         `;
-
-  //         // --- Display Posts ---
-  //         html += `<h3 class="posts-section-title">Posts (${postIds.length}):</h3>`;
-  //         if (postIds.length === 0) {
-  //             html += `<p class="no-posts-message">No posts found in this category on this date.</p>`;
-  //         } else {
-  //             const postPromises = postIds.map(postId => getDoc(doc(db, postsCollection, postId)).catch(e => { console.error(`Failed to fetch post ${postId}`, e); return null; }));
-  //             const postSnaps = await Promise.all(postPromises);
-
-  //             postSnaps.forEach(postSnap => {
-  //                 if (postSnap && postSnap.exists()) {
-  //                     const postData = postSnap.data();
-  //                     const postId = postSnap.id;
-  //                     const postTitle = postData.title || "No Title";
-  //                     const postBody = postData.body || "";
-  //                     const author = postData.author || 'Unknown';
-  //                     const postUrl = postData.URL || '#';
-  //                     let date = new Date();
-  //                     if (postData.created?.toDate) date = postData.created.toDate();
-  //                     else if (postData.created) try { date = new Date(postData.created); } catch (e) {}
-  //                     const formattedPostDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-
-  //                     // Removed inline styles, added classes
-  //                     html += `
-  //                       <div class="search-result-post category-post-item">
-  //                         <h4 class="post-title">
-  //                           <a href="${postUrl}" target="_blank">${postTitle}</a>
-  //                         </h4>
-  //                         <p class="post-meta">By <strong>${author}</strong> on ${formattedPostDate}</p>
-  //                         <p class="post-body-excerpt">
-  //                           ${postBody || '<i>No body content</i>'}
-  //                         </p>
-  //                         <div class="post-badges">${generateBadgesHtml(postData)}</div>
-  //                         <button class="view-full-post-btn" data-post-id="${postId}">
-  //                           View Full Post
-  //                         </button>
-  //                       </div>
-  //                     `;
-  //                 } else {
-  //                    // Use class for message
-  //                     html += `<div class="details-message error-partial"><em>Post data unavailable or failed to load.</em></div>`;
-  //                 }
-  //             });
-  //         }
-
-  //         // --- Display Comments ---
-  //         html += `<h3 class="comments-section-title">Comments (${totalCommentCount}):</h3>`;
-  //         if (totalCommentCount === 0) {
-  //             html += `<p class="no-comments-message">No comments found in this category on this date.</p>`;
-  //         } else {
-  //             let commentFetchPromises = [];
-  //             for (const postId in commentsMap) {
-  //                 commentsMap[postId].forEach(commentId => {
-  //                     const commentRef = doc(db, `${postsCollection}/${postId}/comments`, commentId);
-  //                     commentFetchPromises.push(getDoc(commentRef).catch(e => { console.error(`Failed to fetch comment ${commentId} in post ${postId}`, e); return null; }));
-  //                 });
-  //             }
-  //             const commentSnaps = await Promise.all(commentFetchPromises);
-
-  //             commentSnaps.forEach(commentSnap => {
-  //                 if (commentSnap && commentSnap.exists()) {
-  //                     const commentData = commentSnap.data();
-  //                     const author = commentData.author || 'Unknown';
-  //                     const commentBody = commentData.body || "";
-  //                     const commentPostId = commentSnap.ref.parent.parent.id;
-  //                     const parentPostTitle = postTitlesMap[commentPostId] || 'Unknown Post';
-
-  //                     let date = new Date();
-  //                     if (commentData.created?.toDate) date = commentData.created.toDate();
-  //                     else if (commentData.created) try { date = new Date(commentData.created); } catch (e) {}
-  //                     const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
-
-  //                     const commentBadges = generateCommentBadgesHtml(commentData);
-
-  //                     // Removed inline styles, added classes
-  //                     html += `
-  //                       <div class="search-result-comment category-comment-item">
-  //                           <p class="comment-meta">
-  //                               In Post: <span class="parent-post-title">"${parentPostTitle}"</span> (Comment by <strong>${author}</strong> on ${formattedDate})
-  //                           </p>
-  //                           <p class="comment-body">
-  //                               ${commentBody || '<i>No comment body.</i>'}
-  //                           </p>
-  //                           <div class="comment-badges">${commentBadges}</div>
-  //                            <button class="view-full-post-btn" data-post-id="${commentPostId}">
-  //                               View Post Thread
-  //                            </button>
-  //                       </div>
-  //                     `;
-  //                 } else {
-  //                     // Optional: Handle missing comment message
-  //                 }
-  //             });
-  //         }
-
-  //         html += `</div>`; // Close wrapper
-  //         container.innerHTML = html;
-
-  //         // Re-Add event listeners
-  //         container.querySelectorAll('.view-full-post-btn').forEach(button => {
-  //             button.addEventListener('click', (event) => {
-  //                 const postId = button.getAttribute('data-post-id');
-  //                 if (postId) {
-  //                     fetchAndDisplayPostDetails(postId);
-  //                 } else {
-  //                     console.error("Could not find data-post-id on clicked element:", button);
-  //                 }
-  //             });
-  //         });
-
-  //     } catch (error) {
-  //         console.error(`Error fetching details for category ${category} on ${dateStr}:`, error);
-  //         // Use class for error message
-  //         container.innerHTML = `<div class="details-message error">Error fetching activity details. Please check the console.</div>`;
-  //     }
-  // } // End of function
-
   async function fetchAndDisplayPostsByCategoryAndDate(category, dateStr) {
     // Open the modal
     openDrawer();
@@ -1537,11 +1357,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
         // --- Start building HTML ---
-        // (Display title uses formattedCategory)
-        const closeBtnHtml = `<button class="close-drawer-btn" id="closeCatModalX">✕ Close</button>`;
+        const navHtml = `
+          <div class="modal-nav-container">
+              <div style="display:flex; gap:10px; margin-left: auto;">
+                  <button class="pdf-export-btn" id="downloadPDFBtn">📄 Download PDF</button>
+                  <button class="close-drawer-btn">✕ Close</button>
+              </div>
+          </div>`;
+
         let html = `
             <div class="category-date-details-wrapper">
-                ${closeBtnHtml}
+                ${navHtml}
                 <h2 class="category-date-title">Category: ${category} on ${dateStr}</h2>
         `;
 
@@ -1668,14 +1494,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // --- Finalize HTML and add listeners ---
-        html += `</div>`; // Close wrapper
+        html += `</div>`;
         container.innerHTML = html;
-        document.getElementById('closeCatModalX').addEventListener('click', closeDrawer);
-        
-        // Re-attach view full post listeners
-        container.querySelectorAll('.view-full-post-btn').forEach(btn => {
-            btn.addEventListener('click', () => fetchAndDisplayPostDetails(btn.dataset.postId));
-        });
 
     } catch (error) {
         console.error(`Error fetching details for category ${formattedCategory} on ${dateStr}:`, error);
@@ -1721,10 +1541,17 @@ function escapeHtml(unsafe) {
         const commentsMap = authorData.comments || {}; // { postId: [commentId1, commentId2], ... }
 
         // Start building HTML (removed inline styles, using classes)
-        const closeBtnHtml = `<button class="close-drawer-btn" id="closeAuthModalX">✕ Close</button>`;
+        const navHtml = `
+          <div class="modal-nav-container">
+              <div style="display:flex; gap:10px; margin-left: auto;">
+                  <button class="pdf-export-btn" id="downloadPDFBtn">📄 Download PDF</button>
+                  <button class="close-drawer-btn">✕ Close</button>
+              </div>
+          </div>`;
+
         let html = `
           <div class="author-details-wrapper">
-            ${closeBtnHtml}
+            ${navHtml}
             <h2 class="author-details-title">Activity by ${authorName}</h2>
         `;
 
@@ -1846,13 +1673,8 @@ function escapeHtml(unsafe) {
             });
         }
 
-        html += `</div>`; // Close wrapper
+        html += `</div>`;
         container.innerHTML = html;
-        document.getElementById('closeAuthModalX').addEventListener('click', closeDrawer);
-        
-        container.querySelectorAll('.view-full-post-btn').forEach(btn => {
-            btn.addEventListener('click', () => fetchAndDisplayPostDetails(btn.dataset.postId));
-        });
 
     }
     catch (error) {
@@ -1974,23 +1796,28 @@ function escapeHtml(unsafe) {
   // Function to display search results (using classes)
   function displaySearchResults(keyword, posts, comments) {
     const postDetailsContainer = document.getElementById('post-details');
-    // Create the Close Button HTML
-    const closeBtnHtml = `<button class="close-drawer-btn" id="closeSearchModalX">✕ Close</button>`;
+    // Create the Navigation Bar with PDF Button
+    const navHtml = `
+      <div class="modal-nav-container">
+          <div style="display:flex; gap:10px; margin-left: auto;">
+              <button class="pdf-export-btn" id="downloadPDFBtn">📄 Download PDF</button>
+              <button class="close-drawer-btn">✕ Close</button>
+          </div>
+      </div>`;
 
     if (posts.length === 0 && comments.length === 0) {
         postDetailsContainer.innerHTML = `
           <div class="search-results-wrapper no-results">
-            ${closeBtnHtml}
+            ${navHtml}
             <h2 class="search-results-title">Search Results</h2>
             <p class="search-no-results-message">No results found matching "<strong>${keyword}</strong>".</p>
           </div>`;
-        document.getElementById('closeSearchModalX').addEventListener('click', closeDrawer);
         return;
     }
 
     let html = `
       <div class="search-results-wrapper">
-        ${closeBtnHtml}
+        ${navHtml}
         <h2 class="search-results-title">Search Results for "${keyword}"</h2>
     `;
 
@@ -2067,16 +1894,6 @@ function escapeHtml(unsafe) {
 
     html += `</div>`;
     postDetailsContainer.innerHTML = html;
-
-    // Attach event listeners
-    document.getElementById('closeSearchModalX').addEventListener('click', closeDrawer);
-    
-    postDetailsContainer.querySelectorAll('.view-full-post-btn').forEach(button => {
-        button.addEventListener('click', () => {
-            const postId = button.getAttribute('data-post-id');
-            fetchAndDisplayPostDetails(postId); // This will refresh the modal with the post
-        });
-    });
   }
 
   // Remove the `displaySearchResults_old_styling` function as it seems unused/deprecated.
