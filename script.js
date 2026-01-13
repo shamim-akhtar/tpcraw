@@ -1,4 +1,5 @@
 // --- Import only what you need from Firebase SDKs (Modular v9) ---
+import { exportModalToPDF } from './export.js';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js';
 import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.21.0/firebase-analytics.js';
 import {
@@ -17,7 +18,7 @@ import {
 const MAX_LABEL_LENGTH = 30;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // --- 1. DRAWER ELEMENTS ---
+  // --- 1. MODAL ELEMENTS ---
   const drawer = document.getElementById('post-details-container');
   const overlay = document.getElementById('drawer-overlay');
   const postDetailsContent = document.getElementById('post-details');
@@ -30,10 +31,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   function closeDrawer() {
       drawer.classList.remove('open');
       overlay.classList.remove('active');
-      lastListContent = null; 
   }
 
   overlay.addEventListener('click', closeDrawer);
+
+  // --- 2. CENTRAL MODAL CLICK HANDLER (Event Delegation) ---
+  postDetailsContent.addEventListener('click', (e) => {
+      // Trigger PDF export from export.js
+      if (e.target.id === 'downloadPDFBtn') {
+          exportModalToPDF();
+      }
+      // Handle Close
+      if (e.target.classList.contains('close-drawer-btn') || e.target.id === 'closeModalX') {
+          closeDrawer();
+      }
+      // Handle View Full Post (if clicking from a list like Search)
+      if (e.target.classList.contains('view-full-post-btn')) {
+          const postId = e.target.getAttribute('data-post-id');
+          if (postId) fetchAndDisplayPostDetails(postId);
+      }
+  });
 
   // --- 1. SET DYNAMIC DATE RANGE (6 MONTHS) ---
   const startDateInput = document.getElementById('start-date');
@@ -601,71 +618,75 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   async function fetchAndDisplayPostDetails(postId) {
-  // 1. Show modal and backdrop
-      drawer.classList.add('open');
-      overlay.classList.add('active');
-      
-      const postDetailsContent = document.getElementById('post-details');
-      postDetailsContent.innerHTML = '<p class="loading-message">Loading post details...</p>';
+    // 1. Open the modal popup
+    openDrawer(); 
+    const postDetailsContent = document.getElementById('post-details');
+    postDetailsContent.innerHTML = '<p class="loading-message">Analyzing post details...</p>';
 
-      // Identify the correct collection based on subreddit select
-      const selectedSubreddit = document.getElementById('subreddit-select').value.toLowerCase();
-      const postsCollection = (selectedSubreddit === "temasekpoly") ? "posts" : `${selectedSubreddit}_posts`;
+    // Identify the correct collection based on subreddit select
+    const selectedSubreddit = document.getElementById('subreddit-select').value.toLowerCase();
+    const postsCollection = (selectedSubreddit === "temasekpoly") ? "posts" : `${selectedSubreddit}_posts`;
 
-      try {
-          const postRef = doc(db, postsCollection, postId);
-          const postSnap = await getDoc(postRef);
+    try {
+        const postRef = doc(db, postsCollection, postId);
+        const postSnap = await getDoc(postRef);
 
-          if (!postSnap.exists()) {
-              postDetailsContent.innerHTML = `<div class="details-message error">Post not found.</div>`;
-              return;
-          }
+        if (!postSnap.exists()) {
+            postDetailsContent.innerHTML = `<div class="details-message error">Post not found.</div>`;
+            return;
+        }
 
-          const postData = postSnap.data();
-          const date = postData.created?.toDate ? postData.created.toDate() : new Date(postData.created);
-          const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        const postData = postSnap.data();
+        const date = postData.created?.toDate ? postData.created.toDate() : new Date(postData.created);
+        const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
-          // Construct internal content
-          const closeBtn = `<button class="close-drawer-btn" id="closeModalX">✕ Close</button>`;
-          const header = `<h2 class="post-details-title"><a href="${postData.URL || '#'}" target="_blank">${postData.title}</a></h2>`;
-          const meta = `<p class="post-details-meta">By <strong>${postData.author}</strong> on ${formattedDate}</p>`;
-          const badges = `<div class="post-details-badges">${generateBadgesHtml(postData)}</div>`;
-          const summary = `<div class="post-details-summary"><h4 class="summary-title">AI Summary</h4><p class="summary-text">${postData.summary || 'N/A'}</p></div>`;
-          const body = `<div class="post-details-body-container"><h4 class="body-title">Post Content</h4><div class="body-content">${postData.body || ''}</div></div>`;
+        // 2. Construct Navigation Bar
+        // Note: The button uses class="close-drawer-btn" which is handled by your central listener
+        const navHtml = `
+          <div class="modal-nav-container">
+              <div style="display:flex; gap:10px; margin-left: auto;">
+                  <button class="pdf-export-btn" id="downloadPDFBtn">📄 Download PDF</button>
+                  <button class="close-drawer-btn">✕ Close</button>
+              </div>
+          </div>`;
 
-          // Fetch Comments Subcollection
-          const commentsSnapshot = await getDocs(collection(db, `${postsCollection}/${postId}/comments`));
-          let commentsHtml = `<h3 class="post-details-comments-title">Comments (${commentsSnapshot.size})</h3>`;
-          
-          commentsSnapshot.forEach(cDoc => {
-              const c = cDoc.data();
-              commentsHtml += `
-                  <div class="post-details-comment">
-                      <p class="comment-meta"><strong>${c.author}</strong></p>
-                      <p class="comment-body">${c.body || ''}</p>
-                      <div class="comment-badges">${generateCommentBadgesHtml(c)}</div>
-                  </div>`;
-          });
+        const header = `<h2 class="post-details-title"><a href="${postData.URL || '#'}" target="_blank">${postData.title}</a></h2>`;
+        const meta = `<p class="post-details-meta">By <strong>${postData.author}</strong> on ${formattedDate}</p>`;
+        const badges = `<div class="post-details-badges">${generateBadgesHtml(postData)}</div>`;
+        const summary = `<div class="post-details-summary"><h4 class="summary-title">AI Summary</h4><p class="summary-text">${postData.summary || 'N/A'}</p></div>`;
+        const body = `<div class="post-details-body-container"><h4 class="body-title">Post Content</h4><div class="body-content">${postData.body || ''}</div></div>`;
 
-          // Final Render
-          postDetailsContent.innerHTML = `
-              <div class="post-details-wrapper">
-                  ${closeBtn}
-                  ${header}
-                  ${meta}
-                  ${badges}
-                  ${summary}
-                  ${body}
-                  ${commentsHtml}
-              </div>`;
+        // 3. Fetch Comments
+        const commentsSnapshot = await getDocs(collection(db, `${postsCollection}/${postId}/comments`));
+        let commentsHtml = `<h3 class="post-details-comments-title">Comments (${commentsSnapshot.size})</h3>`;
+        
+        commentsSnapshot.forEach(cDoc => {
+            const c = cDoc.data();
+            commentsHtml += `
+                <div class="post-details-comment">
+                    <p class="comment-meta"><strong>${c.author || 'Anon'}</strong></p>
+                    <p class="comment-body">${c.body || ''}</p>
+                    <div class="comment-badges">${generateCommentBadgesHtml(c)}</div>
+                </div>`;
+        });
 
-          // Re-attach close listener to the new button
-          document.getElementById('closeModalX').addEventListener('click', closeDrawer);
+        // 4. Final Render
+        // We do NOT add .addEventListener here. The central listener at the top of script.js handles it.
+        postDetailsContent.innerHTML = `
+            <div class="post-details-wrapper">
+                ${navHtml}
+                ${header}
+                ${meta}
+                ${badges}
+                ${summary}
+                ${body}
+                ${commentsHtml}
+            </div>`;
 
-      } catch (err) {
-          console.error("Modal Error:", err);
-          postDetailsContent.innerHTML = `<div class="details-message error">Error loading details.</div>`;
-      }
+    } catch (err) {
+        console.error("Modal Error:", err);
+        postDetailsContent.innerHTML = `<div class="details-message error">Error loading details. Please check console for technical info.</div>`;
+    }
   }
 
   async function fetchAndDisplayPostDetails_old(postId) {

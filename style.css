@@ -1097,3 +1097,30 @@ body.dark-theme #post-details-container {
     font-weight: bold;
     z-index: 2100;
 }
+
+.pdf-export-btn {
+    background-color: #607d8b; /* Blue-Grey for PDF */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.pdf-export-btn:hover {
+    background-color: #455a64;
+}
+
+/* Ensure consistent alignment in the sticky header */
+.modal-nav-container {
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: inherit;
+    padding: 10px 20px;
+    z-index: 2200;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
