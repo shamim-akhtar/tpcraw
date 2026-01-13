@@ -17,9 +17,20 @@ import {
 const MAX_LABEL_LENGTH = 30;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 1. Set default end date to today's date
+  // --- 1. SET DYNAMIC DATE RANGE (6 MONTHS) ---
+  const startDateInput = document.getElementById('start-date');
   const endDateInput = document.getElementById('end-date');
-  endDateInput.value = new Date().toISOString().split('T')[0];
+
+  // Set End Date to Today
+  const today = new Date();
+  endDateInput.value = today.toISOString().split('T')[0];
+
+  // Calculate Start Date (6 Months Ago)
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(today.getMonth() - 6);
+  
+  // Format to YYYY-MM-DD and set value
+  startDateInput.value = sixMonthsAgo.toISOString().split('T')[0];
 
   // 2. Firebase config
   const firebaseConfig = {
