@@ -21,11 +21,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const drawer = document.getElementById('post-details-container');
   const overlay = document.getElementById('drawer-overlay');
 
-  function openDrawer() {
-    drawer.classList.add('open');
-    overlay.classList.add('active');
-  }
-
   function closeDrawer() {
     drawer.classList.remove('open');
     overlay.classList.remove('active');
@@ -600,133 +595,71 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   async function fetchAndDisplayPostDetails(postId) {
-    // Open the drawer immediately
-    openDrawer();
-    
-    const postDetailsContent = document.getElementById('post-details');
-    postDetailsContent.innerHTML = '<p class="loading-message">Loading post details...</p>';
+  // 1. Show modal and backdrop
+      drawer.classList.add('open');
+      overlay.classList.add('active');
+      
+      const postDetailsContent = document.getElementById('post-details');
+      postDetailsContent.innerHTML = '<p class="loading-message">Loading post details...</p>';
 
-    const subredditSelect = document.getElementById('subreddit-select');
-    const selectedSubreddit = subredditSelect.value;
-    const lowerSub = selectedSubreddit.toLowerCase();
-    const postsCollection = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
+      // Identify the correct collection based on subreddit select
+      const selectedSubreddit = document.getElementById('subreddit-select').value.toLowerCase();
+      const postsCollection = (selectedSubreddit === "temasekpoly") ? "posts" : `${selectedSubreddit}_posts`;
 
-    const postRef = doc(db, postsCollection, postId); // Uses local 'db' instance
-    const postSnap = await getDoc(postRef);
+      try {
+          const postRef = doc(db, postsCollection, postId);
+          const postSnap = await getDoc(postRef);
 
-    if (!postSnap.exists()) {
-        postDetailsContent.innerHTML = `<div class="details-message error">No details available.</div>`;
-        return;
-    }
+          if (!postSnap.exists()) {
+              postDetailsContent.innerHTML = `<div class="details-message error">Post not found.</div>`;
+              return;
+          }
 
-    const postData = postSnap.data();
+          const postData = postSnap.data();
+          const date = postData.created?.toDate ? postData.created.toDate() : new Date(postData.created);
+          const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
-    // --- Extract Data ---
-    const postTitle = postData.title || "No Title";
-    const author = postData.author || 'Unknown';
-    const postUrl = postData.URL || '#';
-    const date = postData.created?.toDate ? postData.created.toDate() : (postData.created ? new Date(postData.created) : new Date());
-    const formattedDate = date.toLocaleString('en-GB', {
-        day: '2-digit', month: 'short', year: 'numeric',
-        hour: '2-digit', minute: '2-digit', hour12: false
-    }).replace(',', '');
+          // Construct internal content
+          const closeBtn = `<button class="close-drawer-btn" id="closeModalX">✕ Close</button>`;
+          const header = `<h2 class="post-details-title"><a href="${postData.URL || '#'}" target="_blank">${postData.title}</a></h2>`;
+          const meta = `<p class="post-details-meta">By <strong>${postData.author}</strong> on ${formattedDate}</p>`;
+          const badges = `<div class="post-details-badges">${generateBadgesHtml(postData)}</div>`;
+          const summary = `<div class="post-details-summary"><h4 class="summary-title">AI Summary</h4><p class="summary-text">${postData.summary || 'N/A'}</p></div>`;
+          const body = `<div class="post-details-body-container"><h4 class="body-title">Post Content</h4><div class="body-content">${postData.body || ''}</div></div>`;
 
-    // --- Build HTML Sections (Removed inline styles, using classes) ---
+          // Fetch Comments Subcollection
+          const commentsSnapshot = await getDocs(collection(db, `${postsCollection}/${postId}/comments`));
+          let commentsHtml = `<h3 class="post-details-comments-title">Comments (${commentsSnapshot.size})</h3>`;
+          
+          commentsSnapshot.forEach(cDoc => {
+              const c = cDoc.data();
+              commentsHtml += `
+                  <div class="post-details-comment">
+                      <p class="comment-meta"><strong>${c.author}</strong></p>
+                      <p class="comment-body">${c.body || ''}</p>
+                      <div class="comment-badges">${generateCommentBadgesHtml(c)}</div>
+                  </div>`;
+          });
 
-    // 1. Title Section
-    const urlHtml = `
-        <h2 class="post-details-title">
-            <a href="${postUrl}" target="_blank">
-                ${postTitle}
-            </a>
-        </h2>`;
+          // Final Render
+          postDetailsContent.innerHTML = `
+              <div class="post-details-wrapper">
+                  ${closeBtn}
+                  ${header}
+                  ${meta}
+                  ${badges}
+                  ${summary}
+                  ${body}
+                  ${commentsHtml}
+              </div>`;
 
-    // 2. Metadata Section
-    const metaHtml = `
-        <p class="post-details-meta">
-            Posted by <strong>${author}</strong> on ${formattedDate}
-        </p>`;
+          // Re-attach close listener to the new button
+          document.getElementById('closeModalX').addEventListener('click', closeDrawer);
 
-    // 3. Badges Section
-    const badgesHtml = `
-        <div class="post-details-badges">
-            ${generateBadgesHtml(postData)}
-        </div>`;
-
-    // 4. Summary Section
-    const summaryHtml = `
-      <div class="post-details-summary">
-        <h4 class="summary-title">
-            💡 AI Generated Summary & Analysis
-        </h4>
-        <p class="summary-text">
-            ${postData.summary || '<i>No summary provided.</i>'}
-        </p>
-      </div>`;
-
-    // 5. Body Section
-    const bodyHtml = `
-      <div class="post-details-body-container">
-        <h4 class="body-title">Original Post Content:</h4>
-        <div class="body-content">
-            ${postData.body || '<i>No body content provided.</i>'}
-        </div>
-      </div>`;
-
-    // 6. Comments Section
-    const commentsRef = collection(db, `${postsCollection}/${postId}/comments`);
-    const commentsSnapshot = await getDocs(commentsRef);
-
-    let commentsHtml = `
-        <h3 class="post-details-comments-title">
-            Comments (${commentsSnapshot.size}):
-        </h3>`;
-
-    if (commentsSnapshot.size === 0) {
-        commentsHtml += `<p class="no-comments-message">No comments available.</p>`;
-    }
-    else {
-        commentsSnapshot.forEach(commentDoc => {
-            const commentData = commentDoc.data();
-            const commentDate = commentData.created?.toDate ? commentData.created.toDate() : (commentData.created ? new Date(commentData.created) : new Date());
-            const commentAuthor = commentData.author || 'Unknown';
-            const formattedCommentDate = commentDate.toLocaleString('en-GB', {
-                day: '2-digit', month: 'short', year: 'numeric',
-                hour: '2-digit', minute: '2-digit', hour12: false
-            }).replace(',', '');
-
-            const commentBadges = generateCommentBadgesHtml(commentData); // Assumes this generates HTML with classes now
-
-            commentsHtml += `
-              <div class="post-details-comment">
-                  <p class="comment-meta">
-                      Comment by <strong>${commentAuthor}</strong> on ${formattedCommentDate}
-                  </p>
-                  <p class="comment-body">
-                      ${commentData.body || '<i>No comment body.</i>'}
-                  </p>
-                  <div class="comment-badges">${commentBadges}</div>
-              </div>
-            `;
-        });
-    }
-
-    // Assemble Final HTML with the Close Button
-    const closeBtnHtml = `<button class="close-drawer-btn" id="closeDrawerX">✕ Close</button>`;
-    
-    postDetailsContent.innerHTML = `
-      <div class="post-details-wrapper">
-          ${closeBtnHtml}
-          ${urlHtml}
-          ${metaHtml}
-          ${badgesHtml}
-          ${summaryHtml}
-          ${bodyHtml}
-          ${commentsHtml}
-      </div>`;
-
-    // Attach the close listener to the new button
-    document.getElementById('closeDrawerX').addEventListener('click', closeDrawer);
+      } catch (err) {
+          console.error("Modal Error:", err);
+          postDetailsContent.innerHTML = `<div class="details-message error">Error loading details.</div>`;
+      }
   }
 
   async function fetchAndDisplayPostDetails_old(postId) {

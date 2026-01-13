@@ -1028,50 +1028,44 @@ mark {
   font-weight: 600;
 }
 
+/*---------------------------------------------------------*/
 /* Side Drawer Styling */
+
+/* Modal Overlay Styling */
 #post-details-container {
     position: fixed;
-    top: 0;
-    right: -500px; /* Hidden by default off-screen */
-    width: 450px;
-    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8); /* Start smaller for animation */
+    width: 90%;
+    max-width: 900px;
+    height: 80vh;
     background-color: white;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-    z-index: 2000; /* High z-index to stay above charts and footer */
-    transition: right 0.3s ease-in-out;
-    overflow-y: auto; /* Enable scrolling within the drawer */
-    padding: 0; /* Let the inner wrapper handle padding */
-    margin: 0;
-    border-radius: 0; /* Remove rounded corners for full-height look */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 2000;
+    opacity: 0; /* Hidden by default */
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    border-radius: 12px;
+    padding: 0;
 }
 
-/* Dark theme specific adjustment if using style_dark.css */
+/* Dark theme adaptation */
 body.dark-theme #post-details-container {
     background-color: #2c2c2c;
-    border-left: 1px solid #444;
+    border: 1px solid #444;
+    color: #e0e0e0;
 }
 
+/* Modal Open State */
 #post-details-container.open {
-    right: 0; /* Slide in */
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1); /* Pop into full size */
 }
 
-/* Close Button Styling */
-.close-drawer-btn {
-    position: sticky;
-    top: 10px;
-    left: 10px;
-    background: #f44336;
-    color: white;
-    border: none;
-    padding: 5px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    z-index: 2100;
-    margin-bottom: 10px;
-}
-
-/* Overlay to dim the background when drawer is open */
+/* Overlay to dim the background */
 #drawer-overlay {
     display: none;
     position: fixed;
@@ -1079,10 +1073,27 @@ body.dark-theme #post-details-container {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.6); /* Darker backdrop for modal focus */
     z-index: 1999;
+    backdrop-filter: blur(4px); /* Modern blur effect */
 }
 
 #drawer-overlay.active {
     display: block;
+}
+
+/* Close Button Positioning for Modal */
+.close-drawer-btn {
+    position: sticky;
+    top: 15px;
+    right: 15px; /* Moved to right for typical modal feel */
+    float: right;
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 2100;
 }
