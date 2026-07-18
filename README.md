@@ -6,7 +6,7 @@ TPCraw is a Python-based project that crawls posts and comments from the polytec
 
 ---
 
-## 📌 About This App
+## 📌 About
 
 This application is a tool designed to gather, process, and visualize user-generated content from the Reddit community `r/TemasekPoly`. It consists of two major components:
 
