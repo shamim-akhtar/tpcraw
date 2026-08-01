@@ -17,6 +17,86 @@ import {
 
 const MAX_LABEL_LENGTH = 30;
 
+// --- Responsive chart helpers -------------------------------------------
+// Charts are sized by their .chart-canvas-wrap parent (see responsive.css)
+// because maintainAspectRatio is false. What still has to adapt in JS is the
+// content of the chart: label length, tick density, font sizes and which
+// zoom gestures make sense for the input device.
+
+const MOBILE_BREAKPOINT = 768;          // keep in sync with responsive.css
+const MAX_LABEL_LENGTH_MOBILE = 14;
+
+const isMobileViewport = () => window.innerWidth <= MOBILE_BREAKPOINT;
+
+// Touch screens have no modifier keys and no meaningful drag-to-zoom.
+const isTouchDevice = () =>
+  window.matchMedia('(pointer: coarse)').matches || 'ontouchstart' in window;
+
+function truncateChartLabel(title) {
+  const limit = isMobileViewport() ? MAX_LABEL_LENGTH_MOBILE : MAX_LABEL_LENGTH;
+  if (title.length > limit) {
+    return title.slice(0, limit) + '…';
+  }
+  // Desktop pads short titles so the rotated labels line up; on a phone that
+  // padding just wastes horizontal space.
+  return isMobileViewport() ? title : title.padStart(limit, ' ');
+}
+
+// Category (post-title / author) axis. autoSkip keeps the axis readable when
+// dozens of bars are squeezed into a phone-width canvas.
+function responsiveCategoryTicks(extra = {}) {
+  const mobile = isMobileViewport();
+  return {
+    autoSkip: true,
+    maxTicksLimit: mobile ? 8 : 30,
+    maxRotation: mobile ? 90 : 60,
+    minRotation: mobile ? 90 : 60,
+    align: 'center',
+    font: { size: mobile ? 9 : 12 },
+    ...extra
+  };
+}
+
+function responsiveChartTitle(text) {
+  const mobile = isMobileViewport();
+  return {
+    display: true,
+    text: text,
+    align: 'start',
+    font: { size: mobile ? 13 : 18, weight: '600', family: 'Arial, sans-serif' },
+    color: '#333',
+    padding: { top: mobile ? 4 : 10, bottom: mobile ? 10 : 20 }
+  };
+}
+
+// On touch: single-finger horizontal drag pans (mode 'x' lets vertical swipes
+// fall through to page scrolling) and pinch zooms. Drag-to-zoom stays a
+// mouse-only gesture, otherwise it fights the pan gesture on a phone.
+function responsiveZoomOptions() {
+  const touch = isTouchDevice();
+  return {
+    pan: { enabled: true, mode: 'x', modifierKey: touch ? null : 'ctrl' },
+    zoom: {
+      drag: { enabled: !touch },
+      pinch: { enabled: true },
+      mode: 'x'
+    }
+  };
+}
+
+function responsiveLegend(extra = {}) {
+  const mobile = isMobileViewport();
+  return {
+    position: mobile ? 'bottom' : 'top',
+    labels: {
+      boxWidth: mobile ? 10 : 40,
+      padding: mobile ? 8 : 10,
+      font: { size: mobile ? 10 : 12 }
+    },
+    ...extra
+  };
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   // --- 1. MODAL ELEMENTS ---
   const drawer = document.getElementById('post-details-container');
@@ -178,6 +258,67 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Note: Hover effects are better handled purely in CSS with :hover pseudo-class
   // Removing JS hover effects for tabs and reset buttons as they should be in CSS.
 
+  //--------------------RESPONSIVE RE-RENDER
+  // The CSS handles the box the chart lives in, but label length, tick density
+  // and legend placement are baked in at render time. Re-render when the
+  // viewport crosses the mobile breakpoint (rotating a phone, resizing a
+  // window) so those stay correct without a page reload.
+  let wasMobileViewport = isMobileViewport();
+  let viewportResizeTimer = null;
+
+  function rerenderChartsForViewport() {
+    if (!Array.isArray(allPostsData) || allPostsData.length === 0) return;
+    try {
+      // These render from data already in memory — no extra Firestore reads.
+      renderSentimentPieChart(allPostsData);
+      renderWeightedSentimentChart(allPostsData);
+      renderSentimentStackChart(allPostsData);
+      renderEngagementScoreChart(allPostsData);
+      renderCommentsCountChart(allPostsData);
+
+      // Authors + time series would need a refetch to re-render, so just patch
+      // the size-dependent options in place.
+      const sizedCharts = [window.authorsChartInstance, timeSeriesChart];
+      sizedCharts.forEach(chart => {
+        if (!chart) return;
+        Object.assign(chart.options.plugins.title, responsiveChartTitle(chart.options.plugins.title.text));
+        if (chart.options.plugins.legend) {
+          chart.options.plugins.legend.position = isMobileViewport() ? 'bottom' : 'top';
+          chart.options.plugins.legend.labels.boxWidth = isMobileViewport() ? 10 : 40;
+        }
+        chart.update('none');
+      });
+
+      // The active tab is the only one with a measurable box; nudge it.
+      const activeChartSection = document.querySelector('.chart-section.active');
+      if (activeChartSection) {
+        const canvas = activeChartSection.querySelector('canvas');
+        const instance = canvas && Chart.getChart(canvas);
+        if (instance) instance.resize();
+      }
+    } catch (err) {
+      console.error("Error re-rendering charts for viewport change:", err);
+    }
+  }
+
+  window.addEventListener('resize', () => {
+    clearTimeout(viewportResizeTimer);
+    viewportResizeTimer = setTimeout(() => {
+      const nowMobile = isMobileViewport();
+      if (nowMobile === wasMobileViewport) return; // only on a real breakpoint change
+      wasMobileViewport = nowMobile;
+      rerenderChartsForViewport();
+    }, 200);
+  });
+
+  // Zoom gestures differ by input device (see responsiveZoomOptions), so the
+  // on-screen hint has to describe what this device can actually do.
+  document.querySelectorAll('.zoom-instructions').forEach(el => {
+    el.textContent = isTouchDevice()
+      ? 'Pinch to zoom, drag sideways to pan, and tap a bar for details.'
+      : 'To zoom, click and drag on the chart. Hold Ctrl and drag to pan.';
+  });
+
   // --------------------------------------------------------------
   // FETCH FIRESTORE POSTS - with filters for subreddit & checkboxes
   // --------------------------------------------------------------
@@ -320,9 +461,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       window.sentimentPieChartInstance.destroy();
     }
 
-    ctx.canvas.width = 260; // Keep explicit sizing if needed for layout
-    ctx.canvas.height = 260;
-
     window.sentimentPieChartInstance = new Chart(ctx, {
       type: 'pie',
       data: {
@@ -333,7 +471,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         }]
       },
       options: {
-        responsive: false, // Keep false if explicit size is intended
+        // Sized by .chart-canvas-wrap--square; stays 1:1 on every screen.
+        responsive: true,
+        maintainAspectRatio: true,
+        aspectRatio: 1,
         plugins: {
           legend: {
             display: false,
@@ -353,16 +494,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Chart 2: WEIGHTED SENTIMENT
   // ---------------------------------------------
    function renderWeightedSentimentChart(data) {
-    const labels = data.map(post => {
-        const { title } = post;
-        // Keep label truncation logic
-        if (title.length > MAX_LABEL_LENGTH) {
-            return title.slice(0, MAX_LABEL_LENGTH) + '…';
-        } else {
-            // Padding logic might be better handled via CSS if possible, but keep if needed
-            return title.padStart(MAX_LABEL_LENGTH, ' ');
-        }
-    });
+    const labels = data.map(post => truncateChartLabel(post.title));
     const weightedScores = data.map(item => item.weightedSentimentScore);
 
     // Bar color logic remains in JS as it's data-dependent
@@ -387,23 +519,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         options: { // Chart options remain largely the same
             responsive: true,
+            maintainAspectRatio: false, // height comes from .chart-canvas-wrap
             plugins: {
-                title: { // Title styling can often be done via Chart.js options
-                    display: true,
-                    text: 'Weighted Sentiment Breakdown by Post',
-                    align: 'start',
-                    font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
-                    color: '#333',
-                    padding: { top: 10, bottom: 20 }
-                },
-                zoom: { // Zoom plugin configuration
-                    pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
-                    zoom: { drag: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
-                }
+                title: responsiveChartTitle('Weighted Sentiment Breakdown by Post'),
+                legend: responsiveLegend(),
+                zoom: responsiveZoomOptions()
             },
             scales: {
-                x: { ticks: { maxRotation: 60, minRotation: 60, align: 'center' } },
-                y: { beginAtZero: true }
+                x: { ticks: responsiveCategoryTicks() },
+                y: { beginAtZero: true, ticks: { font: { size: isMobileViewport() ? 10 : 12 } } }
             },
             onClick: (evt, elements) => { // Click handler remains
                 if (elements.length > 0) {
@@ -420,14 +544,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Chart 3: RAW SENTIMENT STACK (Stacked Sentiment)
   // ---------------------------------------------
   function renderSentimentStackChart(data) {
-      const labels = data.map(post => {
-          const { title } = post;
-          if (title.length > MAX_LABEL_LENGTH) {
-              return title.slice(0, MAX_LABEL_LENGTH) + '…';
-          } else {
-              return title.padStart(MAX_LABEL_LENGTH, ' ');
-          }
-      });
+      const labels = data.map(post => truncateChartLabel(post.title));
       const positiveData = data.map(post => post.totalPositiveSentiments);
       const negativeData = data.map(post => post.totalNegativeSentiments);
 
@@ -458,27 +575,19 @@ document.addEventListener('DOMContentLoaded', async () => {
           },
           options: { // Options remain largely the same
               responsive: true,
+              maintainAspectRatio: false, // height comes from .chart-canvas-wrap
               interaction: {
                   mode: 'index', // This detects clicks anywhere on the vertical axis of the bar
                   intersect: false // Allows clicking even if the mouse isn't directly touching a colored bar
               },
               plugins: {
-                  title: {
-                      display: true,
-                      text: 'Sentiment Breakdown by Post',
-                      align: 'start',
-                      font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
-                      color: '#333',
-                      padding: { top: 10, bottom: 20 }
-                  },
-                  zoom: {
-                      pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
-                      zoom: { drag: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
-                  }
+                  title: responsiveChartTitle('Sentiment Breakdown by Post'),
+                  legend: responsiveLegend(),
+                  zoom: responsiveZoomOptions()
               },
               scales: {
-                  x: { stacked: true, ticks: { maxRotation: 60, minRotation: 60, align: 'center' } },
-                  y: { stacked: true, beginAtZero: true }
+                  x: { stacked: true, ticks: responsiveCategoryTicks() },
+                  y: { stacked: true, beginAtZero: true, ticks: { font: { size: isMobileViewport() ? 10 : 12 } } }
               },
               onClick: (evt, elements) => { // Click handler remains
                   if (elements.length > 0) {
@@ -495,14 +604,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Chart 4: ENGAGEMENT SCORE
   // ---------------------------------------------
   function renderEngagementScoreChart(data) {
-      const labels = data.map(post => {
-          const { title } = post;
-          if (title.length > MAX_LABEL_LENGTH) {
-              return title.slice(0, MAX_LABEL_LENGTH) + '…';
-          } else {
-              return title.padStart(MAX_LABEL_LENGTH, ' ');
-          }
-      });
+      const labels = data.map(post => truncateChartLabel(post.title));
       const engagementScores = data.map(item => item.engagementScore);
 
       // Color remains here
@@ -525,23 +627,15 @@ document.addEventListener('DOMContentLoaded', async () => {
           },
           options: { // Options remain largely the same
               responsive: true,
+              maintainAspectRatio: false, // height comes from .chart-canvas-wrap
               plugins: {
-                  title: {
-                      display: true,
-                      text: 'Engagement Score per Post',
-                      align: 'start',
-                      font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
-                      color: '#333',
-                      padding: { top: 10, bottom: 20 }
-                  },
-                  zoom: {
-                      pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
-                      zoom: { drag: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
-                  }
+                  title: responsiveChartTitle('Engagement Score per Post'),
+                  legend: responsiveLegend(),
+                  zoom: responsiveZoomOptions()
               },
               scales: {
-                  x: { ticks: { maxRotation: 60, minRotation: 60, align: 'center' } },
-                  y: { beginAtZero: true }
+                  x: { ticks: responsiveCategoryTicks() },
+                  y: { beginAtZero: true, ticks: { font: { size: isMobileViewport() ? 10 : 12 } } }
               },
               onClick: (evt, elements) => { // Click handler remains
                   if (elements.length > 0) {
@@ -558,14 +652,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Chart 5: TOTAL COMMENTS
   // ---------------------------------------------
   function renderCommentsCountChart(data) {
-      const labels = data.map(post => {
-          const { title } = post;
-          if (title.length > MAX_LABEL_LENGTH) {
-              return title.slice(0, MAX_LABEL_LENGTH) + '…';
-          } else {
-              return title.padStart(MAX_LABEL_LENGTH, ' ');
-          }
-      });
+      const labels = data.map(post => truncateChartLabel(post.title));
       const totalComments = data.map(item => item.totalComments);
 
       // Color remains here
@@ -588,23 +675,15 @@ document.addEventListener('DOMContentLoaded', async () => {
           },
           options: { // Options remain largely the same
               responsive: true,
+              maintainAspectRatio: false, // height comes from .chart-canvas-wrap
               plugins: {
-                  title: {
-                      display: true,
-                      text: 'Comments per Post',
-                      align: 'start',
-                      font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
-                      color: '#333',
-                      padding: { top: 10, bottom: 20 }
-                  },
-                  zoom: {
-                      pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
-                      zoom: { drag: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
-                  }
+                  title: responsiveChartTitle('Comments per Post'),
+                  legend: responsiveLegend(),
+                  zoom: responsiveZoomOptions()
               },
               scales: {
-                  x: { ticks: { maxRotation: 60, minRotation: 60, align: 'center' } },
-                  y: { beginAtZero: true }
+                  x: { ticks: responsiveCategoryTicks() },
+                  y: { beginAtZero: true, ticks: { font: { size: isMobileViewport() ? 10 : 12 } } }
               },
               onClick: (evt, elements) => { // Click handler remains
                   if (elements.length > 0) {
@@ -957,15 +1036,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       },
       options: { // Options remain
         responsive: true,
+        maintainAspectRatio: false, // height comes from .chart-canvas-wrap
         plugins: {
-          title: {
-            display: true,
-            text: 'Top 10 Authors with Most Negative Sentiments',
-            align: 'start',
-            font: { size: 18, weight: '600', family: 'Arial, sans-serif' },
-            color: '#333',
-            padding: { top: 10, bottom: 20 }
-          },
+          title: responsiveChartTitle('Top 10 Authors with Most Negative Sentiments'),
+          legend: responsiveLegend(),
           tooltip: {
             callbacks: {
               label: function(context) {
@@ -975,8 +1049,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
         },
         scales: {
-          x: { stacked: true, ticks: { maxRotation: 60, minRotation: 60, align: 'center' } },
-          y: { stacked: true, beginAtZero: true }
+          x: { stacked: true, ticks: responsiveCategoryTicks() },
+          y: { stacked: true, beginAtZero: true, ticks: { font: { size: isMobileViewport() ? 10 : 12 } } }
         },
         onClick: (evt, elements) => { // Click handler remains
           if (elements.length > 0) {
@@ -1152,20 +1226,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         data: { datasets: datasets },
         options: { // Options remain largely the same
             responsive: true,
+            maintainAspectRatio: false, // height comes from .chart-canvas-wrap--tall
             plugins: {
-                title: {
-                    display: true,
-                    text: 'Time Series of Average Sentiment by Category',
-                    align: 'start',
-                    font: { size: 18, weight: '600' }
-                },
-                zoom: {
-                    pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
-                    zoom: { drag: { enabled: true }, pinch: { enabled: true }, mode: 'x' }
-                },
+                title: responsiveChartTitle('Time Series of Average Sentiment by Category'),
+                zoom: responsiveZoomOptions(),
                 tooltip: { mode: 'index', intersect: false },
                 legend: { // Legend customization remains
+                    // Many categories: move the legend below the plot on phones
+                    // so it stops eating the chart's width.
+                    position: isMobileViewport() ? 'bottom' : 'top',
                     labels: {
+                        boxWidth: isMobileViewport() ? 10 : 40,
+                        padding: isMobileViewport() ? 6 : 10,
+                        font: { size: isMobileViewport() ? 10 : 12 },
                         generateLabels: function(chart) {
                             const dsets = chart.data.datasets;
                             const seenCategories = {};
@@ -1208,11 +1281,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                 x: {
                     type: 'time',
                     time: { parser: 'yyyy-MM-dd', unit: 'day', displayFormats: { day: 'MMM d' } },
-                    title: { display: true, text: 'Date' }
+                    // Axis titles are redundant on a phone-width chart.
+                    title: { display: !isMobileViewport(), text: 'Date' },
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: isMobileViewport() ? 5 : 12,
+                        maxRotation: isMobileViewport() ? 45 : 0,
+                        font: { size: isMobileViewport() ? 9 : 12 }
+                    }
                 },
                 y: {
                     min: -1.2, max: 1.2, beginAtZero: false,
-                    title: { display: true, text: 'Average Sentiment' }
+                    title: { display: !isMobileViewport(), text: 'Average Sentiment' },
+                    ticks: { font: { size: isMobileViewport() ? 9 : 12 } }
                 }
             },
             onClick: async (evt, elements) => { // Click handler remains

@@ -2,8 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-  <title>About - r/TemasekPoly Sentiment Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Polytechnic Sentiments Dashboard</title>
+
+  <!--
+      Follow the dashboard's theme switch. Runs before the body paints so a
+      dark-theme user never sees a white flash. Key is shared with index.html.
+  -->
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('tpcraw-theme') === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) { /* storage blocked (private mode) — stay on light */ }
+    })();
+  </script>
+
   <style>
     /* --- Reset and Base Styles --- */
     body {
@@ -243,11 +258,191 @@
              content: none; /* Remove bullets for tech stack */
          }
 
+    /* --- Responsive: phones and small tablets --- */
+    @media (max-width: 768px) {
+        body {
+            padding: 1.25rem 1rem;
+            line-height: 1.65;
+        }
+
+        h1 { font-size: clamp(1.5rem, 6vw, 2.4rem); }
+        h2 { font-size: clamp(1.25rem, 5vw, 1.8rem); margin-top: 2rem; }
+        h3 { font-size: clamp(1.1rem, 4.5vw, 1.4rem); margin-top: 1.6rem; }
+        h4 { font-size: 1.05rem; }
+
+        /* Wide comparison tables scroll rather than squash to unreadable columns. */
+        table {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            white-space: normal;
+        }
+
+        th, td {
+            padding: 0.65rem 0.75rem;
+            font-size: 0.92rem;
+            min-width: 8rem;
+        }
+
+        blockquote {
+            padding: 0.9rem 1rem;
+            margin: 1.2rem 0;
+        }
+
+        ul, ol { padding-left: 1.4rem; }
+
+        img { margin: 1.2rem auto; }
+
+        hr { width: 100%; margin: 2rem auto; }
+
+        h2:last-of-type + p { padding: 1rem; }
+
+        /* Keep long URLs and code spans from widening the page. */
+        p, li, td, code { overflow-wrap: anywhere; }
+    }
+
+    /* --- Highlighted search term (matches the dashboard's own style) --- */
+    mark {
+        background-color: #fcf8e3;
+        color: #8a6d3b;
+        padding: 0.1em 0.2em;
+        border-radius: 3px;
+        font-weight: 600;
+    }
+
+    /* --- Back to dashboard bar --- */
+    .back-bar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: #f9fafb; /* match body so content can't show through */
+        padding: 0.75rem 0;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid #e9ecef;
+    }
+    .back-bar a {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        min-height: 44px; /* comfortable tap target */
+        padding: 0 0.9rem;
+        background-color: #0d6efd;
+        color: #fff;
+        border-radius: 6px;
+        font-weight: 500;
+        text-decoration: none;
+    }
+    .back-bar a:hover {
+        background-color: #0a58ca;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    /* =========================================================
+       Dark theme — mirrors the dashboard's toggle via the
+       shared `tpcraw-theme` key (see the <script> in <head>).
+       Additive overrides only; light styles above are untouched.
+       ========================================================= */
+
+    :root[data-theme="dark"] body {
+        background-color: #1a1a1a;
+        color: #e0e0e0;
+    }
+    :root[data-theme="dark"] h1 { color: #7fb2ff; border-bottom-color: #3a3a3a; }
+    :root[data-theme="dark"] h2 { color: #5b9dff; border-bottom-color: #2f2f2f; }
+    :root[data-theme="dark"] h3 { color: #d6d6d6; }
+    :root[data-theme="dark"] h4 { color: #bdbdbd; }
+    :root[data-theme="dark"] p  { color: #c9c9c9; }
+    :root[data-theme="dark"] li { color: #c9c9c9; }
+    :root[data-theme="dark"] strong { color: #f0f0f0; }
+
+    :root[data-theme="dark"] a       { color: #6ea8ff; }
+    :root[data-theme="dark"] a:hover { color: #9cc4ff; }
+
+    :root[data-theme="dark"] code {
+        background-color: #262b33;
+        color: #b8c7db;
+        border-color: #3a4351;
+    }
+
+    :root[data-theme="dark"] img {
+        border-color: #3a3a3a;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    :root[data-theme="dark"] table {
+        border-color: #3a3a3a;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    }
+    :root[data-theme="dark"] th {
+        background-color: #262626;
+        color: #d6d6d6;
+        border-bottom-color: #3a3a3a;
+    }
+    :root[data-theme="dark"] td {
+        color: #c9c9c9;
+        border-bottom-color: #3a3a3a;
+    }
+    :root[data-theme="dark"] tbody tr:nth-child(odd) { background-color: #1f1f1f; }
+    :root[data-theme="dark"] tbody tr:hover          { background-color: #2b2b2b; }
+
+    :root[data-theme="dark"] blockquote {
+        background-color: #242424;
+        color: #c9c9c9;
+        border-left-color: #17a2b8;
+    }
+    :root[data-theme="dark"] blockquote strong { color: #4fc3d7; }
+
+    :root[data-theme="dark"] hr { border-top-color: #3a3a3a; }
+
+    :root[data-theme="dark"] .tech-stack-list li {
+        background-color: #2c2c2c;
+        color: #d0d0d0;
+    }
+    :root[data-theme="dark"] .tech-stack-list li:hover {
+        background-color: #444;
+        color: #fff;
+    }
+
+    /* Disclaimer callout */
+    :root[data-theme="dark"] h2:last-of-type + p {
+        background-color: #3a3223;
+        border-color: #5c4d2a;
+        border-left-color: #ffc107;
+        color: #f0dfae;
+    }
+    :root[data-theme="dark"] h2:last-of-type + p strong { color: #ffd766; }
+
+    :root[data-theme="dark"] .back-bar {
+        background-color: #1a1a1a;
+        border-bottom-color: #333;
+    }
+    /* Must be re-stated: the generic dark `a` rule above has equal or higher
+       specificity and would otherwise turn this into blue text on blue. */
+    :root[data-theme="dark"] .back-bar a {
+        background-color: #1b5fd0;
+        color: #fff;
+    }
+    :root[data-theme="dark"] .back-bar a:hover {
+        background-color: #2b74e8;
+        color: #fff;
+    }
+
+    :root[data-theme="dark"] mark {
+        background-color: #4a4020;
+        color: #f0dfae;
+    }
+
   </style>
 </head>
 <body>
 
-  <h1>About - r/TemasekPoly Sentiment Dashboard</h1>
+  <nav class="back-bar">
+    <a href="index.html">&larr; Back to Dashboard</a>
+  </nav>
+
+  <h1>About - Polytechnic Sentiments Dashboard</h1>
 
   <p>
     <a href="https://shamim-akhtar.github.io/tpcraw/">
@@ -256,10 +451,11 @@
   </p>
 
   <p>
-    TPCraw is a Python-based project that crawls posts and comments from the
-    <code>r/TemasekPoly</code> subreddit and then analyzes them using Google’s Generative AI (Gemini).
+    TPCraw is a Python-based project that crawls posts and comments from Singapore's
+    polytechnic subreddits and then analyzes them using Google’s Generative AI (Gemini).
     The project produces sentiment analyses, summaries, and visualizations (via a web-based dashboard)
-    to gain insights into discussions about Temasek Polytechnic on Reddit.
+    to gain insights into discussions about the polytechnics on Reddit, with a particular focus on
+    Temasek Polytechnic.
   </p>
 
   <p>
@@ -271,7 +467,9 @@
   <h2>📌 About This App</h2>
   <p>
     This application is a tool designed to gather, process, and visualize user-generated content from
-    the Reddit community <code>r/TemasekPoly</code>. It consists of two major components:
+    Reddit's Singapore polytechnic communities — <code>r/TemasekPoly</code>, <code>r/nanyangpoly</code>,
+    <code>r/republicpolytechnic</code>, <code>r/SingaporePoly</code>, <code>r/NgeeAnnPoly</code>,
+    <code>r/nyp</code> and <code>r/sgExams</code>. It consists of two major components:
   </p>
 
   <ol>
@@ -303,17 +501,20 @@
             <ul class="tech-stack-list">
                  <li>HTML</li>
                  <li>CSS (including styles for light/dark themes)</li>
+                 <li>CSS (responsive layer for phones and tablets)</li>
                  <li>JavaScript (Modular ES6)</li>
                  <li>Chart.js</li>
                  <li>Chart.js Zoom Plugin</li>
                  <li>chartjs-adapter-date-fns</li>
                  <li>Firebase SDK (v9 Modular)</li>
+                 <li>html2pdf.js</li>
             </ul>
   <p>
     The Frontend Dashboard is a dynamic and user-friendly web interface built with
     <strong>HTML, CSS, and JavaScript</strong>. It serves as the primary visualization tool
     for the data collected by the Python crawler. Users can interact with various charts, tables,
-    and filtering options to explore sentiment analysis results from <code>r/TemasekPoly</code>.
+    and filtering options to explore sentiment analysis results from whichever polytechnic
+    subreddit they select.
   </p>
   <p>
     This dashboard allows users to:
@@ -323,8 +524,13 @@
     <li>📊 Analyze positive, neutral, and negative sentiments through <strong>charts and graphs</strong>.</li>
     <li>📅 Track sentiment changes over time using <strong>time series visualizations</strong>.</li>
     <li>🔍 Filter posts based on specific criteria like date range, categories, and IIT relevance.</li>
+    <li>🏫 Switch between <strong>seven polytechnic subreddits</strong> without reloading the page.</li>
+    <li>🔎 <strong>Search by keyword</strong> across post and comment text.</li>
     <li>📈 Examine top authors based on their sentiment contributions (positive and negative).</li>
     <li>💬 Inspect individual posts and their associated comments to understand user feedback better.</li>
+    <li>📄 <strong>Export any post's analysis to PDF</strong> for sharing or reporting.</li>
+    <li>🌗 Switch between <strong>light and dark themes</strong>, remembered across visits.</li>
+    <li>📱 Use the whole dashboard on a <strong>phone or tablet</strong> as well as a desktop.</li>
   </ul>
 
   <p>
@@ -338,6 +544,54 @@
   <hr />
 
   <h2>Frontend Dashboard Features</h2>
+
+  <h3>🏫 Select Subreddit</h3>
+  <p>
+    The <strong>Select Subreddit</strong> dropdown, at the top of the left-hand column, controls
+    which community the entire dashboard reports on. Changing it reloads every chart, table and
+    metric on the page against that subreddit's data — no page refresh required.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Option</th>
+        <th>Subreddit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Temasek Poly</strong></td><td><code>r/TemasekPoly</code> (default)</td></tr>
+      <tr><td><strong>Nanyang Poly</strong></td><td><code>r/nanyangpoly</code></td></tr>
+      <tr><td><strong>Republic Poly</strong></td><td><code>r/republicpolytechnic</code></td></tr>
+      <tr><td><strong>Singapore Poly</strong></td><td><code>r/SingaporePoly</code></td></tr>
+      <tr><td><strong>Ngee Ann Poly</strong></td><td><code>r/NgeeAnnPoly</code></td></tr>
+      <tr><td><strong>Nanyang Poly Students</strong></td><td><code>r/nyp</code></td></tr>
+      <tr><td><strong>SGExams</strong></td><td><code>r/sgExams</code></td></tr>
+    </tbody>
+  </table>
+  <p>
+    Some filters are specific to a community, so the dashboard shows and hides them as you switch.
+    The <strong>IIT</strong> checkbox applies only to <code>r/TemasekPoly</code>, and the
+    <strong>TP-Related?</strong> checkbox applies only to <code>r/sgExams</code>, where posts cover
+    every institution and most are unrelated to Temasek Polytechnic.
+  </p>
+
+  <hr />
+
+  <h3>🔎 Keyword Search</h3>
+  <p>
+    The <strong>Keyword Search</strong> box searches the text of posts and comments in the selected
+    subreddit and date range, rather than filtering the charts. Results open in the details panel,
+    split into matching posts and matching comments, with the search term
+    <mark>highlighted</mark> in each excerpt.
+  </p>
+  <ul>
+    <li>Press <strong>Enter</strong> or click <strong>Search</strong> to run a search.</li>
+    <li>Each result carries the same sentiment, emotion and category badges used elsewhere.</li>
+    <li>Comment results show the parent post's title, so you keep the context of the thread.</li>
+    <li>Use <strong>View Full Post</strong> on any result to jump to that post's complete analysis.</li>
+  </ul>
+
+  <hr />
 
   <h3>📅 Date Range & IIT Filter</h3>
   <p>
@@ -366,6 +620,10 @@
       <tr>
         <td><strong>IIT Checkbox</strong></td>
         <td>A checkbox option allows users to filter posts specifically related to the <em>School of Informatics & IT (IIT)</em>. When enabled, only posts marked with a relevance flag (<code>iit: "yes"</code>) are displayed. This is particularly useful for examining feedback or discussions directly related to IIT courses or facilities. Results may not be very accurate as we are using Gen AI to categorize whether or not a post is associated with IIT.</td>
+      </tr>
+      <tr>
+        <td><strong>TP-Related? Checkbox</strong></td>
+        <td>Shown only when <code>r/sgExams</code> is selected. That subreddit covers every institution in Singapore, so this filter narrows results to posts the crawler flagged as mentioning Temasek Polytechnic (<code>relatedToTemasekPoly: true</code>). As with the IIT flag, the classification comes from Gen AI and may occasionally misfire.</td>
       </tr>
       <tr>
         <td><strong>Filter Button</strong></td>
@@ -666,9 +924,70 @@
     <li><strong>Summary</strong>: A concise summary of the post and its comments generated by the Google Gemini AI.</li>
     <li><strong>Comments List</strong>: A detailed list of all comments related to the post, along with sentiment scores, emotions, categories, and IIT relevance.</li>
   </ul>
+  <p><strong>Export to PDF:</strong></p>
+  <ul>
+    <li>The details panel carries a <strong>Download PDF</strong> button that renders the whole analysis — title, metadata, badges, AI summary, post body and every comment — into <code>TPCraw_Analysis_Report.pdf</code>.</li>
+    <li>Navigation and action buttons are hidden from the capture, so the report contains only the content.</li>
+    <li>Useful for circulating a single post's analysis to staff who don't use the dashboard directly.</li>
+  </ul>
   <p>
     The <strong>Post Details Display</strong> feature provides a comprehensive breakdown of each post,
     making it easy to dive into individual conversations and analyze specific interactions.
+  </p>
+
+  <hr />
+
+  <h3>🌗 Light & Dark Themes</h3>
+  <p>
+    The switch in the top-right corner of the dashboard toggles between the light and dark
+    stylesheets. Your choice is saved in the browser's local storage, so the dashboard opens in the
+    same theme on your next visit, and this About page follows the same setting.
+  </p>
+  <p>
+    The theme is applied before the page renders, so switching to dark does not produce a white
+    flash on load. If your browser blocks local storage (private browsing, for example), the theme
+    still works for the current session but will not be remembered.
+  </p>
+
+  <hr />
+
+  <h3>📱 Works on Any Device</h3>
+  <p>
+    The dashboard adapts to the screen it is opened on, from a desktop monitor down to a phone in
+    portrait orientation.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Screen</th>
+        <th>Behaviour</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Desktop</strong><br />wider than 1024px</td>
+        <td>The original two-column layout: summary metrics and the sentiment pie on the left, the tabbed charts on the right.</td>
+      </tr>
+      <tr>
+        <td><strong>Tablet</strong><br />up to 1024px</td>
+        <td>Collapses to a single column, with the summary cards rearranged into a grid above the charts. The tab bar becomes a horizontally swipeable strip instead of wrapping onto several rows.</td>
+      </tr>
+      <tr>
+        <td><strong>Phone</strong><br />up to 768px</td>
+        <td>Filter controls stack full width, charts are given a taller fixed height so the plot area stays readable, axis labels shorten and thin out, chart legends move below the plot, and the post details panel opens full screen.</td>
+      </tr>
+    </tbody>
+  </table>
+  <p><strong>Touch gestures:</strong></p>
+  <ul>
+    <li><strong>Pinch</strong> to zoom into a chart.</li>
+    <li><strong>Drag sideways</strong> to pan across it. Vertical swipes still scroll the page normally.</li>
+    <li><strong>Tap</strong> a bar or data point to open that post's details.</li>
+    <li>On a desktop the original gestures are unchanged: drag to zoom, <strong>Ctrl</strong> + drag to pan.</li>
+  </ul>
+  <p>
+    Rotating a phone between portrait and landscape re-renders the charts at the new size using data
+    already loaded, so no additional queries are made.
   </p>
 
   <hr />
@@ -683,12 +1002,20 @@
 
   <h3>🚀 Automated Data Collection</h3>
   <p>
-    The crawler component of the application continuously collects user-generated content from
-    the subreddit <code>r/TemasekPoly</code> on Reddit. It fetches both <strong>posts and comments</strong>
+    The crawler component of the application continuously collects user-generated content from the
+    polytechnic subreddits on Reddit. The list of communities it visits is read from
+    <code>subreddits.txt</code>, so adding or removing one is a configuration change rather than a
+    code change. It fetches both <strong>posts and comments</strong>
     using the PRAW (Python Reddit API Wrapper). This automated data gathering ensures that the application
-    stays up-to-date with the latest discussions, feedback, and trends related to Temasek Polytechnic.
+    stays up-to-date with the latest discussions, feedback, and trends related to the polytechnics.
     The crawler retrieves a maximum of 500 recent posts and their associated comments each time it runs,
     providing a comprehensive dataset for further analysis.
+  </p>
+  <p>
+    For the broader <code>r/sgExams</code> community, the crawler additionally detects whether each
+    post or comment actually mentions Temasek Polytechnic and records that as a
+    <code>relatedToTemasekPoly</code> flag, which is what the dashboard's
+    <strong>TP-Related?</strong> filter reads.
   </p>
 
   <hr />
