@@ -14,7 +14,7 @@
         Chart.register(ChartZoom);
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script type="module" src="script.js?v=1.8"></script>
+    <script type="module" src="script.js?v=1.9"></script>
 
     <!-- Default to light theme -->
     <link id="themeStylesheet" rel="stylesheet" href="style.css?v1.2">
@@ -86,6 +86,12 @@
             gap: 1rem;
         }
     </style>
+
+    <!--
+        Theme-agnostic responsive layer. Must stay LAST so its rules win over
+        whichever theme sheet is loaded into #themeStylesheet above.
+    -->
+    <link rel="stylesheet" href="responsive.css?v=1.0">
 </head>
 
 <body>
@@ -176,7 +182,9 @@
 
             <div id="sentimentPieBox" class="dashboard-box-large">
                 <div class="postCount-title-large">Sentiments Distribution</div>
-                <canvas id="sentimentPieChart"></canvas>
+                <div class="chart-canvas-wrap chart-canvas-wrap--square">
+                    <canvas id="sentimentPieChart"></canvas>
+                </div>
             </div>
         </div>
 
@@ -193,7 +201,9 @@
 
             <!-- Weighted Sentiments Section -->
             <section id="weightedTab" class="chart-section tab-content">
-                <canvas id="weightedSentimentChart"></canvas>
+                <div class="chart-canvas-wrap">
+                    <canvas id="weightedSentimentChart"></canvas>
+                </div>
                 <div class="chart-controls">
                     <button id="resetZoomWeightedBtn">Reset Zoom</button>
                     <span class="zoom-instructions">To zoom, click and drag on the chart or pinch on touch devices.</span>
@@ -203,7 +213,9 @@
 
             <!-- Stacked Sentiments Section -->
             <section id="stackedTab" class="chart-section tab-content active">
-                <canvas id="stackedSentimentChart"></canvas>
+                <div class="chart-canvas-wrap">
+                    <canvas id="stackedSentimentChart"></canvas>
+                </div>
                 <div class="chart-controls">
                     <button id="resetZoomStackedBtn">Reset Zoom</button>
                     <span class="zoom-instructions">To zoom, click and drag on the chart or pinch on touch devices.</span>
@@ -213,7 +225,9 @@
 
             <!-- Total Comments Section -->
             <section id="totalCommentsTab" class="chart-section tab-content">
-                <canvas id="totalCommentsChart"></canvas>
+                <div class="chart-canvas-wrap">
+                    <canvas id="totalCommentsChart"></canvas>
+                </div>
                 <div class="chart-controls">
                     <button id="resetZoomTotalCommentsBtn">Reset Zoom</button>
                     <span class="zoom-instructions">To zoom, click and drag on the chart or pinch on touch devices.</span>
@@ -223,7 +237,9 @@
 
             <!-- Engagement Scores Section -->
             <section id="engagementTab" class="chart-section tab-content">
-                <canvas id="engagementScoreChart"></canvas>
+                <div class="chart-canvas-wrap">
+                    <canvas id="engagementScoreChart"></canvas>
+                </div>
                 <div class="chart-controls">
                     <button id="resetZoomEngagementBtn">Reset Zoom</button>
                     <span class="zoom-instructions">To zoom, click and drag on the chart or pinch on touch devices.</span>
@@ -250,13 +266,17 @@
 
             <!-- Authors Tab -->
             <section id="authorsTab" class="chart-section tab-content">
-                <canvas id="authorsChart"></canvas>
+                <div class="chart-canvas-wrap">
+                    <canvas id="authorsChart"></canvas>
+                </div>
                 <p class="chart-description">This chart displays the top 10 authors with a stacked breakdown of positive and negative sentiment counts.</p>
             </section>
 
             <!-- Time Series Tab -->
             <section id="timeSeriesTab" class="chart-section tab-content">
-                <canvas id="timeSeriesChart"></canvas>
+                <div class="chart-canvas-wrap chart-canvas-wrap--tall">
+                    <canvas id="timeSeriesChart"></canvas>
+                </div>
                 <div class="chart-controls">
                     <button id="resetZoomTimeSeriesBtn">Reset Zoom</button>
                     <span class="zoom-instructions">To zoom, click and drag on the chart or pinch on touch devices.</span>

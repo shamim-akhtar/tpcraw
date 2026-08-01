@@ -243,6 +243,50 @@
              content: none; /* Remove bullets for tech stack */
          }
 
+    /* --- Responsive: phones and small tablets --- */
+    @media (max-width: 768px) {
+        body {
+            padding: 1.25rem 1rem;
+            line-height: 1.65;
+        }
+
+        h1 { font-size: clamp(1.5rem, 6vw, 2.4rem); }
+        h2 { font-size: clamp(1.25rem, 5vw, 1.8rem); margin-top: 2rem; }
+        h3 { font-size: clamp(1.1rem, 4.5vw, 1.4rem); margin-top: 1.6rem; }
+        h4 { font-size: 1.05rem; }
+
+        /* Wide comparison tables scroll rather than squash to unreadable columns. */
+        table {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            white-space: normal;
+        }
+
+        th, td {
+            padding: 0.65rem 0.75rem;
+            font-size: 0.92rem;
+            min-width: 8rem;
+        }
+
+        blockquote {
+            padding: 0.9rem 1rem;
+            margin: 1.2rem 0;
+        }
+
+        ul, ol { padding-left: 1.4rem; }
+
+        img { margin: 1.2rem auto; }
+
+        hr { width: 100%; margin: 2rem auto; }
+
+        h2:last-of-type + p { padding: 1rem; }
+
+        /* Keep long URLs and code spans from widening the page. */
+        p, li, td, code { overflow-wrap: anywhere; }
+    }
+
   </style>
 </head>
 <body>

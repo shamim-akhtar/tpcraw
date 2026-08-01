@@ -1,0 +1,487 @@
+/* =============================================================
+   responsive.css — device-agnostic layout layer
+   -------------------------------------------------------------
+   Loaded AFTER style.css / style_dark.css (see index.html) so it
+   applies to BOTH themes without duplicating any colour rules.
+   Only layout, sizing and touch-affordance concerns belong here;
+   keep colours in the theme sheets.
+
+   Breakpoints
+     <= 1024px  tablets / small laptops  -> single column dashboard
+     <=  768px  phones (landscape)       -> stacked controls, static footer
+     <=  480px  phones (portrait)        -> tightest spacing
+   ============================================================= */
+
+/* -------------------------------------------------------------
+   1. Global guards against horizontal overflow
+   ------------------------------------------------------------- */
+
+html {
+  /* Stop iOS/Android silently inflating text in rotated layouts. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+img,
+canvas,
+video,
+iframe {
+  max-width: 100%;
+}
+
+/* Long Reddit titles / URLs must never widen the page. */
+.post-details-title,
+.body-content,
+.comment-body,
+.post-body-excerpt,
+.post-list-table td {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+/* -------------------------------------------------------------
+   2. Fluid page gutters
+   The theme sheets use `max-width: 1400px; margin: 20px auto`, which
+   leaves content flush against the screen edge below 1400px.
+   ------------------------------------------------------------- */
+
+.controls,
+.main-container {
+  width: min(100% - 2rem, 1400px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* -------------------------------------------------------------
+   3. Chart canvas sizing
+
+   Chart.js is switched to `maintainAspectRatio: false` in script.js,
+   which means the canvas fills its parent. These wrappers are what
+   give every chart a definite, viewport-relative height instead of
+   the old width/2 aspect ratio that collapsed to ~150px on a phone.
+   ------------------------------------------------------------- */
+
+.chart-canvas-wrap {
+  position: relative;
+  width: 100%;
+}
+
+/* NOTE: every height rule, here and in the media queries below, excludes
+   --square. That wrapper must keep `height: auto` at all breakpoints because
+   Chart.js derives the pie's height from its own 1:1 aspect ratio; a fixed
+   parent height would fight it. */
+.chart-canvas-wrap:not(.chart-canvas-wrap--square) {
+  height: clamp(300px, 48vh, 520px);
+}
+
+/* Time series carries a large multi-category legend, so give it more room. */
+.chart-canvas-wrap--tall {
+  height: clamp(360px, 58vh, 620px);
+}
+
+/* Pie chart keeps its own 1:1 ratio (maintainAspectRatio stays true). */
+.chart-canvas-wrap--square {
+  height: auto;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.chart-canvas-wrap > canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.chart-canvas-wrap--square > canvas {
+  height: auto;
+}
+
+/* -------------------------------------------------------------
+   4. Tables inside narrow containers scroll rather than overflow
+   ------------------------------------------------------------- */
+
+#topPosts #postListContainer {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* =============================================================
+   <= 1024px — tablets and small laptops
+   ============================================================= */
+
+@media (max-width: 1024px) {
+
+  /* Dashboard becomes a single column: stats on top, charts below. */
+  .main-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* `min-width` on flex children is what forces horizontal overflow
+     on narrow screens — reset it. */
+  .left-div,
+  .right-div {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Stat cards sit side by side rather than in a tall stack. */
+  .left-div {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+    align-items: start;
+  }
+
+  /* Row 1: subreddit picker | Posts+Comments counters
+     Row 2: average sentiment (full width)
+     Row 3: pie chart (full width) */
+  .left-div .subreddit-select-container,
+  .left-div .post-comments-count-container {
+    grid-column: span 1;
+  }
+
+  .left-div #avgWeightedScoreBox,
+  .left-div #sentimentPieBox {
+    grid-column: 1 / -1;
+  }
+
+  /* Tabs become a horizontally swipeable strip instead of wrapping
+     into four ragged rows. */
+  .tab-container {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    justify-content: flex-start;
+    padding-left: 0;
+    padding-right: 0;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .tab-button {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    scroll-snap-align: start;
+    /* Negative margin would be clipped by the scroll container. */
+    margin-bottom: 0;
+  }
+
+  /* Gutters now come from .main-container, so drop the per-section ones. */
+  .chart-section {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/* =============================================================
+   <= 768px — phones
+   ============================================================= */
+
+@media (max-width: 768px) {
+
+  header {
+    padding: 12px 10px;
+  }
+
+  header h1 {
+    font-size: clamp(1.15rem, 4.6vw, 1.7rem);
+    line-height: 1.25;
+  }
+
+  /* ---- Controls bar: one full-width group per row ---- */
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  /* Re-purpose the vertical rules as horizontal group separators. */
+  .controls .vertical-divider {
+    width: 100%;
+    height: 1px;
+    margin: 2px 0;
+  }
+
+  .controls .date-range {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 8px 10px;
+    align-items: center;
+  }
+
+  .controls .date-range input[type="date"] {
+    width: 100%;
+  }
+
+  .controls .controls-middle-group {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+
+  .controls .controls-middle-group #filter-btn {
+    flex: 1 1 100%;
+  }
+
+  .controls .keyword-search {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .controls .keyword-search input[type="text"] {
+    min-width: 0;
+  }
+
+  .theme-about-container {
+    justify-content: flex-end;
+  }
+
+  /* ---- Touch affordances ----
+     44px is the minimum comfortable tap target on touch screens. */
+  .controls button,
+  .chart-controls button,
+  .close-drawer-btn,
+  .pdf-export-btn,
+  .view-full-post-btn {
+    min-height: 44px;
+  }
+
+  .icon-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .controls input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* iOS zooms the page when a focused input is under 16px. */
+  .controls .date-range input[type="date"],
+  .controls .keyword-search input[type="text"],
+  #subreddit-select,
+  #topPosts select {
+    font-size: 16px;
+  }
+
+  /* ---- Charts ---- */
+  .chart-canvas-wrap:not(.chart-canvas-wrap--square) {
+    height: clamp(300px, 52vh, 420px);
+  }
+
+  .chart-canvas-wrap--tall {
+    height: clamp(340px, 62vh, 500px);
+  }
+
+  .chart-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin: 14px 0;
+  }
+
+  .chart-controls button {
+    width: 100%;
+  }
+
+  .chart-controls span {
+    text-align: center;
+    font-size: 0.85em;
+  }
+
+  .chart-section {
+    padding: 12px 10px;
+    margin-bottom: 18px;
+  }
+
+  .chart-section h3 {
+    font-size: 1.3em;
+    margin-bottom: 14px;
+  }
+
+  /* ---- Top 10 table ---- */
+  .post-list-table {
+    /* Narrower than this and the four columns become unreadable, so
+       scroll the table instead of squashing it. */
+    min-width: 520px;
+  }
+
+  .post-list-table th,
+  .post-list-table td {
+    padding: 8px;
+    font-size: 0.9em;
+  }
+
+  /* ---- Post details modal: full screen on a phone ---- */
+  #post-details-container {
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    transform: translate(0, 0) scale(0.96);
+  }
+
+  #post-details-container.open {
+    transform: translate(0, 0) scale(1);
+  }
+
+  .modal-nav-container {
+    padding: 10px 12px;
+  }
+
+  .post-details-wrapper,
+  .category-date-details-wrapper,
+  .author-details-wrapper,
+  .search-results-wrapper {
+    padding: 16px 14px;
+    border-radius: 0;
+  }
+
+  .post-details-title,
+  .category-date-title,
+  .author-details-title,
+  .search-results-title {
+    font-size: 1.3em;
+  }
+
+  .category-post-item,
+  .category-comment-item,
+  .author-post-item,
+  .author-comment-item,
+  .search-item-card,
+  .post-details-comment {
+    padding: 12px;
+  }
+
+  /* ---- Footer: fixed bars eat far too much of a phone screen ---- */
+  body {
+    padding-bottom: 0;
+  }
+
+  footer {
+    position: static;
+    margin-top: 24px;
+    padding: 14px 16px;
+    padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* =============================================================
+   <= 600px — phones in portrait
+   ============================================================= */
+
+@media (max-width: 600px) {
+
+  /* Two stat columns no longer fit comfortably. */
+  .left-div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .left-div .subreddit-select-container,
+  .left-div #avgWeightedScoreBox,
+  .left-div #sentimentPieBox {
+    grid-column: 1 / -1;
+  }
+
+  /* Posts / Comments stay paired — they are short enough. */
+  .left-div .post-comments-count-container {
+    gap: 12px;
+    flex-wrap: nowrap;
+  }
+}
+
+/* =============================================================
+   <= 480px — tightest spacing
+   ============================================================= */
+
+@media (max-width: 480px) {
+
+  .controls,
+  .main-container {
+    width: min(100% - 1rem, 1400px);
+  }
+
+  .dashboard-box .postCount-number {
+    font-size: 1.8em;
+  }
+
+  .dashboard-box-wide .postCount-number-wide {
+    font-size: 2.2em;
+  }
+
+  .left-div .subreddit-select-container .postCount-title-large,
+  .dashboard-box-large .postCount-title-large {
+    margin-bottom: 12px;
+    font-size: 1.05em;
+  }
+
+  .tab-button {
+    padding: 12px 10px;
+    font-size: 0.82em;
+  }
+
+  .chart-canvas-wrap:not(.chart-canvas-wrap--square) {
+    height: clamp(280px, 50vh, 380px);
+  }
+
+  .chart-description {
+    font-size: 0.88em;
+    line-height: 1.6;
+  }
+}
+
+/* =============================================================
+   Short landscape phones — reclaim vertical space
+   ============================================================= */
+
+@media (max-height: 500px) and (orientation: landscape) {
+
+  header {
+    padding: 6px 10px;
+  }
+
+  header h1 {
+    font-size: 1.1rem;
+  }
+
+  .chart-canvas-wrap:not(.chart-canvas-wrap--square),
+  .chart-canvas-wrap--tall {
+    height: 78vh;
+  }
+}
+
+/* =============================================================
+   Accessibility / print
+   ============================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  #post-details-container,
+  .tab-button,
+  .controls button,
+  .chart-controls button {
+    transition: none !important;
+  }
+}
+
+@media print {
+  .controls,
+  .tab-container,
+  .chart-controls,
+  #drawer-overlay,
+  footer {
+    display: none !important;
+  }
+
+  .main-container {
+    display: block;
+  }
+}
