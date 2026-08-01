@@ -19,6 +19,21 @@
     <!-- Default to light theme -->
     <link id="themeStylesheet" rel="stylesheet" href="style.css?v1.2">
 
+    <!--
+        Apply the saved theme before the page paints, otherwise a dark-theme
+        user gets a white flash on every load. about.html reads the same key.
+    -->
+    <script>
+        (function () {
+            try {
+                if (localStorage.getItem('tpcraw-theme') === 'dark') {
+                    document.getElementById('themeStylesheet')
+                            .setAttribute('href', 'style_dark.css');
+                }
+            } catch (e) { /* storage blocked (private mode) — stay on light */ }
+        })();
+    </script>
+
     <!-- Example CSS for new vertical dividers, switch, and icon button -->
     <style>
 
@@ -299,16 +314,33 @@
 
     <!-- Script to handle theme toggling and about button -->
     <script>
+        // Shared with about.html so the two pages agree on the theme.
+        const THEME_STORAGE_KEY = "tpcraw-theme";
+
         const themeToggleCheckbox = document.getElementById("themeToggle");
         const themeStylesheet = document.getElementById("themeStylesheet");
 
-        // Switch to dark theme if checked; otherwise light
-        themeToggleCheckbox.addEventListener("change", () => {
-            if (themeToggleCheckbox.checked) {
-                themeStylesheet.setAttribute("href", "style_dark.css");
-            } else {
-                themeStylesheet.setAttribute("href", "style.css");
+        function readStoredTheme() {
+            try {
+                return localStorage.getItem(THEME_STORAGE_KEY);
+            } catch (e) {
+                return null; // storage blocked
             }
+        }
+
+        // Switch to dark theme if checked; otherwise light
+        function applyTheme(isDark) {
+            themeStylesheet.setAttribute("href", isDark ? "style_dark.css" : "style.css");
+            try {
+                localStorage.setItem(THEME_STORAGE_KEY, isDark ? "dark" : "light");
+            } catch (e) { /* storage blocked — theme just won't persist */ }
+        }
+
+        // The <head> script already applied the saved theme; catch the switch up.
+        themeToggleCheckbox.checked = readStoredTheme() === "dark";
+
+        themeToggleCheckbox.addEventListener("change", () => {
+            applyTheme(themeToggleCheckbox.checked);
         });
 
         // About button click
