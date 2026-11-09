@@ -1,0 +1,33 @@
+# When the dashboard changes, ask Cloudflare to rebuild faramira.com so the
+# copy at faramira.com/tools/tpcraw/ is updated too.
+# Needs a repository secret named CF_DEPLOY_HOOK (the Cloudflare deploy hook URL).
+name: Rebuild faramira.com
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'about.html'
+      - 'script.js'
+      - 'export.js'
+      - 'style.css'
+      - 'style_dark.css'
+      - 'responsive.css'
+  workflow_dispatch:
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Cloudflare build
+        env:
+          HOOK: ${{ secrets.CF_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "CF_DEPLOY_HOOK secret is not set, so faramira.com was not rebuilt."
+            exit 1
+          fi
+          curl -fsS -X POST "$HOOK"
+          echo
+          echo "Cloudflare build requested. faramira.com updates in about two minutes."
