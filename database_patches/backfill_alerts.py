@@ -70,6 +70,8 @@ def main():
         sys.exit("GOOGLE_GEMINI_API_KEY is not set.")
     client = None if args.dry_run else genai.Client(api_key=crawler.GOOGLE_GEMINI_API_KEY)
 
+    alerts.correct_saved_urgency(dry_run=args.dry_run)
+
     today = datetime.datetime.now(SGT).date()
     first = today - datetime.timedelta(days=args.days - 1)
     since = datetime.datetime.combine(first, datetime.time.min, tzinfo=SGT)
