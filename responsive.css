@@ -656,3 +656,9 @@ i.ui-pos { background: var(--ui-pos); } i.ui-neu { background: var(--ui-neu); } 
 .ui-change--up { border-left-color: var(--ui-neg, #c0392b); }
 .ui-change--down { border-left-color: var(--ui-pos, #2a9d8f); }
 #overviewChanges a { color: var(--ui-accent); }
+
+/* Alert title opens the analysed post */
+.alert-title { font: inherit; color: var(--ui-ink); background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-align: left; text-decoration: underline; }
+.alert-title:hover { color: var(--ui-accent); }
+.ui-wrap .alert-item a.alert-reddit { color: var(--ui-accent); }
+a.open-reddit-btn { text-decoration: none; display: inline-flex; align-items: center; }
