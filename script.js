@@ -793,10 +793,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                   ${chips}
                   ${schoolReasonsHtml(postData)}
                   ${split}
-                  <h3>AI summary</h3>
-                  <div class="pp-sum">${postData.summary ? html(postData.summary) : 'No summary.'}</div>
-                  <h3>Post</h3>
-                  <div class="pp-post">${postData.body ? html(postData.body) : '<span class="ui-muted">This post has no text.</span>'}</div>
+                  <section><h3>AI summary</h3>
+                  <div class="pp-sum">${postData.summary ? html(postData.summary) : 'No summary.'}</div></section>
+                  <section><h3>Post</h3>
+                  <div class="pp-post">${postData.body ? html(postData.body) : '<span class="ui-muted">This post has no text.</span>'}</div></section>
                   <h3>Comments (${total})</h3>
                   ${commentsHtml || '<p class="ui-muted">No comments.</p>'}
                 </div>
