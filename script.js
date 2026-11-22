@@ -57,6 +57,46 @@ function responsiveCategoryTicks(extra = {}) {
   };
 }
 
+// Chart text and grid colours for the light and the dark theme. Chart.js draws
+// on a canvas, so the stylesheet cannot reach these.
+function isDarkTheme() {
+  const link = document.getElementById('themeStylesheet');
+  return !!link && String(link.getAttribute('href') || '').indexOf('style_dark') === 0;
+}
+function chartTheme() {
+  return isDarkTheme()
+    ? { text: '#c5cfdb', title: '#eef2f7', grid: 'rgba(255, 255, 255, 0.12)', faint: 0.55 }
+    : { text: '#555', title: '#333', grid: 'rgba(0, 0, 0, 0.1)', faint: 0.3 };
+}
+function applyChartTheme() {
+  if (typeof Chart === 'undefined') return;
+  const theme = chartTheme();
+  Chart.defaults.color = theme.text;
+  Chart.defaults.borderColor = theme.grid;
+  Object.values(Chart.instances || {}).forEach(chart => {
+    const title = chart.options.plugins && chart.options.plugins.title;
+    if (title) title.color = theme.title;
+    // Axes keep the colours they were created with, so set them directly.
+    Object.values(chart.options.scales || {}).forEach(scale => {
+      if (scale.ticks) scale.ticks.color = theme.text;
+      if (scale.grid) scale.grid.color = theme.grid;
+      if (scale.border) scale.border.color = theme.grid;
+      if (scale.title) scale.title.color = theme.text;
+    });
+    const legend = chart.options.plugins && chart.options.plugins.legend;
+    if (legend && legend.labels) legend.labels.color = theme.text;
+    chart.data.datasets.forEach(dataset => {
+      if (dataset.faintOf) dataset.borderColor = fadeColor(dataset.faintOf, theme.faint);
+    });
+    chart.update('none');
+  });
+}
+function fadeColor(rgba, alpha) {
+  return String(rgba).replace(/[\d.]+\)$/, alpha + ')');
+}
+applyChartTheme();
+document.addEventListener('themechange', applyChartTheme);
+
 function responsiveChartTitle(text) {
   const mobile = isMobileViewport();
   return {
@@ -64,7 +104,7 @@ function responsiveChartTitle(text) {
     text: text,
     align: 'start',
     font: { size: mobile ? 13 : 18, weight: '600', family: 'Arial, sans-serif' },
-    color: '#333',
+    color: chartTheme().title,
     padding: { top: mobile ? 4 : 10, bottom: mobile ? 10 : 20 }
   };
 }
@@ -1127,7 +1167,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             label: category + " (raw)",
             data: data[key],
             fill: false,
-            borderColor: setAlpha(color, 0.3), // Use alpha function
+            borderColor: setAlpha(color, chartTheme().faint),
+            faintOf: color, // lets a theme change redraw the faint line
             tension: 0.1,
             borderWidth: 0.5,
             hidden: !isVisible // Set hidden based on initial visibility
@@ -1181,7 +1222,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                                     seenCategories[cat] = i;
                                     labels.push({
                                         text: cat,
-                                        fillStyle: dataset.borderColor,
+                                        // Full colour, not the faint daily line's colour
+                                        fillStyle: dataset.faintOf || dataset.borderColor,
+                                        strokeStyle: dataset.faintOf || dataset.borderColor,
+                                        fontColor: Chart.defaults.color,
                                         // Correctly determine hidden status based on the *first* dataset for this category
                                         hidden: !chart.isDatasetVisible(seenCategories[cat]),
                                         datasetIndex: seenCategories[cat] // Point to the first dataset index for this category
