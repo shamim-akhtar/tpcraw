@@ -368,7 +368,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Filters
     const selectedSchool = document.getElementById('school-filter').value;
-    const includeTpWide = document.getElementById('include-tpwide').checked;
 
     const tpRelatedCheckbox = document.getElementById('tp-related-filter');
     const isTpRelatedChecked = tpRelatedCheckbox.checked;
@@ -418,7 +417,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Build the data array
     const dataArray = [];
-    const coverage = { total: 0, linked: 0, general: 0, unchecked: 0, shown: 0, clear: 0, legacyShown: 0, generalShown: 0 };
+    const coverage = { total: 0, linked: 0, general: 0, unchecked: 0, shown: 0, clear: 0, legacyShown: 0 };
     const useSchools = schoolFilterApplies(lowerSub);
     snapshot.forEach(postDoc => {
       const postData = postDoc.data();
@@ -432,8 +431,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             coverage.shown++;
             if (tag.legacy) coverage.legacyShown++;
             else coverage.clear++;
-          } else if (includeTpWide && status === 'general') {
-            coverage.generalShown++;
           } else {
             return;
           }
@@ -482,7 +479,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     });
 
-    if (!range) renderSchoolCoverage(useSchools, selectedSchool, coverage, includeTpWide);
+    if (!range) renderSchoolCoverage(useSchools, selectedSchool, coverage);
     return dataArray;
   }
 
@@ -1480,8 +1477,8 @@ function plural(n, word) {
 // name the chosen school, and what is left out.
 let lastSchoolCoverage = null;
 
-function renderSchoolCoverage(useSchools, schoolCode, c, includeGeneral) {
-    lastSchoolCoverage = useSchools ? { schoolCode, includeGeneral, ...c } : null;
+function renderSchoolCoverage(useSchools, schoolCode, c) {
+    lastSchoolCoverage = useSchools ? { schoolCode, ...c } : null;
     const box = document.getElementById('schoolCoverage');
     const text = document.getElementById('schoolCoverageText');
     if (!box || !text) return;
@@ -1495,9 +1492,7 @@ function renderSchoolCoverage(useSchools, schoolCode, c, includeGeneral) {
         const schoolName = escapeHtml(SCHOOL_NAMES[schoolCode] || schoolCode);
         parts.push(`${b(c.clear)} ${c.clear === 1 ? 'post names' : 'posts name'} ${schoolName}`);
         if (c.legacyShown) parts.push(`${b(c.legacyShown)} from the earlier IIT flag, set without evidence`);
-        parts.push(includeGeneral
-            ? `${b(c.generalShown)} general TP ${c.generalShown === 1 ? 'post' : 'posts'} included`
-            : `${b(c.general)} general TP ${c.general === 1 ? 'post' : 'posts'} not counted`);
+        parts.push(`${b(c.general)} general TP ${c.general === 1 ? 'post' : 'posts'} not shown (choose All schools to see them)`);
         if (c.unchecked) parts.push(`${b(c.unchecked)} not yet checked for schools`);
     } else {
         parts.push(`${b(c.linked)} ${c.linked === 1 ? 'post names' : 'posts name'} a school`);
@@ -2148,7 +2143,7 @@ function safeUrl(url) {
     if (c && c.schoolCode && c.total > 0) {
       const name = SCHOOL_NAMES[c.schoolCode] || c.schoolCode;
       let t = `No post in this period names ${name}.`;
-      if (c.general) t += ` ${plural(c.general, 'post')} ${c.general === 1 ? 'is' : 'are'} about TP in general: tick "Include general TP posts" to see ${c.general === 1 ? 'it' : 'them'}, or choose a longer period.`;
+      if (c.general) t += ` ${plural(c.general, 'post')} ${c.general === 1 ? 'is' : 'are'} about TP in general: choose "All schools" to see ${c.general === 1 ? 'it' : 'them'}, or choose a longer period.`;
       if (c.unchecked) t += ` ${plural(c.unchecked, 'post')} ${c.unchecked === 1 ? 'has' : 'have'} not been checked for schools yet.`;
       return t;
     }
@@ -2315,7 +2310,6 @@ function safeUrl(url) {
   [startDateInput, endDateInput].forEach(el => el.addEventListener('change', () => {
     if (startDateInput.value && endDateInput.value && startDateInput.value <= endDateInput.value) updateCharts();
   }));
-  document.getElementById('include-tpwide').addEventListener('change', updateCharts);
   document.getElementById('tp-related-filter').addEventListener('change', updateCharts);
 
   // NEW: Search button listener
@@ -2347,16 +2341,8 @@ function safeUrl(url) {
       digestWeek.add(new Option(`Week of ${label}`, iso));
     }
   })();
-  try {
-    const savedDigestSchool = localStorage.getItem('digestSchool');
-    if (savedDigestSchool && digestSchool.querySelector(`option[value="${CSS.escape(savedDigestSchool)}"]`)) {
-      digestSchool.value = savedDigestSchool;
-    }
-  } catch (e) { /* storage unavailable */ }
-  digestSchool.addEventListener('change', () => {
-    try { localStorage.setItem('digestSchool', digestSchool.value); } catch (e) { /* ignore */ }
-    loadDigest();
-  });
+  digestSchool.value = 'TP';
+  digestSchool.addEventListener('change', loadDigest);
   digestWeek.addEventListener('change', loadDigest);
 
   // The Weekly digest and Alerts tabs use the main School choice.
@@ -2389,16 +2375,8 @@ function safeUrl(url) {
   // Alerts tab
   const alertsSchool = document.getElementById('alerts-school');
   const alertsDays = document.getElementById('alerts-days');
-  try {
-    const savedAlertsSchool = localStorage.getItem('alertsSchool');
-    if (savedAlertsSchool !== null && alertsSchool.querySelector(`option[value="${CSS.escape(savedAlertsSchool)}"]`)) {
-      alertsSchool.value = savedAlertsSchool;
-    }
-  } catch (e) { /* storage unavailable */ }
-  alertsSchool.addEventListener('change', () => {
-    try { localStorage.setItem('alertsSchool', alertsSchool.value); } catch (e) { /* ignore */ }
-    loadAlerts();
-  });
+  alertsSchool.value = '';
+  alertsSchool.addEventListener('change', loadAlerts);
   alertsDays.addEventListener('change', loadAlerts);
 
   // Alerts from the last N days (Singapore time), high urgency first.
@@ -2434,18 +2412,11 @@ function safeUrl(url) {
   }
 
   // 11. Initial load
-  // Remember the chosen school in this browser. Restored before the first load.
+  // The page always opens on "All schools", which covers the whole of TP.
   const schoolFilterSelect = document.getElementById("school-filter");
-  try {
-    const savedSchool = localStorage.getItem('schoolFilter');
-    if (savedSchool !== null && schoolFilterSelect.querySelector(`option[value="${CSS.escape(savedSchool)}"]`)) {
-      schoolFilterSelect.value = savedSchool;
-    }
-  } catch (e) { /* storage unavailable */ }
-  schoolFilterSelect.addEventListener('change', () => {
-    try { localStorage.setItem('schoolFilter', schoolFilterSelect.value); } catch (e) { /* ignore */ }
-    updateCharts();
-  });
+  schoolFilterSelect.value = '';
+  try { localStorage.removeItem('schoolFilter'); } catch (e) { /* ignore */ }
+  schoolFilterSelect.addEventListener('change', updateCharts);
 
   updateCharts();
 
