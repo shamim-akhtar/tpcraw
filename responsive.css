@@ -560,6 +560,14 @@ header.ui-header h1 { flex: 1; margin: 0; font-size: 1.3em; text-align: left; fo
 #schoolCoverageText { display: flex; flex-wrap: wrap; gap: 4px 16px; }
 #schoolCoverageText strong { color: var(--ui-ink); }
 .ui-coverage a, .ui-link { color: var(--ui-accent); }
+.ui-count-link { background: none; border: 0; padding: 0; margin: 0; font: inherit; color: inherit; cursor: pointer; display: inline-flex; gap: 6px; text-align: left; }
+.ui-count-link span { color: var(--ui-accent); text-decoration: underline; text-underline-offset: 2px; }
+.ui-count-link:hover span, .ui-count-link:focus-visible span { text-decoration-thickness: 2px; }
+.pp-postlist { list-style: none; margin: 14px 0 0; padding: 0; }
+.pp-postlist li { padding: 12px 0; border-top: 1px solid var(--ui-line); }
+.pp-postlist .ui-link { background: none; border: 0; padding: 0; font: inherit; font-size: 14px; font-weight: 600; text-decoration: none; text-align: left; cursor: pointer; }
+.pp-postlist .ui-link:hover { text-decoration: underline; }
+.pp-postlist .school-reasons { margin: 8px 0 0; }
 .ui-grid2 { display: grid; grid-template-columns: 3fr 2fr; gap: 14px; margin-top: 14px; }
 .ui-grid2[hidden], .ui-card[hidden] { display: none; }
 .ui-card { background: var(--ui-panel); border: 1px solid var(--ui-line); border-radius: 10px; padding: 14px 16px; margin-top: 14px; min-width: 0; }

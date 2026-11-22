@@ -205,6 +205,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   }).observe(postDetailsContent, { childList: true });
   let lastPostView = null;
 
+  // A count in the "School mentions" line opens the list of its posts.
+  document.getElementById('schoolCoverage').addEventListener('click', e => {
+      const btn = e.target.closest('[data-coverage]');
+      if (!btn) return;
+      openDrawer();
+      postDetailsContent.innerHTML = schoolCoverageListHtml(btn.dataset.coverage);
+  });
+
   // --- 2. CENTRAL MODAL CLICK HANDLER (Event Delegation) ---
   postDetailsContent.addEventListener('click', (e) => {
       // Trigger PDF export from export.js
@@ -508,7 +516,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Build the data array
     const dataArray = [];
-    const coverage = { total: 0, linked: 0, general: 0, unchecked: 0, shown: 0 };
+    const coverage = { total: 0, linked: 0, general: 0, unchecked: 0, shown: 0,
+                       lists: { linked: [], general: [], unchecked: [], shown: [] } };
+    const listItem = (postDoc, postData) => ({
+      postId: postDoc.id,
+      title: postData.title || "No Title",
+      created: postData.created && postData.created.toDate ? postData.created.toDate() : postData.created,
+      totalComments: postData.totalComments || 0,
+      postDetails: postData
+    });
     const useSchools = schoolFilterApplies(lowerSub);
     snapshot.forEach(postDoc => {
       const postData = postDoc.data();
@@ -516,10 +532,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         const status = schoolStatus(postData);
         coverage.total++;
         coverage[status]++;
+        coverage.lists[status].push(listItem(postDoc, postData));
         if (selectedSchool) {
           const tag = schoolTagFor(postData, selectedSchool);
           if (tag) {
             coverage.shown++;
+            coverage.lists.shown.push(listItem(postDoc, postData));
           } else {
             return;
           }
@@ -1600,19 +1618,56 @@ function renderSchoolCoverage(useSchools, schoolCode, c) {
     }
     const parts = [];
     const b = n => `<strong>${n}</strong>`;
+    // Each count opens the list of the posts it counts.
+    const part = (key, n, label) => parts.push(n > 0
+        ? `<button type="button" class="ui-count-link" data-coverage="${key}" title="Show ${n === 1 ? 'this post' : 'these posts'}">${b(n)} <span>${label}</span></button>`
+        : `${b(n)} ${label}`);
     if (schoolCode) {
         const schoolName = escapeHtml(SCHOOL_NAMES[schoolCode] || schoolCode);
-        parts.push(`${b(c.shown)} ${c.shown === 1 ? 'post names' : 'posts name'} ${schoolName}`);
-        parts.push(`${b(c.general)} general TP ${c.general === 1 ? 'post' : 'posts'} not shown (choose All schools to see them)`);
-        if (c.unchecked) parts.push(`${b(c.unchecked)} not yet checked for schools`);
+        part('shown', c.shown, `${c.shown === 1 ? 'post names' : 'posts name'} ${schoolName}`);
+        part('general', c.general, `general TP ${c.general === 1 ? 'post' : 'posts'} not shown`);
+        if (c.unchecked) part('unchecked', c.unchecked, 'not yet checked for schools');
     } else {
-        parts.push(`${b(c.linked)} ${c.linked === 1 ? 'post names' : 'posts name'} a school`);
-        parts.push(`${b(c.general)} about TP in general`);
-        if (c.unchecked) parts.push(`${b(c.unchecked)} not yet checked for schools`);
+        part('linked', c.linked, `${c.linked === 1 ? 'post names' : 'posts name'} a school`);
+        part('general', c.general, 'about TP in general');
+        if (c.unchecked) part('unchecked', c.unchecked, 'not yet checked for schools');
     }
     text.innerHTML = parts.map(p => `<span>${p}</span>`).join('') +
         '<a href="about.html#school-filter-help">How posts are linked to schools</a>';
     box.hidden = false;
+}
+
+// The list behind one of the counts above, for the side panel.
+function schoolCoverageListHtml(key) {
+    const c = lastSchoolCoverage;
+    const posts = c && c.lists && c.lists[key] ? [...c.lists[key]] : [];
+    posts.sort((a, b) => (b.created || 0) - (a.created || 0));
+    const schoolName = c && c.schoolCode ? (SCHOOL_NAMES[c.schoolCode] || c.schoolCode) : '';
+    const n = posts.length;
+    const titles = {
+        shown: `${plural(n, 'post')} ${n === 1 ? 'names' : 'name'} ${schoolName}`,
+        linked: `${plural(n, 'post')} ${n === 1 ? 'names' : 'name'} a school`,
+        general: `${plural(n, 'post')} about TP in general`,
+        unchecked: `${plural(n, 'post')} not yet checked for schools`
+    };
+    const notes = {
+        shown: 'Each post is listed with the words that link it to the school.',
+        linked: 'Each post is listed with the school it names and the words that link it.',
+        general: 'These posts name no particular school, diploma, module or facility.',
+        unchecked: 'These posts have not been checked for schools under the current rules.'
+    };
+    const rows = posts.map(p => {
+        const date = p.created instanceof Date && !isNaN(p.created)
+            ? p.created.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+        const meta = [date, plural(p.totalComments, 'comment')].filter(Boolean).join(' · ');
+        const reasons = (key === 'linked' || key === 'shown') ? schoolReasonsHtml(p.postDetails) : '';
+        return `<li><button type="button" class="ui-link view-full-post-btn" data-post-id="${escapeHtml(p.postId)}">${escapeHtml(p.title)}</button>
+            <div class="ui-muted ui-small">${meta}</div>${reasons}</li>`;
+    }).join('');
+    return panelBarHtml('School mentions', '', false) +
+        `<div class="pp-body"><h2>${escapeHtml(titles[key] || '')}</h2>
+         <p class="ui-muted ui-small">In the period chosen in the toolbar. ${notes[key] || ''} Click a title to read the post.</p>
+         <ul class="pp-postlist">${rows}</ul></div>`;
 }
 
 // Shows which schools a post or comment is linked to, and why.
