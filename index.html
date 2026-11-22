@@ -14,7 +14,7 @@
         Chart.register(ChartZoom);
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script type="module" src="script.js?v=2.3"></script>
+    <script type="module" src="script.js?v=2.5"></script>
 
     <!-- Default to light theme -->
     <link id="themeStylesheet" rel="stylesheet" href="style.css?v1.5">
@@ -141,7 +141,7 @@
                 </select>
             </div>
             <div>
-                <label for="include-tpwide" title="Also show posts that are about TP in general, not one school">+ TP-wide</label>
+                <label for="include-tpwide" title="Also show posts that are about TP in general and do not name a school">+ General TP</label>
                 <input type="checkbox" id="include-tpwide">
             </div>
             <div>
@@ -203,7 +203,7 @@
             </div>
 
             <div id="schoolCoverage" class="dashboard-box school-coverage" hidden>
-                <div class="postCount-title">School coverage</div>
+                <div class="postCount-title">School mentions</div>
                 <p id="schoolCoverageText" class="school-coverage-text"></p>
             </div>
 
