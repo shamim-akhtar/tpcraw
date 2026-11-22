@@ -1554,6 +1554,33 @@ function alertSourceText(a) {
     return names.length ? `${sub}, names ${names.join(' and ')}` : sub;
 }
 
+// Personal names found by AI in an alert (maskNames) are hidden until the
+// reader asks to see them. The text is escaped here.
+function maskNamesHtml(text, names) {
+    const list = (names || []).filter(n => n && n.length >= 2);
+    if (!list.length) return escapeHtml(text);
+    const re = new RegExp(`(${list.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
+    return String(text || '').split(re).map((part, i) =>
+        i % 2 ? '<span class="name-mask" title="Name hidden">name hidden</span>' : escapeHtml(part)).join('');
+}
+
+// A Reddit link without the title words, which can hold a name.
+function linkWithoutSlug(url) {
+    return String(url || '').replace(/(\/comments\/[a-z0-9]+)\/[^/?#]+\/?/i, '$1/');
+}
+
+function alertTextHtml(a) {
+    const names = Array.isArray(a.maskNames) ? a.maskNames : [];
+    const plain = `<a href="${safeUrl(a.url)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(a.title)}</strong></a>
+          <p>${escapeHtml(a.reason)}</p>`;
+    if (!names.length) return plain;
+    return `<div class="alert-text">
+            <a href="${safeUrl(linkWithoutSlug(a.url))}" target="_blank" rel="noopener noreferrer"><strong>${maskNamesHtml(a.title, names)}</strong></a>
+            <p>${maskNamesHtml(a.reason, names)}</p></div>
+          <div class="alert-text" hidden>${plain}</div>
+          <p class="alert-name-note">A person's name appears in this public post, so it is hidden here. <button type="button" class="ui-link" data-show-names>Show name</button></p>`;
+}
+
 // alerts: already narrowed to one polytechnic (and school, if chosen).
 function renderAlertsHtml(alerts, schoolFilter, opts = {}) {
     const shown = alerts;
@@ -1569,8 +1596,7 @@ function renderAlertsHtml(alerts, schoolFilter, opts = {}) {
         return `<li class="alert-item alert-item--${urgency}">
           <div class="alert-head"><span class="alert-badge alert-badge--${urgency}">${urgency === 'high' ? 'High' : 'Normal'}</span>
             <span class="alert-kind">${escapeHtml(ALERT_KIND_LABELS[a.kind] || a.kind || '')}</span></div>
-          <a href="${safeUrl(a.url)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(a.title)}</strong></a>
-          <p>${escapeHtml(a.reason)}</p>
+          ${alertTextHtml(a)}
           <p class="alert-meta">${[alertSourceText(a), plural(a.totalComments || 0, 'comment'), `alerted ${when}`, opts.tp ? alertSchoolText(a) : ''].filter(Boolean).join(' · ')}</p>
         </li>`;
     });
@@ -2234,6 +2260,17 @@ function safeUrl(url) {
           <span class="ui-bar-n" title="Comments">${p.totalComments}</span></button>`;
       }).join('') + '</div>';
   }
+  // "Show name" on an alert reveals the names for that alert only.
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('[data-show-names]');
+    if (!btn) return;
+    const item = btn.closest('.alert-item');
+    const [masked, plain] = item.querySelectorAll('.alert-text');
+    const show = plain.hidden;
+    plain.hidden = !show;
+    masked.hidden = show;
+    btn.textContent = show ? 'Hide name' : 'Show name';
+  });
   document.getElementById('overviewTopPosts').addEventListener('click', e => {
     const row = e.target.closest('[data-post-id]');
     if (row) fetchAndDisplayPostDetails(row.dataset.postId);
@@ -2252,20 +2289,20 @@ function safeUrl(url) {
     document.getElementById('otherForumFeel').hidden = tp;
     document.getElementById('alertsKpi').hidden = !poly;
     if (!poly) { document.getElementById('alerts-badge').hidden = true; return; }
-    // Alerts: last 7 days for this polytechnic (and the chosen TP school)
+    // Alerts: the chosen period, for this polytechnic (and the chosen TP school)
     const alertsBox = document.getElementById('overviewAlerts');
     try {
-      const alerts = await recentAlerts(7);
+      const alerts = await alertsInPeriod();
       const shown = alertsFor(alerts, poly, tp ? document.getElementById('school-filter').value : '');
       const high = shown.filter(a => a.urgency === 'high').length;
       document.getElementById('alertsCount').textContent = shown.length;
-      document.getElementById('alertsCountNote').textContent = shown.length ? `Last 7 days, ${high} high urgency` : 'Last 7 days';
+      document.getElementById('alertsCountNote').textContent = shown.length ? `${periodText()}, ${high} high urgency` : periodText();
       const badge = document.getElementById('alerts-badge');
       badge.textContent = shown.length;
       badge.hidden = shown.length === 0;
       alertsBox.innerHTML = shown.length
         ? renderAlertsHtml(shown.slice(0, 3), '', { compact: true, tp })
-        : '<p class="ui-muted">No alerts in the last 7 days.</p>';
+        : '<p class="ui-muted">No alerts in this period.</p>';
     } catch (err) {
       console.error('Error loading alerts for overview', err);
       document.getElementById('alertsCount').textContent = '-';
@@ -2454,40 +2491,39 @@ function safeUrl(url) {
 
   // Alerts tab
   const alertsSchool = document.getElementById('alerts-school');
-  const alertsDays = document.getElementById('alerts-days');
   alertsSchool.value = '';
   alertsSchool.addEventListener('change', loadAlerts);
-  alertsDays.addEventListener('change', loadAlerts);
 
-  // Alerts from the last N days (Singapore time), high urgency first.
-  // Kept in memory so switching tabs does not read Firestore again.
-  const alertsByDays = {};
-  async function recentAlerts(days) {
-    if (!alertsByDays[days]) {
-      // "Today" starts at midnight Singapore time; longer periods count back whole days.
-      const sgToday = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Singapore' }));
-      const startSg = new Date(sgToday.getFullYear(), sgToday.getMonth(), sgToday.getDate() - (days - 1));
-      const since = new Date(Date.UTC(startSg.getFullYear(), startSg.getMonth(), startSg.getDate()) - 8 * 3600 * 1000);
-      const q = query(collection(db, 'alerts'), where('alertedAt', '>=', since), orderBy('alertedAt', 'desc'));
-      alertsByDays[days] = getDocs(q).then(snap => {
+  // Alerts in the period chosen in the toolbar (whole days, Singapore time),
+  // high urgency first. Kept in memory so switching tabs does not read
+  // Firestore again.
+  const alertsByRange = {};
+  const sgMidnight = iso => { const [y, m, d] = iso.split('-').map(Number); return new Date(Date.UTC(y, m - 1, d) - 8 * 3600 * 1000); };
+  function alertsInPeriod() {
+    const startIso = startDateInput.value, endIso = endDateInput.value;
+    const key = `${startIso}_${endIso}`;
+    if (!alertsByRange[key]) {
+      const since = sgMidnight(startIso);
+      const until = new Date(sgMidnight(endIso).getTime() + 86400000);
+      const q = query(collection(db, 'alerts'), where('alertedAt', '>=', since), where('alertedAt', '<', until), orderBy('alertedAt', 'desc'));
+      alertsByRange[key] = getDocs(q).then(snap => {
         const alerts = snap.docs.map(d => d.data());
         alerts.sort((a, b) => (a.urgency === 'high' ? 0 : 1) - (b.urgency === 'high' ? 0 : 1));
         return alerts;
-      }).catch(err => { delete alertsByDays[days]; throw err; });
+      }).catch(err => { delete alertsByRange[key]; throw err; });
     }
-    return alertsByDays[days];
+    return alertsByRange[key];
   }
 
   async function loadAlerts() {
     const container = document.getElementById('alertsContent');
-    const days = parseInt(alertsDays.value, 10) || 7;
     try {
-      if (!alertsByDays[days]) container.innerHTML = '<p class="details-message loading">Loading alerts...</p>';
-      const alerts = await recentAlerts(days);
+      if (!alertsByRange[`${startDateInput.value}_${endDateInput.value}`]) container.innerHTML = '<p class="details-message loading">Loading alerts...</p>';
+      const alerts = await alertsInPeriod();
       const poly = forumPoly();
       const tp = coversTp();
       const school = tp ? alertsSchool.value : '';
-      const intro = `<p class="ui-muted">Alerts for ${escapeHtml(POLY_NAMES[poly] || 'this forum')}.</p>`;
+      const intro = `<p class="ui-muted">Alerts for ${escapeHtml(POLY_NAMES[poly] || 'this forum')}, ${escapeHtml(periodText().charAt(0).toLowerCase() + periodText().slice(1))}.</p>`;
       container.innerHTML = intro + renderAlertsHtml(poly ? alertsFor(alerts, poly, school) : [], school, { tp });
     } catch (err) {
       console.error('Error loading alerts', err);

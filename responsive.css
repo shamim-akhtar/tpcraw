@@ -645,3 +645,7 @@ i.ui-pos { background: var(--ui-pos); } i.ui-neu { background: var(--ui-neu); } 
 .ui-issue-posts { margin: 2px 0 8px; padding-left: 28px; font-size: 14px; }
 .ui-issue-posts li { margin-bottom: 4px; }
 .ui-issue-posts .ui-link { text-align: left; }
+/* Hidden personal names in alerts */
+.name-mask { display: inline-block; padding: 0 6px; border-radius: 4px; background: var(--ui-ink); color: var(--ui-panel); font-size: 0.85em; font-weight: normal; line-height: 1.5; }
+.alert-name-note { font-size: 13px; color: var(--ui-muted); margin: 4px 0; }
+.alert-text[hidden] { display: none; }
