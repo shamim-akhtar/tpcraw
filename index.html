@@ -40,7 +40,7 @@
         Theme-agnostic responsive layer. Must stay LAST so its rules win over
         whichever theme sheet is loaded into #themeStylesheet above.
     -->
-    <link rel="stylesheet" href="responsive.css?v=1.1">
+    <link rel="stylesheet" href="responsive.css?v=1.2">
 </head>
 
 <body>
@@ -53,7 +53,7 @@
     <main class="ui-wrap">
     <section class="ui-toolbar" aria-label="Filters">
         <div class="ui-field">
-            <label for="subreddit-select">Forum</label>
+            <label for="subreddit-select" class="ui-sr">Forum</label>
             <select id="subreddit-select">
                 <option value="TemasekPoly">r/TemasekPoly</option>
                 <option value="sgExams">r/SGExams</option>
@@ -65,7 +65,7 @@
             </select>
         </div>
         <div class="ui-field" id="school-field">
-            <label for="school-filter">School</label>
+            <label for="school-filter" class="ui-sr">School</label>
             <select id="school-filter" title="Show only posts about one TP school">
                     <option value="">All schools</option>
                     <option value="ASC">Applied Science</option>
@@ -77,11 +77,11 @@
             </select>
         </div>
         <div class="ui-field" id="tp-related-field">
-            <label for="tp-related-filter">Posts</label>
+            <span class="ui-sr">Posts</span>
             <span class="ui-check"><input type="checkbox" id="tp-related-filter" checked> <label for="tp-related-filter">TP-related only</label></span>
         </div>
         <div class="ui-field">
-            <span class="ui-label" id="period-label">Period</span>
+            <span class="ui-sr" id="period-label">Period</span>
             <div class="ui-seg" id="period-buttons" role="group" aria-labelledby="period-label">
                 <button type="button" data-days="7">7 days</button>
                 <button type="button" data-days="30">30 days</button>
@@ -94,7 +94,7 @@
             </div>
         </div>
         <div class="ui-field ui-search">
-            <label for="keyword-search">Search posts</label>
+            <label for="keyword-search" class="ui-sr">Search posts</label>
             <div class="ui-search-row">
                 <input type="search" id="keyword-search" placeholder="e.g. timetable, internship">
                 <button type="button" id="search-btn">Search</button>
