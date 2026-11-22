@@ -1,0 +1,58 @@
+# Run by hand, once, to convert the categories already stored to the fixed
+# list in categories.py. Do a dry run first: it only counts. A run that stops
+# part way can be started again. Do not run it while the daily crawler runs.
+name: Convert categories to the fixed list
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Only count, do not call Gemini or save'
+        type: boolean
+        default: true
+      subreddits:
+        description: 'Forums, comma-separated (empty = all)'
+        required: false
+        default: ''
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore firebase-credentials.json from Base64 secret
+        run: |
+          echo "${{ secrets.FIREBASE_CREDENTIALS_BASE64 }}" | base64 -d > firebase-credentials.json
+
+      - name: Create .env file
+        run: |
+          echo "REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}" >> .env
+          echo "REDDIT_CLIENT_SECRET=${{ secrets.REDDIT_CLIENT_SECRET }}" >> .env
+          echo "REDDIT_USER_AGENT=${{ secrets.REDDIT_USER_AGENT }}" >> .env
+          echo "GOOGLE_GEMINI_API_KEY=${{ secrets.GOOGLE_GEMINI_API_KEY }}" >> .env
+
+      - name: Convert categories
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+          SUBREDDITS: ${{ inputs.subreddits }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            python database_patches/backfill_categories.py --dry-run --subreddits "$SUBREDDITS"
+          else
+            python database_patches/backfill_categories.py --subreddits "$SUBREDDITS"
+          fi
