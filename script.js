@@ -1,5 +1,5 @@
 // --- Import only what you need from Firebase SDKs (Modular v9) ---
-import { exportModalToPDF } from './export.js';
+import { exportModalToPDF } from './export.js?v=2';
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js';
 import { getAnalytics } from 'https://www.gstatic.com/firebasejs/9.21.0/firebase-analytics.js';
 import {
@@ -103,17 +103,52 @@ document.addEventListener('DOMContentLoaded', async () => {
   const overlay = document.getElementById('drawer-overlay');
   const postDetailsContent = document.getElementById('post-details');
 
+  const pageWrap = document.querySelector('.ui-wrap');
+  const WIDE = 1100; // below this width the panel takes the full screen
+
+  // On a wide screen the panel sits on the right, below the toolbar, and the
+  // toolbar keeps its full width. It stays in view while the page scrolls.
+  function positionPanel() {
+      if (!drawer.classList.contains('open')) return;
+      if (window.innerWidth < WIDE) { drawer.style.top = drawer.style.right = drawer.style.bottom = ''; return; }
+      const bar = document.querySelector('.ui-toolbar').getBoundingClientRect();
+      const foot = document.querySelector('footer').getBoundingClientRect();
+      const viewW = document.documentElement.clientWidth, viewH = window.innerHeight;
+      drawer.style.top = Math.max(12, bar.bottom + 16) + 'px';
+      drawer.style.right = Math.max(0, viewW - bar.right) + 'px';
+      drawer.style.bottom = Math.max(12, foot.top < viewH ? viewH - foot.top + 12 : 12) + 'px';
+  }
+  window.addEventListener('scroll', positionPanel, { passive: true });
+  window.addEventListener('resize', positionPanel);
+
+  // Outlines what the panel was opened from, where that can be found on the page.
+  function markPanelSource(postId) {
+      document.querySelectorAll('.pp-source').forEach(el => el.classList.remove('pp-source'));
+      if (!postId) return;
+      const id = (window.CSS && CSS.escape) ? CSS.escape(postId) : postId;
+      document.querySelectorAll(`[data-alert-post="${id}"], .ui-wrap [data-post-id="${id}"]`).forEach(el => {
+          (el.closest('.alert-item') || el).classList.add('pp-source');
+      });
+  }
+
   function openDrawer() {
+      const wasOpen = drawer.classList.contains('open');
       drawer.classList.add('open');
-      overlay.classList.add('active');
+      pageWrap.classList.add('pp-open');
+      document.body.classList.add('pp-open');
+      markPanelSource('');
+      positionPanel();
+      if (!wasOpen) drawer.scrollTop = 0;
   }
 
   function closeDrawer() {
       drawer.classList.remove('open');
-      overlay.classList.remove('active');
+      pageWrap.classList.remove('pp-open');
+      document.body.classList.remove('pp-open');
+      markPanelSource('');
   }
 
-  overlay.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
   let lastPostView = null;
 
   // --- 2. CENTRAL MODAL CLICK HANDLER (Event Delegation) ---
@@ -123,7 +158,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           exportModalToPDF();
       }
       // Handle Close
-      if (e.target.classList.contains('close-drawer-btn') || e.target.id === 'closeModalX') {
+      if (e.target.closest('[data-panel-close]')) {
           closeDrawer();
       }
       // "Show name" in a post opened from an alert with hidden names
@@ -674,7 +709,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // 1. Open the modal popup
     openDrawer(); 
     const postDetailsContent = document.getElementById('post-details');
-    postDetailsContent.innerHTML = '<p class="loading-message">Analyzing post details...</p>';
+    postDetailsContent.innerHTML = '<p class="loading-message">Loading the post...</p>';
 
     // Identify the correct collection based on subreddit select
     const selectedSubreddit = (opts.subreddit || document.getElementById('subreddit-select').value).toLowerCase();
@@ -697,52 +732,69 @@ document.addEventListener('DOMContentLoaded', async () => {
         const date = postData.created?.toDate ? postData.created.toDate() : new Date(postData.created);
         const formattedDate = date.toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 
-        // 2. Construct Navigation Bar
-        // Note: The button uses class="close-drawer-btn" which is handled by your central listener
-        const navHtml = `
-          <div class="modal-nav-container">
-              <div style="display:flex; gap:10px; margin-left: auto;">
-                  <a class="pdf-export-btn open-reddit-btn" href="${safeUrl(names.length ? linkWithoutSlug(postData.URL) : postData.URL)}" target="_blank" rel="noopener noreferrer">Open in Reddit</a>
-                  <button class="pdf-export-btn" id="downloadPDFBtn">📄 Download PDF</button>
-                  <button class="close-drawer-btn">✕ Close</button>
-              </div>
-          </div>`;
+        const redditUrl = safeUrl(names.length ? linkWithoutSlug(postData.URL) : postData.URL);
+        const navHtml = panelBarHtml(`Post from r/${escapeHtml(selectedSubreddit)}`,
+          `<a class="pp-btn" href="${redditUrl}" target="_blank" rel="noopener noreferrer">Open in Reddit</a>`);
         const nameNote = names.length
-          ? `<p class="alert-name-note">A person's name appears in this public post, so it is hidden here. Only names found in the alert are hidden, so others may still show. <button type="button" class="ui-link" id="postShowNames">Show name</button></p>`
+          ? `<p class="pp-note">A person's name appears in this public post, so it is hidden here. Only names found in the alert are hidden, so others may still show. <button type="button" class="ui-link" id="postShowNames">Show name</button></p>`
           : '';
 
-        const header = `<h2 class="post-details-title"><a href="${safeUrl(names.length ? linkWithoutSlug(postData.URL) : postData.URL)}" target="_blank" rel="noopener noreferrer">${esc(postData.title)}</a></h2>${nameNote}`;
-        const meta = `<p class="post-details-meta">By <strong>${escapeHtml(postData.author)}</strong> on ${formattedDate}</p>`;
-        const badges = `<div class="post-details-badges">${generateBadgesHtml(postData)}</div>`;
-        const summary = `<div class="post-details-summary"><h4 class="summary-title">AI Summary</h4><p class="summary-text">${postData.summary ? html(postData.summary) : 'N/A'}</p></div>`;
-        const body = `<div class="post-details-body-container"><h4 class="body-title">Post Content</h4><div class="body-content">${html(postData.body)}</div></div>`;
-
-        // 3. Fetch Comments
+        // Comments, with their own analysis
         const commentsSnapshot = await getDocs(collection(db, `${postsCollection}/${postId}/comments`));
-        let commentsHtml = `<h3 class="post-details-comments-title">Comments (${commentsSnapshot.size})</h3>`;
-        
+        const tone = v => (v || 0) < 0 ? 'neg' : (v || 0) > 0 ? 'pos' : 'neu';
+        const toneName = { neg: 'Negative', pos: 'Positive', neu: 'Neutral' };
+        const counts = { pos: 0, neu: 0, neg: 0 };
+        let commentsHtml = '';
         commentsSnapshot.forEach(cDoc => {
             const c = cDoc.data();
+            const t = tone(c.sentiment);
+            counts[t]++;
             commentsHtml += `
-                <div class="post-details-comment">
-                    <p class="comment-meta"><strong>${escapeHtml(c.author || 'Anon')}</strong></p>
-                    <p class="comment-body">${html(c.body)}</p>
-                    <div class="comment-badges">${generateCommentBadgesHtml(c)}</div>
+                <div class="pp-c">
+                    <div class="pp-c-head"><strong>${escapeHtml(c.author || 'Anon')}</strong>
+                      <span class="pp-chip"><span class="pp-dot pp-dot--${t}"></span>${toneName[t]}</span>
+                      ${c.emotion ? `<span class="pp-chip">${escapeHtml(c.emotion)}</span>` : ''}
+                      <span class="pp-chip">Score ${escapeHtml(c.score ?? 0)}</span></div>
+                    <p>${html(c.body)}</p>
                 </div>`;
         });
+        const total = commentsSnapshot.size;
+        const split = total
+          ? `<div class="pp-split">${['pos', 'neu', 'neg'].map(t => `<i class="pp-dot--${t}" style="width:${counts[t] / total * 100}%"></i>`).join('')}</div>
+             <p class="pp-legend">Comments: ${counts.pos} positive, ${counts.neu} neutral, ${counts.neg} negative</p>`
+          : '';
 
-        // 4. Final Render
-        // We do NOT add .addEventListener here. The central listener at the top of script.js handles it.
+        // The post's own analysis
+        const pt = tone(postData.sentiment);
+        const num = (v, d) => String(Number(v || 0).toFixed(d)).replace('-', '\u2212');
+        const chips = `<div class="pp-chips">
+            <span class="pp-chip pp-chip--${pt}">Post sentiment <b>${toneName[pt]}</b></span>
+            <span class="pp-chip">Weighted sentiment <b>${num(postData.weightedSentimentScore, 2)}</b></span>
+            ${postData.category ? `<span class="pp-chip">Category <b>${escapeHtml(postData.category)}</b></span>` : ''}
+            ${postData.emotion ? `<span class="pp-chip">Emotion <b>${escapeHtml(postData.emotion)}</b></span>` : ''}
+            <span class="pp-chip">Reddit score <b>${num(postData.score, 0)}</b></span>
+            <span class="pp-chip">Engagement <b>${num(postData.engagementScore, 2)}</b></span>
+          </div>`;
+
         postDetailsContent.innerHTML = `
-            <div class="post-details-wrapper">
+            <div class="pp-view">
                 ${navHtml}
-                ${header}
-                ${meta}
-                ${badges}
-                ${summary}
-                ${body}
-                ${commentsHtml}
+                <div class="pp-body">
+                  <h2><a href="${redditUrl}" target="_blank" rel="noopener noreferrer">${esc(postData.title)}</a></h2>
+                  <p class="pp-meta">By ${escapeHtml(postData.author || 'unknown')} &middot; ${formattedDate} &middot; ${plural(total, 'comment')}</p>
+                  ${nameNote}
+                  ${chips}
+                  ${schoolReasonsHtml(postData)}
+                  ${split}
+                  <h3>AI summary</h3>
+                  <div class="pp-sum">${postData.summary ? html(postData.summary) : 'No summary.'}</div>
+                  <h3>Post</h3>
+                  <div class="pp-post">${postData.body ? html(postData.body) : '<span class="ui-muted">This post has no text.</span>'}</div>
+                  <h3>Comments (${total})</h3>
+                  ${commentsHtml || '<p class="ui-muted">No comments.</p>'}
+                </div>
             </div>`;
+        markPanelSource(postId);
 
     } catch (err) {
         console.error("Modal Error:", err);
@@ -1296,13 +1348,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
         // --- Start building HTML ---
-        const navHtml = `
-          <div class="modal-nav-container">
-              <div style="display:flex; gap:10px; margin-left: auto;">
-                  <button class="pdf-export-btn" id="downloadPDFBtn">📄 Download PDF</button>
-                  <button class="close-drawer-btn">✕ Close</button>
-              </div>
-          </div>`;
+        const navHtml = panelBarHtml('Posts and comments on one day');
 
         let html = `
             <div class="category-date-details-wrapper">
@@ -1573,6 +1619,16 @@ function alertSourceText(a) {
 
 // Personal names found by AI in an alert (maskNames) are hidden until the
 // reader asks to see them. The text is escaped here.
+// The bar at the top of the post panel. kicker and extra must be safe HTML.
+function panelBarHtml(kicker, extra = '') {
+    return `<div class="modal-nav-container pp-bar">
+        <button type="button" class="pp-btn pp-back" data-panel-close>&larr; Back</button>
+        <span class="pp-kicker">${kicker}</span>
+        ${extra}<button type="button" class="pp-btn" id="downloadPDFBtn">Download PDF</button>
+        <button type="button" class="pp-btn pp-x" data-panel-close aria-label="Close">&times;</button>
+      </div>`;
+}
+
 function maskNamesHtml(text, names, fmt = escapeHtml) {
     const list = (names || []).filter(n => n && n.length >= 2);
     if (!list.length) return fmt(text);
@@ -1745,13 +1801,7 @@ function safeUrl(url) {
         const commentsMap = authorData.comments || {}; // { postId: [commentId1, commentId2], ... }
 
         // Start building HTML (removed inline styles, using classes)
-        const navHtml = `
-          <div class="modal-nav-container">
-              <div style="display:flex; gap:10px; margin-left: auto;">
-                  <button class="pdf-export-btn" id="downloadPDFBtn">📄 Download PDF</button>
-                  <button class="close-drawer-btn">✕ Close</button>
-              </div>
-          </div>`;
+        const navHtml = panelBarHtml('Activity of one author');
 
         let html = `
           <div class="author-details-wrapper">
@@ -1999,13 +2049,7 @@ function safeUrl(url) {
   function displaySearchResults(keyword, posts, comments) {
     const postDetailsContainer = document.getElementById('post-details');
     // Create the Navigation Bar with PDF Button
-    const navHtml = `
-      <div class="modal-nav-container">
-          <div style="display:flex; gap:10px; margin-left: auto;">
-              <button class="pdf-export-btn" id="downloadPDFBtn">📄 Download PDF</button>
-              <button class="close-drawer-btn">✕ Close</button>
-          </div>
-      </div>`;
+    const navHtml = panelBarHtml('Search results');
 
     if (posts.length === 0 && comments.length === 0) {
         postDetailsContainer.innerHTML = `
