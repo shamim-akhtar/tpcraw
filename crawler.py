@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, firestore
 import enum
-import json
 from google import genai
 from google.genai import types
 from pydantic import BaseModel
@@ -15,42 +14,9 @@ import logging
 import re
 from collections import defaultdict # Added for easier aggregation
 
+import school_tags
+from school_tags import SCHOOL_INSTRUCTIONS, SchoolMention
 
-def load_schools(file_path=os.path.join(os.path.dirname(os.path.abspath(__file__)), "schools.json")):
-    """Temasek Polytechnic schools and their diplomas, from schools.json."""
-    with open(file_path, "r", encoding="utf-8") as f:
-        return json.load(f)["schools"]
-
-
-SCHOOLS = load_schools()
-SCHOOL_CODES = [s["code"] for s in SCHOOLS]
-DIPLOMA_CODES = [d["code"] for s in SCHOOLS for d in s["diplomas"]]
-DIPLOMA_TO_SCHOOL = {d["code"]: s["code"] for s in SCHOOLS for d in s["diplomas"]}
-
-
-def describe_schools(schools):
-    lines = []
-    for school in schools:
-        line = f"- {school['code']}: {school['name']}"
-        if school["diplomas"]:
-            diplomas = "; ".join(f"{d['code']} ({d['name']})" for d in school["diplomas"])
-            line += f". Diplomas: {diplomas}"
-        lines.append(line)
-    return "\n".join(lines)
-
-
-SCHOOLS_DESCRIPTION = describe_schools(SCHOOLS)
-
-SCHOOL_INSTRUCTIONS = f'''- schools: codes of the Temasek Polytechnic schools the text is about. Use school
-  names, diploma names or codes, subjects and campus places as clues. Give more than
-  one code only if the text really covers several schools. Leave the list empty if
-  no particular school is meant, or if the text is about another polytechnic.
-- diplomas: codes of the diplomas the text is about, from the list below. Leave the
-  list empty if no particular diploma is meant.
-
-Schools and diplomas:
-{SCHOOLS_DESCRIPTION}
-'''
 
 PROMPT_COMMENT = f'''
 You are evaluating a Reddit comment from a polytechnic subreddit.
@@ -158,24 +124,18 @@ class Category(str, enum.Enum):
     OTHER = "other"
 
 
-School = enum.Enum("School", {code: code for code in SCHOOL_CODES}, type=str)
-# An enum needs at least one member, so keep a placeholder if no diplomas are listed.
-Diploma = enum.Enum("Diploma", {code: code for code in (DIPLOMA_CODES or ["NONE"])}, type=str)
-
-
 class TextAnalysis(BaseModel):
     sentiment: Sentiment
     emotion: Emotion
     category: Category
-    schools: list[School]
-    diplomas: list[Diploma]
+    school_mentions: list[SchoolMention]
 
 
 SENTIMENT_SCORES = {Sentiment.POSITIVE: 1, Sentiment.NEUTRAL: 0, Sentiment.NEGATIVE: -1}
 
 # Values stored when Gemini fails, kept the same as before.
 DEFAULT_ANALYSIS = {"sentiment": 0, "emotion": "Neutral", "category": "Uncategorized",
-                    "schools": [], "diplomas": [], "iit": "no"}
+                    **school_tags.EMPTY_TAG_FIELDS}
 
 # Setup logging to file
 logging.basicConfig(filename='crawler_errors.log',
@@ -309,24 +269,19 @@ def generate_summary(client, text):
 
 def analyse_text(client, instructions, text):
     """
-    Returns {"sentiment": -1/0/1, "emotion", "category", "schools", "diplomas",
-    "iit": "yes"/"no"}. "iit" is kept for the dashboard's older views and is
-    "yes" when IIT is among the schools.
+    Returns {"sentiment": -1/0/1, "emotion", "category"} plus the school fields
+    from school_tags.tag_fields (schoolTags, schools, schoolsClear, diplomas, iit).
+    School links are kept only when their evidence appears in the text.
     Falls back to DEFAULT_ANALYSIS if Gemini does not give a valid answer.
     """
     result = safe_generate_content(client, instructions + wrap_text(text), schema=TextAnalysis)
     if not isinstance(result, TextAnalysis):
         return dict(DEFAULT_ANALYSIS)
-    diplomas = sorted({d.value for d in result.diplomas if d.value in DIPLOMA_TO_SCHOOL})
-    # A diploma always implies its school, even if Gemini left the school out.
-    schools = sorted({s.value for s in result.schools} | {DIPLOMA_TO_SCHOOL[d] for d in diplomas})
     return {
         "sentiment": SENTIMENT_SCORES[result.sentiment],
         "emotion": result.emotion.value,
         "category": result.category.value.lower(),
-        "schools": schools,
-        "diplomas": diplomas,
-        "iit": "yes" if "IIT" in schools else "no",
+        **school_tags.tag_fields(school_tags.check_mentions(result.school_mentions, text)),
     }
 
 
@@ -342,9 +297,7 @@ def analyse_comment(client, comment, fallback_created):
         "sentiment": analysis["sentiment"],
         "emotion": analysis["emotion"],
         "category": analysis["category"],
-        "schools": analysis["schools"],
-        "diplomas": analysis["diplomas"],
-        "iit": analysis["iit"],
+        **{k: analysis[k] for k in school_tags.EMPTY_TAG_FIELDS},
     }
 
 
@@ -817,9 +770,7 @@ def process_new_post(subreddit_name, submission, refs, client, author_updates, c
         "sentiment": overall["sentiment"],
         "emotion": overall["emotion"],
         "category": overall["category"],
-        "schools": overall["schools"],
-        "diplomas": overall["diplomas"],
-        "iit": overall["iit"],
+        **{k: overall[k] for k in school_tags.EMPTY_TAG_FIELDS},
         "relatedToTemasekPoly": detect_temasek_poly_related(combined_post_comments),
         "lastUpdated": firestore.SERVER_TIMESTAMP,
     })

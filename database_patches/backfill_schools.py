@@ -2,9 +2,9 @@
 Adds school and diploma tags to posts that were stored before the crawler
 started tagging them.
 
-Only the post-level tags ("schools" and "diplomas") are added. The existing
-"iit" flag, sentiment, category and comments are left as they are, so past
-figures on the dashboard do not change.
+Only the post-level school fields are added (schoolTags, schools,
+schoolsClear, diplomas). The existing "iit" flag, sentiment, category and
+comments are left as they are, so past figures on the dashboard do not change.
 
 Each post costs one Gemini call. Run with --dry-run first to see how many
 posts would be tagged.
@@ -42,7 +42,7 @@ def backfill(subreddit, client, days, dry_run, force, limit):
         if limit and tagged >= limit:
             break
         data = post_snap.to_dict() or {}
-        if "schools" in data and not force:
+        if "schoolTags" in data and not force:
             skipped += 1
             continue
         if dry_run:
@@ -54,9 +54,10 @@ def backfill(subreddit, client, days, dry_run, force, limit):
             # Gemini gave no usable answer. Leave the post untagged so a later run can retry.
             failed += 1
             continue
-        post_snap.reference.update({"schools": analysis["schools"], "diplomas": analysis["diplomas"]})
+        fields = {k: analysis[k] for k in ("schoolTags", "schools", "schoolsClear", "diplomas")}
+        post_snap.reference.update(fields)
         tagged += 1
-        print(f"[{subreddit}] {post_snap.id}: schools={analysis['schools']} diplomas={analysis['diplomas']}")
+        print(f"[{subreddit}] {post_snap.id}: {fields['schoolTags']}")
 
     verb = "would tag" if dry_run else "tagged"
     print(f"[{subreddit}] {verb} {tagged} posts, skipped {skipped} already tagged, {failed} failed.")

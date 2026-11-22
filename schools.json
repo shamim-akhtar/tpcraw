@@ -1,41 +1,411 @@
 {
-  "_note": "Temasek Polytechnic schools and diplomas used to tag posts and comments. The crawler builds the Gemini prompt from this file. Add each school's diplomas as {\"code\": \"...\", \"name\": \"...\"}. Codes must be unique across all schools.",
+  "_note": "Reference list used to link posts and comments to TP schools. Edit freely: every entry is plain text, and 'code' values must stay unique. Diplomas and course codes come from TP's Course Intake and Last Aggregate Scores page. Places and other terms come from each school's page on tp.edu.sg (Nov 2026). IIT diploma short forms (AAI, BDA, CDF, IGD, ITO, CIT) come from the earlier IIT prompt. Unsure: ENG's school page lists 'Electrical & Electronic Engineering (T72)' while the intake page lists 'Electronics (T65)'; both are kept. IIT modules come from the IIT course pages (core subjects under the school, diploma subjects under each diploma). Not found: modules for the other five schools, module codes, and most diploma short forms outside IIT.",
+  "sources": [
+    "https://www.tp.edu.sg/admissions-and-finance/course-intake-aggregate-range.html",
+    "https://www.tp.edu.sg/schools-and-courses/students/schools/asc.html",
+    "https://www.tp.edu.sg/schools-and-courses/students/schools/bus.html",
+    "https://www.tp.edu.sg/schools-and-courses/students/schools/des.html",
+    "https://www.tp.edu.sg/schools-and-courses/students/schools/eng.html",
+    "https://www.tp.edu.sg/schools-and-courses/students/schools/hss.html",
+    "https://www.tp.edu.sg/schools-and-courses/students/schools/iit.html",
+    "https://www.tp.edu.sg/schools-and-courses/students/schools/iit/applied-artificial-intelligence.html",
+    "https://www.tp.edu.sg/schools-and-courses/students/schools/iit/big-data-analytics.html",
+    "https://www.tp.edu.sg/schools-and-courses/students/schools/iit/cybersecurity-digital-forensics.html",
+    "https://www.tp.edu.sg/schools-and-courses/students/schools/iit/immersive-media-and-game-development.html",
+    "https://www.tp.edu.sg/schools-and-courses/students/schools/iit/information-technology.html"
+  ],
   "schools": [
     {
       "code": "ASC",
       "name": "School of Applied Science",
-      "diplomas": []
+      "short_forms": [
+        "ASC"
+      ],
+      "diplomas": [
+        {
+          "code": "T33",
+          "name": "Diploma in Chemical Engineering",
+          "short_forms": []
+        },
+        {
+          "code": "T26",
+          "name": "Diploma in Food, Nutrition & Culinary Science",
+          "short_forms": []
+        },
+        {
+          "code": "T64",
+          "name": "Diploma in Medical Biotechnology",
+          "short_forms": []
+        },
+        {
+          "code": "T25",
+          "name": "Diploma in Pharmaceutical Science",
+          "short_forms": []
+        },
+        {
+          "code": "T45",
+          "name": "Diploma in Veterinary Technology",
+          "short_forms": []
+        },
+        {
+          "code": "T70",
+          "name": "Common Science Programme",
+          "short_forms": []
+        }
+      ],
+      "modules": [],
+      "places": [
+        "Chemical Pilot Plant",
+        "Centre for Applied Nutrition Services (CANS)",
+        "Centre for Aquaculture & Veterinary Science (CAVS)",
+        "Centre for Research & Opportunities in Plant Science (CROPS)",
+        "Centre for Urban Sustainability (CUS)",
+        "Centre for Complementary Health Products (CCHP)"
+      ],
+      "other_terms": [
+        "TP-SUTD Pathway Programme",
+        "TP-Nestle R&D Skills Mastery Award"
+      ]
     },
     {
       "code": "BUS",
       "name": "School of Business",
-      "diplomas": []
+      "short_forms": [
+        "BUS"
+      ],
+      "diplomas": [
+        {
+          "code": "T02",
+          "name": "Diploma in Accountancy & Finance",
+          "short_forms": []
+        },
+        {
+          "code": "T10",
+          "name": "Diploma in Business",
+          "short_forms": []
+        },
+        {
+          "code": "T40",
+          "name": "Diploma in Communications & Media Management",
+          "short_forms": [
+            "CMM"
+          ]
+        },
+        {
+          "code": "T18",
+          "name": "Diploma in Culinary Arts & Management",
+          "short_forms": []
+        },
+        {
+          "code": "T08",
+          "name": "Diploma in Hospitality & Tourism Management",
+          "short_forms": []
+        },
+        {
+          "code": "T09",
+          "name": "Diploma in Law & Management",
+          "short_forms": []
+        },
+        {
+          "code": "T07",
+          "name": "Diploma in International Trade & Logistics",
+          "short_forms": []
+        },
+        {
+          "code": "T67",
+          "name": "Diploma in Marketing",
+          "short_forms": []
+        },
+        {
+          "code": "T01",
+          "name": "Common Business Programme",
+          "short_forms": []
+        }
+      ],
+      "modules": [],
+      "places": [],
+      "other_terms": [
+        "Industry-Based Experiential Learning (IBEL)",
+        "Business Mentorship Network (BMN)",
+        "Skills Certificate in Sustainability"
+      ]
     },
     {
       "code": "DES",
       "name": "School of Design",
-      "diplomas": []
+      "short_forms": [
+        "DES"
+      ],
+      "diplomas": [
+        {
+          "code": "T20",
+          "name": "Diploma in Fashion Management & Design",
+          "short_forms": []
+        },
+        {
+          "code": "T59",
+          "name": "Diploma in Communication Design",
+          "short_forms": []
+        },
+        {
+          "code": "T23",
+          "name": "Diploma in Digital Film & Television",
+          "short_forms": []
+        },
+        {
+          "code": "T22",
+          "name": "Diploma in Interior Architecture & Design",
+          "short_forms": []
+        },
+        {
+          "code": "T35",
+          "name": "Diploma in Product Experience & Design",
+          "short_forms": []
+        },
+        {
+          "code": "T71",
+          "name": "Common Design Programme",
+          "short_forms": []
+        }
+      ],
+      "modules": [],
+      "places": [],
+      "other_terms": [
+        "Design Foundation"
+      ]
     },
     {
       "code": "ENG",
       "name": "School of Engineering",
-      "diplomas": []
+      "short_forms": [
+        "ENG"
+      ],
+      "diplomas": [
+        {
+          "code": "T50",
+          "name": "Diploma in Aerospace Electronics",
+          "short_forms": []
+        },
+        {
+          "code": "T51",
+          "name": "Diploma in Aerospace Engineering",
+          "short_forms": []
+        },
+        {
+          "code": "T29",
+          "name": "Diploma in Architectural Technology & Building Services",
+          "short_forms": []
+        },
+        {
+          "code": "T04",
+          "name": "Diploma in Aviation Management",
+          "short_forms": []
+        },
+        {
+          "code": "T38",
+          "name": "Diploma in Biomedical Engineering",
+          "short_forms": []
+        },
+        {
+          "code": "T43",
+          "name": "Diploma in Business Process & Systems Engineering",
+          "short_forms": []
+        },
+        {
+          "code": "T13",
+          "name": "Diploma in Computer Engineering",
+          "short_forms": []
+        },
+        {
+          "code": "T65",
+          "name": "Diploma in Electronics",
+          "short_forms": []
+        },
+        {
+          "code": "T72",
+          "name": "Diploma in Electrical & Electronic Engineering",
+          "short_forms": []
+        },
+        {
+          "code": "T28",
+          "name": "Diploma in Integrated Facility Management",
+          "short_forms": []
+        },
+        {
+          "code": "T66",
+          "name": "Diploma in Mechatronics",
+          "short_forms": []
+        },
+        {
+          "code": "T56",
+          "name": "Common Engineering Programme",
+          "short_forms": []
+        }
+      ],
+      "modules": [],
+      "places": [
+        "TP Advanced Manufacturing Centre",
+        "Integrative Built Environment Centre"
+      ],
+      "other_terms": [
+        "ENGenius (TP Engineering Student Talent Management Programme)",
+        "Temasek Engineering Olympiad"
+      ]
     },
     {
       "code": "HSS",
       "name": "School of Humanities & Social Sciences",
-      "diplomas": []
+      "short_forms": [
+        "HSS"
+      ],
+      "diplomas": [
+        {
+          "code": "T68",
+          "name": "Diploma in Early Childhood Development & Education",
+          "short_forms": [
+            "ECDE"
+          ]
+        },
+        {
+          "code": "T48",
+          "name": "Diploma in Psychology Studies",
+          "short_forms": []
+        },
+        {
+          "code": "T53",
+          "name": "Diploma in Social Sciences in Gerontology",
+          "short_forms": []
+        }
+      ],
+      "modules": [],
+      "places": [
+        "Centre for Applied Behavioural Sciences"
+      ],
+      "other_terms": []
     },
     {
       "code": "IIT",
       "name": "School of Informatics & IT",
+      "short_forms": [
+        "IIT",
+        "Informatics & IT"
+      ],
       "diplomas": [
-        { "code": "AAI", "name": "Applied Artificial Intelligence" },
-        { "code": "BDA", "name": "Big Data Analytics" },
-        { "code": "CDF", "name": "Cybersecurity & Digital Forensics" },
-        { "code": "IGD", "name": "Immersive Media & Game Development" },
-        { "code": "ITO", "name": "Information Technology" },
-        { "code": "CIT", "name": "Common ICT Programme" }
+        {
+          "code": "T69",
+          "name": "Diploma in Applied Artificial Intelligence",
+          "short_forms": [
+            "AAI"
+          ],
+          "modules": [
+            "AI and Ethics",
+            "Machine Learning for Developers",
+            "AI Agents and Intelligent Automation",
+            "Principles of Computer Vision",
+            "Conversational AI Systems Development",
+            "Deep Learning and Intelligent Vision",
+            "Machine Learning Operations",
+            "Natural Language Processing",
+            "Generative AI Systems Development"
+          ]
+        },
+        {
+          "code": "T60",
+          "name": "Diploma in Big Data & Analytics",
+          "short_forms": [
+            "BDA"
+          ],
+          "modules": [
+            "Data Mining and Business Analytics",
+            "Data Science Essentials",
+            "Data Storytelling",
+            "Data Warehousing and Business Intelligence",
+            "Data Engineering in the Cloud",
+            "Machine Learning for Decision Making",
+            "Quantitative Analysis",
+            "Text & Social Media Analytics"
+          ]
+        },
+        {
+          "code": "T62",
+          "name": "Diploma in Cybersecurity & Digital Forensics",
+          "short_forms": [
+            "CDF"
+          ],
+          "modules": [
+            "AI Application Security",
+            "Enterprise Networking",
+            "Servers Administration & Security",
+            "Forensics in Digital Security",
+            "AI-Enhanced Security Operations",
+            "AI Ethical Hacking and Cyber Defense",
+            "AI-Driven Security Management & Audit"
+          ]
+        },
+        {
+          "code": "T58",
+          "name": "Diploma in Immersive Media & Game Development",
+          "short_forms": [
+            "IGD"
+          ],
+          "modules": [
+            "Game Development",
+            "Programming with Game Engines",
+            "Game Design",
+            "Augmented Reality Application Development",
+            "3D Modelling",
+            "Immersive UiUx",
+            "Maths and Physics Programming",
+            "Computer Graphics and Programming"
+          ]
+        },
+        {
+          "code": "T30",
+          "name": "Diploma in Information Technology",
+          "short_forms": [
+            "ITO"
+          ],
+          "modules": [
+            "AI Agents and Intelligent Automation",
+            "AI-Driven Software Development",
+            "Agile Methodology and Design Thinking",
+            "AIOps",
+            "Cloud Application Development",
+            "Full Stack Web Development with AI",
+            "Machine Learning for Developers",
+            "System Design and Architecture"
+          ]
+        },
+        {
+          "code": "T63",
+          "name": "Common ICT Programme",
+          "short_forms": [
+            "CIT",
+            "CICT"
+          ]
+        }
+      ],
+      "modules": [
+        "Application Development Project",
+        "Computational Thinking",
+        "Cybersecurity Fundamentals",
+        "Data Visualisation and Analytics",
+        "Database Application Development",
+        "Data Structures and Algorithms",
+        "Logic and Mathematics",
+        "Network and Cloud Technology",
+        "User Experience and Interface Design",
+        "Computing Mathematics"
+      ],
+      "places": [
+        "DRIVE Lab",
+        "TP Cybersecurity Clinic"
+      ],
+      "other_terms": [
+        "Polytechnic Cyber Work-Learn Scheme",
+        "TP-ISACA Student Chapter",
+        "Information Technology Student Interest Group",
+        "OceanX Summit"
       ]
     }
   ]

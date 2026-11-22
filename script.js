@@ -330,6 +330,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Filters
     const selectedSchool = document.getElementById('school-filter').value;
+    const includeTpWide = document.getElementById('include-tpwide').checked;
 
     const tpRelatedCheckbox = document.getElementById('tp-related-filter');
     const isTpRelatedChecked = tpRelatedCheckbox.checked;
@@ -364,7 +365,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // For sgExams, use the "relatedToTemasekPoly" filter if checked.
-    // The school filter is applied after loading (see postMatchesSchool), so
+    // The school filter is applied after loading (see schoolTagFor), so
     // no extra Firestore index is needed.
     if (lowerSub === "sgexams") {
       if (isTpRelatedChecked) {
@@ -379,10 +380,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Build the data array
     const dataArray = [];
+    const coverage = { total: 0, linked: 0, tpwide: 0, unchecked: 0, shown: 0, clear: 0, likely: 0, tpWideShown: 0 };
+    const useSchools = schoolFilterApplies(lowerSub);
     snapshot.forEach(postDoc => {
       const postData = postDoc.data();
-      if (schoolFilterApplies(lowerSub) && !postMatchesSchool(postData, selectedSchool)) {
-        return;
+      if (useSchools) {
+        const status = schoolStatus(postData);
+        coverage.total++;
+        coverage[status]++;
+        if (selectedSchool) {
+          const tag = schoolTagFor(postData, selectedSchool);
+          if (tag) {
+            coverage.shown++;
+            coverage[tag.confidence === 'clear' ? 'clear' : 'likely']++;
+          } else if (includeTpWide && status === 'tpwide') {
+            coverage.tpWideShown++;
+          } else {
+            return;
+          }
+        }
       }
       const postId = postDoc.id;
       const postTitle = postData.title || "No Title";
@@ -427,6 +443,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     });
 
+    renderSchoolCoverage(useSchools, selectedSchool, coverage);
     return dataArray;
   }
 
@@ -1455,13 +1472,78 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 }
 
-// Posts tagged by the crawler have a "schools" list, e.g. ["IIT", "BUS"].
-// Older posts only have the IIT flag, so for them only IIT can be matched
-// until they are backfilled (database_patches/backfill_schools.py).
-function postMatchesSchool(postData, schoolCode) {
-    if (!schoolCode) return true;
-    if (Array.isArray(postData.schools)) return postData.schools.includes(schoolCode);
-    return schoolCode === 'IIT' && postData.iit === 'yes';
+const SCHOOL_NAMES = {
+    ASC: 'Applied Science', BUS: 'Business', DES: 'Design', ENG: 'Engineering',
+    HSS: 'Humanities & Social Sciences', IIT: 'Informatics & IT'
+};
+
+// The crawler stores "schoolTags" on each post: a list of
+// {school, diploma, diplomaName, evidence: [...], confidence: "clear" | "likely"}.
+// An empty list means the post is TP-wide or not about any one school.
+// Posts stored before school tagging only have the older IIT flag.
+function schoolTagFor(postData, schoolCode) {
+    if (Array.isArray(postData.schoolTags)) {
+        return postData.schoolTags.find(t => t.school === schoolCode) || null;
+    }
+    if (schoolCode === 'IIT' && postData.iit === 'yes') {
+        return { school: 'IIT', confidence: 'likely', evidence: [], legacy: true };
+    }
+    return null;
+}
+
+// "linked", "tpwide" (checked, no school) or "unchecked" (older post).
+function schoolStatus(postData) {
+    if (Array.isArray(postData.schoolTags)) return postData.schoolTags.length ? 'linked' : 'tpwide';
+    return postData.iit === 'yes' ? 'linked' : 'unchecked';
+}
+
+function plural(n, word) {
+    return `${n} ${word}${n === 1 ? '' : 's'}`;
+}
+
+function renderSchoolCoverage(useSchools, schoolCode, c) {
+    const box = document.getElementById('schoolCoverage');
+    const text = document.getElementById('schoolCoverageText');
+    if (!box || !text) return;
+    if (!useSchools || c.total === 0) {
+        box.hidden = true;
+        return;
+    }
+    const parts = [];
+    if (schoolCode) {
+        let shown = `Showing ${plural(c.shown, 'post')} linked to ${SCHOOL_NAMES[schoolCode] || schoolCode} (${c.clear} clear, ${c.likely} likely)`;
+        if (c.tpWideShown) shown += `, plus ${plural(c.tpWideShown, 'TP-wide post')}`;
+        parts.push(shown + '.');
+    }
+    parts.push(`${c.linked} of ${c.total} posts in this period are linked to a school.`);
+    parts.push(`${plural(c.tpwide, 'post')} ${c.tpwide === 1 ? 'is' : 'are'} TP-wide or not about any one school.`);
+    if (c.unchecked) {
+        parts.push(`${plural(c.unchecked, 'older post')} ${c.unchecked === 1 ? 'has' : 'have'} not been checked for schools yet.`);
+    }
+    text.textContent = parts.join(' ');
+    box.hidden = false;
+}
+
+// Shows which schools a post or comment is linked to, and why.
+function schoolReasonsHtml(data) {
+    if (!Array.isArray(data.schoolTags)) {
+        if (data.iit === 'yes') {
+            return `<div class="school-reasons"><span class="school-tag school-tag--likely">Informatics &amp; IT</span> <span class="school-evidence">From the older IIT flag. Not yet re-checked for evidence.</span></div>`;
+        }
+        return '';
+    }
+    if (data.schoolTags.length === 0) {
+        return `<div class="school-reasons"><span class="school-tag school-tag--none">TP-wide or no particular school</span></div>`;
+    }
+    const rows = data.schoolTags.map(t => {
+        const name = escapeHtml(SCHOOL_NAMES[t.school] || t.school);
+        const diploma = t.diplomaName ? `, ${escapeHtml(t.diplomaName)}` : '';
+        const confidence = t.confidence === 'clear' ? 'clear' : 'likely';
+        const evidence = (t.evidence || []).map(e => `&ldquo;${escapeHtml(e)}&rdquo;`).join(', ');
+        return `<div class="school-reason"><span class="school-tag school-tag--${confidence}">${name}${diploma} (${confidence})</span>` +
+               (evidence ? ` <span class="school-evidence">Evidence: ${evidence}</span>` : '') + `</div>`;
+    });
+    return `<div class="school-reasons">${rows.join('')}</div>`;
 }
 
 function schoolFilterApplies(lowerSub) {
@@ -1888,10 +1970,6 @@ function safeUrl(url) {
     const totalPositiveSentiments = postData.totalPositiveSentiments || 0;
     const weightedSentimentScore = postData.weightedSentimentScore ?? 0;
     const safeNumberStr = engagementScore.toFixed(2);
-    const schools = Array.isArray(postData.schools) ? postData.schools.join(', ') : '';
-    const diplomas = Array.isArray(postData.diplomas) ? postData.diplomas.join(', ') : '';
-    const badge = (label, value, colour, alt) =>
-      `<img src="https://img.shields.io/badge/${label}-${encodeURIComponent(value.replace(/-/g, '--'))}-${colour}?style=flat-square" alt="${alt}">`;
 
     const scoreStr = score.toString();
     const negSentStr = totalNegativeSentiments.toString();
@@ -1907,9 +1985,8 @@ function safeUrl(url) {
         <img src="https://img.shields.io/badge/category-${encodeURIComponent(category)}-blue?style=flat-square" alt="Category">
         <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
         <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
-        ${schools ? badge('school', schools, 'teal', 'School') : ''}
-        ${diplomas ? badge('diploma', diplomas, 'lightgrey', 'Diploma') : ''}
       </div>
+      ${schoolReasonsHtml(postData)}
     `;
   }
 
@@ -1953,6 +2030,7 @@ function safeUrl(url) {
         <img src="https://img.shields.io/badge/sentiment-${urlEncodedSentiment}-${sentimentColor}?style=flat-square" alt="Sentiment">
         <img src="https://img.shields.io/badge/emotion-${urlEncodedEmotion}-purple?style=flat-square" alt="Emotion">
       </div>
+      ${schoolReasonsHtml(commentData)}
     `;
   }
 
@@ -2070,29 +2148,19 @@ function safeUrl(url) {
   const tpLabel = document.querySelector('label[for="tp-related-filter"]');
 
   function updateFilterVisibility() {
-    // When "TemasekPoly" is selected, show IIT filter and hide TP-Related filter
-    if (subredditSelect.value === "TemasekPoly") {
-      if (schoolFilter) { schoolFilter.style.display = "inline-block"; }
-      if (schoolLabel) { schoolLabel.style.display = "inline-block"; }
-      if (tpRelatedFilter) { tpRelatedFilter.style.display = "none"; }
-      if (tpLabel) { tpLabel.style.display = "none"; }
-    } 
-    else if (subredditSelect.value === "sgExams") {
-      // If sgExams then show both the school filter and the TP-Related filter
-      if (schoolFilter) { schoolFilter.style.display = "inline-block"; }
-      if (schoolLabel) { schoolLabel.style.display = "inline-block"; }
-      if (tpRelatedFilter) { tpRelatedFilter.style.display = "inline-block"; }
-      if (tpLabel) { tpLabel.style.display = "inline-block"; }
-    }
-    else{
-      if (schoolFilter) { schoolFilter.style.display = "none"; }
-      if (schoolLabel) { schoolLabel.style.display = "none"; }
-      if (tpRelatedFilter) { tpRelatedFilter.style.display = "none"; }
-      if (tpLabel) { tpLabel.style.display = "none"; }
-      //const filterBtn = document.getElementById('filter-btn');
-      //if (filterBtn) { filterBtn.style.display = "none"; }
-    }
+    // School filters: TemasekPoly and sgExams. TP-Related filter: sgExams only.
+    const showSchool = subredditSelect.value === "TemasekPoly" || subredditSelect.value === "sgExams";
+    const showTpRelated = subredditSelect.value === "sgExams";
+    const tpWide = document.getElementById("include-tpwide");
+    const tpWideLabel = document.querySelector('label[for="include-tpwide"]');
+    [schoolFilter, schoolLabel, tpWide, tpWideLabel].forEach(el => {
+      if (el) el.style.display = showSchool ? "inline-block" : "none";
+    });
+    [tpRelatedFilter, tpLabel].forEach(el => {
+      if (el) el.style.display = showTpRelated ? "inline-block" : "none";
+    });
   }
+
 
   // Initial call to set visibility based on default selection
   updateFilterVisibility();

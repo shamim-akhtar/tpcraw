@@ -1135,3 +1135,19 @@ body.dark-theme #post-details-container {
   height: 40px;
   box-sizing: border-box;
 }
+
+/* School links on posts and comments */
+.school-reasons { margin-top: 6px; font-size: 0.85em; line-height: 1.5; }
+.school-reason { margin-top: 2px; }
+.school-tag { display: inline-block; padding: 1px 8px; border-radius: 10px; font-weight: 600; }
+.school-tag--clear { background: #d7f0ee; color: #0b5e57; }
+.school-tag--likely { background: #fff1cc; color: #7a5200; }
+.school-tag--none { background: #eceff1; color: #455a64; font-weight: 500; }
+.school-evidence { color: #555; }
+
+/* School coverage box in the left column */
+.school-coverage { margin-top: 15px; text-align: left; }
+.school-coverage-text { margin: 6px 0 0; font-size: 0.9em; line-height: 1.45; }
+.school-coverage { align-items: stretch; }
+.school-coverage[hidden] { display: none; }
+.controls #school-filter { width: auto; max-width: 230px; }
