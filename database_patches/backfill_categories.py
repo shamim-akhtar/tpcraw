@@ -163,6 +163,25 @@ def convert_posts(subreddit, client, dry_run, limit):
     for start in range(0, len(unclear), AI_BATCH):
         batch = unclear[start:start + AI_BATCH]
         answers = classify(client, batch)
+        if answers:
+            failures = 0
+        # Posts with no answer are asked again one at a time. A post that
+        # still gets no answer is filed under "other", so that a single post
+        # Gemini will not read cannot hold up a whole forum.
+        missing = [i for i in range(len(batch)) if i not in answers]
+        if missing and len(missing) <= AI_BATCH and failures < MAX_AI_FAILURES - 1:
+            alone = {}
+            for i in missing:
+                one = classify(client, [batch[i]])
+                if 0 in one:
+                    alone[i] = one[0]
+            if alone or answers:
+                for i in missing:
+                    if i in alone:
+                        answers[i] = alone[i]
+                    else:
+                        answers[i] = categories.OTHER
+                        counts["posts Gemini did not answer, filed under other"] += 1
         if not answers:
             failures += 1
             counts["posts left for the next run"] += len(batch)
