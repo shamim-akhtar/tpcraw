@@ -328,9 +328,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const startDateValue = document.getElementById('start-date').value;
     const endDateValue = document.getElementById('end-date').value;
 
-    // Checkboxes
-    const iitCheckbox = document.getElementById('iit-filter');
-    const isIitChecked = iitCheckbox.checked;
+    // Filters
+    const selectedSchool = document.getElementById('school-filter').value;
 
     const tpRelatedCheckbox = document.getElementById('tp-related-filter');
     const isTpRelatedChecked = tpRelatedCheckbox.checked;
@@ -364,15 +363,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       q = query(q, where('created', '<=', endDate));
     }
 
-    // If the subreddit is TemasekPoly, use the "iit" filter if checked
-    if (lowerSub === "temasekpoly") {
-      if (isIitChecked) {
-        q = query(q, where('iit', '==', 'yes'));
-        // console.log("IIT filter applied: iit == yes");
-      }
-    }
-    // Otherwise, for non-TemasekPoly subreddits, use the "relatedToTemasekPoly" filter if checked
-    else if(lowerSub === "sgexams"){
+    // For sgExams, use the "relatedToTemasekPoly" filter if checked.
+    // The school filter is applied after loading (see postMatchesSchool), so
+    // no extra Firestore index is needed.
+    if (lowerSub === "sgexams") {
       if (isTpRelatedChecked) {
         q = query(q, where('relatedToTemasekPoly', '==', true));
         // console.log("TP-related filter applied: relatedToTemasekPoly == true");
@@ -387,6 +381,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dataArray = [];
     snapshot.forEach(postDoc => {
       const postData = postDoc.data();
+      if (schoolFilterApplies(lowerSub) && !postMatchesSchool(postData, selectedSchool)) {
+        return;
+      }
       const postId = postDoc.id;
       const postTitle = postData.title || "No Title";
 
@@ -1458,6 +1455,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 }
 
+// Posts tagged by the crawler have a "schools" list, e.g. ["IIT", "BUS"].
+// Older posts only have the IIT flag, so for them only IIT can be matched
+// until they are backfilled (database_patches/backfill_schools.py).
+function postMatchesSchool(postData, schoolCode) {
+    if (!schoolCode) return true;
+    if (Array.isArray(postData.schools)) return postData.schools.includes(schoolCode);
+    return schoolCode === 'IIT' && postData.iit === 'yes';
+}
+
+function schoolFilterApplies(lowerSub) {
+    return lowerSub === 'temasekpoly' || lowerSub === 'sgexams';
+}
+
 // Reddit posts, comments and AI summaries are untrusted text. Always pass
 // them through these helpers before putting them into innerHTML.
 function escapeHtml(unsafe) {
@@ -1878,6 +1888,10 @@ function safeUrl(url) {
     const totalPositiveSentiments = postData.totalPositiveSentiments || 0;
     const weightedSentimentScore = postData.weightedSentimentScore ?? 0;
     const safeNumberStr = engagementScore.toFixed(2);
+    const schools = Array.isArray(postData.schools) ? postData.schools.join(', ') : '';
+    const diplomas = Array.isArray(postData.diplomas) ? postData.diplomas.join(', ') : '';
+    const badge = (label, value, colour, alt) =>
+      `<img src="https://img.shields.io/badge/${label}-${encodeURIComponent(value.replace(/-/g, '--'))}-${colour}?style=flat-square" alt="${alt}">`;
 
     const scoreStr = score.toString();
     const negSentStr = totalNegativeSentiments.toString();
@@ -1893,6 +1907,8 @@ function safeUrl(url) {
         <img src="https://img.shields.io/badge/category-${encodeURIComponent(category)}-blue?style=flat-square" alt="Category">
         <img src="https://img.shields.io/badge/emotion-${encodeURIComponent(emotion)}-purple?style=flat-square" alt="Emotion">
         <img src="https://img.shields.io/badge/engagement-${encodeURIComponent(safeNumberStr)}-orange?style=flat-square" alt="Engagement">
+        ${schools ? badge('school', schools, 'teal', 'School') : ''}
+        ${diplomas ? badge('diploma', diplomas, 'lightgrey', 'Diploma') : ''}
       </div>
     `;
   }
@@ -2006,6 +2022,18 @@ function safeUrl(url) {
   });
 
   // 11. Initial load
+  // Remember the chosen school in this browser. Restored before the first load.
+  const schoolFilterSelect = document.getElementById("school-filter");
+  try {
+    const savedSchool = localStorage.getItem('schoolFilter');
+    if (savedSchool !== null && schoolFilterSelect.querySelector(`option[value="${CSS.escape(savedSchool)}"]`)) {
+      schoolFilterSelect.value = savedSchool;
+    }
+  } catch (e) { /* storage unavailable */ }
+  schoolFilterSelect.addEventListener('change', () => {
+    try { localStorage.setItem('schoolFilter', schoolFilterSelect.value); } catch (e) { /* ignore */ }
+  });
+
   updateCharts();
 
   // Set default active tab on load - Handled by CSS and initial HTML structure now
@@ -2031,33 +2059,34 @@ function safeUrl(url) {
 
   // --- Filter Visibility Logic ---
   const subredditSelect = document.getElementById("subreddit-select");
-  // const iitFilterContainer = document.getElementById("iit-filter-container"); // Assuming label and input are wrapped
+  // const schoolFilterContainer = document.getElementById("iit-filter-container"); // Assuming label and input are wrapped
   // const tpRelatedFilterContainer = document.getElementById("tp-related-filter-container"); // Assuming label and input are wrapped
-  const iitFilter = document.getElementById("iit-filter");
+  const schoolFilter = document.getElementById("school-filter");
   const tpRelatedFilter = document.getElementById("tp-related-filter");
   // Get the labels associated with the checkboxes
 
-  const iitLabel = document.querySelector('label[for="iit-filter"]');
+  const schoolLabel = document.querySelector('label[for="school-filter"]');
+
   const tpLabel = document.querySelector('label[for="tp-related-filter"]');
 
   function updateFilterVisibility() {
     // When "TemasekPoly" is selected, show IIT filter and hide TP-Related filter
     if (subredditSelect.value === "TemasekPoly") {
-      if (iitFilter) { iitFilter.style.display = "inline-block"; }
-      if (iitLabel) { iitLabel.style.display = "inline-block"; }
+      if (schoolFilter) { schoolFilter.style.display = "inline-block"; }
+      if (schoolLabel) { schoolLabel.style.display = "inline-block"; }
       if (tpRelatedFilter) { tpRelatedFilter.style.display = "none"; }
       if (tpLabel) { tpLabel.style.display = "none"; }
     } 
     else if (subredditSelect.value === "sgExams") {
-      // If sgExams then hide IIT filter and show TP-Related filter
-      if (iitFilter) { iitFilter.style.display = "none"; }
-      if (iitLabel) { iitLabel.style.display = "none"; }
+      // If sgExams then show both the school filter and the TP-Related filter
+      if (schoolFilter) { schoolFilter.style.display = "inline-block"; }
+      if (schoolLabel) { schoolLabel.style.display = "inline-block"; }
       if (tpRelatedFilter) { tpRelatedFilter.style.display = "inline-block"; }
       if (tpLabel) { tpLabel.style.display = "inline-block"; }
     }
     else{
-      if (iitFilter) { iitFilter.style.display = "none"; }
-      if (iitLabel) { iitLabel.style.display = "none"; }
+      if (schoolFilter) { schoolFilter.style.display = "none"; }
+      if (schoolLabel) { schoolLabel.style.display = "none"; }
       if (tpRelatedFilter) { tpRelatedFilter.style.display = "none"; }
       if (tpLabel) { tpLabel.style.display = "none"; }
       //const filterBtn = document.getElementById('filter-btn');

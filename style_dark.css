@@ -1114,3 +1114,16 @@ body.dark-theme #post-details-container {
     z-index: 2200;
     border-bottom: 1px solid rgba(0,0,0,0.1);
 }
+/* School filter, styled like the date inputs */
+.controls #school-filter {
+  padding: 8px 10px;
+  border: 1px solid #555555;
+  border-radius: 6px;
+  font-size: 1em;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  height: 40px;
+  box-sizing: border-box;
+  background-color: #333333;
+  color: #e0e0e0;
+  color-scheme: dark;
+}

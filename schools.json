@@ -1,0 +1,42 @@
+{
+  "_note": "Temasek Polytechnic schools and diplomas used to tag posts and comments. The crawler builds the Gemini prompt from this file. Add each school's diplomas as {\"code\": \"...\", \"name\": \"...\"}. Codes must be unique across all schools.",
+  "schools": [
+    {
+      "code": "ASC",
+      "name": "School of Applied Science",
+      "diplomas": []
+    },
+    {
+      "code": "BUS",
+      "name": "School of Business",
+      "diplomas": []
+    },
+    {
+      "code": "DES",
+      "name": "School of Design",
+      "diplomas": []
+    },
+    {
+      "code": "ENG",
+      "name": "School of Engineering",
+      "diplomas": []
+    },
+    {
+      "code": "HSS",
+      "name": "School of Humanities & Social Sciences",
+      "diplomas": []
+    },
+    {
+      "code": "IIT",
+      "name": "School of Informatics & IT",
+      "diplomas": [
+        { "code": "AAI", "name": "Applied Artificial Intelligence" },
+        { "code": "BDA", "name": "Big Data Analytics" },
+        { "code": "CDF", "name": "Cybersecurity & Digital Forensics" },
+        { "code": "IGD", "name": "Immersive Media & Game Development" },
+        { "code": "ITO", "name": "Information Technology" },
+        { "code": "CIT", "name": "Common ICT Programme" }
+      ]
+    }
+  ]
+}
