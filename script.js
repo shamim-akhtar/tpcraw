@@ -1657,7 +1657,11 @@ function digestChangeSentence(d) {
 
 // The digest documents are written by digest.py; all text is escaped here.
 function renderDigestHtml(d) {
-    const postLink = p => `<li><a href="${safeUrl(p.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.title)}</a> (${plural(p.comments || 0, 'comment')})</li>`;
+    // A post opens the dashboard's own view of it, which has "Open in Reddit".
+    // A digest entry saved without the post's id and forum keeps the Reddit link.
+    const postLink = p => (p.id && p.subreddit)
+        ? `<li><button type="button" class="ui-link digest-post" data-alert-post="${escapeHtml(p.id)}" data-alert-sub="${escapeHtml(p.subreddit)}">${escapeHtml(p.title)}</button> (${plural(p.comments || 0, 'comment')})</li>`
+        : `<li><a href="${safeUrl(p.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.title)}</a> (${plural(p.comments || 0, 'comment')})</li>`;
     let html = `<h3 class="digest-title">${escapeHtml(d.schoolName)}</h3>
       <p class="digest-week">Week of ${escapeHtml(d.weekStart)} to ${escapeHtml(d.weekEnd)}</p>
       <p><strong>${plural(d.postCount || 0, 'post')}</strong> and <strong>${plural(d.commentCount || 0, 'comment')}</strong>. ${escapeHtml(digestChangeSentence(d))}</p>`;
@@ -2374,8 +2378,8 @@ function safeUrl(url) {
           <span class="ui-bar-n" title="Comments">${p.totalComments}</span></button>`;
       }).join('') + '</div>';
   }
-  // An alert's title opens the analysed post. Names hidden on the alert stay
-  // hidden in the post.
+  // An alert's title, or a post in the weekly digest, opens the analysed post.
+  // Names hidden on the alert stay hidden in the post.
   document.addEventListener('click', e => {
     const title = e.target.closest('[data-alert-post]');
     if (!title) return;
