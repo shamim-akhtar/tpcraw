@@ -116,7 +116,7 @@
             <div class="ui-kpi" id="postCount"><div class="ui-kpi-k">Posts</div><div class="ui-kpi-v postCount-number">0</div><div class="ui-kpi-d" data-period-text></div></div>
             <div class="ui-kpi"><div class="ui-kpi-k">Comments</div><div class="ui-kpi-v" id="commentsCountNumber">0</div><div class="ui-kpi-d" data-period-text></div></div>
             <div class="ui-kpi"><div class="ui-kpi-k">Negative posts</div><div class="ui-kpi-v" id="negativeShare">-</div><div class="ui-kpi-d" id="negativeShareChange"></div></div>
-            <div class="ui-kpi" id="alertsKpi"><div class="ui-kpi-k">Alerts</div><div class="ui-kpi-v" id="alertsCount">-</div><div class="ui-kpi-d" id="alertsCountNote">Last 7 days</div></div>
+            <div class="ui-kpi" id="alertsKpi"><div class="ui-kpi-k">Alerts</div><div class="ui-kpi-v" id="alertsCount">-</div><div class="ui-kpi-d" id="alertsCountNote" data-period-text></div></div>
         </div>
         <p class="ui-coverage" id="schoolCoverage" hidden><span id="schoolCoverageText"></span></p>
 
@@ -145,7 +145,7 @@
     </section>
 
     <section id="alertsTab" class="chart-section tab-content">
-                <div class="digest-controls">
+                <div class="digest-controls" hidden>
                     <label for="alerts-school" hidden>School</label>
                     <select id="alerts-school" hidden>
                         <option value="">All of TP</option>
@@ -156,12 +156,6 @@
                         <option value="HSS">Humanities &amp; Social Sciences</option>
                         <option value="IIT">Informatics &amp; IT</option>
                         <option value="general">General TP (no school named)</option>
-                    </select>
-                    <label for="alerts-days">Period</label>
-                    <select id="alerts-days">
-                        <option value="1">Today</option>
-                        <option value="7" selected>Last 7 days</option>
-                        <option value="30">Last 30 days</option>
                     </select>
                 </div>
                 <div id="alertsContent" class="digest-content"><p class="details-message info">Loading alerts...</p></div>
