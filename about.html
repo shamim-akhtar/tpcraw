@@ -109,6 +109,7 @@
       <a href="#alerts">Alerts</a>
       <a href="#digest">Weekly digest</a>
       <a href="#post-view">Reading a post</a>
+      <a href="#categories">Categories</a>
       <a href="#other-tabs">Posts, Trends and Authors</a>
       <a href="#other-polys">Other polytechnics and r/SGExams</a>
       <a href="#data">How the data is collected</a>
@@ -285,7 +286,7 @@
             <tbody>
               <tr><td>Post sentiment</td><td>How AI rates the post itself: positive, neutral or negative.</td></tr>
               <tr><td>Weighted sentiment</td><td>The sentiment of the comments, from -1 to 1. Comments with more upvotes count more.</td></tr>
-              <tr><td>Category and emotion</td><td>The topic and the main emotion that AI assigns to the post.</td></tr>
+              <tr><td>Category and emotion</td><td>The <a href="#categories">category</a> and the main emotion that AI assigns to the post.</td></tr>
               <tr><td>Reddit score</td><td>Upvotes minus downvotes on Reddit.</td></tr>
               <tr><td>Engagement</td><td>A score that rises with the post’s Reddit score and its number of comments.</td></tr>
             </tbody>
@@ -294,12 +295,34 @@
         <p>“Open in Reddit” goes to the post on Reddit. “Download PDF” saves the view as a PDF report.</p>
       </section>
 
+      <section class="ui-card" id="categories">
+        <h2>Categories</h2>
+        <p>AI places each post and each comment in exactly one category from a fixed list. The category is shown when you read a post, and the “Topics over time” chart on the Trends tab has one line for each category.</p>
+        <div class="help-table-wrap">
+          <table>
+            <thead><tr><th>Category</th><th>What it covers</th></tr></thead>
+            <tbody>
+              <tr><td>Academic</td><td>Lecturers, lessons, modules, workload, projects, exams, grading, GPA and results.</td></tr>
+              <tr><td>Admission</td><td>Applications, course choice, transfers and appeals.</td></tr>
+              <tr><td>Career</td><td>Internships, jobs and further study.</td></tr>
+              <tr><td>Administration</td><td>Fees, bursaries, refunds, timetable, academic calendar, systems and student services.</td></tr>
+              <tr><td>Facilities</td><td>Classrooms, food, transport, IT and buildings.</td></tr>
+              <tr><td>Activities</td><td>CCAs, events, friends and orientation.</td></tr>
+              <tr><td>Wellbeing</td><td>Stress, mental health, bullying, harassment and safety.</td></tr>
+              <tr><td>Other</td><td>Anything that does not fit the categories above.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>A post that covers two topics is placed under the one it is mainly about. AI can place a post in the wrong category.</p>
+        <p>Before November 2026 the categories were not fixed. Older posts and comments were converted to this list. Where an old label was unclear, AI read the post again, and a comment with an unclear label was given the category of its post.</p>
+      </section>
+
       <section class="ui-card" id="other-tabs">
         <h2>Posts, Trends and Authors</h2>
         <h3>Posts</h3>
         <p>Choose “Most discussed”, “Most negative”, “Most positive” or “Newest” to list 10 posts. Click a row to read the post.</p>
         <h3>Trends</h3>
-        <p>Charts by post show sentiment, weighted sentiment, comments and engagement. They show the top 15 posts unless you tick “Show all posts”. Another chart shows topics over time.</p>
+        <p>Charts by post show sentiment, weighted sentiment, comments and engagement. They show the top 15 posts unless you tick “Show all posts”. “Topics over time” shows the average sentiment of each <a href="#categories">category</a> by day.</p>
         <h3>Authors</h3>
         <p>The 10 authors with the most negative posts and comments. Click an author to see their posts and comments. Authors are shown by their Reddit usernames.</p>
       </section>

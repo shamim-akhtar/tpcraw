@@ -777,7 +777,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const chips = `<div class="pp-chips">
             <span class="pp-chip pp-chip--${pt}">Post sentiment <b>${toneName[pt]}</b></span>
             <span class="pp-chip">Weighted sentiment <b>${num(postData.weightedSentimentScore, 2)}</b></span>
-            ${postData.category ? `<span class="pp-chip">Category <b>${escapeHtml(postData.category)}</b></span>` : ''}
+            ${postData.category ? `<span class="pp-chip">Category <b>${escapeHtml(categoryName(postData.category))}</b></span>` : ''}
             ${postData.emotion ? `<span class="pp-chip">Emotion <b>${escapeHtml(postData.emotion)}</b></span>` : ''}
             <span class="pp-chip">Reddit score <b>${num(postData.score, 0)}</b></span>
             <span class="pp-chip">Engagement <b>${num(postData.engagementScore, 2)}</b></span>
@@ -1021,23 +1021,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         //     y: data[category].averageSentiment || 0
         //   });
         // }
-        for (let originalCategory in data) {
-            // --- MODIFICATION START ---
-            // Convert the category key from Firestore to lowercase for consistent grouping
-            const lowerCaseCategory = originalCategory.toLowerCase();
-
-            // Initialize the array for this lowercase category if it doesn't exist yet
-            if (!timeSeriesData[lowerCaseCategory]) {
-                timeSeriesData[lowerCaseCategory] = [];
-            }
-
-            // Push the data point into the array corresponding to the LOWERCASE category key
-            // Retrieve the actual averageSentiment using the ORIGINAL category key from the Firestore data
-            timeSeriesData[lowerCaseCategory].push({
-                x: dateStr, // Keep the date string
-                y: data[originalCategory].averageSentiment || 0 // Use originalCategory to access Firestore data
-            });
-          // --- MODIFICATION END ---
+        // Only the fixed categories are charted. A day's figures for old
+        // labels with a clear home (for example "exams") are added to it.
+        const day = {};
+        for (const key in data) {
+            const category = toCategory(key);
+            const item = data[key] || {};
+            if (!category || !item.count) continue;
+            const total = (typeof item.totalSentiment === 'number') ? item.totalSentiment : (item.averageSentiment || 0) * item.count;
+            day[category] = day[category] || { total: 0, count: 0 };
+            day[category].total += total;
+            day[category].count += item.count;
+        }
+        for (const category in day) {
+            (timeSeriesData[category] = timeSeriesData[category] || []).push({ x: dateStr, y: day[category].total / day[category].count });
         }
       }
     });
@@ -1078,41 +1075,50 @@ document.addEventListener('DOMContentLoaded', async () => {
     return rgba.replace(/, ?([\d\.]+)\)/, `, ${alpha})`).replace('rgb(', 'rgba(');
   }
 
-  const PREDEFINED_CATEGORY_COLORS = {
-    academic: "rgba(0, 112, 242, 1)",
-    exams: "rgba(169, 62, 0, 1)",
-    internship: "rgba(93, 193, 34, 1)",
-    facilities: "rgba(186, 6, 108, 1)",
-    subjects: "rgba(37, 111, 58, 1)",
-    administration: "rgba(139, 71, 215, 1)",
-    career: "rgba(121, 140, 119, 1)",
-    admission: "rgba(170, 8, 8, 1)",
-    results: "rgba(71, 12, 237, 1)",
-    lecturer: "rgba(218, 108, 108, 1)",
-    "student life": "rgba(4, 159, 154, 1)",
-    infrastructure: "rgba(77, 182, 172, 1)",
-    classroom: "rgba(53, 74, 95, 1)",
-    events: "rgba(0, 188, 212, 1)",
-    cca: "rgba(120, 0, 164, 1)"
+  // The fixed categories (categories.py), in the order shown, with their colours.
+  const CATEGORY_COLORS = {
+    academic: "rgba(0, 114, 178, 1)",
+    admission: "rgba(213, 94, 0, 1)",
+    career: "rgba(0, 158, 115, 1)",
+    administration: "rgba(123, 97, 196, 1)",
+    facilities: "rgba(230, 159, 0, 1)",
+    activities: "rgba(86, 180, 233, 1)",
+    wellbeing: "rgba(204, 121, 167, 1)",
+    other: "rgba(127, 127, 127, 1)"
   };
+  // Old labels with one clear home, for days not yet converted.
+  const OLD_CATEGORIES = {
+    exams: "academic", subjects: "academic", results: "academic", lecturer: "academic",
+    internship: "career", cca: "activities", events: "activities", infrastructure: "facilities"
+  };
+  function toCategory(label) {
+    const key = String(label || "").trim().toLowerCase();
+    if (CATEGORY_COLORS[key]) return key;
+    return OLD_CATEGORIES[key] || null;
+  }
+  function categoryName(label) {
+    const key = toCategory(label) || String(label || "");
+    return key.charAt(0).toUpperCase() + key.slice(1);
+  }
 
   function getCategoryColor(category) {
-    const key = category.toLowerCase();
-    return PREDEFINED_CATEGORY_COLORS[key] || "rgba(38, 198, 218, 1)"; // Fallback RGBA
+    return CATEGORY_COLORS[String(category).toLowerCase()] || CATEGORY_COLORS.other;
   }
 
   function renderTimeSeriesChart(data) {
     let datasets = [];
     const initialVisibleCategory = 'academic'; // Define which category is visible initially
 
-    for (let category in data) {
-        const color = getCategoryColor(category);
-        const isVisible = category.toLowerCase() === initialVisibleCategory;
+    for (const key of Object.keys(CATEGORY_COLORS)) {
+        if (!data[key]) continue;
+        const category = categoryName(key);
+        const color = getCategoryColor(key);
+        const isVisible = key === initialVisibleCategory;
 
         // Raw data dataset
         datasets.push({
             label: category + " (raw)",
-            data: data[category],
+            data: data[key],
             fill: false,
             borderColor: setAlpha(color, 0.3), // Use alpha function
             tension: 0.1,
@@ -1123,7 +1129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // 7-day Moving Average dataset
         datasets.push({
             label: category + " (7-day MA)",
-            data: computeMovingAverage(data[category], 7),
+            data: computeMovingAverage(data[key], 7),
             fill: false,
             borderColor: color, // Base color
             borderWidth: 2.0,
