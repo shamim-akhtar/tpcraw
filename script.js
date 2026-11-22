@@ -1588,7 +1588,7 @@ function digestChangeSentence(d) {
     }
     const diff = d.negativeShare - d.baselineNegativeShare;
     const trend = Math.abs(diff) < 0.05 ? 'about the same as' : (diff > 0 ? 'higher than' : 'lower than');
-    return `${pctText(d.negativeShare)} of posts were negative, ${trend} the average of ${pctText(d.baselineNegativeShare)} over the previous ${plural(d.baselineWeeks, 'week')} that had posts.`;
+    return `${pctText(d.negativeShare)} of posts were negative, ${trend} the average of ${pctText(d.baselineNegativeShare)} over ${plural(d.baselineWeeks, 'earlier week')}.`;
 }
 
 // The digest documents are written by digest.py; all text is escaped here.
@@ -1613,8 +1613,10 @@ function renderDigestHtml(d) {
     if (Array.isArray(d.negativeThreads) && d.negativeThreads.length) {
         html += `<h4>Most negative threads</h4><ul>${d.negativeThreads.map(postLink).join('')}</ul>`;
     }
-    if (d.school !== 'TP' && d.tpWidePosts !== undefined) {
-        html += `<p class="digest-note">Posts are linked to a school only when they name it, or one of its diplomas, modules or places. ${plural(d.tpWidePosts, 'TP-wide post')} and ${plural(d.uncheckedPosts || 0, 'older post')} not yet checked for schools are not counted here.</p>`;
+    if (d.school !== 'TP' && d.tpPosts !== undefined) {
+        let note = `A post is counted for a school only when it names the school, one of its diplomas, modules or facilities. Of the ${plural(d.tpPosts, 'TP post')} this week, ${d.generalPosts || 0} ${(d.generalPosts || 0) === 1 ? 'names' : 'name'} no school (general TP)`;
+        if (d.uncheckedPosts) note += `, and ${d.uncheckedPosts} ${d.uncheckedPosts === 1 ? 'has' : 'have'} not been checked for schools yet`;
+        html += `<p class="digest-note">${escapeHtml(note)}. These are not counted here.</p>`;
     }
     return html;
 }

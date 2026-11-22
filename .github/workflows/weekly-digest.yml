@@ -1,8 +1,5 @@
 # Builds the weekly digest for each TP school every Monday at 7 AM Singapore
-# time, saves it for the dashboard, and emails it if mail secrets are set.
-#
-# Optional secrets for email: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASSWORD,
-# DIGEST_FROM and DIGEST_RECIPIENTS, e.g. {"IIT": ["someone@tp.edu.sg"], "TP": [...]}
+# time and saves it for the dashboard's Weekly Digest tab.
 name: Weekly School Digest
 
 on:
@@ -18,8 +15,7 @@ on:
         description: 'What to do with the digests'
         type: choice
         options:
-          - save and email
-          - save only
+          - save
           - dry run (print only)
         default: 'dry run (print only)'
 
@@ -53,21 +49,12 @@ jobs:
           echo "REDDIT_USER_AGENT=${{ secrets.REDDIT_USER_AGENT }}" >> .env
           echo "GOOGLE_GEMINI_API_KEY=${{ secrets.GOOGLE_GEMINI_API_KEY }}" >> .env
 
-      - name: Build and send digests
+      - name: Build and save digests
         env:
           WEEK: ${{ inputs.week }}
-          MODE: ${{ inputs.mode || 'save and email' }}
-          SMTP_HOST: ${{ secrets.SMTP_HOST }}
-          SMTP_PORT: ${{ secrets.SMTP_PORT }}
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          DIGEST_FROM: ${{ secrets.DIGEST_FROM }}
-          DIGEST_RECIPIENTS: ${{ secrets.DIGEST_RECIPIENTS }}
+          MODE: ${{ inputs.mode || 'save' }}
         run: |
           ARGS=()
           if [ -n "$WEEK" ]; then ARGS+=(--week "$WEEK"); fi
-          case "$MODE" in
-            "save only") ARGS+=(--no-email) ;;
-            "dry run (print only)") ARGS+=(--dry-run) ;;
-          esac
+          if [ "$MODE" = "dry run (print only)" ]; then ARGS+=(--dry-run); fi
           python digest.py "${ARGS[@]}"

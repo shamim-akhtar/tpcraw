@@ -8,29 +8,24 @@ For the week just ended (Monday to Sunday, Singapore time), this script:
   3. asks Gemini for the top issues of the week, each tied to real posts;
   4. lists the most negative threads with links;
   5. saves the digest in Firestore (weekly_digests/<week>_<school>) for the
-     dashboard's Weekly Digest tab; and
-  6. emails it, if mail settings and recipients are configured.
+     dashboard's Weekly Digest tab.
 
-A digest is also made for "TP" (all posts, including TP-wide ones).
+A digest is also made for "TP" (all posts, including general TP ones).
 
-Mail settings come from environment variables (GitHub secrets):
-  SMTP_HOST, SMTP_PORT (default 587), SMTP_USER, SMTP_PASSWORD, DIGEST_FROM
-  DIGEST_RECIPIENTS  JSON such as {"IIT": ["a@tp.edu.sg"], "TP": ["b@tp.edu.sg"]}
-Recipients are kept out of the repository because it is public.
+A post counts for a school only if it carries school tags made under the
+current rules (school_tags.TAGS_VERSION) that name that school. Posts not yet
+checked under those rules are left out and counted in the note, and earlier
+weeks are used for comparison only if most of their posts have been checked.
 
 Usage:
-    python digest.py                 # last full week, save and email
-    python digest.py --dry-run       # print the digests, do not save or email
-    python digest.py --week 2026-11-16 --no-email
+    python digest.py                 # last full week, save
+    python digest.py --dry-run       # print the digests, do not save
+    python digest.py --week 2026-11-16
 """
 import argparse
 import datetime
-import html
-import json
 import logging
 import os
-import smtplib
-from email.message import EmailMessage
 from typing import Optional
 
 from google import genai
@@ -45,6 +40,9 @@ DIGEST_COLLECTION = "weekly_digests"
 BASELINE_WEEKS = 4
 TOP_NEGATIVE_THREADS = 3
 MAX_POSTS_FOR_AI = 60
+# An earlier week is used for comparison only if at least this share of its
+# posts has been checked for schools under the current rules.
+MIN_CHECKED_SHARE = 0.8
 
 # Which stored posts count as being about TP.
 SOURCES = [
@@ -87,20 +85,27 @@ def load_posts(start, end):
     return posts
 
 
+def is_checked(post):
+    """True if the post was checked for schools under the current rules."""
+    return (isinstance(post.get("schoolTags"), list)
+            and (post.get("schoolTagsVersion") or 0) >= school_tags.TAGS_VERSION)
+
+
 def school_tag_for(post, school):
-    """Same rule as the dashboard: evidence tags first, then the older IIT flag."""
-    tags = post.get("schoolTags")
-    if isinstance(tags, list):
-        return next((t for t in tags if t.get("school") == school), None)
-    if school == "IIT" and post.get("iit") == "yes":
-        return {"school": "IIT", "confidence": "likely", "evidence": [], "legacy": True}
-    return None
+    """The post's tag for this school. Older tags and the old IIT flag are not used."""
+    if not is_checked(post):
+        return None
+    return next((t for t in post["schoolTags"] if t.get("school") == school), None)
 
 
 def posts_for(posts, school):
     if school == ALL_TP:
         return list(posts)
     return [p for p in posts if school_tag_for(p, school)]
+
+
+def checked_share(posts):
+    return sum(1 for p in posts if is_checked(p)) / len(posts) if posts else 0
 
 
 def is_negative(post):
@@ -192,6 +197,10 @@ def post_link(p):
 def build_digest(school, week_start, week_posts, baseline_posts_by_week, client):
     posts = posts_for(week_posts, school)
     share = negative_share(posts)
+    if school != ALL_TP:
+        # Weeks mostly unchecked would make the school's share look different
+        # for reasons that have nothing to do with students.
+        baseline_posts_by_week = [wp for wp in baseline_posts_by_week if checked_share(wp) >= MIN_CHECKED_SHARE]
     baseline_shares = [negative_share(posts_for(wp, school)) for wp in baseline_posts_by_week]
     baseline_shares = [s for s in baseline_shares if s is not None]
     baseline = sum(baseline_shares) / len(baseline_shares) if baseline_shares else None
@@ -222,10 +231,9 @@ def build_digest(school, week_start, week_posts, baseline_posts_by_week, client)
         "generatedAt": datetime.datetime.now(SGT),
     }
     if school != ALL_TP:
-        digest["clearLinks"] = sum(1 for p in posts if (school_tag_for(p, school) or {}).get("confidence") == "clear")
-        digest["tpWidePosts"] = sum(1 for p in week_posts if p.get("schoolTags") == [])
-        digest["uncheckedPosts"] = sum(1 for p in week_posts
-                                       if not isinstance(p.get("schoolTags"), list) and not school_tag_for(p, school))
+        digest["tpPosts"] = len(week_posts)
+        digest["generalPosts"] = sum(1 for p in week_posts if is_checked(p) and not p["schoolTags"])
+        digest["uncheckedPosts"] = sum(1 for p in week_posts if not is_checked(p))
     return digest
 
 
@@ -237,9 +245,12 @@ def plural(n, word):
 
 
 def coverage_note(d):
-    return (f"Posts are linked to a school only when they name it, or one of its diplomas, modules or places. "
-            f"{plural(d['tpWidePosts'], 'TP-wide post')} and {plural(d['uncheckedPosts'], 'older post')} "
-            f"not yet checked for schools are not counted here.")
+    note = (f"A post is counted for a school only when it names the school, one of its diplomas, modules "
+            f"or facilities. Of the {plural(d['tpPosts'], 'TP post')} this week, "
+            f"{d['generalPosts']} {'names' if d['generalPosts'] == 1 else 'name'} no school (general TP)")
+    if d["uncheckedPosts"]:
+        note += f", and {d['uncheckedPosts']} {'has' if d['uncheckedPosts'] == 1 else 'have'} not been checked for schools yet"
+    return note + ". These are not counted here."
 
 
 def pct(x):
@@ -259,7 +270,7 @@ def change_sentence(d):
     else:
         trend = "lower than"
     return (f"{pct(d['negativeShare'])} of posts were negative, {trend} the average of "
-            f"{pct(d['baselineNegativeShare'])} over the previous {plural(d['baselineWeeks'], 'week')} that had posts.")
+            f"{pct(d['baselineNegativeShare'])} over {plural(d['baselineWeeks'], 'earlier week')}.")
 
 
 def digest_text(d):
@@ -285,81 +296,10 @@ def digest_text(d):
     return "\n".join(lines)
 
 
-def digest_html(d):
-    e = html.escape
-    parts = [
-        f"<h2 style='margin:0 0 4px'>Weekly digest: {e(d['schoolName'])}</h2>",
-        f"<p style='margin:0 0 12px;color:#555'>Week of {e(d['weekStart'])} to {e(d['weekEnd'])}</p>",
-        f"<p><strong>{d['postCount']}</strong> posts and <strong>{d['commentCount']}</strong> comments. "
-        f"{e(change_sentence(d))}</p>",
-    ]
-    if d.get("overview"):
-        parts.append(f"<p>{e(d['overview'])}</p>")
-    if d["issues"]:
-        parts.append("<h3>Issues to look at</h3><ol>")
-        for issue in d["issues"]:
-            links = "".join(
-                f"<li><a href='{e(p['url'])}'>{e(p['title'])}</a> ({p['comments']} comments)</li>"
-                for p in issue["posts"])
-            parts.append(
-                f"<li><strong>{e(issue['title'])}</strong><br>{e(issue['whatStudentsSay'])}<br>"
-                f"<em>Possible follow-up:</em> {e(issue['possibleFollowUp'])}<ul>{links}</ul></li>")
-        parts.append("</ol>")
-    if d["negativeThreads"]:
-        parts.append("<h3>Most negative threads</h3><ul>")
-        for p in d["negativeThreads"]:
-            parts.append(f"<li><a href='{e(p['url'])}'>{e(p['title'])}</a> ({p['comments']} comments)</li>")
-        parts.append("</ul>")
-    if d["school"] != ALL_TP:
-        parts.append(f"<p style='color:#666;font-size:0.9em'>{e(coverage_note(d))}</p>")
-    parts.append(f"<p><a href='{e(DASHBOARD_URL)}'>Open the dashboard</a></p>")
-    return "<div style='font-family:Arial,sans-serif;font-size:14px;line-height:1.5'>" + "".join(parts) + "</div>"
-
-
 def save_digest(d):
     doc_id = f"{d['weekStart']}_{d['school']}"
     db.collection(DIGEST_COLLECTION).document(doc_id).set(d)
     return doc_id
-
-
-def mail_settings():
-    host = os.getenv("SMTP_HOST")
-    recipients_raw = os.getenv("DIGEST_RECIPIENTS")
-    if not host or not recipients_raw:
-        return None
-    try:
-        recipients = json.loads(recipients_raw)
-    except json.JSONDecodeError:
-        logging.error("DIGEST_RECIPIENTS is not valid JSON; no email sent.")
-        print("WARN: DIGEST_RECIPIENTS is not valid JSON; no email sent.")
-        return None
-    return {
-        "host": host,
-        "port": int(os.getenv("SMTP_PORT", "587")),
-        "user": os.getenv("SMTP_USER"),
-        "password": os.getenv("SMTP_PASSWORD"),
-        "from": os.getenv("DIGEST_FROM") or os.getenv("SMTP_USER"),
-        "recipients": recipients,
-    }
-
-
-def send_digest(d, settings):
-    to = settings["recipients"].get(d["school"]) or []
-    if not to:
-        return 0
-    msg = EmailMessage()
-    msg["Subject"] = f"Reddit weekly digest: {d['schoolName']}, week of {d['weekStart']}"
-    msg["From"] = settings["from"]
-    msg["To"] = settings["from"]
-    msg["Bcc"] = ", ".join(to)  # recipients do not see each other
-    msg.set_content(digest_text(d))
-    msg.add_alternative(digest_html(d), subtype="html")
-    with smtplib.SMTP(settings["host"], settings["port"], timeout=30) as smtp:
-        smtp.starttls()
-        if settings["user"]:
-            smtp.login(settings["user"], settings["password"])
-        smtp.send_message(msg)
-    return len(to)
 
 
 # ---------------------------------------------------------------------------
@@ -369,8 +309,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--week", help="Monday of the week to report, YYYY-MM-DD (default: last full week).")
     parser.add_argument("--schools", nargs="*", help="School codes (default: every school and TP).")
-    parser.add_argument("--dry-run", action="store_true", help="Print the digests; do not save or email.")
-    parser.add_argument("--no-email", action="store_true", help="Save the digests but do not email them.")
+    parser.add_argument("--dry-run", action="store_true", help="Print the digests; do not save them.")
     args = parser.parse_args()
 
     week_start = datetime.date.fromisoformat(args.week) if args.week else last_full_week()
@@ -387,9 +326,6 @@ def main():
           f"previous weeks: {[len(b) for b in baseline]}")
 
     client = genai.Client(api_key=crawler.GOOGLE_GEMINI_API_KEY) if crawler.GOOGLE_GEMINI_API_KEY else None
-    settings = None if (args.dry_run or args.no_email) else mail_settings()
-    if settings is None and not (args.dry_run or args.no_email):
-        print("Mail settings or DIGEST_RECIPIENTS not set, so digests are saved but not emailed.")
 
     for school in schools:
         d = build_digest(school, week_start, week_posts, baseline, client)
@@ -397,14 +333,7 @@ def main():
             print("\n" + "=" * 70 + "\n" + digest_text(d))
             continue
         doc_id = save_digest(d)
-        sent = 0
-        if settings:
-            try:
-                sent = send_digest(d, settings)
-            except Exception as e:
-                logging.exception(f"Failed to email digest {doc_id}: {e}")
-                print(f"ERROR: failed to email digest {doc_id}: {e}")
-        print(f"Saved {doc_id} ({d['postCount']} posts, {len(d['issues'])} issues), emailed to {sent} people.")
+        print(f"Saved {doc_id} ({d['postCount']} posts, {len(d['issues'])} issues).")
 
 
 if __name__ == "__main__":
