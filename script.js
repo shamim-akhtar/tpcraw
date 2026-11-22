@@ -1615,7 +1615,7 @@ function pctText(x) {
 }
 
 function digestChangeSentence(d) {
-    if (d.negativeShare === null || d.negativeShare === undefined) return 'No posts were linked to this school in this week.';
+    if (d.negativeShare === null || d.negativeShare === undefined) return POLY_NAMES[d.school] ? 'There were no posts in this week.' : 'No posts were linked to this school in this week.';
     if (d.baselineNegativeShare === null || d.baselineNegativeShare === undefined) {
         return `${pctText(d.negativeShare)} of posts were negative. There is not enough history to compare yet.`;
     }
@@ -1646,7 +1646,7 @@ function renderDigestHtml(d) {
     if (Array.isArray(d.negativeThreads) && d.negativeThreads.length) {
         html += `<h4>Most negative threads</h4><ul>${d.negativeThreads.map(postLink).join('')}</ul>`;
     }
-    if (d.school !== 'TP' && d.tpPosts !== undefined) {
+    if (!POLY_NAMES[d.school] && d.tpPosts !== undefined) {
         let note = `A post is counted for a school only when it names the school, one of its diplomas, modules or facilities. Of the ${plural(d.tpPosts, 'TP post')} this week, ${d.generalPosts || 0} ${(d.generalPosts || 0) === 1 ? 'names' : 'name'} no school (general TP)`;
         if (d.uncheckedPosts) note += `, and ${d.uncheckedPosts} ${d.uncheckedPosts === 1 ? 'has' : 'have'} not been checked for schools yet`;
         html += `<p class="digest-note">${escapeHtml(note)}. These are not counted here.</p>`;
@@ -2359,7 +2359,7 @@ function safeUrl(url) {
     if (row) fetchAndDisplayPostDetails(row.dataset.postId);
   });
 
-  // Digests and school filters cover TP only (r/TemasekPoly and TP posts on r/SGExams).
+  // School filters cover TP only (r/TemasekPoly and TP posts on r/SGExams).
   const coversTp = () => schoolFilterApplies(document.getElementById('subreddit-select').value.toLowerCase());
 
   const forumPoly = () => FORUM_POLY[document.getElementById('subreddit-select').value.toLowerCase()] || '';
@@ -2368,8 +2368,8 @@ function safeUrl(url) {
     const tp = coversTp();
     const poly = forumPoly();
     document.getElementById('tpOnlyCards').hidden = !poly;
-    document.getElementById('issuesCard').hidden = !tp;
-    document.getElementById('otherForumFeel').hidden = tp;
+    document.getElementById('issuesCard').hidden = false;
+    document.getElementById('otherForumFeel').hidden = true;
     document.getElementById('alertsKpi').hidden = !poly;
     if (!poly) { document.getElementById('alerts-badge').hidden = true; return; }
     // Alerts: the chosen period, for this polytechnic (and the chosen TP school)
@@ -2391,12 +2391,10 @@ function safeUrl(url) {
       document.getElementById('alertsCount').textContent = '-';
       alertsBox.innerHTML = '<p class="ui-muted">Could not load the alerts.</p>';
     }
-    if (!tp) return;
-    // Issues: the latest weekly digest for the chosen school
+    // Issues: the latest weekly digest for the polytechnic (or the chosen TP school)
     const issuesBox = document.getElementById('overviewIssues');
     try {
-      const code = document.getElementById('school-filter').value || 'TP';
-      const latest = (await digestWeeksFor(code))[0];
+      const latest = (await digestWeeksFor(digestCode()))[0];
       if (!latest) {
         issuesBox.innerHTML = '<p class="ui-muted">No digest yet. Digests are made every Monday morning.</p>';
       } else {
@@ -2538,6 +2536,8 @@ function safeUrl(url) {
     return digestWeeksBySchool[school];
   }
   digestSchool.value = 'TP';
+  // Whose digest to show: the chosen TP school, or the forum's polytechnic.
+  const digestCode = () => coversTp() ? (document.getElementById('school-filter').value || 'TP') : forumPoly();
   digestSchool.addEventListener('change', loadDigest);
   digestWeek.addEventListener('change', loadDigest);
 
@@ -2555,12 +2555,13 @@ function safeUrl(url) {
     const container = document.getElementById('digestContent');
     container.innerHTML = '<p class="details-message loading">Loading digest...</p>';
     try {
-      const digests = await digestWeeksFor(digestSchool.value);
+      const code = digestCode();
+      const digests = await digestWeeksFor(code);
       const chosen = digestWeek.value;
       digestWeek.innerHTML = '';
       digests.forEach(d => digestWeek.add(new Option(`Week of ${weekLabel(d.weekStart)}`, d.weekStart)));
       if (!digests.length) {
-        container.innerHTML = '<p class="details-message info">There are no digests for this school yet. Digests are made every Monday morning.</p>';
+        container.innerHTML = `<p class="details-message info">There are no digests for this ${POLY_NAMES[code] && code !== 'TP' ? 'polytechnic' : 'school'} yet. Digests are made every Monday morning.</p>`;
         return;
       }
       const d = digests.find(x => x.weekStart === chosen) || digests[0];

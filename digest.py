@@ -1,5 +1,5 @@
 """
-Weekly digest for each TP school.
+Weekly digest for each TP school and for each polytechnic.
 
 For the week just ended (Monday to Sunday, Singapore time), this script:
   1. collects the posts linked to each school, from r/TemasekPoly and the
@@ -10,7 +10,9 @@ For the week just ended (Monday to Sunday, Singapore time), this script:
   5. saves the digest in Firestore (weekly_digests/<week>_<school>) for the
      dashboard's Weekly Digest tab.
 
-A digest is also made for "TP" (all posts, including general TP ones).
+A digest is also made for "TP" (all posts, including general TP ones) and for
+each other polytechnic ("NYP", "RP", "SP", "NP"), from its own forum and the
+r/SGExams posts that name it. The other polytechnics have no school digests.
 
 A post counts for a school only if it carries school tags made under the
 current rules (school_tags.TAGS_VERSION) that name that school. Posts not yet
@@ -32,6 +34,7 @@ from typing import Optional
 from google import genai
 from pydantic import BaseModel
 
+import alerts
 import crawler
 from crawler import SGT, db, safe_generate_content, wrap_text
 import school_tags
@@ -45,15 +48,22 @@ MAX_POSTS_FOR_AI = 60
 # posts has been checked for schools under the current rules.
 MIN_CHECKED_SHARE = 0.8
 
-# Which stored posts count as being about TP.
-SOURCES = [
-    {"subreddit": "temasekpoly", "tp_only": False},
-    {"subreddit": "sgexams", "tp_only": True},
-]
-
 ALL_TP = "TP"
+SHARED_SUBREDDIT = "sgexams"
+# The polytechnics with a digest, and their own forums.
+POLY_FORUMS = {}
+for _sub, _code in alerts.POLY_SUBREDDITS.items():
+    POLY_FORUMS.setdefault(_code, []).append(_sub)
+POLY_CODES = list(POLY_FORUMS)
+
 SCHOOL_NAMES = {s["code"]: s["name"] for s in school_tags.SCHOOLS}
+SCHOOL_NAMES.update(alerts.POLY_NAMES)
 SCHOOL_NAMES[ALL_TP] = "Temasek Polytechnic (all schools)"
+
+
+def poly_of(code):
+    """The polytechnic a digest belongs to. School codes are TP schools."""
+    return code if code in POLY_FORUMS else ALL_TP
 
 
 # ---------------------------------------------------------------------------
@@ -72,27 +82,42 @@ def last_full_week(today: Optional[datetime.date] = None) -> datetime.date:
 
 
 _posts_by_week = {}
+_forum_weeks = {}
 
 
-def load_week(week_start):
-    """Posts for one week, read once even when several digests need them."""
-    if week_start not in _posts_by_week:
-        _posts_by_week[week_start] = load_posts(*week_bounds(week_start))
-    return _posts_by_week[week_start]
+def load_week(week_start, poly=ALL_TP):
+    """A polytechnic's posts for one week, read once even when several digests need them."""
+    if (poly, week_start) not in _posts_by_week:
+        _posts_by_week[(poly, week_start)] = load_posts(*week_bounds(week_start), poly=poly)
+    return _posts_by_week[(poly, week_start)]
 
 
-def load_posts(start, end):
-    posts = []
-    for source in SOURCES:
-        refs = crawler.get_collections(source["subreddit"])
-        query = refs["posts"].where("created", ">=", start).where("created", "<", end)
+def forum_posts(subreddit, start, end):
+    """One forum's posts for a period, read from Firestore once."""
+    if (subreddit, start) not in _forum_weeks:
+        query = crawler.get_collections(subreddit)["posts"].where("created", ">=", start).where("created", "<", end)
+        posts = []
         for snap in query.stream():
             data = snap.to_dict() or {}
-            if source["tp_only"] and not data.get("relatedToTemasekPoly"):
-                continue
             data["id"] = snap.id
-            data["subredditKey"] = source["subreddit"]
+            data["subredditKey"] = subreddit
             posts.append(data)
+        _forum_weeks[(subreddit, start)] = posts
+    return _forum_weeks[(subreddit, start)]
+
+
+def is_about(post, poly):
+    """Whether an r/SGExams post is about this polytechnic."""
+    if poly == ALL_TP:
+        return bool(post.get("relatedToTemasekPoly"))
+    return poly in alerts.polys_named(" ".join([post.get("title") or "", post.get("body") or ""]))
+
+
+def load_posts(start, end, poly=ALL_TP):
+    posts = []
+    for subreddit in POLY_FORUMS[poly]:
+        posts += forum_posts(subreddit, start, end)
+    posts += [p for p in forum_posts(SHARED_SUBREDDIT, start, end) if is_about(p, poly)]
     return posts
 
 
@@ -110,7 +135,7 @@ def school_tag_for(post, school):
 
 
 def posts_for(posts, school):
-    if school == ALL_TP:
+    if school in POLY_FORUMS:
         return list(posts)
     return [p for p in posts if school_tag_for(p, school)]
 
@@ -143,8 +168,8 @@ class WeeklyIssues(BaseModel):
 
 
 PROMPT_ISSUES = """
-You are helping staff of a school at Temasek Polytechnic (TP) in Singapore
-understand what students said on Reddit last week.
+You are helping staff of PLACE in Singapore understand what students said on
+Reddit last week.
 
 Below is a list of Reddit posts, one per line, with an id, title, overall
 sentiment, number of comments and an AI summary of the discussion.
@@ -170,13 +195,20 @@ def describe_post_for_ai(p):
     return f"[{p['id']}] {p.get('title', '')} | {sentiment} | {p.get('totalComments', 0)} comments | {summary}"
 
 
-def find_issues(client, posts):
+def place_for(school):
+    if school in POLY_FORUMS and school != ALL_TP:
+        return f"{alerts.POLY_NAMES[school]} ({school})"
+    return "a school at Temasek Polytechnic (TP)"
+
+
+def find_issues(client, posts, school=ALL_TP):
     if not posts or client is None:
         return {"overview": "", "issues": []}
     # Busiest posts first, so the most discussed ones are always included.
     ranked = sorted(posts, key=lambda p: p.get("engagementScore") or 0, reverse=True)[:MAX_POSTS_FOR_AI]
     text = "\n".join(describe_post_for_ai(p) for p in ranked)
-    result = safe_generate_content(client, PROMPT_ISSUES + wrap_text(text), schema=WeeklyIssues)
+    result = safe_generate_content(client, PROMPT_ISSUES.replace("PLACE", place_for(school)) + wrap_text(text),
+                                   schema=WeeklyIssues)
     if not isinstance(result, WeeklyIssues):
         logging.error("Weekly issues: Gemini gave no usable answer.")
         return {"overview": "", "issues": []}
@@ -208,7 +240,7 @@ def post_link(p):
 def build_digest(school, week_start, week_posts, baseline_posts_by_week, client):
     posts = posts_for(week_posts, school)
     share = negative_share(posts)
-    if school != ALL_TP:
+    if school not in POLY_FORUMS:
         # Weeks mostly unchecked would make the school's share look different
         # for reasons that have nothing to do with students.
         baseline_posts_by_week = [wp for wp in baseline_posts_by_week if checked_share(wp) >= MIN_CHECKED_SHARE]
@@ -221,7 +253,7 @@ def build_digest(school, week_start, week_posts, baseline_posts_by_week, client)
         key=lambda p: (p.get("weightedSentimentScore") or 0, -(p.get("totalComments") or 0)),
     )[:TOP_NEGATIVE_THREADS]
 
-    ai = find_issues(client, posts)
+    ai = find_issues(client, posts, school)
     by_id = {p["id"]: p for p in posts}
     for issue in ai["issues"]:
         issue["posts"] = [post_link(by_id[i]) for i in issue["postIds"]]
@@ -241,7 +273,7 @@ def build_digest(school, week_start, week_posts, baseline_posts_by_week, client)
         "negativeThreads": [post_link(p) for p in negative_threads],
         "generatedAt": datetime.datetime.now(SGT),
     }
-    if school != ALL_TP:
+    if school not in POLY_FORUMS:
         digest["tpPosts"] = len(week_posts)
         digest["generalPosts"] = sum(1 for p in week_posts if is_checked(p) and not p["schoolTags"])
         digest["uncheckedPosts"] = sum(1 for p in week_posts if not is_checked(p))
@@ -270,7 +302,7 @@ def pct(x):
 
 def change_sentence(d):
     if d["negativeShare"] is None:
-        return "No posts were linked to this school last week."
+        return "There were no posts last week." if d["school"] in POLY_FORUMS else "No posts were linked to this school last week."
     if d["baselineNegativeShare"] is None:
         return f"{pct(d['negativeShare'])} of posts were negative. There is not enough history to compare yet."
     diff = d["negativeShare"] - d["baselineNegativeShare"]
@@ -301,7 +333,7 @@ def digest_text(d):
         lines += ["", "Most negative threads:"]
         for p in d["negativeThreads"]:
             lines.append(f"- {p['title']} ({p['comments']} comments) {p['url']}")
-    if d["school"] != ALL_TP:
+    if d["school"] not in POLY_FORUMS:
         lines += ["", "Note: " + coverage_note(d)]
     lines += ["", f"Dashboard: {DASHBOARD_URL}"]
     return "\n".join(lines)
@@ -327,13 +359,13 @@ def main():
                         help="How many weeks to report, counting back from --week (default 1). "
                              "Digests already saved are skipped unless --force is given.")
     parser.add_argument("--force", action="store_true", help="Rebuild digests that are already saved.")
-    parser.add_argument("--schools", nargs="*", help="School codes (default: every school and TP).")
+    parser.add_argument("--schools", nargs="*", help="School or polytechnic codes (default: every TP school and every polytechnic).")
     parser.add_argument("--dry-run", action="store_true", help="Print the digests; do not save them.")
     args = parser.parse_args()
 
     latest = datetime.date.fromisoformat(args.week) if args.week else last_full_week()
     latest -= datetime.timedelta(days=latest.weekday())  # always a Monday
-    schools = args.schools or (school_tags.SCHOOL_CODES + [ALL_TP])
+    schools = args.schools or (school_tags.SCHOOL_CODES + POLY_CODES)
     client = genai.Client(api_key=crawler.GOOGLE_GEMINI_API_KEY) if crawler.GOOGLE_GEMINI_API_KEY else None
 
     saved = skipped = 0
@@ -345,19 +377,23 @@ def main():
         if not todo:
             print(f"Week of {week_start}: all digests already saved.")
             continue
-        week_posts = load_week(week_start)
-        baseline = [load_week(week_start - datetime.timedelta(weeks=k)) for k in range(1, BASELINE_WEEKS + 1)]
-        print(f"Week of {week_start}: {len(week_posts)} TP posts; "
-              f"previous weeks: {[len(b) for b in baseline]}")
-
-        for school in todo:
-            d = build_digest(school, week_start, week_posts, baseline, client)
-            if args.dry_run:
-                print("\n" + "=" * 70 + "\n" + digest_text(d))
+        for poly in POLY_CODES:
+            codes = [s for s in todo if poly_of(s) == poly]
+            if not codes:
                 continue
-            doc_id = save_digest(d)
-            saved += 1
-            print(f"Saved {doc_id} ({d['postCount']} posts, {len(d['issues'])} issues).")
+            week_posts = load_week(week_start, poly)
+            baseline = [load_week(week_start - datetime.timedelta(weeks=k), poly) for k in range(1, BASELINE_WEEKS + 1)]
+            print(f"Week of {week_start}: {len(week_posts)} {poly} posts; "
+                  f"previous weeks: {[len(b) for b in baseline]}")
+
+            for school in codes:
+                d = build_digest(school, week_start, week_posts, baseline, client)
+                if args.dry_run:
+                    print("\n" + "=" * 70 + "\n" + digest_text(d))
+                    continue
+                doc_id = save_digest(d)
+                saved += 1
+                print(f"Saved {doc_id} ({d['postCount']} posts, {len(d['issues'])} issues).")
     if not args.dry_run:
         print(f"{saved} digests saved, {skipped} already there.")
 

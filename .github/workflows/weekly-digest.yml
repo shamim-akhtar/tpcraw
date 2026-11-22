@@ -1,4 +1,4 @@
-# Builds the weekly digest for each TP school every Monday at 7 AM Singapore
+# Builds the weekly digest for each TP school and each polytechnic every Monday at 7 AM Singapore
 # time and saves it for the dashboard's Weekly Digest tab.
 name: Weekly School Digest
 
