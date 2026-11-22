@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   overlay.addEventListener('click', closeDrawer);
+  let lastPostView = null;
 
   // --- 2. CENTRAL MODAL CLICK HANDLER (Event Delegation) ---
   postDetailsContent.addEventListener('click', (e) => {
@@ -124,6 +125,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Handle Close
       if (e.target.classList.contains('close-drawer-btn') || e.target.id === 'closeModalX') {
           closeDrawer();
+      }
+      // "Show name" in a post opened from an alert with hidden names
+      if (e.target.id === 'postShowNames' && lastPostView) {
+          fetchAndDisplayPostDetails(lastPostView.postId, { ...lastPostView.opts, maskNames: [] });
       }
       // Handle View Full Post (if clicking from a list like Search)
       if (e.target.classList.contains('view-full-post-btn')) {
@@ -663,15 +668,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
   }
 
-  async function fetchAndDisplayPostDetails(postId) {
+  // opts.subreddit: the forum the post is saved under (default: the chosen forum).
+  // opts.maskNames: names to hide in the view, as on the alert it was opened from.
+  async function fetchAndDisplayPostDetails(postId, opts = {}) {
     // 1. Open the modal popup
     openDrawer(); 
     const postDetailsContent = document.getElementById('post-details');
     postDetailsContent.innerHTML = '<p class="loading-message">Analyzing post details...</p>';
 
     // Identify the correct collection based on subreddit select
-    const selectedSubreddit = document.getElementById('subreddit-select').value.toLowerCase();
+    const selectedSubreddit = (opts.subreddit || document.getElementById('subreddit-select').value).toLowerCase();
     const postsCollection = (selectedSubreddit === "temasekpoly") ? "posts" : `${selectedSubreddit}_posts`;
+    const names = Array.isArray(opts.maskNames) ? opts.maskNames : [];
+    const esc = t => maskNamesHtml(t, names);
+    const html = t => maskNamesHtml(t, names, textToHtml);
+    lastPostView = { postId, opts };
 
     try {
         const postRef = doc(db, postsCollection, postId);
@@ -691,16 +702,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         const navHtml = `
           <div class="modal-nav-container">
               <div style="display:flex; gap:10px; margin-left: auto;">
+                  <a class="pdf-export-btn open-reddit-btn" href="${safeUrl(names.length ? linkWithoutSlug(postData.URL) : postData.URL)}" target="_blank" rel="noopener noreferrer">Open in Reddit</a>
                   <button class="pdf-export-btn" id="downloadPDFBtn">📄 Download PDF</button>
                   <button class="close-drawer-btn">✕ Close</button>
               </div>
           </div>`;
+        const nameNote = names.length
+          ? `<p class="alert-name-note">A person's name appears in this public post, so it is hidden here. Only names found in the alert are hidden, so others may still show. <button type="button" class="ui-link" id="postShowNames">Show name</button></p>`
+          : '';
 
-        const header = `<h2 class="post-details-title"><a href="${safeUrl(postData.URL)}" target="_blank" rel="noopener noreferrer">${escapeHtml(postData.title)}</a></h2>`;
+        const header = `<h2 class="post-details-title"><a href="${safeUrl(names.length ? linkWithoutSlug(postData.URL) : postData.URL)}" target="_blank" rel="noopener noreferrer">${esc(postData.title)}</a></h2>${nameNote}`;
         const meta = `<p class="post-details-meta">By <strong>${escapeHtml(postData.author)}</strong> on ${formattedDate}</p>`;
         const badges = `<div class="post-details-badges">${generateBadgesHtml(postData)}</div>`;
-        const summary = `<div class="post-details-summary"><h4 class="summary-title">AI Summary</h4><p class="summary-text">${postData.summary ? textToHtml(postData.summary) : 'N/A'}</p></div>`;
-        const body = `<div class="post-details-body-container"><h4 class="body-title">Post Content</h4><div class="body-content">${textToHtml(postData.body)}</div></div>`;
+        const summary = `<div class="post-details-summary"><h4 class="summary-title">AI Summary</h4><p class="summary-text">${postData.summary ? html(postData.summary) : 'N/A'}</p></div>`;
+        const body = `<div class="post-details-body-container"><h4 class="body-title">Post Content</h4><div class="body-content">${html(postData.body)}</div></div>`;
 
         // 3. Fetch Comments
         const commentsSnapshot = await getDocs(collection(db, `${postsCollection}/${postId}/comments`));
@@ -711,7 +726,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             commentsHtml += `
                 <div class="post-details-comment">
                     <p class="comment-meta"><strong>${escapeHtml(c.author || 'Anon')}</strong></p>
-                    <p class="comment-body">${textToHtml(c.body)}</p>
+                    <p class="comment-body">${html(c.body)}</p>
                     <div class="comment-badges">${generateCommentBadgesHtml(c)}</div>
                 </div>`;
         });
@@ -1558,12 +1573,12 @@ function alertSourceText(a) {
 
 // Personal names found by AI in an alert (maskNames) are hidden until the
 // reader asks to see them. The text is escaped here.
-function maskNamesHtml(text, names) {
+function maskNamesHtml(text, names, fmt = escapeHtml) {
     const list = (names || []).filter(n => n && n.length >= 2);
-    if (!list.length) return escapeHtml(text);
+    if (!list.length) return fmt(text);
     const re = new RegExp(`(${list.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})`, 'gi');
     return String(text || '').split(re).map((part, i) =>
-        i % 2 ? '<span class="name-mask" title="Name hidden">name hidden</span>' : escapeHtml(part)).join('');
+        i % 2 ? '<span class="name-mask" title="Name hidden">name hidden</span>' : fmt(part)).join('');
 }
 
 // A Reddit link without the title words, which can hold a name.
@@ -1571,13 +1586,29 @@ function linkWithoutSlug(url) {
     return String(url || '').replace(/(\/comments\/[a-z0-9]+)\/[^/?#]+\/?/i, '$1/');
 }
 
+// The title opens the dashboard's own view of the post. "Open in Reddit" is a
+// separate link. An alert saved without its post id keeps the Reddit link.
+function alertTitleHtml(a, titleHtml, masked) {
+    if (!a.postId || !a.subreddit) {
+        return `<a href="${safeUrl(masked ? linkWithoutSlug(a.url) : a.url)}" target="_blank" rel="noopener noreferrer"><strong>${titleHtml}</strong></a>`;
+    }
+    const names = masked ? ` data-alert-names="${escapeHtml(JSON.stringify(a.maskNames))}"` : '';
+    return `<button type="button" class="alert-title" data-alert-post="${escapeHtml(a.postId)}" data-alert-sub="${escapeHtml(a.subreddit)}"${names}><strong>${titleHtml}</strong></button>`;
+}
+
+function alertRedditLink(a) {
+    const names = Array.isArray(a.maskNames) ? a.maskNames : [];
+    if (!a.url) return '';
+    return `<a class="alert-reddit" href="${safeUrl(names.length ? linkWithoutSlug(a.url) : a.url)}" target="_blank" rel="noopener noreferrer">Open in Reddit</a>`;
+}
+
 function alertTextHtml(a) {
     const names = Array.isArray(a.maskNames) ? a.maskNames : [];
-    const plain = `<a href="${safeUrl(a.url)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(a.title)}</strong></a>
+    const plain = `${alertTitleHtml(a, escapeHtml(a.title), false)}
           <p>${escapeHtml(a.reason)}</p>`;
     if (!names.length) return plain;
     return `<div class="alert-text">
-            <a href="${safeUrl(linkWithoutSlug(a.url))}" target="_blank" rel="noopener noreferrer"><strong>${maskNamesHtml(a.title, names)}</strong></a>
+            ${alertTitleHtml(a, maskNamesHtml(a.title, names), true)}
             <p>${maskNamesHtml(a.reason, names)}</p></div>
           <div class="alert-text" hidden>${plain}</div>
           <p class="alert-name-note">A person's name appears in this public post, so it is hidden here. <button type="button" class="ui-link" data-show-names>Show name</button></p>`;
@@ -1599,7 +1630,7 @@ function renderAlertsHtml(alerts, schoolFilter, opts = {}) {
           <div class="alert-head"><span class="alert-badge alert-badge--${urgency}">${urgency === 'high' ? 'High' : 'Normal'}</span>
             <span class="alert-kind">${escapeHtml(ALERT_KIND_LABELS[a.kind] || a.kind || '')}</span></div>
           ${alertTextHtml(a)}
-          <p class="alert-meta">${[alertSourceText(a), plural(a.totalComments || 0, 'comment'), `alerted ${when}`, opts.tp ? alertSchoolText(a) : ''].filter(Boolean).join(' · ')}</p>
+          <p class="alert-meta">${[alertSourceText(a), plural(a.totalComments || 0, 'comment'), `alerted ${when}`, opts.tp ? alertSchoolText(a) : '', a.postId && a.subreddit ? alertRedditLink(a) : ''].filter(Boolean).join(' · ')}</p>
         </li>`;
     });
     if (opts.compact) return `<ul class="alert-list">${items.join('')}</ul>`;
@@ -2343,6 +2374,15 @@ function safeUrl(url) {
           <span class="ui-bar-n" title="Comments">${p.totalComments}</span></button>`;
       }).join('') + '</div>';
   }
+  // An alert's title opens the analysed post. Names hidden on the alert stay
+  // hidden in the post.
+  document.addEventListener('click', e => {
+    const title = e.target.closest('[data-alert-post]');
+    if (!title) return;
+    let names = [];
+    try { names = JSON.parse(title.dataset.alertNames || '[]'); } catch (err) { /* ignore */ }
+    fetchAndDisplayPostDetails(title.dataset.alertPost, { subreddit: title.dataset.alertSub, maskNames: names });
+  });
   // "Show name" on an alert reveals the names for that alert only.
   document.addEventListener('click', e => {
     const btn = e.target.closest('[data-show-names]');
