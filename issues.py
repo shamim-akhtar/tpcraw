@@ -1,9 +1,10 @@
 """
-Groups TP posts into specific issues, such as "Year 2 timetable clash" or
-"Library wifi down", so staff can see which problems keep coming back.
+Groups polytechnic posts into specific issues, such as "Year 2 timetable
+clash" or "Library wifi down", so staff can see which problems keep coming
+back.
 
-For TP posts (r/TemasekPoly, and the TP-related posts on r/SGExams) that have
-not been grouped yet, this script:
+It uses the same posts as the alert check: each polytechnic's own subreddit,
+and r/SGExams posts that name a polytechnic. For posts not grouped yet, it:
   1. sends them to Gemini in batches, oldest first, with the list of issue
      names already in use, so the same problem keeps the same name;
   2. saves the issue on each post (issueId, issueLabel, issueVersion), or an
@@ -49,16 +50,16 @@ class PostIssueList(BaseModel):
 
 
 PROMPT_ISSUES = """
-You are helping staff at Temasek Polytechnic (TP) in Singapore see which
-specific problems students raise on Reddit, and which keep coming back.
+You are helping staff at polytechnics in Singapore see which specific
+problems students raise on Reddit, and which keep coming back.
 
-Below is a list of posts, one per line, with an id, title, overall sentiment,
-the start of the post and an AI summary of the discussion. After the posts is
-a list of issue names already in use.
+Below is a list of posts, one per line, with an id, the polytechnic the post is
+about, title, overall sentiment, the start of the post and an AI summary of the
+discussion. After the posts is a list of issue names already in use.
 
 For every post, give the post id and an issue name:
 - Use an issue name only if the post raises a specific problem, complaint or
-  concern about TP: a module, assessment, timetable, facility, service, fee,
+  concern about the polytechnic: a module, assessment, timetable, facility, service, fee,
   policy, event or system. Examples: "Year 2 timetable clash", "Library wifi
   down", "Late release of project marks", "Bursary payment delay".
 - If the same problem is already in the list of issue names, use that name
@@ -100,7 +101,8 @@ def describe_post_for_ai(p):
     body = (p.get("body") or "").replace("\n", " ")[:300]
     summary = (p.get("summary") or "").replace("\n", " ")[:400]
     sentiment = {1: "positive", 0: "neutral", -1: "negative"}.get(p.get("sentiment") or 0, "neutral")
-    return f"[{p['alertId']}] {p.get('title', '')} | {sentiment} | post: {body} | summary: {summary}"
+    polys = ", ".join(alerts.POLY_NAMES.get(c, c) for c in p.get("polytechnics") or [])
+    return f"[{p['alertId']}] {polys} | {p.get('title', '')} | {sentiment} | post: {body} | summary: {summary}"
 
 
 def load_known_issues():
@@ -170,7 +172,7 @@ def main():
     since = datetime.datetime.now(SGT) - datetime.timedelta(days=args.days)
     posts = alerts.load_recent_posts(since)
     todo = sorted([p for p in posts if not is_grouped(p)], key=post_time)
-    print(f"{len(posts)} TP posts in the last {args.days} days; {len(todo)} to group "
+    print(f"{len(posts)} polytechnic posts in the last {args.days} days; {len(todo)} to group "
           f"({len(posts) - len(todo)} already grouped).")
     if args.dry_run or not todo:
         return

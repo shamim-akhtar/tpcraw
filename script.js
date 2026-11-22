@@ -2126,13 +2126,17 @@ function safeUrl(url) {
 
   const negShare = posts => posts.length ? posts.filter(p => p.weightedSentimentScore < 0).length / posts.length : null;
 
+  let lastPrevPosts = null;
   async function updateNegativeComparison(share) {
     const change = document.getElementById('negativeShareChange');
+    lastPrevPosts = null;
     if (share === null) { change.textContent = 'No posts in this period'; return; }
     change.textContent = '';
     try {
       const prev = previousRange();
       const prevPosts = await fetchPostsInRange(prev);
+      lastPrevPosts = prevPosts;
+      renderOverviewIssueGroups(allPostsData, prevPosts);
       const before = negShare(prevPosts);
       if (before === null) { change.textContent = `No posts in the previous ${prev.days} days to compare`; return; }
       const diff = share - before;
@@ -2156,6 +2160,65 @@ function safeUrl(url) {
     }
     return 'No posts in this period.';
   }
+
+  // Issues: posts grouped by AI into specific problems (issues.py). An issue
+  // counts as raised before if a post in the previous period of the same
+  // length had the same issue.
+  const MIN_ISSUE_POSTS = 2;
+  const MAX_ISSUES_SHOWN = 8;
+  let issueGroupsOpen = '';
+
+  function renderOverviewIssueGroups(data, prevData = null) {
+    const box = document.getElementById('overviewIssueGroups');
+    const groups = {};
+    data.forEach(p => {
+      const d = p.postDetails || {};
+      if (!d.issueId) return;
+      const g = groups[d.issueId] || (groups[d.issueId] = { id: d.issueId, label: d.issueLabel || d.issueId, posts: [] });
+      g.posts.push(p);
+    });
+    const all = Object.values(groups).map(g => ({
+      ...g,
+      comments: g.posts.reduce((n, p) => n + (p.totalComments || 0), 0),
+      negative: g.posts.filter(p => p.weightedSentimentScore < 0).length
+    })).sort((a, b) => b.posts.length - a.posts.length || b.comments - a.comments);
+    const shown = all.filter(g => g.posts.length >= MIN_ISSUE_POSTS).slice(0, MAX_ISSUES_SHOWN);
+    const single = all.filter(g => g.posts.length < MIN_ISSUE_POSTS).length;
+    if (!data.length) { box.innerHTML = `<p class="ui-muted">${emptyPeriodText()}</p>`; return; }
+    if (!all.length) {
+      box.innerHTML = '<p class="ui-muted">No posts in this period have been grouped into issues yet.</p>';
+      return;
+    }
+    const before = new Set();
+    if (prevData) prevData.forEach(p => { const id = (p.postDetails || {}).issueId; if (id) before.add(id); });
+    const prevDays = previousRange().days;
+    const rows = shown.map(g => {
+      const open = g.id === issueGroupsOpen;
+      const repeat = prevData && before.has(g.id)
+        ? `<span class="ui-issue-tag" title="At least one post in the previous ${prevDays} days raised this too">Also raised in the previous ${prevDays} days</span>` : '';
+      const posts = open ? '<ul class="ui-issue-posts">' + [...g.posts].sort((a, b) => b.totalComments - a.totalComments).map(p =>
+        `<li><button type="button" class="ui-link" data-post-id="${escapeHtml(p.postId)}">${escapeHtml(p.title)}</button> <span class="ui-muted ui-small">${plural(p.totalComments || 0, 'comment')}</span></li>`).join('') + '</ul>' : '';
+      return `<li class="ui-issue${open ? ' open' : ''}">
+        <button type="button" class="ui-issue-head" data-issue="${escapeHtml(g.id)}" aria-expanded="${open}">
+          <strong>${escapeHtml(g.label)}</strong>
+          <span class="ui-muted ui-small">${plural(g.posts.length, 'post')} · ${plural(g.comments, 'comment')} · ${g.negative} negative</span>
+        </button>${repeat}${posts}</li>`;
+    }).join('');
+    let html = shown.length
+      ? `<ul class="ui-issue-list">${rows}</ul>`
+      : '<p class="ui-muted">No issue came up in more than one post in this period.</p>';
+    if (single) html += `<p class="ui-muted ui-small">${plural(single, 'other issue')} came up in only one post${single === 1 ? '' : ' each'}.</p>`;
+    html += '<p class="ui-muted ui-small">Posts are grouped by AI into specific problems, such as a timetable clash or a broken facility. Posts that raise no specific problem are not counted. Click an issue to see its posts.</p>';
+    box.innerHTML = html;
+  }
+  document.getElementById('overviewIssueGroups').addEventListener('click', e => {
+    const post = e.target.closest('[data-post-id]');
+    if (post) { fetchAndDisplayPostDetails(post.dataset.postId); return; }
+    const head = e.target.closest('[data-issue]');
+    if (!head) return;
+    issueGroupsOpen = issueGroupsOpen === head.dataset.issue ? '' : head.dataset.issue;
+    renderOverviewIssueGroups(allPostsData, lastPrevPosts);
+  });
 
   function renderOverviewTopPosts(data) {
     const container = document.getElementById('overviewTopPosts');
@@ -2259,6 +2322,7 @@ function safeUrl(url) {
       // Overview
       renderSentimentSplit(allPostsData);
       renderOverviewTopPosts(allPostsData);
+      renderOverviewIssueGroups(allPostsData);
       updateNegativeComparison(share);
       updateOverviewTpCards();
 

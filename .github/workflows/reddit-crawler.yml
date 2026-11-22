@@ -44,7 +44,7 @@ jobs:
         if: ${{ !cancelled() }}
         run: python alerts.py
 
-      # Groups the new TP posts into specific issues for the Overview.
+      # Groups the new posts into specific issues for the Overview.
       - name: Group posts into issues
         if: ${{ !cancelled() }}
         run: python issues.py --days 7

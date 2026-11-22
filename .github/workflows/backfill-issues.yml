@@ -1,4 +1,4 @@
-# Run by hand to group past TP posts into issues. About one Gemini call for
+# Run by hand to group past posts into issues. About one Gemini call for
 # every 30 posts. Posts already grouped are skipped, so it can be run again.
 name: Group past posts into issues
 
