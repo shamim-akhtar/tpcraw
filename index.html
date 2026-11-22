@@ -14,7 +14,7 @@
         Chart.register(ChartZoom);
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script type="module" src="script.js?v=3.7"></script>
+    <script type="module" src="script.js?v=3.8"></script>
 
     <!-- Default to light theme -->
     <link id="themeStylesheet" rel="stylesheet" href="style.css?v1.7">
@@ -40,7 +40,7 @@
         Theme-agnostic responsive layer. Must stay LAST so its rules win over
         whichever theme sheet is loaded into #themeStylesheet above.
     -->
-    <link rel="stylesheet" href="responsive.css?v=1.5">
+    <link rel="stylesheet" href="responsive.css?v=1.6">
 </head>
 
 <body>
@@ -119,6 +119,11 @@
             <div class="ui-kpi" id="alertsKpi"><div class="ui-kpi-k">Alerts</div><div class="ui-kpi-v" id="alertsCount">-</div><div class="ui-kpi-d" id="alertsCountNote" data-period-text></div></div>
         </div>
         <p class="ui-coverage" id="schoolCoverage" hidden><span id="schoolCoverageText"></span></p>
+
+        <div class="ui-card" id="changesCard">
+            <h2>What changed in this period</h2>
+            <div id="overviewChanges"><p class="ui-muted">Loading...</p></div>
+        </div>
 
         <div class="ui-grid2" id="tpOnlyCards">
             <div class="ui-card">

@@ -473,6 +473,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     if (!range) renderSchoolCoverage(useSchools, selectedSchool, coverage);
+    // Kept with the posts so two periods can be compared fairly.
+    dataArray.coverage = { ...coverage, useSchools, school: selectedSchool };
     return dataArray;
   }
 
@@ -2152,17 +2154,97 @@ function safeUrl(url) {
 
   const negShare = posts => posts.length ? posts.filter(p => p.weightedSentimentScore < 0).length / posts.length : null;
 
+  // ---------------------------------------------
+  // "What changed in this period": compares the chosen period with the
+  // previous period of the same length. A change is listed only when both
+  // periods have enough posts, so small counts do not produce flags.
+  // ---------------------------------------------
+  const CHANGE_MIN_POSTS = 10;        // posts needed in each period
+  const CHANGE_NEG_POINTS = 0.15;     // negative share: 15 percentage points
+  const CHANGE_VOLUME_RATIO = 1.5;    // posts or comments: half as many again, or a third fewer
+  const CHANGE_MIN_COMMENTS = 50;     // comments needed in each period
+  const CHANGE_ISSUE_POSTS = 3;       // an issue needs this many posts to be listed
+  const CHANGE_MIN_CHECKED = 0.8;     // share of earlier posts that must be checked or grouped
+
+  function findChanges(now, prev, days) {
+    const out = { changes: [], notes: [] };
+    const before = `the previous ${days} days`;
+    const cov = prev.coverage || {};
+    if (cov.school && cov.total && (cov.unchecked || 0) / cov.total > 1 - CHANGE_MIN_CHECKED) {
+      out.notes.push(`Many posts in ${before} have not been checked for schools, so this school cannot be compared with that period yet.`);
+      return out;
+    }
+    if (now.length < CHANGE_MIN_POSTS || prev.length < CHANGE_MIN_POSTS) {
+      out.notes.push(`Too few posts to compare: ${now.length} in this period and ${prev.length} in ${before}. At least ${CHANGE_MIN_POSTS} are needed in each.`);
+      return out;
+    }
+    const neg = posts => posts.filter(p => p.weightedSentimentScore < 0).length;
+    const pct = (n, total) => `${Math.round(n / total * 100)}% (${n} of ${total} posts)`;
+    const nNow = neg(now), nPrev = neg(prev);
+    const diff = nNow / now.length - nPrev / prev.length;
+    if (Math.abs(diff) >= CHANGE_NEG_POINTS) {
+      out.changes.push({ dir: diff > 0 ? 'up' : 'down',
+        text: `The share of negative posts ${diff > 0 ? 'rose' : 'fell'} from ${pct(nPrev, prev.length)} to ${pct(nNow, now.length)}.` });
+    }
+    const ratio = now.length / prev.length;
+    if (ratio >= CHANGE_VOLUME_RATIO || ratio <= 1 / CHANGE_VOLUME_RATIO) {
+      out.changes.push({ dir: 'info', text: `The number of posts ${ratio > 1 ? 'rose' : 'fell'} from ${prev.length} to ${now.length}.` });
+    }
+    const comments = posts => posts.reduce((n, p) => n + (p.totalComments || 0), 0);
+    const cNow = comments(now), cPrev = comments(prev);
+    if (cNow >= CHANGE_MIN_COMMENTS && cPrev >= CHANGE_MIN_COMMENTS) {
+      const cr = cNow / cPrev;
+      if (cr >= CHANGE_VOLUME_RATIO || cr <= 1 / CHANGE_VOLUME_RATIO) {
+        out.changes.push({ dir: 'info', text: `The number of comments ${cr > 1 ? 'rose' : 'fell'} from ${cPrev} to ${cNow}.` });
+      }
+    }
+    // Issues: only if most earlier posts were grouped, or "new" would be wrong.
+    const grouped = prev.filter(p => ((p.postDetails || {}).issueVersion || 0) >= 1).length;
+    if (grouped / prev.length >= CHANGE_MIN_CHECKED) {
+      const count = posts => { const m = {}; posts.forEach(p => { const d = p.postDetails || {}; if (d.issueId) (m[d.issueId] = m[d.issueId] || { label: d.issueLabel || d.issueId, n: 0 }).n++; }); return m; };
+      const iNow = count(now), iPrev = count(prev);
+      Object.keys(iNow).sort((a, b) => iNow[b].n - iNow[a].n).forEach(id => {
+        const n = iNow[id].n, was = iPrev[id] ? iPrev[id].n : 0;
+        if (n < CHANGE_ISSUE_POSTS) return;
+        if (was === 0) out.changes.push({ dir: 'info', text: `"${iNow[id].label}" came up in ${n} posts and in none in ${before}.` });
+        else if (n >= was * 3) out.changes.push({ dir: 'info', text: `"${iNow[id].label}" came up in ${n} posts, up from ${was}.` });
+      });
+    }
+    return out;
+  }
+
+  function renderChanges(now, prev, days) {
+    const box = document.getElementById('overviewChanges');
+    if (!prev) { box.innerHTML = '<p class="ui-muted">Could not load the previous period.</p>'; return; }
+    const { changes, notes } = findChanges(now, prev, days);
+    let html = '';
+    if (changes.length) {
+      html = '<ul class="ui-changes">' + changes.map(c => `<li class="ui-change ui-change--${c.dir}">${escapeHtml(c.text)}</li>`).join('') + '</ul>';
+    } else if (!notes.length) {
+      html = `<p class="ui-muted">No notable change compared with the previous ${days} days.</p>`;
+    }
+    html += notes.map(n => `<p class="ui-muted">${escapeHtml(n)}</p>`).join('');
+    html += `<p class="ui-muted ui-small">Compared with the previous ${days} days, for the same forum and school. A change is listed only when both periods have at least ${CHANGE_MIN_POSTS} posts and the difference is large. It shows what students posted on Reddit, not the cause. <a href="about.html#what-changed-help">How this works</a></p>`;
+    box.innerHTML = html;
+  }
+
   let lastPrevPosts = null;
   async function updateNegativeComparison(share) {
     const change = document.getElementById('negativeShareChange');
     lastPrevPosts = null;
-    if (share === null) { change.textContent = 'No posts in this period'; return; }
+    document.getElementById('overviewChanges').innerHTML = '<p class="ui-muted">Loading...</p>';
+    if (share === null) {
+      change.textContent = 'No posts in this period';
+      document.getElementById('overviewChanges').innerHTML = `<p class="ui-muted">${escapeHtml(emptyPeriodText())}</p>`;
+      return;
+    }
     change.textContent = '';
     try {
       const prev = previousRange();
       const prevPosts = await fetchPostsInRange(prev);
       lastPrevPosts = prevPosts;
       renderOverviewIssueGroups(allPostsData, prevPosts);
+      renderChanges(allPostsData, prevPosts, prev.days);
       const before = negShare(prevPosts);
       if (before === null) { change.textContent = `No posts in the previous ${prev.days} days to compare`; return; }
       const diff = share - before;
@@ -2170,6 +2252,7 @@ function safeUrl(url) {
       change.innerHTML = `<span class="${Math.abs(diff) < 0.05 ? '' : (diff > 0 ? 'ui-up' : 'ui-down')}">${word}</span> ${Math.round(before * 100)}% in the previous ${prev.days} days`;
     } catch (err) {
       console.error('Error loading previous period', err);
+      renderChanges(allPostsData, null, 0);
     }
   }
 
