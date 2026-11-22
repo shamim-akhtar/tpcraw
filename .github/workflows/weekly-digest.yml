@@ -1,0 +1,60 @@
+# Builds the weekly digest for each TP school every Monday at 7 AM Singapore
+# time and saves it for the dashboard's Weekly Digest tab.
+name: Weekly School Digest
+
+on:
+  schedule:
+    - cron: '0 23 * * 0'  # Sunday 11 PM UTC = Monday 7 AM SGT
+  workflow_dispatch:
+    inputs:
+      week:
+        description: 'Monday of the week to report (YYYY-MM-DD). Leave empty for last week.'
+        required: false
+        default: ''
+      mode:
+        description: 'What to do with the digests'
+        type: choice
+        options:
+          - save
+          - dry run (print only)
+        default: 'dry run (print only)'
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore firebase-credentials.json from Base64 secret
+        run: |
+          echo "${{ secrets.FIREBASE_CREDENTIALS_BASE64 }}" | base64 -d > firebase-credentials.json
+
+      - name: Create .env file
+        run: |
+          echo "REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}" >> .env
+          echo "REDDIT_CLIENT_SECRET=${{ secrets.REDDIT_CLIENT_SECRET }}" >> .env
+          echo "REDDIT_USER_AGENT=${{ secrets.REDDIT_USER_AGENT }}" >> .env
+          echo "GOOGLE_GEMINI_API_KEY=${{ secrets.GOOGLE_GEMINI_API_KEY }}" >> .env
+
+      - name: Build and save digests
+        env:
+          WEEK: ${{ inputs.week }}
+          MODE: ${{ inputs.mode || 'save' }}
+        run: |
+          ARGS=()
+          if [ -n "$WEEK" ]; then ARGS+=(--week "$WEEK"); fi
+          if [ "$MODE" = "dry run (print only)" ]; then ARGS+=(--dry-run); fi
+          python digest.py "${ARGS[@]}"
