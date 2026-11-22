@@ -65,7 +65,7 @@ class Urgency(str, enum.Enum):
 
 
 # Only these kinds can be high urgency. Wellbeing is always high.
-HIGH_KINDS = {Kind.WELLBEING.value, Kind.SAFETY.value, Kind.COMPLAINT.value}
+HIGH_KINDS = {Kind.WELLBEING.value, Kind.SAFETY.value, Kind.HARASSMENT.value, Kind.COMPLAINT.value}
 
 
 def allowed_urgency(kind, urgency):
@@ -116,7 +116,7 @@ itself shows a student in distress. Most days there should be no alerts or
 only a few.
 
 For each alert give the post id (only from the list), the kind, the urgency
-("high" only for wellbeing, safety or a serious complaint, and only if someone
+("high" only for wellbeing, safety, harassment or a serious complaint, and only if someone
 may be at risk or many students are affected; otherwise "normal") and a
 reason: one or two plain, factual sentences on what the post says. Do not
 guess at who the student is. Write in simple British English without
