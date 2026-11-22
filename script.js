@@ -77,9 +77,16 @@ function responsiveZoomOptions() {
   return {
     pan: { enabled: true, mode: 'x', modifierKey: touch ? null : 'ctrl' },
     zoom: {
-      drag: { enabled: !touch },
+      // A click with a small slip of the mouse must not count as a drag,
+      // or the chart zooms to a fraction of a day and shows a flat line.
+      drag: { enabled: !touch, threshold: 12 },
       pinch: { enabled: true },
-      mode: 'x'
+      mode: 'x',
+      // Zooming starts only inside the plot, not on the legend or the axes.
+      onZoomStart: ({ chart, point }) => {
+        const a = chart.chartArea;
+        return !point || (point.x >= a.left && point.x <= a.right && point.y >= a.top && point.y <= a.bottom);
+      }
     }
   };
 }
