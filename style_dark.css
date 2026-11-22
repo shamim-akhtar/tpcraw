@@ -1143,3 +1143,14 @@ body.dark-theme #post-details-container {
 .school-coverage { align-items: stretch; }
 .school-coverage[hidden] { display: none; }
 .controls #school-filter { width: auto; max-width: 230px; }
+
+/* Weekly Digest tab */
+.digest-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+.digest-controls select { padding: 8px 10px; border-radius: 6px; font-size: 1em; }
+.digest-content { line-height: 1.55; max-width: 900px; }
+.digest-title { margin: 0; }
+.digest-week { margin: 2px 0 10px; opacity: 0.75; }
+.digest-issues li { margin-bottom: 10px; }
+.digest-issues p { margin: 4px 0; }
+.digest-note { font-size: 0.9em; opacity: 0.8; }
+.digest-controls select { background-color: #333333; color: #e0e0e0; border: 1px solid #555555; color-scheme: dark; }

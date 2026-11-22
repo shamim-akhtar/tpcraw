@@ -229,6 +229,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           else if (targetTab === 'timeSeriesTab' && timeSeriesChart) {
             timeSeriesChart.resize();
           }
+          else if (targetTab === 'digestTab') {
+            loadDigest();
+          }
         }
         catch (err) {
             console.error("Error resizing chart:", err);
@@ -1550,6 +1553,48 @@ function schoolFilterApplies(lowerSub) {
     return lowerSub === 'temasekpoly' || lowerSub === 'sgexams';
 }
 
+function pctText(x) {
+    return (x === null || x === undefined) ? 'n/a' : `${Math.round(x * 100)}%`;
+}
+
+function digestChangeSentence(d) {
+    if (d.negativeShare === null || d.negativeShare === undefined) return 'No posts were linked to this school in this week.';
+    if (d.baselineNegativeShare === null || d.baselineNegativeShare === undefined) {
+        return `${pctText(d.negativeShare)} of posts were negative. There is not enough history to compare yet.`;
+    }
+    const diff = d.negativeShare - d.baselineNegativeShare;
+    const trend = Math.abs(diff) < 0.05 ? 'about the same as' : (diff > 0 ? 'higher than' : 'lower than');
+    return `${pctText(d.negativeShare)} of posts were negative, ${trend} the average of ${pctText(d.baselineNegativeShare)} over the previous ${plural(d.baselineWeeks, 'week')} that had posts.`;
+}
+
+// The digest documents are written by digest.py; all text is escaped here.
+function renderDigestHtml(d) {
+    const postLink = p => `<li><a href="${safeUrl(p.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(p.title)}</a> (${plural(p.comments || 0, 'comment')})</li>`;
+    let html = `<h3 class="digest-title">${escapeHtml(d.schoolName)}</h3>
+      <p class="digest-week">Week of ${escapeHtml(d.weekStart)} to ${escapeHtml(d.weekEnd)}</p>
+      <p><strong>${plural(d.postCount || 0, 'post')}</strong> and <strong>${plural(d.commentCount || 0, 'comment')}</strong>. ${escapeHtml(digestChangeSentence(d))}</p>`;
+    if (d.overview) html += `<p>${escapeHtml(d.overview)}</p>`;
+    if (Array.isArray(d.issues) && d.issues.length) {
+        html += '<h4>Issues to look at</h4><ol class="digest-issues">';
+        for (const issue of d.issues) {
+            html += `<li><strong>${escapeHtml(issue.title)}</strong>
+              <p>${escapeHtml(issue.whatStudentsSay)}</p>
+              <p><em>Possible follow-up:</em> ${escapeHtml(issue.possibleFollowUp)}</p>
+              <ul>${(issue.posts || []).map(postLink).join('')}</ul></li>`;
+        }
+        html += '</ol>';
+    } else {
+        html += '<p>No issues stood out this week.</p>';
+    }
+    if (Array.isArray(d.negativeThreads) && d.negativeThreads.length) {
+        html += `<h4>Most negative threads</h4><ul>${d.negativeThreads.map(postLink).join('')}</ul>`;
+    }
+    if (d.school !== 'TP' && d.tpWidePosts !== undefined) {
+        html += `<p class="digest-note">Posts are linked to a school only when they name it, or one of its diplomas, modules or places. ${plural(d.tpWidePosts, 'TP-wide post')} and ${plural(d.uncheckedPosts || 0, 'older post')} not yet checked for schools are not counted here.</p>`;
+    }
+    return html;
+}
+
 // Reddit posts, comments and AI summaries are untrusted text. Always pass
 // them through these helpers before putting them into innerHTML.
 function escapeHtml(unsafe) {
@@ -2098,6 +2143,53 @@ function safeUrl(url) {
       searchByKeyword();
     }
   });
+
+  // ---------------------------------------------
+  // Weekly Digest tab (documents written by digest.py)
+  // ---------------------------------------------
+  const digestSchool = document.getElementById('digest-school');
+  const digestWeek = document.getElementById('digest-week');
+
+  // The last 12 Mondays (Singapore time) before this week, newest first.
+  (function fillDigestWeeks() {
+    const sgNow = new Date(Date.now() + 8 * 3600 * 1000);
+    const day = (sgNow.getUTCDay() + 6) % 7; // Monday = 0
+    const thisMonday = Date.UTC(sgNow.getUTCFullYear(), sgNow.getUTCMonth(), sgNow.getUTCDate() - day);
+    for (let i = 1; i <= 12; i++) {
+      const monday = new Date(thisMonday - i * 7 * 86400000);
+      const iso = monday.toISOString().slice(0, 10);
+      const label = monday.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+      digestWeek.add(new Option(`Week of ${label}`, iso));
+    }
+  })();
+  try {
+    const savedDigestSchool = localStorage.getItem('digestSchool');
+    if (savedDigestSchool && digestSchool.querySelector(`option[value="${CSS.escape(savedDigestSchool)}"]`)) {
+      digestSchool.value = savedDigestSchool;
+    }
+  } catch (e) { /* storage unavailable */ }
+  digestSchool.addEventListener('change', () => {
+    try { localStorage.setItem('digestSchool', digestSchool.value); } catch (e) { /* ignore */ }
+    loadDigest();
+  });
+  digestWeek.addEventListener('change', loadDigest);
+
+  async function loadDigest() {
+    const container = document.getElementById('digestContent');
+    const id = `${digestWeek.value}_${digestSchool.value}`;
+    container.innerHTML = '<p class="details-message loading">Loading digest...</p>';
+    try {
+      const snap = await getDoc(doc(db, 'weekly_digests', id));
+      if (!snap.exists()) {
+        container.innerHTML = '<p class="details-message info">There is no digest for this school and week yet. Digests are made every Monday morning.</p>';
+        return;
+      }
+      container.innerHTML = renderDigestHtml(snap.data());
+    } catch (err) {
+      console.error('Error loading digest', err);
+      container.innerHTML = '<p class="details-message error">Could not load the digest.</p>';
+    }
+  }
 
   // 11. Initial load
   // Remember the chosen school in this browser. Restored before the first load.
