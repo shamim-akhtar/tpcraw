@@ -1,4 +1,5 @@
 praw
 firebase-admin
-google-generativeai
+google-genai
+pydantic
 python-dotenv
