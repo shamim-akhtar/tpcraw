@@ -14,7 +14,7 @@
         Chart.register(ChartZoom);
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script type="module" src="script.js?v=3.3"></script>
+    <script type="module" src="script.js?v=3.4"></script>
 
     <!-- Default to light theme -->
     <link id="themeStylesheet" rel="stylesheet" href="style.css?v1.7">
@@ -125,16 +125,16 @@
                 <h2>Needs attention <button type="button" class="ui-link" data-go="alertsTab">All alerts</button></h2>
                 <div id="overviewAlerts"><p class="ui-muted">Loading...</p></div>
             </div>
-            <div class="ui-card">
+            <div class="ui-card" id="issuesCard">
                 <h2>Last week's issues <button type="button" class="ui-link" data-go="digestTab">Full digest</button></h2>
                 <div id="overviewIssues"><p class="ui-muted">Loading...</p></div>
                 <p class="ui-muted ui-small">How students feel in this period</p>
                 <div id="sentimentSplit"></div>
             </div>
-        </div>
-        <div class="ui-card" id="otherForumFeel" hidden>
-            <h2>How students feel in this period</h2>
-            <div id="sentimentSplitOther"></div>
+            <div class="ui-card" id="otherForumFeel" hidden>
+                <h2>How students feel in this period</h2>
+                <div id="sentimentSplitOther"></div>
+            </div>
         </div>
 
         <div class="ui-card">
@@ -165,7 +165,7 @@
                     </select>
                 </div>
                 <div id="alertsContent" class="digest-content"><p class="details-message info">Loading alerts...</p></div>
-                <p class="chart-description">Posts from r/TemasekPoly and the TP-related posts on r/SGExams that AI suggests staff look at, checked every morning after the daily crawl. An alert is a prompt to read the post, not a finding. Each post is alerted once.</p>
+                <p class="chart-description">Posts that AI suggests staff look at, checked every morning after the daily crawl. Each polytechnic's alerts come from its own forum and from r/SGExams posts that name it (its full name or short form, such as TP, NYP, RP, SP or NP). An r/SGExams post that names no polytechnic gets no alert. An alert is a prompt to read the post, not a finding. Each post is alerted once.</p>
             </section>
 
     <section id="digestTab" class="chart-section tab-content">

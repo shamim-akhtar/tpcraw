@@ -1510,6 +1510,29 @@ function schoolFilterApplies(lowerSub) {
 
 // --- Alerts tab -------------------------------------------------------------
 // Alert documents are written by alerts.py; all text is escaped here.
+// Which polytechnic each forum is about. r/SGExams is shown for TP, as its
+// "TP-related only" filter is.
+const FORUM_POLY = {
+    temasekpoly: 'TP', sgexams: 'TP', nyp: 'NYP', nanyangpoly: 'NYP',
+    republicpolytechnic: 'RP', singaporepoly: 'SP', ngeeannpoly: 'NP'
+};
+const POLY_NAMES = {
+    TP: 'Temasek Polytechnic', NYP: 'Nanyang Polytechnic', RP: 'Republic Polytechnic',
+    SP: 'Singapore Polytechnic', NP: 'Ngee Ann Polytechnic'
+};
+
+// Alerts saved before alerts listed their polytechnics were all about TP.
+function alertPolys(a) {
+    if (Array.isArray(a.polytechnics)) return a.polytechnics;
+    return (a.subreddit === 'temasekpoly' || a.subreddit === 'sgexams') ? ['TP'] : [];
+}
+
+// The alerts for one polytechnic, and for one TP school when one is chosen.
+function alertsFor(alerts, poly, school) {
+    return alerts.filter(a => alertPolys(a).includes(poly) &&
+        (poly !== 'TP' || !school || (a.schoolStatus === 'linked' && (a.schools || []).includes(school))));
+}
+
 const ALERT_KIND_LABELS = {
     'wellbeing': 'Wellbeing', 'safety': 'Safety', 'harassment': 'Harassment',
     'academic integrity': 'Academic integrity', 'serious complaint': 'Serious complaint', 'other': 'Other'
@@ -1520,17 +1543,22 @@ function alertSchoolText(a) {
         return a.schools.map(s => escapeHtml(SCHOOL_NAMES[s] || s)).join(', ');
     }
     if (a.schoolStatus === 'general') return 'General TP, no school named';
+    if (!alertPolys(a).includes('TP')) return '';
     return 'Not yet checked for schools';
 }
 
+function alertSourceText(a) {
+    const sub = `r/${escapeHtml(a.subreddit)}`;
+    if (FORUM_POLY[a.subreddit] && a.subreddit !== 'sgexams') return sub;
+    const names = alertPolys(a).map(c => escapeHtml(POLY_NAMES[c] || c));
+    return names.length ? `${sub}, names ${names.join(' and ')}` : sub;
+}
+
+// alerts: already narrowed to one polytechnic (and school, if chosen).
 function renderAlertsHtml(alerts, schoolFilter, opts = {}) {
-    const shown = alerts.filter(a => {
-        if (!schoolFilter) return true;
-        if (schoolFilter === 'general') return a.schoolStatus === 'general';
-        return a.schoolStatus === 'linked' && (a.schools || []).includes(schoolFilter);
-    });
+    const shown = alerts;
     if (!shown.length) {
-        return '<p class="details-message info">No alerts for this choice.</p>';
+        return '<p class="details-message info">No alerts in this period.</p>';
     }
     const unchecked = shown.filter(a => a.schoolStatus === 'unchecked').length;
     const items = shown.map(a => {
@@ -1543,12 +1571,12 @@ function renderAlertsHtml(alerts, schoolFilter, opts = {}) {
             <span class="alert-kind">${escapeHtml(ALERT_KIND_LABELS[a.kind] || a.kind || '')}</span></div>
           <a href="${safeUrl(a.url)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(a.title)}</strong></a>
           <p>${escapeHtml(a.reason)}</p>
-          <p class="alert-meta">r/${escapeHtml(a.subreddit)} · ${plural(a.totalComments || 0, 'comment')} · alerted ${when} · ${alertSchoolText(a)}</p>
+          <p class="alert-meta">${[alertSourceText(a), plural(a.totalComments || 0, 'comment'), `alerted ${when}`, opts.tp ? alertSchoolText(a) : ''].filter(Boolean).join(' · ')}</p>
         </li>`;
     });
     if (opts.compact) return `<ul class="alert-list">${items.join('')}</ul>`;
     let html = `<p>${plural(shown.length, 'alert')}.</p><ul class="alert-list">${items.join('')}</ul>`;
-    if (schoolFilter === '' && unchecked) {
+    if (opts.tp && schoolFilter === '' && unchecked) {
         html += `<p class="digest-note">${plural(unchecked, 'alert')} ${unchecked === 1 ? 'is on a post' : 'are on posts'} not yet checked for schools, so ${unchecked === 1 ? 'it shows' : 'they show'} only under All of TP.</p>`;
     }
     return html;
@@ -2148,21 +2176,24 @@ function safeUrl(url) {
     if (row) fetchAndDisplayPostDetails(row.dataset.postId);
   });
 
-  // Alerts and digests cover TP only (r/TemasekPoly and TP posts on r/SGExams).
+  // Digests and school filters cover TP only (r/TemasekPoly and TP posts on r/SGExams).
   const coversTp = () => schoolFilterApplies(document.getElementById('subreddit-select').value.toLowerCase());
+
+  const forumPoly = () => FORUM_POLY[document.getElementById('subreddit-select').value.toLowerCase()] || '';
 
   async function updateOverviewTpCards() {
     const tp = coversTp();
-    document.getElementById('tpOnlyCards').hidden = !tp;
+    const poly = forumPoly();
+    document.getElementById('tpOnlyCards').hidden = !poly;
+    document.getElementById('issuesCard').hidden = !tp;
     document.getElementById('otherForumFeel').hidden = tp;
-    document.getElementById('alertsKpi').hidden = !tp;
-    if (!tp) { document.getElementById('alerts-badge').hidden = true; return; }
-    // Alerts: last 7 days for the chosen school
+    document.getElementById('alertsKpi').hidden = !poly;
+    if (!poly) { document.getElementById('alerts-badge').hidden = true; return; }
+    // Alerts: last 7 days for this polytechnic (and the chosen TP school)
     const alertsBox = document.getElementById('overviewAlerts');
     try {
       const alerts = await recentAlerts(7);
-      const school = document.getElementById('school-filter').value;
-      const shown = alerts.filter(a => !school || (a.schoolStatus === 'linked' && (a.schools || []).includes(school)));
+      const shown = alertsFor(alerts, poly, tp ? document.getElementById('school-filter').value : '');
       const high = shown.filter(a => a.urgency === 'high').length;
       document.getElementById('alertsCount').textContent = shown.length;
       document.getElementById('alertsCountNote').textContent = shown.length ? `Last 7 days, ${high} high urgency` : 'Last 7 days';
@@ -2170,13 +2201,14 @@ function safeUrl(url) {
       badge.textContent = shown.length;
       badge.hidden = shown.length === 0;
       alertsBox.innerHTML = shown.length
-        ? renderAlertsHtml(shown.slice(0, 3), '', { compact: true })
+        ? renderAlertsHtml(shown.slice(0, 3), '', { compact: true, tp })
         : '<p class="ui-muted">No alerts in the last 7 days.</p>';
     } catch (err) {
       console.error('Error loading alerts for overview', err);
       document.getElementById('alertsCount').textContent = '-';
       alertsBox.innerHTML = '<p class="ui-muted">Could not load the alerts.</p>';
     }
+    if (!tp) return;
     // Issues: the latest weekly digest for the chosen school
     const issuesBox = document.getElementById('overviewIssues');
     try {
@@ -2388,7 +2420,11 @@ function safeUrl(url) {
     try {
       if (!alertsByDays[days]) container.innerHTML = '<p class="details-message loading">Loading alerts...</p>';
       const alerts = await recentAlerts(days);
-      container.innerHTML = renderAlertsHtml(alerts, alertsSchool.value);
+      const poly = forumPoly();
+      const tp = coversTp();
+      const school = tp ? alertsSchool.value : '';
+      const intro = `<p class="ui-muted">Alerts for ${escapeHtml(POLY_NAMES[poly] || 'this forum')}.</p>`;
+      container.innerHTML = intro + renderAlertsHtml(poly ? alertsFor(alerts, poly, school) : [], school, { tp });
     } catch (err) {
       console.error('Error loading alerts', err);
       container.innerHTML = '<p class="details-message error">Could not load the alerts.</p>';
