@@ -14,10 +14,10 @@
         Chart.register(ChartZoom);
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script type="module" src="script.js?v=2.0"></script>
+    <script type="module" src="script.js?v=2.2"></script>
 
     <!-- Default to light theme -->
-    <link id="themeStylesheet" rel="stylesheet" href="style.css?v1.2">
+    <link id="themeStylesheet" rel="stylesheet" href="style.css?v1.4">
 
     <!--
         Apply the saved theme before the page paints, otherwise a dark-theme
@@ -129,8 +129,20 @@
         <!-- Filter group -->
         <div class="controls-middle-group">
             <div>
-                <label for="iit-filter">IIT</label>
-                <input type="checkbox" id="iit-filter" checked>
+                <label for="school-filter">School</label>
+                <select id="school-filter" title="Show only posts about one TP school">
+                    <option value="">All schools</option>
+                    <option value="ASC">Applied Science</option>
+                    <option value="BUS">Business</option>
+                    <option value="DES">Design</option>
+                    <option value="ENG">Engineering</option>
+                    <option value="HSS">Humanities &amp; Social Sciences</option>
+                    <option value="IIT">Informatics &amp; IT</option>
+                </select>
+            </div>
+            <div>
+                <label for="include-tpwide" title="Also show posts that are about TP in general, not one school">+ TP-wide</label>
+                <input type="checkbox" id="include-tpwide">
             </div>
             <div>
                 <label for="tp-related-filter">TP-Related?</label>
@@ -188,6 +200,11 @@
                     <div class="postCount-title">Comments</div>
                     <div id="commentsCountNumber" class="postCount-number">0</div>
                 </div>
+            </div>
+
+            <div id="schoolCoverage" class="dashboard-box school-coverage" hidden>
+                <div class="postCount-title">School coverage</div>
+                <p id="schoolCoverageText" class="school-coverage-text"></p>
             </div>
 
             <div id="avgWeightedScoreBox" class="dashboard-box-wide">
