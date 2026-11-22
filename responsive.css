@@ -662,3 +662,4 @@ i.ui-pos { background: var(--ui-pos); } i.ui-neu { background: var(--ui-neu); } 
 .alert-title:hover { color: var(--ui-accent); }
 .ui-wrap .alert-item a.alert-reddit { color: var(--ui-accent); }
 a.open-reddit-btn { text-decoration: none; display: inline-flex; align-items: center; }
+.digest-post { font-size: inherit; text-align: left; }
