@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About - Polytechnic Sentiments Dashboard</title>
+  <title>Help - Polytechnic Sentiments Dashboard</title>
 
   <!--
       Follow the dashboard's theme switch. Runs before the body paints so a
@@ -15,1119 +15,344 @@
         if (localStorage.getItem('tpcraw-theme') === 'dark') {
           document.documentElement.setAttribute('data-theme', 'dark');
         }
-      } catch (e) { /* storage blocked (private mode) — stay on light */ }
+      } catch (e) { /* storage blocked (private mode): stay on light */ }
     })();
   </script>
 
   <style>
-    /* --- Reset and Base Styles --- */
+    /* Same colours as the dashboard (the --ui-* values in style.css and style_dark.css). */
+    :root {
+      --ui-bg: #f4f6f8; --ui-panel: #ffffff; --ui-ink: #1f2933; --ui-muted: #5f6b7a; --ui-line: #e3e7ec;
+      --ui-brand: #2c3e50; --ui-accent: #1a73e8; --ui-chip: #eef2f6;
+      --ui-pos: #2e9e8f; --ui-neg: #d9534f; --ui-high: #c0392b; --ui-high-bg: #fdecea;
+    }
+    html[data-theme="dark"] {
+      --ui-bg: #15191e; --ui-panel: #1f252c; --ui-ink: #e6e9ed; --ui-muted: #9aa5b1; --ui-line: #2e363f;
+      --ui-brand: #0f1418; --ui-accent: #6ea8fe; --ui-chip: #2a323b;
+      --ui-pos: #3fb3a3; --ui-neg: #e57373; --ui-high: #e57373; --ui-high-bg: #3a2222;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 16px; }
     body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-        line-height: 1.7; /* Improved readability */
-        color: #343a40; /* Dark Gray for text */
-        background-color: #f9fafb; /* Very Light Gray background */
-        margin: 0;
-        padding: 2rem 1rem; /* Padding for smaller screens */
+      margin: 0; background: var(--ui-bg); color: var(--ui-ink);
+      font-family: Arial, Helvetica, sans-serif; font-size: 15px; line-height: 1.6;
     }
+    a { color: var(--ui-accent); }
 
-    /* --- Container Logic --- */
-    /* Apply max-width and centering to direct children of body for content area */
-    body > *:not(style):not(script):not(head) {
-        max-width: 950px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 1.5rem; /* Default spacing below elements */
+    header.ui-header { display: flex; align-items: center; gap: 10px; padding: 10px 24px; background: var(--ui-brand); color: #fff; }
+    header.ui-header h1 { flex: 1; margin: 0; font-size: 1.3em; font-weight: bold; }
+    .ui-header-btn { font: inherit; font-size: 14px; color: #fff; background: transparent; border: 1px solid rgba(255,255,255,.4); border-radius: 6px; padding: 6px 12px; cursor: pointer; text-decoration: none; white-space: nowrap; }
+    .ui-header-btn:hover { background: rgba(255,255,255,.12); }
+
+    .help-wrap { max-width: 1240px; margin: 0 auto; padding: 16px 24px 32px; display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 20px; align-items: start; }
+    .help-nav { position: sticky; top: 16px; background: var(--ui-panel); border: 1px solid var(--ui-line); border-radius: 10px; padding: 12px 8px; }
+    .help-nav p { margin: 0 8px 6px; font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: .04em; color: var(--ui-muted); }
+    .help-nav a { display: block; padding: 6px 8px; border-radius: 6px; color: var(--ui-ink); text-decoration: none; font-size: 14px; }
+    .help-nav a:hover { background: var(--ui-chip); }
+
+    .help-main > h2.help-title { font-size: 22px; margin: 4px 0 4px; }
+    .help-lead { margin: 0 0 4px; color: var(--ui-muted); }
+    .ui-card { background: var(--ui-panel); border: 1px solid var(--ui-line); border-radius: 10px; padding: 16px 20px; margin-top: 14px; }
+    .ui-card h2 { font-size: 18px; margin: 0 0 8px; }
+    .ui-card h3 { font-size: 15px; margin: 16px 0 4px; }
+    .ui-card p { margin: 8px 0; }
+    .ui-card ul { margin: 8px 0; padding-left: 20px; }
+    .ui-card li { margin: 4px 0; }
+
+    .help-table-wrap { overflow-x: auto; margin: 10px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--ui-line); }
+    th { color: var(--ui-muted); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+    td:first-child { white-space: nowrap; font-weight: bold; }
+    tr:last-child td { border-bottom: 0; }
+
+    .help-note { background: var(--ui-chip); border-left: 3px solid var(--ui-accent); border-radius: 6px; padding: 10px 12px; margin: 12px 0; }
+    .help-note--limit { border-left-color: var(--ui-high); background: var(--ui-high-bg); }
+    .help-note strong:first-child { display: block; margin-bottom: 2px; }
+    .chip { display: inline-block; background: var(--ui-chip); border-radius: 999px; padding: 1px 10px; font-size: 13px; white-space: nowrap; }
+    .chip--high { background: var(--ui-high-bg); color: var(--ui-high); font-weight: bold; }
+
+    figure { margin: 14px 0 4px; }
+    figure img { display: block; width: 100%; height: auto; border: 1px solid var(--ui-line); border-radius: 8px; }
+    figcaption { margin-top: 6px; font-size: 13px; color: var(--ui-muted); text-align: center; }
+
+    footer { max-width: 1240px; margin: 0 auto; padding: 0 24px 24px; color: var(--ui-muted); font-size: 13px; }
+
+    @media (max-width: 900px) {
+      .help-wrap { grid-template-columns: 1fr; padding: 12px 16px 24px; }
+      .help-nav { position: static; display: flex; flex-wrap: wrap; gap: 2px; padding: 8px; }
+      .help-nav p { width: 100%; }
+      header.ui-header { padding: 10px 16px; }
+      header.ui-header h1 { font-size: 1.05em; }
+      td:first-child { white-space: normal; }
+      footer { padding: 0 16px 24px; }
     }
-    /* Override margin for specific elements if needed */
-    body > h1, body > h2, body > h3, body > h4 {
-         margin-bottom: 1rem;
-    }
-     body > hr {
-         margin-top: 2.5rem;
-         margin-bottom: 2.5rem;
-     }
-     /* Ensure header image link doesn't get excessive top margin */
-     body > p:first-of-type {
-         margin-top: 0;
-         margin-bottom: 1rem; /* Adjust spacing after header image */
-     }
-
-
-    /* --- Typography --- */
-    h1, h2, h3, h4 {
-        color: #0056b3; /* Darker Primary Blue */
-        line-height: 1.3;
-        font-weight: 600;
-    }
-    h1 {
-        font-size: 2.4rem; /* Slightly adjusted size */
-        text-align: center;
-        margin-bottom: 1.5rem;
-        border-bottom: 2px solid #dee2e6; /* Light Gray Border */
-        padding-bottom: 0.6rem;
-        color: #004085; /* Darkest blue for main title */
-    }
-    h2 {
-        font-size: 1.8rem;
-        border-bottom: 1px solid #e9ecef; /* Even lighter border */
-        padding-bottom: 0.5rem;
-        margin-top: 2.8rem; /* More space above sections */
-        color: #0d6efd; /* Standard primary blue */
-    }
-    h3 {
-        font-size: 1.4rem;
-        color: #343a40; /* Darker Gray for H3 */
-        margin-top: 2.2rem;
-        font-weight: 500; /* Slightly less bold */
-    }
-     h4 {
-         font-size: 1.15rem; /* Slightly larger H4 */
-         color: #495057; /* Medium Gray for H4 */
-         margin-top: 1.8rem;
-         font-weight: 500;
-     }
-
-    p {
-        margin-bottom: 1.2rem;
-        color: #495057; /* Medium Gray */
-    }
-
-    a {
-        color: #0d6efd; /* Primary Blue */
-        text-decoration: none;
-        transition: color 0.2s ease, text-decoration 0.2s ease;
-    }
-    a:hover {
-        color: #0a58ca; /* Darker Blue */
-        text-decoration: underline;
-    }
-
-    strong {
-      font-weight: 600;
-      color: #212529; /* Slightly darker for emphasis */
-    }
-
-    code {
-        background-color: #eef2f7; /* Lighter blueish-gray */
-        padding: 0.2em 0.45em;
-        margin: 0 0.1em;
-        font-size: 0.875em;
-        border-radius: 5px; /* Slightly more rounded */
-        font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        color: #41546b; /* Darker text for code */
-        border: 1px solid #d6dde5; /* Subtle border */
-        vertical-align: baseline; /* Align better with surrounding text */
-    }
-
-    /* --- Images --- */
-    img {
-        max-width: 100%;
-        height: auto;
-        display: block;
-        margin: 1.8rem auto; /* More vertical margin, centered */
-        border-radius: 8px; /* Rounded corners */
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Slightly deeper shadow */
-        border: 1px solid #dee2e6; /* Light border */
-    }
-    /* Specific override for header image link */
-     body > p:first-of-type a, body > p:first-of-type img {
-         margin-top: 0;
-         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12); /* More shadow for header image */
-     }
-
-
-    /* --- Lists --- */
-    ul, ol {
-        margin-top: 0.8rem;
-        margin-bottom: 1.5rem;
-        padding-left: 2.2rem; /* Consistent indentation */
-    }
-    li {
-        margin-bottom: 0.7rem; /* More space between items */
-        padding-left: 0.3rem; /* Space after bullet */
-    }
-    /* Style specific lists if needed, e.g., feature lists */
-    h2 + p + ul li::marker, /* Feature list after intro para */
-    h4 + ul li::marker { /* Feature list after H4 */
-        color: #0d6efd; /* Blue markers for feature lists */
-    }
-     ul ul, ol ol, ul ol, ol ul {
-         margin-top: 0.6rem;
-         margin-bottom: 0.6rem;
-     }
-
-
-    /* --- Tables --- */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 1.8rem 0; /* More vertical margin */
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
-        border: 1px solid #dee2e6;
-        border-radius: 6px; /* Rounded corners for table */
-        overflow: hidden; /* Ensure border-radius clips content */
-    }
-    th, td {
-        border: none; /* Remove internal borders */
-        border-bottom: 1px solid #dee2e6; /* Use bottom borders for rows */
-        padding: 0.9rem 1.1rem; /* More padding */
-        text-align: left;
-        vertical-align: top; /* Align content top */
-    }
-    th {
-        background-color: #f8f9fa; /* Very Light Gray Header */
-        font-weight: 600;
-        color: #495057;
-        border-bottom-width: 2px; /* Thicker border below header */
-    }
-     tbody tr:last-child td {
-         border-bottom: none; /* No border for last row */
-     }
-     tbody tr:nth-child(odd) {
-         background-color: #fdfdfe; /* Subtle striping */
-     }
-     tbody tr:hover {
-         background-color: #f1f3f5; /* Hover effect */
-     }
-
-
-    /* --- Blockquotes --- */
-    blockquote {
-        border-left: 5px solid #17a2b8; /* Info Cyan */
-        margin: 1.8rem 0;
-        padding: 1rem 1.8rem; /* More padding */
-        background-color: #f1f3f5; /* Light Gray */
-        color: #495057;
-        border-radius: 0 8px 8px 0; /* Rounded corners */
-    }
-     blockquote p {
-         margin-bottom: 0.5rem;
-     }
-     blockquote p:last-child {
-         margin-bottom: 0;
-     }
-      blockquote strong {
-         color: #0c7a8c; /* Darker Cyan */
-         font-weight: 500;
-      }
-
-    /* --- Horizontal Rules --- */
-    hr {
-        border: none;
-        border-top: 1px solid #ced4da; /* Medium Gray */
-        margin: 3rem auto; /* More space around HR, centering handled by body > * */
-        width: 80%; /* Make HR slightly narrower */
-    }
-
-    /* --- Footer/Disclaimer --- */
-     /* Target the last H2 and its following paragraph specifically */
-     h2:last-of-type + p {
-         background-color: #fff3cd; /* Warning Yellow */
-         border: 1px solid #ffeeba;
-         border-left: 5px solid #ffc107; /* Warning Yellow border */
-         padding: 1.2rem 1.8rem; /* More padding */
-         border-radius: 6px;
-         color: #664d03; /* Darker text */
-         margin-top: 2rem; /* Space before disclaimer */
-     }
-      h2:last-of-type + p strong {
-          color: #594502; /* Even darker for emphasis */
-      }
-      
-
-      .tech-stack-list {
-            list-style: none;
-            padding-left: 0;
-        }
-        .tech-stack-list li {
-            display: inline-block;
-            background-color: #e2e6ea; /* Light gray */
-            color: #495057; /* Dark gray text */
-            padding: 6px 12px;
-            margin: 5px 5px 5px 0;
-            border-radius: 15px; /* Pill shape */
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: background-color 0.2s ease, color 0.2s ease;
-        }
-        .tech-stack-list li:hover {
-             background-color: #6c757d; /* Darker gray on hover */
-             color: #fff;
-        }
-         .tech-stack-list li::before {
-             content: none; /* Remove bullets for tech stack */
-         }
-
-    /* --- Responsive: phones and small tablets --- */
-    @media (max-width: 768px) {
-        body {
-            padding: 1.25rem 1rem;
-            line-height: 1.65;
-        }
-
-        h1 { font-size: clamp(1.5rem, 6vw, 2.4rem); }
-        h2 { font-size: clamp(1.25rem, 5vw, 1.8rem); margin-top: 2rem; }
-        h3 { font-size: clamp(1.1rem, 4.5vw, 1.4rem); margin-top: 1.6rem; }
-        h4 { font-size: 1.05rem; }
-
-        /* Wide comparison tables scroll rather than squash to unreadable columns. */
-        table {
-            display: block;
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            white-space: normal;
-        }
-
-        th, td {
-            padding: 0.65rem 0.75rem;
-            font-size: 0.92rem;
-            min-width: 8rem;
-        }
-
-        blockquote {
-            padding: 0.9rem 1rem;
-            margin: 1.2rem 0;
-        }
-
-        ul, ol { padding-left: 1.4rem; }
-
-        img { margin: 1.2rem auto; }
-
-        hr { width: 100%; margin: 2rem auto; }
-
-        h2:last-of-type + p { padding: 1rem; }
-
-        /* Keep long URLs and code spans from widening the page. */
-        p, li, td, code { overflow-wrap: anywhere; }
-    }
-
-    /* --- Highlighted search term (matches the dashboard's own style) --- */
-    mark {
-        background-color: #fcf8e3;
-        color: #8a6d3b;
-        padding: 0.1em 0.2em;
-        border-radius: 3px;
-        font-weight: 600;
-    }
-
-    /* --- Back to dashboard bar --- */
-    .back-bar {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        background-color: #f9fafb; /* match body so content can't show through */
-        padding: 0.75rem 0;
-        margin-bottom: 0.5rem;
-        border-bottom: 1px solid #e9ecef;
-    }
-    .back-bar a {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        min-height: 44px; /* comfortable tap target */
-        padding: 0 0.9rem;
-        background-color: #0d6efd;
-        color: #fff;
-        border-radius: 6px;
-        font-weight: 500;
-        text-decoration: none;
-    }
-    .back-bar a:hover {
-        background-color: #0a58ca;
-        color: #fff;
-        text-decoration: none;
-    }
-
-    /* =========================================================
-       Dark theme — mirrors the dashboard's toggle via the
-       shared `tpcraw-theme` key (see the <script> in <head>).
-       Additive overrides only; light styles above are untouched.
-       ========================================================= */
-
-    :root[data-theme="dark"] body {
-        background-color: #1a1a1a;
-        color: #e0e0e0;
-    }
-    :root[data-theme="dark"] h1 { color: #7fb2ff; border-bottom-color: #3a3a3a; }
-    :root[data-theme="dark"] h2 { color: #5b9dff; border-bottom-color: #2f2f2f; }
-    :root[data-theme="dark"] h3 { color: #d6d6d6; }
-    :root[data-theme="dark"] h4 { color: #bdbdbd; }
-    :root[data-theme="dark"] p  { color: #c9c9c9; }
-    :root[data-theme="dark"] li { color: #c9c9c9; }
-    :root[data-theme="dark"] strong { color: #f0f0f0; }
-
-    :root[data-theme="dark"] a       { color: #6ea8ff; }
-    :root[data-theme="dark"] a:hover { color: #9cc4ff; }
-
-    :root[data-theme="dark"] code {
-        background-color: #262b33;
-        color: #b8c7db;
-        border-color: #3a4351;
-    }
-
-    :root[data-theme="dark"] img {
-        border-color: #3a3a3a;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    :root[data-theme="dark"] table {
-        border-color: #3a3a3a;
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
-    }
-    :root[data-theme="dark"] th {
-        background-color: #262626;
-        color: #d6d6d6;
-        border-bottom-color: #3a3a3a;
-    }
-    :root[data-theme="dark"] td {
-        color: #c9c9c9;
-        border-bottom-color: #3a3a3a;
-    }
-    :root[data-theme="dark"] tbody tr:nth-child(odd) { background-color: #1f1f1f; }
-    :root[data-theme="dark"] tbody tr:hover          { background-color: #2b2b2b; }
-
-    :root[data-theme="dark"] blockquote {
-        background-color: #242424;
-        color: #c9c9c9;
-        border-left-color: #17a2b8;
-    }
-    :root[data-theme="dark"] blockquote strong { color: #4fc3d7; }
-
-    :root[data-theme="dark"] hr { border-top-color: #3a3a3a; }
-
-    :root[data-theme="dark"] .tech-stack-list li {
-        background-color: #2c2c2c;
-        color: #d0d0d0;
-    }
-    :root[data-theme="dark"] .tech-stack-list li:hover {
-        background-color: #444;
-        color: #fff;
-    }
-
-    /* Disclaimer callout */
-    :root[data-theme="dark"] h2:last-of-type + p {
-        background-color: #3a3223;
-        border-color: #5c4d2a;
-        border-left-color: #ffc107;
-        color: #f0dfae;
-    }
-    :root[data-theme="dark"] h2:last-of-type + p strong { color: #ffd766; }
-
-    :root[data-theme="dark"] .back-bar {
-        background-color: #1a1a1a;
-        border-bottom-color: #333;
-    }
-    /* Must be re-stated: the generic dark `a` rule above has equal or higher
-       specificity and would otherwise turn this into blue text on blue. */
-    :root[data-theme="dark"] .back-bar a {
-        background-color: #1b5fd0;
-        color: #fff;
-    }
-    :root[data-theme="dark"] .back-bar a:hover {
-        background-color: #2b74e8;
-        color: #fff;
-    }
-
-    :root[data-theme="dark"] mark {
-        background-color: #4a4020;
-        color: #f0dfae;
-    }
-
   </style>
 </head>
 <body>
 
-  <nav class="back-bar">
-    <a href="index.html">&larr; Back to Dashboard</a>
-  </nav>
-
-  <h1>About - Polytechnic Sentiments Dashboard</h1>
-
-  <p>
-    <a href="https://shamim-akhtar.github.io/tpcraw/">
-      <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_01_2.PNG" alt="TPCraw Screenshot" />
-    </a>
-  </p>
-
-  <p>
-    TPCraw is a Python-based project that crawls posts and comments from Singapore's
-    polytechnic subreddits and then analyzes them using Google’s Generative AI (Gemini).
-    The project produces sentiment analyses, summaries, and visualizations (via a web-based dashboard)
-    to gain insights into discussions about the polytechnics on Reddit, with a particular focus on
-    Temasek Polytechnic.
-  </p>
-
-  <p>
-    <a href="https://shamim-akhtar.github.io/tpcraw/">View the Dashboard</a>.
-  </p>
-
-  <hr />
-
-  <h2>Quick guide</h2>
-  <p>Choose a <strong>Forum</strong>, a <strong>School</strong> and a <strong>Period</strong> at the top. The page updates as soon as you change one. <strong>Search posts</strong> finds posts and comments that contain a word.</p>
-  <table>
-    <thead><tr><th>Tab</th><th>What it shows</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Overview</strong></td><td>The number of posts and comments, the share of negative posts compared with the previous period of the same length, recent alerts, last week's issues from the digest, how students feel, the issues raised in this period and the most discussed posts.</td></tr>
-      <tr><td id="what-changed-help"><strong>What changed in this period</strong></td><td>Compares the chosen period with the previous period of the same length, for the same forum and school. A change is listed only when both periods have at least 10 posts and the difference is large: the share of negative posts moved by 15 percentage points or more; the number of posts, or of comments (at least 50 in each period), rose by half or fell by a third; or an issue came up in 3 or more posts and was absent, or a third as frequent, before. Each line gives the figures for both periods. With fewer posts the card says there are too few to compare. With a school chosen, the comparison is made only when most posts in the earlier period have been checked for schools. A listed change describes what was posted on Reddit. It does not show the cause, and Reddit posts are not a survey of all students.</td></tr>
-      <tr><td><strong>Issues raised in this period</strong></td><td>AI groups posts into specific problems, such as a Year 2 timetable clash or slow lab computers, using the same name each time the problem comes up. The card lists issues raised in two or more posts in the chosen period, with the number of posts, comments and negative posts. <em>Also raised in the previous N days</em> means at least one post in the previous period of the same length raised the same issue. Posts that raise no specific problem, such as questions about courses, are not counted. Issue names never include a person's name.</td></tr>
-      <tr><td><strong>Alerts</strong></td><td>Posts that AI suggests staff look at, checked every morning. The alerts follow the period chosen in the toolbar. The number on the tab counts them. Click the title of an alert to read the post with its comments and AI summary. "Open in Reddit" goes to the post on Reddit.</td></tr>
-      <tr><td><strong>Weekly digest</strong></td><td>A summary of each week, made every Monday morning. Click a post in the digest to read it with its comments and AI summary.</td></tr>
-      <tr><td><strong>Posts</strong></td><td>The 10 most discussed, most negative, most positive or newest posts. Click a row to read the post.</td></tr>
-      <tr><td><strong>Trends</strong></td><td>Charts by post (sentiment, weighted sentiment, comments, engagement) and topics over time. Charts by post show the top 15 unless you tick <em>Show all posts</em>.</td></tr>
-      <tr><td><strong>Authors</strong></td><td>The 10 authors with the most negative posts and comments.</td></tr>
-    </tbody>
-  </table>
-  <p>Alerts cover every polytechnic: each one's own forum, plus r/SGExams posts that name it by its full name or short form (TP, NYP, RP, SP or NP). An r/SGExams post that names no polytechnic gets no alert. The weekly digest also covers every polytechnic, in the same way. The School choice covers TP only, so only TP has a digest for each school. The sections further down describe the earlier layout in more detail.</p>
-
-  <hr />
-
-  <h2>📌 About This App</h2>
-  <p>
-    This application is a tool designed to gather, process, and visualize user-generated content from
-    Reddit's Singapore polytechnic communities — <code>r/TemasekPoly</code>, <code>r/nanyangpoly</code>,
-    <code>r/republicpolytechnic</code>, <code>r/SingaporePoly</code>, <code>r/NgeeAnnPoly</code>,
-    <code>r/nyp</code> and <code>r/sgExams</code>. It consists of two major components:
-  </p>
-
-  <ol>
-    <li>
-      <strong>Frontend Dashboard (UI)</strong> - Built with HTML, CSS, and JavaScript, this
-      dashboard provides a clean and interactive interface for visualizing the processed data.
-      It includes various charts and graphs to display trends, sentiment distribution, engagement
-      scores, and more.
-    </li>
-    <li>
-      <strong>Crawler (Backend)</strong> - Written in Python, it continuously collects posts
-      and comments from Reddit, processes them for sentiment analysis, categorizes them, and
-      stores them in Firebase Firestore. It leverages the Google Gemini API to extract meaningful
-      insights such as sentiment score, emotion, category, and the TP schools it names.
-    </li>
-  </ol>
-
-  <p>
-    The app runs automatically every day at <strong>5 AM Singapore Time</strong>, ensuring
-    consistent and up-to-date data collection. It provides a robust framework for monitoring
-    sentiment trends, analyzing user feedback, and identifying popular topics or concerns
-    related to Temasek Polytechnic.
-  </p>
-
-  <hr />
-
-  <h2>🌐 Frontend Dashboard</h2>
-  <h3>Technology Stack</h3>
-            <ul class="tech-stack-list">
-                 <li>HTML</li>
-                 <li>CSS (including styles for light/dark themes)</li>
-                 <li>CSS (responsive layer for phones and tablets)</li>
-                 <li>JavaScript (Modular ES6)</li>
-                 <li>Chart.js</li>
-                 <li>Chart.js Zoom Plugin</li>
-                 <li>chartjs-adapter-date-fns</li>
-                 <li>Firebase SDK (v9 Modular)</li>
-                 <li>html2pdf.js</li>
-            </ul>
-  <p>
-    The Frontend Dashboard is a dynamic and user-friendly web interface built with
-    <strong>HTML, CSS, and JavaScript</strong>. It serves as the primary visualization tool
-    for the data collected by the Python crawler. Users can interact with various charts, tables,
-    and filtering options to explore sentiment analysis results from whichever polytechnic
-    subreddit they select.
-  </p>
-  <p>
-    This dashboard allows users to:
-  </p>
-  <ul>
-    <li>📝 View aggregated sentiment data across multiple categories such as Academic, Exams, Internship, Facilities, etc.</li>
-    <li>📊 Analyze positive, neutral, and negative sentiments through <strong>charts and graphs</strong>.</li>
-    <li>📅 Track sentiment changes over time using <strong>time series visualizations</strong>.</li>
-    <li>🔍 Filter posts based on specific criteria like date range, categories and school.</li>
-    <li>🏫 Switch between <strong>seven polytechnic subreddits</strong> without reloading the page.</li>
-    <li>🔎 <strong>Search by keyword</strong> across post and comment text.</li>
-    <li>📈 Examine top authors based on their sentiment contributions (positive and negative).</li>
-    <li>💬 Inspect individual posts and their associated comments to understand user feedback better.</li>
-    <li>📄 <strong>Export any post's analysis to PDF</strong> for sharing or reporting.</li>
-    <li>🌗 Switch between <strong>light and dark themes</strong>, remembered across visits.</li>
-    <li>📱 Use the whole dashboard on a <strong>phone or tablet</strong> as well as a desktop.</li>
-  </ul>
-
-  <p>
-    The dashboard is implemented using <strong>Chart.js</strong> for visualization,
-    <strong>Firebase Firestore</strong> for data retrieval, and
-    <strong>Chart.js Zoom Plugin</strong> for interactive zooming and panning capabilities.
-    It provides a comprehensive view of the sentiment trends and engagement metrics, making
-    it easier to uncover valuable insights from the collected Reddit data.
-  </p>
-
-  <hr />
-
-  <h2>Frontend Dashboard Features</h2>
-
-  <h3>🏫 Select Subreddit</h3>
-  <p>
-    The <strong>Select Subreddit</strong> dropdown, at the top of the left-hand column, controls
-    which community the entire dashboard reports on. Changing it reloads every chart, table and
-    metric on the page against that subreddit's data — no page refresh required.
-  </p>
-  <table>
-    <thead>
-      <tr>
-        <th>Option</th>
-        <th>Subreddit</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td><strong>Temasek Poly</strong></td><td><code>r/TemasekPoly</code> (default)</td></tr>
-      <tr><td><strong>Nanyang Poly</strong></td><td><code>r/nanyangpoly</code></td></tr>
-      <tr><td><strong>Republic Poly</strong></td><td><code>r/republicpolytechnic</code></td></tr>
-      <tr><td><strong>Singapore Poly</strong></td><td><code>r/SingaporePoly</code></td></tr>
-      <tr><td><strong>Ngee Ann Poly</strong></td><td><code>r/NgeeAnnPoly</code></td></tr>
-      <tr><td><strong>Nanyang Poly Students</strong></td><td><code>r/nyp</code></td></tr>
-      <tr><td><strong>SGExams</strong></td><td><code>r/sgExams</code></td></tr>
-    </tbody>
-  </table>
-  <p>
-    Some filters are specific to a community, so the dashboard shows and hides them as you switch.
-    The <strong>School</strong> choice applies to <code>r/TemasekPoly</code> and <code>r/sgExams</code>, and the
-    <strong>TP-related only</strong> tick box applies only to <code>r/sgExams</code>, where posts cover
-    every institution and most are unrelated to Temasek Polytechnic.
-  </p>
-
-  <hr />
-
-  <h3>🔎 Keyword Search</h3>
-  <p>
-    The <strong>Keyword Search</strong> box searches the text of posts and comments in the selected
-    subreddit and date range, rather than filtering the charts. Results open in the details panel,
-    split into matching posts and matching comments, with the search term
-    <mark>highlighted</mark> in each excerpt.
-  </p>
-  <ul>
-    <li>Press <strong>Enter</strong> or click <strong>Search</strong> to run a search.</li>
-    <li>Each result carries the same sentiment, emotion and category badges used elsewhere.</li>
-    <li>Comment results show the parent post's title, so you keep the context of the thread.</li>
-    <li>Use <strong>View Full Post</strong> on any result to jump to that post's complete analysis.</li>
-  </ul>
-
-  <hr />
-
-  <h3>📅 Date Range &amp; School Filter</h3>
-  <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_02.PNG" alt="Date Range and School Filter" />
-  </p>
-  <p>
-    The <strong>Date Range &amp; School Filter</strong> feature provides users with flexible data
-    filtering options, enabling customized analysis.
-  </p>
-  <table>
-    <thead>
-      <tr>
-        <th>Component</th>
-        <th>Function</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Start Date</strong></td>
-        <td>Choose the beginning of the analysis period.</td>
-      </tr>
-      <tr>
-        <td><strong>End Date</strong></td>
-        <td>Select the end date (defaults to today).</td>
-      </tr>
-      <tr>
-        <td id="school-filter-help"><strong>School</strong></td>
-        <td>The page opens on <strong>All schools</strong>, which shows every post in the forum for the whole of TP, whether or not it names a school. Choosing a school shows only the posts that name that school. Gen AI links a post to a school only when it can quote words from the post that name that school: the school's name or short form, a diploma name or code, a module, or a named facility or programme. The quoted words are then checked against the list of schools, and general words such as "TP", bursaries, fees, CCAs, campus services or school subjects do not count. On subreddits other than r/TemasekPoly, a post must also mention Temasek Polytechnic. Each link shows the words relied on. Posts that name no school are counted as <em>general TP</em> posts. They appear under <strong>All schools</strong> but not under a single school. The line under the figures on the Overview shows how many posts in the period name the school, how many are general TP and how many have not been checked yet. Posts collected before school checking started, or checked under the first, looser rules, are not counted as linked until they are checked again. The list of schools, diplomas, modules and places is kept in <code>schools.json</code>.</td>
-      </tr>
-      <tr>
-        <td><strong>TP-Related? Checkbox</strong></td>
-        <td>Shown only when <code>r/sgExams</code> is selected. That subreddit covers every institution in Singapore, so this filter narrows results to posts the crawler flagged as mentioning Temasek Polytechnic (<code>relatedToTemasekPoly: true</code>). As with school links, the classification comes from Gen AI and may occasionally misfire.</td>
-      </tr>
-    </tbody>
-  </table>
-  <p>
-    This feature enhances the user’s ability to tailor their analysis to specific periods or
-    areas of interest, making the dashboard versatile and adaptable.
-  </p>
-
-  <hr />
-
-  <h3>📊 Posts, Comments, and Avg Weighted Sentiment Metrics</h3>
-  <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_03_1.PNG" alt="Posts, Comments, and Avg Weighted Sentiment Metrics" />
-  </p>
-  <p>
-    The <strong>Posts, Comments, and Avg Weighted Sentiment Metrics</strong> feature provides
-    a quick summary of key data points, displayed prominently at the top of the dashboard.
-  </p>
-  <table>
-    <thead>
-      <tr>
-        <th>Component</th>
-        <th>Function</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Posts</strong></td>
-        <td>Displays the total number of posts retrieved from the Reddit subreddit <code>r/TemasekPoly</code> based on the selected date range and filters. This helps in quickly assessing the volume of discussions and interactions within a specified timeframe.</td>
-      </tr>
-      <tr>
-        <td><strong>Comments</strong></td>
-        <td>Shows the aggregate number of comments associated with the retrieved posts. This metric indicates the level of engagement and interest generated by the posts.</td>
-      </tr>
-      <tr>
-        <td><strong>Avg Weighted Sentiment</strong></td>
-        <td>Calculates the average sentiment score of all fetched posts. This score is weighted based on engagement metrics such as upvotes and comments, providing a balanced measure of user sentiment.</td>
-      </tr>
-    </tbody>
-  </table>
-  <p>
-    These metrics offer a high-level overview of user engagement and sentiment trends,
-    serving as a starting point for deeper analysis through the various charts and graphs
-    available on the dashboard.
-  </p>
-
-  <hr />
-
-  <h3>📊 Sentiment Distribution Pie Chart</h3>
-  <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_03_2.PNG" alt="Sentiment Distribution Pie Chart" />
-  </p>
-  <p>
-    The <strong>Sentiment Distribution Pie Chart</strong> provides a high-level overview of the
-    sentiment breakdown across all posts within the selected date range. This chart categorizes
-    sentiment into three primary groups:
-  </p>
-  <ul>
-    <li><strong>Positive</strong>: Posts with favorable feedback or praise.</li>
-    <li><strong>Neutral</strong>: Posts that are informational or express no particular sentiment.</li>
-    <li><strong>Negative</strong>: Posts expressing criticism, dissatisfaction, or negative experiences.</li>
-  </ul>
-  <p>
-    The pie chart helps users quickly gauge the overall sentiment landscape by showing the
-    proportion of each sentiment type. It is especially useful for identifying whether the
-    general mood is positive, negative, or balanced. Users can apply filters to narrow down
-    the data by date range or school.
-  </p>
-
-  <hr />
-
-  <h3>📈 Weighted Sentiment Breakdown Chart</h3>
-  <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_05.PNG" alt="Weighted Sentiment Breakdown Chart" />
-  </p>
-  <p>
-    The <strong>Weighted Sentiment Breakdown Chart</strong> displays the
-    <strong>Weighted Sentiment Scores</strong> for individual posts based on the selected filters.
-    Each bar in the chart represents a post, with the score indicating how positive or negative
-    the overall sentiment is.
-  </p>
-  <ul>
-    <li><strong>Positive Bars</strong> (Green): Indicate favorable or appreciative sentiment.</li>
-    <li><strong>Negative Bars</strong> (Red): Indicate critical or unfavorable sentiment.</li>
-  </ul>
-  <p>
-    The weighted sentiment score is calculated by combining the sentiment polarity of each post
-    with engagement metrics such as comments and upvotes, providing a more accurate reflection
-    of popular opinion.
-  </p>
-  <p>
-    Users can click on a specific bar to view detailed post information, including its title,
-    summary, and related comments. Additionally, the chart supports <strong>zooming and panning</strong>,
-    enabling users to explore data at various levels of detail.
-  </p>
-
-  <hr />
-
-  <h3>📊 Comment Sentiment Stacked Chart</h3>
-  <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_06.PNG" alt="Comment Sentiment Stacked Chart" />
-  </p>
-  <p>
-    The <strong>Comment Sentiment Stacked Chart</strong> provides a comprehensive view of user feedback
-    by displaying <strong>positive and negative sentiments</strong> for comments on each post.
-  </p>
-  <ul>
-    <li><strong>Positive Sentiments</strong> (Green): Reflect constructive, encouraging, or satisfied comments.</li>
-    <li><strong>Negative Sentiments</strong> (Red): Indicate criticisms, frustrations, or dissatisfaction expressed in comments.</li>
-  </ul>
-  <p>
-    This stacked chart helps identify the overall sentiment distribution across all comments for each post.
-    The height of each bar indicates the total number of sentiments, making it easy to compare engagement
-    levels and emotional responses.
-  </p>
-  <p>
-    The chart supports <strong>interactive zooming and panning</strong>, allowing users to closely examine
-    specific posts or date ranges. Additionally, users can click on a bar to view the underlying comments
-    and their detailed analysis.
-  </p>
-
-  <hr />
-
-  <h3>💬 Total Comments Chart</h3>
-  <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_07.PNG" alt="Total Comments Chart" />
-  </p>
-  <p>
-    The <strong>Total Comments Chart</strong> presents the total number of comments each post has received,
-    visualized as a bar chart.
-  </p>
-  <ul>
-    <li><strong>Taller Bars</strong>: Indicate posts with high community engagement and extensive discussions.</li>
-    <li><strong>Shorter Bars</strong>: Suggest posts that received little to no attention or feedback.</li>
-  </ul>
-  <p>
-    This chart is particularly useful for identifying which posts have sparked the most conversation.
-    By clicking on a specific bar, users can view detailed insights about the post, including its content,
-    sentiment analysis, and associated comments. The chart supports <strong>zooming, panning, and filtering</strong>,
-    enhancing the exploration of high-engagement posts over time.
-  </p>
-
-  <hr />
-
-  <h3>📈 Engagement Score Chart</h3>
-  <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_08.PNG" alt="Engagement Score Chart" />
-  </p>
-  <p>
-    The <strong>Engagement Score Chart</strong> visualizes the overall popularity and interaction level
-    of each post. The <strong>Engagement Score</strong> is calculated by combining the number of upvotes
-    and comments, factoring in their influence through a logarithmic scaling approach.
-  </p>
-  <ul>
-    <li><strong>Higher Scores</strong>: Indicate posts that have generated significant discussion or received numerous upvotes.</li>
-    <li><strong>Lower Scores</strong>: Suggest posts with minimal interaction or interest.</li>
-  </ul>
-  <p>
-    This bar chart allows users to quickly identify which posts have attracted the most attention
-    and engagement from the community. Each bar represents a post, with taller bars indicating higher engagement.
-    The chart supports <strong>interactive zooming and panning</strong>, allowing users to closely examine
-    posts from different time periods. Additionally, clicking on a bar displays detailed information about the post.
-  </p>
-
-  <hr />
-
-  <h3>📋 Top 10 Posts</h3>
-  <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_09.PNG" alt="Top 10 Posts Feature" />
-  </p>
-  <p>
-    The <strong>Top 10 Posts</strong> feature provides a <strong>dropdown-driven table view</strong> that allows
-    users to filter and view the most relevant posts based on various criteria. This feature serves as
-    a streamlined way to quickly access key insights from the dataset without manually browsing through
-    all available posts.
-  </p>
-
-  <h4>How It Works</h4>
-  <ul>
-    <li>The feature is implemented through a <strong>dropdown menu</strong> that offers multiple filter criteria.</li>
-    <li>Upon selecting a filter, the table dynamically updates to display the <strong>Top 10 posts</strong> meeting the chosen criterion.</li>
-    <li>The table displays essential metrics such as:
-      <ul>
-        <li><strong>Post Title</strong> - A clickable link that, when selected, displays the full post details along with associated comments and analytics.</li>
-        <li><strong>Weighted Sentiment Score</strong> - A numerical score indicating the overall sentiment of the post, weighted by engagement metrics such as comments and upvotes.</li>
-        <li><strong>Engagement Score</strong> - A calculated score representing the level of interaction with the post, including upvotes and comments.</li>
-        <li><strong>Raw Sentiment Score</strong> - The pure sentiment score assigned by the AI model before applying engagement-based weighting.</li>
-      </ul>
-    </li>
-  </ul>
-
-  <h4>Available Sorting Filters</h4>
-  <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_10.PNG" alt="Sorting Filters" />
-  </p>
-  <ul>
-    <li><strong>Top 10 Engaged Posts</strong>: Based on the highest engagement scores.</li>
-    <li><strong>Lowest 10 Weighted Sentiment Posts</strong>: Posts with the lowest weighted sentiment scores (most negative impact considering engagement).</li>
-    <li><strong>Lowest 10 Raw Sentiment Posts</strong>: Posts with the lowest raw sentiment scores (pure negativity without considering engagement).</li>
-    <li><strong>Highest 10 Weighted Sentiment Posts</strong>: Posts with the highest weighted sentiment scores (most positive impact considering engagement).</li>
-    <li><strong>Highest 10 Raw Sentiment Posts</strong>: Posts with the highest raw sentiment scores (pure positivity without considering engagement).</li>
-    <li><strong>Top 10 Most Recent Posts</strong>: The latest posts sorted by creation date.</li>
-  </ul>
-
-  <h4>Table Interactions</h4>
-  <ul>
-    <li>Clicking on any <strong>post title</strong> within the table triggers the <strong>Post Details View</strong>, providing detailed information about the post including:
-      <ul>
-        <li>A summary generated by the AI model.</li>
-        <li>A breakdown of positive and negative comments.</li>
-        <li>Engagement metrics.</li>
-        <li>Metadata such as author name, category, and date posted.</li>
-      </ul>
-    </li>
-    <li>Hovering over the <strong>Weighted Sentiment Score</strong> or <strong>Raw Sentiment Score</strong> displays a tooltip explaining the score.</li>
-  </ul>
-
-  <h4>Purpose and Benefits</h4>
-  <ul>
-    <li>Provides a convenient way to <strong>analyze top posts quickly</strong> based on different criteria.</li>
-    <li>Helps identify posts generating the most attention (positive or negative).</li>
-    <li>Enables targeted monitoring of posts with extreme sentiments.</li>
-    <li>Supports administrators in identifying trending topics or potential areas of concern.</li>
-  </ul>
-
-  <p>
-    The <strong>Top 10 Posts</strong> feature ensures that the most important or relevant posts are always
-    accessible with a few clicks, making it a valuable tool for ongoing monitoring and analysis.
-  </p>
-
-  <hr />
-
-  <h3>👥 Top 10 Authors with Most Negative Sentiments</h3>
-  <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_12.PNG" alt="Top 10 Authors with Negative Sentiments" />
-  </p>
-  <p>
-    The <strong>Top 10 Authors Chart</strong> displays a stacked bar chart highlighting the authors with
-    the most negative sentiments in their posts and comments.
-  </p>
-  <ul>
-    <li><strong>Green Bars</strong>: Represent the positive sentiments contributed by an author.</li>
-    <li><strong>Red Bars</strong>: Represent the negative sentiments contributed by an author.</li>
-  </ul>
-  <p>
-    This feature is useful for identifying potential issues, complaints, or grievances that might
-    need attention. It also allows for tracking individual authors over time to understand their
-    overall sentiment trend. Clicking on any bar reveals all related posts and comments made by
-    the selected author.
-  </p>
-
-  <hr />
-
-  <h3>📅 Category Time Series Analysis</h3>
-  <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_13.PNG" alt="Category Time Series Analysis" />
-  </p>
-  <p>
-    The <strong>Category Time Series Chart</strong> provides a powerful way to visualize sentiment
-    trends over time for various categories.
-  </p>
-  <ul>
-    <li><strong>Raw Data Display</strong>: Shows sentiment scores for each category as light, transparent lines.</li>
-    <li><strong>7-Day Moving Average</strong>: A smoother line representing the average sentiment over the last 7 days, providing a clearer view of overall trends.</li>
-    <li><strong>Interactive Legend</strong>: Users can toggle categories on and off, focusing on specific aspects such as academic, internship, facilities, etc.</li>
-    <li><strong>Clickable Points</strong>: Clicking on data points within the chart reveals all relevant posts and comments for that particular category and date.</li>
-  </ul>
-  <p>
-    This feature enables users to track how sentiment evolves across different categories
-    over time, making it easier to spot emerging issues or improvements.
-  </p>
-
-  <hr />
-
-  <h3>🔍 Post Details Display</h3>
-  <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_11.PNG" alt="Post Details Display" />
-  </p>
-  <p>
-    The <strong>Post Details Display</strong> feature provides an in-depth view of a specific Reddit post
-    and its associated comments when you click on any bar in the various charts.
-  </p>
-  <p><strong>How It Works:</strong></p>
-  <ul>
-    <li>When you click on a bar in any of the charts (such as Weighted Sentiments, Comment Sentiments, Engagement Scores, etc.), a detailed view of the corresponding post is displayed.</li>
-    <li>The post details are fetched dynamically from Firebase Firestore and displayed below the charts.</li>
-  </ul>
-  <p><strong>Information Displayed:</strong></p>
-  <ul>
-    <li><strong>Post Title & Body</strong>: The original content of the post as it appeared on Reddit.</li>
-    <li><strong>Author Information</strong>: Displays the username of the post author and the timestamp when the post was created.</li>
-    <li><strong>Engagement Metrics</strong>: Includes engagement score, weighted sentiment score, raw sentiment score, total positive sentiments, and total negative sentiments.</li>
-    <li><strong>Emotion & Category Tags</strong>: Labels generated by the AI model to categorize the content and detect the overall emotion conveyed.</li>
-    <li><strong>Summary</strong>: A concise summary of the post and its comments generated by the Google Gemini AI.</li>
-    <li><strong>Comments List</strong>: A detailed list of all comments related to the post, along with sentiment scores, emotions, categories and school.</li>
-  </ul>
-  <p><strong>Export to PDF:</strong></p>
-  <ul>
-    <li>The details panel carries a <strong>Download PDF</strong> button that renders the whole analysis — title, metadata, badges, AI summary, post body and every comment — into <code>TPCraw_Analysis_Report.pdf</code>.</li>
-    <li>Navigation and action buttons are hidden from the capture, so the report contains only the content.</li>
-    <li>Useful for circulating a single post's analysis to staff who don't use the dashboard directly.</li>
-  </ul>
-  <p>
-    The <strong>Post Details Display</strong> feature provides a comprehensive breakdown of each post,
-    making it easy to dive into individual conversations and analyze specific interactions.
-  </p>
-
-  <hr />
-
-  <h3>🌗 Light & Dark Themes</h3>
-  <p>
-    The switch in the top-right corner of the dashboard toggles between the light and dark
-    stylesheets. Your choice is saved in the browser's local storage, so the dashboard opens in the
-    same theme on your next visit, and this About page follows the same setting.
-  </p>
-  <p>
-    The theme is applied before the page renders, so switching to dark does not produce a white
-    flash on load. If your browser blocks local storage (private browsing, for example), the theme
-    still works for the current session but will not be remembered.
-  </p>
-
-  <hr />
-
-  <h3>📱 Works on Any Device</h3>
-  <p>
-    The dashboard adapts to the screen it is opened on, from a desktop monitor down to a phone in
-    portrait orientation.
-  </p>
-  <table>
-    <thead>
-      <tr>
-        <th>Screen</th>
-        <th>Behaviour</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Desktop</strong><br />wider than 1024px</td>
-        <td>The original two-column layout: summary metrics and the sentiment pie on the left, the tabbed charts on the right.</td>
-      </tr>
-      <tr>
-        <td><strong>Tablet</strong><br />up to 1024px</td>
-        <td>Collapses to a single column, with the summary cards rearranged into a grid above the charts. The tab bar becomes a horizontally swipeable strip instead of wrapping onto several rows.</td>
-      </tr>
-      <tr>
-        <td><strong>Phone</strong><br />up to 768px</td>
-        <td>Filter controls stack full width, charts are given a taller fixed height so the plot area stays readable, axis labels shorten and thin out, chart legends move below the plot, and the post details panel opens full screen.</td>
-      </tr>
-    </tbody>
-  </table>
-  <p><strong>Touch gestures:</strong></p>
-  <ul>
-    <li><strong>Pinch</strong> to zoom into a chart.</li>
-    <li><strong>Drag sideways</strong> to pan across it. Vertical swipes still scroll the page normally.</li>
-    <li><strong>Tap</strong> a bar or data point to open that post's details.</li>
-    <li>On a desktop the original gestures are unchanged: drag to zoom, <strong>Ctrl</strong> + drag to pan.</li>
-  </ul>
-  <p>
-    Rotating a phone between portrait and landscape re-renders the charts at the new size using data
-    already loaded, so no additional queries are made.
-  </p>
-
-  <hr />
-
-  <h2>Backend Crawler Features</h2>
-  <blockquote>
-    <p>
-      <strong>NOTE</strong><br />
-      <a href="./doc_crawler.md">Read Crawler Technical Documentation</a>
-    </p>
-  </blockquote>
-
-  <h3>🚀 Automated Data Collection</h3>
-  <p>
-    The crawler component of the application continuously collects user-generated content from the
-    polytechnic subreddits on Reddit. The list of communities it visits is read from
-    <code>subreddits.txt</code>, so adding or removing one is a configuration change rather than a
-    code change. It fetches both <strong>posts and comments</strong>
-    using the PRAW (Python Reddit API Wrapper). This automated data gathering ensures that the application
-    stays up-to-date with the latest discussions, feedback, and trends related to the polytechnics.
-    The crawler retrieves a maximum of 500 recent posts and their associated comments each time it runs,
-    providing a comprehensive dataset for further analysis.
-  </p>
-  <p>
-    For the broader <code>r/sgExams</code> community, the crawler additionally detects whether each
-    post or comment actually mentions Temasek Polytechnic and records that as a
-    <code>relatedToTemasekPoly</code> flag, which is what the dashboard's
-    <strong>TP-Related?</strong> filter reads.
-  </p>
-
-  <hr />
-
-  <h3>🤖 Sentiment Analysis using AI</h3>
-  <p>
-    Leveraging the power of the <strong>Google Gemini API</strong>, the application processes each Reddit
-    post and comment to extract insightful information such as:
-  </p>
-  <ul>
-    <li><strong>Sentiment Score</strong>: Determines whether the content is Positive, Negative, or Neutral.</li>
-    <li><strong>Emotion Detection</strong>: Identifies the emotional tone, such as Happy, Stress, Frustration, Pride, Disappointment, etc.</li>
-    <li><strong>Category Identification</strong>: Classifies content into predefined categories like Academic, Exams, Facilities, Internship, CCA, and more.</li>
-    <li><strong>School Detection</strong>: Links a post or comment to a TP school only when it names the school, a diploma, a module or a facility.</li>
-  </ul>
-  <p>
-    The sentiment analysis enables the identification of themes, emotional trends, and areas of
-    concern, providing valuable insights into how users feel about various aspects of Temasek Polytechnic.
-  </p>
-
-  <hr />
-
-  <h3>💾 Data Storage & Structuring</h3>
-  <p>
-    All processed data is stored in <strong>Firebase Firestore</strong> using a well-defined and structured schema.
-    This ensures efficient storage, quick retrieval, and organized management of posts, comments, and their
-    related metadata. The data storage structure supports:
-  </p>
-  <ul>
-    <li><strong>Efficient Storage</strong>: Posts, comments, and their metadata are saved in an organized manner for easy access and querying.</li>
-    <li><strong>Scalability</strong>: The system can handle a growing volume of data without compromising performance, making it suitable for long-term sentiment analysis.</li>
-    <li><strong>Consistency</strong>: Uses transactional updates to prevent data corruption, ensuring accuracy even when multiple updates are made simultaneously.</li>
-  </ul>
-  <p>
-    By employing Firebase Firestore, the app benefits from high availability, real-time updates, and secure data
-    handling, essential for a robust and reliable sentiment analysis platform.
-  </p>
-
-  <hr />
-
-  <h3>📈 Data Aggregation & Incremental Updating</h3>
-  <p>
-    The application continuously aggregates and updates collected data to provide meaningful insights over time.
-    It supports:
-  </p>
-  <ul>
-    <li><strong>Continuous Learning</strong>: Aggregates historical sentiment data to identify patterns and trends across various categories.</li>
-    <li><strong>Incremental Updates</strong>: Efficiently maintains and updates statistics for authors, categories, and posts without having to reprocess old data.</li>
-    <li><strong>Dynamic Categorization</strong>: Tracks popular categories and detects shifts in user sentiments over time, allowing for a deeper understanding of evolving discussions.</li>
-  </ul>
-  <p>
-    This feature ensures that the application provides accurate, up-to-date analysis while minimizing resource
-    consumption through incremental data processing.
-  </p>
-
-  <hr />
-
-  <h3>📃 Error Handling & Logging</h3>
-  <p>
-    The application is built with robust error handling mechanisms to ensure smooth operation even when
-    encountering issues. It includes:
-  </p>
-  <ul>
-    <li><strong>Error Logs</strong>: All errors are recorded in a dedicated <code>crawler_errors.log</code> file for easy troubleshooting and debugging.</li>
-    <li><strong>Retry Mechanisms</strong>: Automatic retries are implemented for failed API requests or Firebase interactions, enhancing reliability.</li>
-    <li><strong>Graceful Degradation</strong>: If a non-critical component fails, the crawler continues processing other data without interruption.</li>
-  </ul>
-  <p>
-    This resilience ensures that the application can handle unexpected issues without compromising data
-    integrity or overall functionality.
-  </p>
-
-  <hr />
-
-  <h3>⏰ Scheduled Crawling with GitHub Actions</h3>
-  <p>
-    The crawler is configured to run automatically every day at <strong>5 AM Singapore Time</strong> using
-    <strong>GitHub Actions</strong>. This automated scheduling provides:
-  </p>
-  <ul>
-    <li><strong>Consistency</strong>: Ensures data collection happens at regular intervals without requiring manual intervention.</li>
-    <li><strong>Timely Updates</strong>: Captures ongoing discussions and sentiment trends as they happen, providing fresh insights for analysis.</li>
-    <li><strong>Automation</strong>: Eliminates the need for manual triggering, enhancing reliability and efficiency.</li>
-  </ul>
-  <p>
-    By leveraging GitHub Actions for scheduling, the application maintains a seamless and uninterrupted
-    data collection process.
-  </p>
-
-  <hr />
-
-  <h2>⚠️ Disclaimer</h2>
-  <p>
-    The sentiment data shown is auto-generated using Google Gemini AI models. While generally accurate,
-    edge cases may exist. Always <strong>cross-reference with the post and comment content</strong> for
-    accurate interpretation.
-  </p>
-
+  <header class="ui-header">
+    <h1>Polytechnic Sentiments Dashboard</h1>
+    <button type="button" class="ui-header-btn" id="themeToggle" aria-pressed="false">Dark mode</button>
+    <a class="ui-header-btn" href="index.html">Back to dashboard</a>
+  </header>
+
+  <div class="help-wrap">
+
+    <nav class="help-nav" aria-label="Help sections">
+      <p>On this page</p>
+      <a href="#about">What the dashboard is</a>
+      <a href="#toolbar">Toolbar</a>
+      <a href="#tabs">Tabs</a>
+      <a href="#overview">Overview</a>
+      <a href="#school-filter-help">School filter</a>
+      <a href="#alerts">Alerts</a>
+      <a href="#digest">Weekly digest</a>
+      <a href="#post-view">Reading a post</a>
+      <a href="#other-tabs">Posts, Trends and Authors</a>
+      <a href="#other-polys">Other polytechnics</a>
+      <a href="#data">How the data is collected</a>
+      <a href="#limits">Points to note</a>
+    </nav>
+
+    <main class="help-main">
+      <h2 class="help-title">Help</h2>
+      <p class="help-lead">How to use the dashboard, what each part shows and what it cannot tell you.</p>
+
+      <section class="ui-card" id="about">
+        <h2>What the dashboard is</h2>
+        <p>The dashboard collects posts and comments once a day from selected Reddit forums relating to Singapore’s polytechnics. AI rates the sentiment of each post and comment, and the dashboard shows the results. It helps staff find posts and issues that may need attention.</p>
+        <div class="help-note help-note--limit">
+          <strong>Please keep in mind</strong>
+          The dashboard shows what people posted on Reddit, as read by AI. It does not represent the views of all students, and its alerts and issues have not been independently verified. Read the post before acting on it.
+        </div>
+      </section>
+
+      <section class="ui-card" id="toolbar">
+        <h2>Toolbar</h2>
+        <p>The toolbar at the top sets what the whole page shows. The page updates as soon as you change a setting.</p>
+        <div class="help-table-wrap">
+          <table>
+            <thead><tr><th>Setting</th><th>What it does</th></tr></thead>
+            <tbody>
+              <tr><td>Forum</td><td>The Reddit forum to look at. The page opens on r/TemasekPoly.</td></tr>
+              <tr><td>School</td><td>TP only. “All schools” shows every post. Choosing a school shows only the posts linked to that school. See <a href="#school-filter-help">School filter</a>.</td></tr>
+              <tr><td>Period</td><td>7 days, 30 days, 6 months, or Custom to set your own dates. The page opens on the last 30 days.</td></tr>
+              <tr><td>Search posts</td><td>Finds posts and comments that contain a word.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>“Dark mode” and “Help” are at the top right of the page. The dashboard also works on a phone.</p>
+      </section>
+
+      <section class="ui-card" id="tabs">
+        <h2>Tabs</h2>
+        <div class="help-table-wrap">
+          <table>
+            <thead><tr><th>Tab</th><th>What it shows</th></tr></thead>
+            <tbody>
+              <tr><td>Overview</td><td>The main figures, what changed, alerts that need attention, last week’s issues, how students feel, the issues raised and the most discussed posts.</td></tr>
+              <tr><td>Alerts</td><td>Posts that AI suggests staff read. The number on the tab counts them.</td></tr>
+              <tr><td>Weekly digest</td><td>A summary of each week, with up to three issues.</td></tr>
+              <tr><td>Posts</td><td>The 10 most discussed, most negative, most positive or newest posts.</td></tr>
+              <tr><td>Trends</td><td>Charts by post and topics over time.</td></tr>
+              <tr><td>Authors</td><td>The 10 authors with the most negative posts and comments.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="ui-card" id="overview">
+        <h2>Overview</h2>
+        <p>The Overview is the first page. It covers the forum, school and period chosen in the toolbar.</p>
+        <figure>
+          <img src="images/help_overview.png" alt="The Overview page with figures, what changed, alerts and last week's issues" loading="lazy">
+          <figcaption>The Overview page (sample data, not real posts)</figcaption>
+        </figure>
+
+        <h3>Figures at the top</h3>
+        <p>The number of posts and comments, the share of negative posts with its change from the previous period, and the number of alerts.</p>
+        <p>On the Overview, a post counts as negative when the discussion under it is negative overall. This is worked out from the sentiment of its comments, and comments with more upvotes count more. A post with no comments does not count as negative.</p>
+
+        <h3 id="what-changed-help">What changed in this period</h3>
+        <p>The dashboard compares the chosen period with the previous period of the same length, for the same forum and school. A change is listed only when both periods have at least 10 posts and the change meets one of these thresholds:</p>
+        <ul>
+          <li>The share of negative posts rose or fell by 15 percentage points or more.</li>
+          <li>The number of posts or comments rose by half or more, or fell by a third or more. For comments, both periods must have at least 50.</li>
+          <li>An issue came up in three or more posts, and either did not appear in the previous period or appeared at least three times as often.</li>
+        </ul>
+        <p>Each line gives the figures for both periods. With fewer posts, the card says there are too few to compare. With a school chosen, the comparison is made only when most posts in the earlier period have been checked for schools.</p>
+
+        <h3>Needs attention and Last week’s issues</h3>
+        <p>“Needs attention” shows the first three alerts. “Last week’s issues” shows the issues from the latest weekly digest. Each has a link to the full list.</p>
+
+        <h3>How students feel in this period</h3>
+        <p>A bar that shows the share of positive, neutral and negative posts. It uses the same measure as the share of negative posts above.</p>
+
+        <h3>Issues raised in this period</h3>
+        <p>AI groups posts about the same specific problem, such as a timetable clash or slow lab computers, under one issue. The card lists the issues raised in two or more posts, with the number of posts, comments and negative posts. “Also raised in the previous N days” means at least one post in the previous period of the same length raised the same issue. Click an issue to see its posts.</p>
+        <p>Posts that raise no specific problem, such as questions about courses, are not grouped. Issue names never include a person’s name.</p>
+
+        <div class="help-note">
+          <strong>How to read these</strong>
+          Issues and changes reflect what users have posted. They have not been independently verified and they do not show the cause.
+        </div>
+      </section>
+
+      <section class="ui-card" id="school-filter-help">
+        <h2>School filter</h2>
+        <p>The School filter covers the six TP academic schools: Applied Science, Business, Design, Engineering, Humanities &amp; Social Sciences, and Informatics &amp; IT. The selected school also applies to alerts and the weekly digest.</p>
+
+        <h3>How a post is linked to a school</h3>
+        <p>AI attempts to identify the school from references in the post to the school’s name or short form, one of its diplomas, one of its modules, or a named facility or programme. The words that led to the link are shown with the post, so you can check it.</p>
+        <p>General words do not count. Examples are “TP”, bursaries, fees, CCAs, campus services and school subjects. On forums other than r/TemasekPoly, the post must also mention Temasek Polytechnic.</p>
+
+        <h3>Posts that name no school</h3>
+        <p>Most posts do not name a school. These are counted as general TP posts. They appear under “All schools” but not under a single school. The line under the figures on the Overview shows how many posts name the school, how many are general TP and how many have not been checked yet.</p>
+
+        <div class="help-note help-note--limit">
+          <strong>Limits</strong>
+          <ul>
+            <li>The number of posts identified for each school is small. School figures show the posts that refer to the school. They are not representative of all students in that school.</li>
+            <li>Posts older than about 90 days have not been checked for schools.</li>
+            <li>The list of module names is complete for Informatics &amp; IT only. A post that names only a module of another school may not be linked.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="ui-card" id="alerts">
+        <h2>Alerts</h2>
+        <p>After the daily collection, AI checks new posts and identifies those that may need staff attention. Each alert shows the kind of concern, its urgency, a short reason, the forum, the number of comments and the date. Alerts follow the period chosen in the toolbar.</p>
+        <div class="help-table-wrap">
+          <table>
+            <thead><tr><th>Kind</th><th>What it covers</th></tr></thead>
+            <tbody>
+              <tr><td>Wellbeing</td><td>A student who seems to be in distress, or talks about self-harm.</td></tr>
+              <tr><td>Safety</td><td>A threat, violence, an injury or an unsafe place on campus.</td></tr>
+              <tr><td>Harassment</td><td>Bullying, harassment, discrimination or misconduct.</td></tr>
+              <tr><td>Academic integrity</td><td>Cheating, leaked papers or plagiarism.</td></tr>
+              <tr><td>Serious complaint</td><td>A specific complaint about a module, lecturer, service or decision that many students agree with, or that could affect students’ results or safety.</td></tr>
+              <tr><td>Other</td><td>Anything else that clearly needs a staff response soon.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Only wellbeing, safety, harassment and serious complaint can be marked <span class="chip chip--high">High</span>. Ordinary complaints about workload, exams, timetables, grades or food get no alert. A post with no clear subject gets no alert.</p>
+        <p>Click the title of an alert to read the post with its comments and AI summary. “Open in Reddit” goes to the post on Reddit.</p>
+
+        <h3>Personal names</h3>
+        <p>Names identified by AI are hidden by default and replaced by a “name hidden” label, both in the alert and in the post opened from it. Any reader can choose “Show name”.</p>
+        <div class="help-note help-note--limit">
+          <strong>Limits</strong>
+          <ul>
+            <li>An alert highlights a post for review. It does not confirm that a problem exists.</li>
+            <li>AI can miss a post that matters, raise an alert that is not needed, or miss a name.</li>
+            <li>Hiding names is a display feature only. It does not control access and does not guarantee anonymity. The original post remains public on Reddit.</li>
+            <li>Alerts are shown on the dashboard only. They are not sent by email. They are available for posts from late September 2026 onwards.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="ui-card" id="digest">
+        <h2>Weekly digest</h2>
+        <p>The Weekly digest tab gives a summary of each week, from Monday to Sunday. A new digest is made every Monday morning, and you can choose an earlier week from the list. For TP there is one digest for the whole polytechnic and one for each school.</p>
+        <p>Each digest shows:</p>
+        <ul>
+          <li>The number of posts and comments.</li>
+          <li>The share of negative posts, compared with the average of up to four earlier weeks. Here a post counts as negative when AI rates the post itself as negative.</li>
+          <li>A short overview of the week.</li>
+          <li>Up to three issues. Each one states what students say, a possible follow-up for staff, and the posts it is based on.</li>
+          <li>The most negative threads.</li>
+        </ul>
+        <p>Click a post in the digest to read it with its comments and AI summary.</p>
+        <div class="help-note help-note--limit">
+          <strong>Limits</strong>
+          The issues and the possible follow-up are written by AI from the week’s posts. When there are few posts, an issue may be based on a single student’s account. Each issue shows how many posts it is based on.
+        </div>
+      </section>
+
+      <section class="ui-card" id="post-view">
+        <h2>Reading a post</h2>
+        <p>Click an alert, a post in the digest or a post in a list. The post opens in a panel on the right of the same page, below the toolbar. The main page stays in place and can still be used. Click another post to change the panel, or close it with the X button or the Esc key. On a phone the panel takes the full screen and has a Back button.</p>
+        <figure>
+          <img src="images/help_post_panel.png" alt="A post opened in the panel beside the list of alerts" loading="lazy">
+          <figcaption>A post opened in the panel from the Alerts tab (sample data, not real posts)</figcaption>
+        </figure>
+        <p>The panel shows the AI summary, the post, and the comments with the sentiment of each. A bar shows how many comments are positive, neutral and negative. Search results, the posts of one day and the posts of one author open in the same panel.</p>
+        <div class="help-table-wrap">
+          <table>
+            <thead><tr><th>Label</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td>Post sentiment</td><td>How AI rates the post itself: positive, neutral or negative.</td></tr>
+              <tr><td>Weighted sentiment</td><td>The sentiment of the comments, from -1 to 1. Comments with more upvotes count more.</td></tr>
+              <tr><td>Category and emotion</td><td>The topic and the main emotion that AI assigns to the post.</td></tr>
+              <tr><td>Reddit score</td><td>Upvotes minus downvotes on Reddit.</td></tr>
+              <tr><td>Engagement</td><td>A score that rises with the post’s Reddit score and its number of comments.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>“Open in Reddit” goes to the post on Reddit. “Download PDF” saves the view as a PDF report.</p>
+      </section>
+
+      <section class="ui-card" id="other-tabs">
+        <h2>Posts, Trends and Authors</h2>
+        <h3>Posts</h3>
+        <p>Choose “Most discussed”, “Most negative”, “Most positive” or “Newest” to list 10 posts. Click a row to read the post.</p>
+        <h3>Trends</h3>
+        <p>Charts by post show sentiment, weighted sentiment, comments and engagement. They show the top 15 posts unless you tick “Show all posts”. Another chart shows topics over time.</p>
+        <h3>Authors</h3>
+        <p>The 10 authors with the most negative posts and comments. Click an author to see their posts and comments. Authors are shown by their Reddit usernames.</p>
+      </section>
+
+      <section class="ui-card" id="other-polys">
+        <h2>Other polytechnics</h2>
+        <p>The forum list includes the forums of Nanyang, Republic, Singapore and Ngee Ann Polytechnics, and r/SGExams. Alerts and the weekly digest cover each polytechnic, so the Overview has the same parts for each forum.</p>
+        <p>A post on r/SGExams counts for a polytechnic only when it names that polytechnic by its full name or short form (TP, NYP, RP, SP or NP). The School filter and the digests by school apply to TP only.</p>
+      </section>
+
+      <section class="ui-card" id="data">
+        <h2>How the data is collected</h2>
+        <ul>
+          <li>Posts and comments are collected every day at 5 am, Singapore time.</li>
+          <li>AI (Google Gemini) rates the sentiment of each post and comment, and assigns a category and an emotion to each post.</li>
+          <li>A post is read again each day for seven days, so comments added later are counted.</li>
+          <li>Dates follow Singapore time.</li>
+        </ul>
+        <p>Technical details are in the <a href="https://github.com/shamim-akhtar/tpcraw/blob/main/doc_crawler.md">crawler documentation</a> on GitHub.</p>
+      </section>
+
+      <section class="ui-card" id="limits">
+        <h2>Points to note</h2>
+        <ul>
+          <li>The dashboard reflects what was posted on the selected public Reddit forums. It does not represent the views of all students.</li>
+          <li>Sentiment ratings, school links, alerts, issue groups and digests are produced by AI and can be wrong. They have not been independently verified. Read the post before acting on it.</li>
+          <li>The dashboard has no sign-in. Anyone who has the link can open it and can choose to show a hidden name.</li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <p><strong>Disclaimer:</strong> This dashboard uses the Google Gemini API to analyse Reddit posts. Results may not be fully accurate.</p>
+  </footer>
+
+  <script>
+    // Same key as index.html, so the two pages agree on the theme.
+    (function () {
+      var btn = document.getElementById('themeToggle');
+      var root = document.documentElement;
+      function show() {
+        var dark = root.getAttribute('data-theme') === 'dark';
+        btn.textContent = dark ? 'Light mode' : 'Dark mode';
+        btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+      }
+      btn.addEventListener('click', function () {
+        var dark = root.getAttribute('data-theme') !== 'dark';
+        if (dark) root.setAttribute('data-theme', 'dark'); else root.removeAttribute('data-theme');
+        try { localStorage.setItem('tpcraw-theme', dark ? 'dark' : 'light'); } catch (e) { /* not saved */ }
+        show();
+      });
+      show();
+    })();
+  </script>
 </body>
 </html>
