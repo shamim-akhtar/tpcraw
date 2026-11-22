@@ -380,7 +380,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Build the data array
     const dataArray = [];
-    const coverage = { total: 0, linked: 0, general: 0, unchecked: 0, shown: 0, clear: 0, likely: 0, legacyShown: 0, generalShown: 0 };
+    const coverage = { total: 0, linked: 0, general: 0, unchecked: 0, shown: 0, clear: 0, legacyShown: 0, generalShown: 0 };
     const useSchools = schoolFilterApplies(lowerSub);
     snapshot.forEach(postDoc => {
       const postData = postDoc.data();
@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           if (tag) {
             coverage.shown++;
             if (tag.legacy) coverage.legacyShown++;
-            else coverage[tag.confidence === 'clear' ? 'clear' : 'likely']++;
+            else coverage.clear++;
           } else if (includeTpWide && status === 'general') {
             coverage.generalShown++;
           } else {
@@ -1479,14 +1479,24 @@ const SCHOOL_NAMES = {
 };
 
 // The crawler stores "schoolTags" on each post: a list of
-// {school, diploma, diplomaName, evidence: [...], confidence: "clear" | "likely"}.
+// {school, diploma, diplomaName, evidence: [...]}.
 // An empty list means the post was checked and names no particular school.
 // Posts stored before school tagging only have the older IIT flag.
+// Tags written under the first, looser rules (no schoolTagsVersion, or below
+// SCHOOL_TAGS_VERSION) were often wrong, so they are treated as not checked.
+const SCHOOL_TAGS_VERSION = 2;
+
+function hasCurrentSchoolTags(data) {
+    return Array.isArray(data.schoolTags) && (data.schoolTagsVersion || 0) >= SCHOOL_TAGS_VERSION;
+}
+
 function schoolTagFor(postData, schoolCode) {
-    if (Array.isArray(postData.schoolTags)) {
+    if (hasCurrentSchoolTags(postData)) {
         return postData.schoolTags.find(t => t.school === schoolCode) || null;
     }
-    if (schoolCode === 'IIT' && postData.iit === 'yes') {
+    // The older IIT flag is used only on posts never tagged. On posts tagged
+    // under the first rules, the flag was set from those same loose tags.
+    if (schoolCode === 'IIT' && postData.iit === 'yes' && !Array.isArray(postData.schoolTags)) {
         return { school: 'IIT', confidence: 'likely', evidence: [], legacy: true };
     }
     return null;
@@ -1496,7 +1506,7 @@ function schoolTagFor(postData, schoolCode) {
 // "unchecked" (stored before school checking). The older IIT flag was set by
 // AI without evidence, so it does not count as checked here.
 function schoolStatus(postData) {
-    if (Array.isArray(postData.schoolTags)) return postData.schoolTags.length ? 'linked' : 'general';
+    if (hasCurrentSchoolTags(postData)) return postData.schoolTags.length ? 'linked' : 'general';
     return 'unchecked';
 }
 
@@ -1525,10 +1535,10 @@ function renderSchoolCoverage(useSchools, schoolCode, c) {
         }
     }
     if (schoolCode) {
-        const checkedShown = c.clear + c.likely;
+        const checkedShown = c.clear;
         const pieces = [];
         if (checkedShown || !c.legacyShown) {
-            pieces.push(`${plural(checkedShown, 'post')} that name ${schoolName} (${c.clear} clear, ${c.likely} likely)`);
+            pieces.push(`${plural(checkedShown, 'post')} that name ${schoolName}`);
         }
         if (c.legacyShown) pieces.push(`${plural(c.legacyShown, 'older post')} that the earlier AI flag marked as IIT`);
         if (c.generalShown) pieces.push(`${plural(c.generalShown, 'general TP post')}`);
@@ -1541,8 +1551,8 @@ function renderSchoolCoverage(useSchools, schoolCode, c) {
 
 // Shows which schools a post or comment is linked to, and why.
 function schoolReasonsHtml(data) {
-    if (!Array.isArray(data.schoolTags)) {
-        if (data.iit === 'yes') {
+    if (!hasCurrentSchoolTags(data)) {
+        if (data.iit === 'yes' && !Array.isArray(data.schoolTags)) {
             return `<div class="school-reasons"><span class="school-tag school-tag--likely">Informatics &amp; IT</span> <span class="school-evidence">From the older IIT flag. Not yet re-checked for evidence.</span></div>`;
         }
         return '';
@@ -1553,9 +1563,8 @@ function schoolReasonsHtml(data) {
     const rows = data.schoolTags.map(t => {
         const name = escapeHtml(SCHOOL_NAMES[t.school] || t.school);
         const diploma = t.diplomaName ? `, ${escapeHtml(t.diplomaName)}` : '';
-        const confidence = t.confidence === 'clear' ? 'clear' : 'likely';
         const evidence = (t.evidence || []).map(e => `&ldquo;${escapeHtml(e)}&rdquo;`).join(', ');
-        return `<div class="school-reason"><span class="school-tag school-tag--${confidence}">${name}${diploma} (${confidence})</span>` +
+        return `<div class="school-reason"><span class="school-tag school-tag--clear">${name}${diploma}</span>` +
                (evidence ? ` <span class="school-evidence">Evidence: ${evidence}</span>` : '') + `</div>`;
     });
     return `<div class="school-reasons">${rows.join('')}</div>`;

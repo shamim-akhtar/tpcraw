@@ -267,28 +267,31 @@ def generate_summary(client, text):
     return summary or "Error generating response after multiple attempts."
 
 
-def analyse_text(client, instructions, text):
+def analyse_text(client, instructions, text, subreddit=None):
     """
     Returns {"sentiment": -1/0/1, "emotion", "category"} plus the school fields
     from school_tags.tag_fields (schoolTags, schools, schoolsClear, diplomas, iit).
-    School links are kept only when their evidence appears in the text.
+    School links are kept only when their evidence appears in the text and names
+    the school. On subreddits that are not TP's own, the text must also mention TP.
     Falls back to DEFAULT_ANALYSIS if Gemini does not give a valid answer.
     """
-    result = safe_generate_content(client, instructions + wrap_text(text), schema=TextAnalysis)
+    note = school_tags.instructions_note(subreddit)
+    result = safe_generate_content(client, instructions + note + wrap_text(text), schema=TextAnalysis)
     if not isinstance(result, TextAnalysis):
         return dict(DEFAULT_ANALYSIS)
     return {
         "sentiment": SENTIMENT_SCORES[result.sentiment],
         "emotion": result.emotion.value,
         "category": result.category.value.lower(),
-        **school_tags.tag_fields(school_tags.check_mentions(result.school_mentions, text)),
+        **school_tags.tag_fields(school_tags.check_mentions(
+            result.school_mentions, text, require_tp_mention=bool(note))),
     }
 
 
-def analyse_comment(client, comment, fallback_created):
+def analyse_comment(client, comment, fallback_created, subreddit=None):
     """Runs Gemini on one PRAW comment and returns the Firestore document for it."""
     created = to_sgt(comment.created_utc) if hasattr(comment, "created_utc") else fallback_created
-    analysis = analyse_text(client, PROMPT_COMMENT, comment.body)
+    analysis = analyse_text(client, PROMPT_COMMENT, comment.body, subreddit)
     return {
         "body": comment.body,
         "author": str(comment.author) if comment.author else "[deleted]",
@@ -746,7 +749,7 @@ def process_new_post(subreddit_name, submission, refs, client, author_updates, c
     writer = BatchWriter(f"comments of {post_id}")
     comment_docs = []
     for comment in all_comments:
-        comment_doc = analyse_comment(client, comment, post_created_dt)
+        comment_doc = analyse_comment(client, comment, post_created_dt, subreddit_name)
         comment_docs.append(comment_doc)
         writer.set(post_ref.collection("comments").document(comment.id), comment_doc)
         update_author_stats_memory(author_updates, comment_doc["author"], comment_doc["sentiment"],
@@ -759,7 +762,8 @@ def process_new_post(subreddit_name, submission, refs, client, author_updates, c
     combined_post_comments = "\n".join([submission.selftext] + [c["body"] for c in comment_docs])
 
     print(f"[{subreddit_name}] Analyzing overall post {post_id}...")
-    overall = analyse_text(client, PROMPT_POST_COMMENTS, f"{submission.title}\n{combined_post_comments}")
+    overall = analyse_text(client, PROMPT_POST_COMMENTS, f"{submission.title}\n{combined_post_comments}",
+                           subreddit_name)
     summary = generate_summary(client, combined_post_comments)
 
     aggregates = comment_aggregates(comment_docs)
@@ -811,7 +815,7 @@ def refresh_post(subreddit_name, post_snap, refs, client, author_updates, catego
                 existing["score"] = comment.score
             continue
 
-        comment_doc = analyse_comment(client, comment, fallback_created)
+        comment_doc = analyse_comment(client, comment, fallback_created, subreddit_name)
         writer.set(comment_ref, comment_doc)
         stored[comment.id] = comment_doc
         new_count += 1
