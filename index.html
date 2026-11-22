@@ -14,10 +14,10 @@
         Chart.register(ChartZoom);
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script type="module" src="script.js?v=2.5"></script>
+    <script type="module" src="script.js?v=2.6"></script>
 
     <!-- Default to light theme -->
-    <link id="themeStylesheet" rel="stylesheet" href="style.css?v1.5">
+    <link id="themeStylesheet" rel="stylesheet" href="style.css?v1.6">
 
     <!--
         Apply the saved theme before the page paints, otherwise a dark-theme
@@ -230,6 +230,7 @@
                 <button class="tab-button" data-tab="authorsTab">Author Stats</button>
                 <button class="tab-button" data-tab="timeSeriesTab">Category Time Series</button>
                 <button class="tab-button" data-tab="digestTab">Weekly Digest</button>
+                <button class="tab-button" data-tab="alertsTab">Alerts</button>
             </div>
 
             <!-- Weighted Sentiments Section -->
@@ -334,6 +335,30 @@
                 </div>
                 <div id="digestContent" class="digest-content"><p class="details-message info">Choose a school and a week.</p></div>
                 <p class="chart-description">A summary of each week (Monday to Sunday) from r/TemasekPoly and the TP-related posts on r/SGExams. It is made every Monday morning by AI from the week's posts. Each issue links to the posts it is based on.</p>
+            </section>
+
+            <section id="alertsTab" class="chart-section tab-content">
+                <div class="digest-controls">
+                    <label for="alerts-school">School</label>
+                    <select id="alerts-school">
+                        <option value="">All of TP</option>
+                        <option value="ASC">Applied Science</option>
+                        <option value="BUS">Business</option>
+                        <option value="DES">Design</option>
+                        <option value="ENG">Engineering</option>
+                        <option value="HSS">Humanities &amp; Social Sciences</option>
+                        <option value="IIT">Informatics &amp; IT</option>
+                        <option value="general">General TP (no school named)</option>
+                    </select>
+                    <label for="alerts-days">Period</label>
+                    <select id="alerts-days">
+                        <option value="1">Today</option>
+                        <option value="7" selected>Last 7 days</option>
+                        <option value="30">Last 30 days</option>
+                    </select>
+                </div>
+                <div id="alertsContent" class="digest-content"><p class="details-message info">Loading alerts...</p></div>
+                <p class="chart-description">Posts from r/TemasekPoly and the TP-related posts on r/SGExams that AI suggests staff look at, checked every morning after the daily crawl. An alert is a prompt to read the post, not a finding. Each post is alerted once.</p>
             </section>
         </div>
     </div>

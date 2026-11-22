@@ -1162,3 +1162,16 @@ body.dark-theme #post-details-container {
 .digest-issues p { margin: 4px 0; }
 .digest-note { font-size: 0.9em; opacity: 0.8; }
 .digest-controls select { border: 1px solid #ddd; }
+
+/* Alerts tab */
+.alert-list { list-style: none; padding: 0; margin: 0; max-width: 900px; }
+.alert-item { border-left: 4px solid #999; padding: 8px 12px; margin-bottom: 12px; border-radius: 4px; }
+.alert-item--high { border-left-color: #c0392b; }
+.alert-item p { margin: 4px 0; }
+.alert-head { display: flex; gap: 8px; align-items: center; margin-bottom: 4px; }
+.alert-badge { font-size: 0.8em; font-weight: bold; padding: 1px 8px; border-radius: 10px; }
+.alert-kind { font-size: 0.9em; opacity: 0.85; }
+.alert-meta { font-size: 0.85em; opacity: 0.75; }
+.alert-item { background: #f7f7f7; }
+.alert-badge--high { background: #c0392b; color: #fff; }
+.alert-badge--normal { background: #e0e0e0; color: #333; }

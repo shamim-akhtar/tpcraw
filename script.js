@@ -232,6 +232,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           else if (targetTab === 'digestTab') {
             loadDigest();
           }
+          else if (targetTab === 'alertsTab') {
+            loadAlerts();
+          }
         }
         catch (err) {
             console.error("Error resizing chart:", err);
@@ -1577,6 +1580,51 @@ function schoolFilterApplies(lowerSub) {
     return lowerSub === 'temasekpoly' || lowerSub === 'sgexams';
 }
 
+// --- Alerts tab -------------------------------------------------------------
+// Alert documents are written by alerts.py; all text is escaped here.
+const ALERT_KIND_LABELS = {
+    'wellbeing': 'Wellbeing', 'safety': 'Safety', 'harassment': 'Harassment',
+    'academic integrity': 'Academic integrity', 'serious complaint': 'Serious complaint', 'other': 'Other'
+};
+
+function alertSchoolText(a) {
+    if (a.schoolStatus === 'linked' && Array.isArray(a.schools) && a.schools.length) {
+        return a.schools.map(s => escapeHtml(SCHOOL_NAMES[s] || s)).join(', ');
+    }
+    if (a.schoolStatus === 'general') return 'General TP, no school named';
+    return 'Not yet checked for schools';
+}
+
+function renderAlertsHtml(alerts, schoolFilter) {
+    const shown = alerts.filter(a => {
+        if (!schoolFilter) return true;
+        if (schoolFilter === 'general') return a.schoolStatus === 'general';
+        return a.schoolStatus === 'linked' && (a.schools || []).includes(schoolFilter);
+    });
+    if (!shown.length) {
+        return '<p class="details-message info">No alerts for this choice.</p>';
+    }
+    const unchecked = shown.filter(a => a.schoolStatus === 'unchecked').length;
+    const items = shown.map(a => {
+        const when = a.alertedAt && a.alertedAt.toDate
+            ? a.alertedAt.toDate().toLocaleDateString('en-SG', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Singapore' })
+            : escapeHtml(a.date || '');
+        const urgency = a.urgency === 'high' ? 'high' : 'normal';
+        return `<li class="alert-item alert-item--${urgency}">
+          <div class="alert-head"><span class="alert-badge alert-badge--${urgency}">${urgency === 'high' ? 'High' : 'Normal'}</span>
+            <span class="alert-kind">${escapeHtml(ALERT_KIND_LABELS[a.kind] || a.kind || '')}</span></div>
+          <a href="${safeUrl(a.url)}" target="_blank" rel="noopener noreferrer"><strong>${escapeHtml(a.title)}</strong></a>
+          <p>${escapeHtml(a.reason)}</p>
+          <p class="alert-meta">r/${escapeHtml(a.subreddit)} · ${plural(a.totalComments || 0, 'comment')} · alerted ${when} · ${alertSchoolText(a)}</p>
+        </li>`;
+    });
+    let html = `<p>${plural(shown.length, 'alert')}.</p><ul class="alert-list">${items.join('')}</ul>`;
+    if (schoolFilter === '' && unchecked) {
+        html += `<p class="digest-note">${plural(unchecked, 'alert')} ${unchecked === 1 ? 'is on a post' : 'are on posts'} not yet checked for schools, so ${unchecked === 1 ? 'it shows' : 'they show'} only under All of TP.</p>`;
+    }
+    return html;
+}
+
 function pctText(x) {
     return (x === null || x === undefined) ? 'n/a' : `${Math.round(x * 100)}%`;
 }
@@ -2214,6 +2262,46 @@ function safeUrl(url) {
     } catch (err) {
       console.error('Error loading digest', err);
       container.innerHTML = '<p class="details-message error">Could not load the digest.</p>';
+    }
+  }
+
+  // Alerts tab
+  const alertsSchool = document.getElementById('alerts-school');
+  const alertsDays = document.getElementById('alerts-days');
+  let alertsCache = { days: null, alerts: [] };
+  try {
+    const savedAlertsSchool = localStorage.getItem('alertsSchool');
+    if (savedAlertsSchool !== null && alertsSchool.querySelector(`option[value="${CSS.escape(savedAlertsSchool)}"]`)) {
+      alertsSchool.value = savedAlertsSchool;
+    }
+  } catch (e) { /* storage unavailable */ }
+  alertsSchool.addEventListener('change', () => {
+    try { localStorage.setItem('alertsSchool', alertsSchool.value); } catch (e) { /* ignore */ }
+    loadAlerts();
+  });
+  alertsDays.addEventListener('change', loadAlerts);
+
+  async function loadAlerts() {
+    const container = document.getElementById('alertsContent');
+    const days = parseInt(alertsDays.value, 10) || 7;
+    try {
+      if (alertsCache.days !== days) {
+        container.innerHTML = '<p class="details-message loading">Loading alerts...</p>';
+        // "Today" starts at midnight Singapore time; longer periods count back whole days.
+        const sgToday = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Singapore' }));
+        const startSg = new Date(sgToday.getFullYear(), sgToday.getMonth(), sgToday.getDate() - (days - 1));
+        const since = new Date(Date.UTC(startSg.getFullYear(), startSg.getMonth(), startSg.getDate()) - 8 * 3600 * 1000);
+        const q = query(collection(db, 'alerts'), where('alertedAt', '>=', since), orderBy('alertedAt', 'desc'));
+        const snap = await getDocs(q);
+        const alerts = snap.docs.map(d => d.data());
+        // High urgency first, newest first within each.
+        alerts.sort((a, b) => (a.urgency === 'high' ? 0 : 1) - (b.urgency === 'high' ? 0 : 1));
+        alertsCache = { days, alerts };
+      }
+      container.innerHTML = renderAlertsHtml(alertsCache.alerts, alertsSchool.value);
+    } catch (err) {
+      console.error('Error loading alerts', err);
+      container.innerHTML = '<p class="details-message error">Could not load the alerts.</p>';
     }
   }
 
