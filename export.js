@@ -37,6 +37,6 @@ export async function exportModalToPDF() {
     } finally {
         // Restore visibility
         if (nav) nav.style.opacity = '1';
-        actionButtons.forEach(btn => btn.style.display = 'inline-block');
+        actionButtons.forEach(btn => btn.style.display = '');
     }
 }
