@@ -129,6 +129,12 @@ def classify(client, batch):
     return {a.number - 1: a.category.value for a in result.answers if 1 <= a.number <= len(batch)}
 
 
+def gemini_is_working(client):
+    """True when Gemini answers a plain test post, so missing answers are about the posts."""
+    probe = [(None, {"title": "When does the new semester start?", "body": "Does anyone know the date?"})]
+    return 0 in classify(client, probe)
+
+
 def convert_posts(subreddit, client, dry_run, limit):
     """Step 1. Returns (counts, finished) where finished means every post is converted."""
     refs = crawler.get_collections(subreddit)
@@ -175,7 +181,9 @@ def convert_posts(subreddit, client, dry_run, limit):
                 one = classify(client, [batch[i]])
                 if 0 in one:
                     alone[i] = one[0]
-            if alone or answers:
+            # When nothing was answered at all, check that Gemini is working
+            # with a harmless test post before filing anything under "other".
+            if alone or answers or gemini_is_working(client):
                 for i in missing:
                     if i in alone:
                         answers[i] = alone[i]
