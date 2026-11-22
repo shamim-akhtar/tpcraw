@@ -21,6 +21,7 @@ Usage:
     python digest.py                 # last full week, save
     python digest.py --dry-run       # print the digests, do not save
     python digest.py --week 2026-11-16
+    python digest.py --weeks 12      # the last 12 weeks, skipping digests already saved
 """
 import argparse
 import datetime
@@ -68,6 +69,16 @@ def last_full_week(today: Optional[datetime.date] = None) -> datetime.date:
     today = today or datetime.datetime.now(SGT).date()
     this_monday = today - datetime.timedelta(days=today.weekday())
     return this_monday - datetime.timedelta(days=7)
+
+
+_posts_by_week = {}
+
+
+def load_week(week_start):
+    """Posts for one week, read once even when several digests need them."""
+    if week_start not in _posts_by_week:
+        _posts_by_week[week_start] = load_posts(*week_bounds(week_start))
+    return _posts_by_week[week_start]
 
 
 def load_posts(start, end):
@@ -296,6 +307,10 @@ def digest_text(d):
     return "\n".join(lines)
 
 
+def digest_exists(week_start, school):
+    return db.collection(DIGEST_COLLECTION).document(f"{week_start.isoformat()}_{school}").get().exists
+
+
 def save_digest(d):
     doc_id = f"{d['weekStart']}_{d['school']}"
     db.collection(DIGEST_COLLECTION).document(doc_id).set(d)
@@ -307,33 +322,44 @@ def save_digest(d):
 # ---------------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--week", help="Monday of the week to report, YYYY-MM-DD (default: last full week).")
+    parser.add_argument("--week", help="Monday of the (latest) week to report, YYYY-MM-DD (default: last full week).")
+    parser.add_argument("--weeks", type=int, default=1,
+                        help="How many weeks to report, counting back from --week (default 1). "
+                             "Digests already saved are skipped unless --force is given.")
+    parser.add_argument("--force", action="store_true", help="Rebuild digests that are already saved.")
     parser.add_argument("--schools", nargs="*", help="School codes (default: every school and TP).")
     parser.add_argument("--dry-run", action="store_true", help="Print the digests; do not save them.")
     args = parser.parse_args()
 
-    week_start = datetime.date.fromisoformat(args.week) if args.week else last_full_week()
-    week_start -= datetime.timedelta(days=week_start.weekday())  # always a Monday
+    latest = datetime.date.fromisoformat(args.week) if args.week else last_full_week()
+    latest -= datetime.timedelta(days=latest.weekday())  # always a Monday
     schools = args.schools or (school_tags.SCHOOL_CODES + [ALL_TP])
-
-    start, end = week_bounds(week_start)
-    week_posts = load_posts(start, end)
-    baseline = []
-    for n in range(1, BASELINE_WEEKS + 1):
-        b_start, b_end = week_bounds(week_start - datetime.timedelta(weeks=n))
-        baseline.append(load_posts(b_start, b_end))
-    print(f"Week of {week_start}: {len(week_posts)} TP posts; "
-          f"previous weeks: {[len(b) for b in baseline]}")
-
     client = genai.Client(api_key=crawler.GOOGLE_GEMINI_API_KEY) if crawler.GOOGLE_GEMINI_API_KEY else None
 
-    for school in schools:
-        d = build_digest(school, week_start, week_posts, baseline, client)
-        if args.dry_run:
-            print("\n" + "=" * 70 + "\n" + digest_text(d))
+    saved = skipped = 0
+    # Oldest first, so the newest week is saved last.
+    for n in reversed(range(max(args.weeks, 1))):
+        week_start = latest - datetime.timedelta(weeks=n)
+        todo = schools if (args.force or args.dry_run) else [s for s in schools if not digest_exists(week_start, s)]
+        skipped += len(schools) - len(todo)
+        if not todo:
+            print(f"Week of {week_start}: all digests already saved.")
             continue
-        doc_id = save_digest(d)
-        print(f"Saved {doc_id} ({d['postCount']} posts, {len(d['issues'])} issues).")
+        week_posts = load_week(week_start)
+        baseline = [load_week(week_start - datetime.timedelta(weeks=k)) for k in range(1, BASELINE_WEEKS + 1)]
+        print(f"Week of {week_start}: {len(week_posts)} TP posts; "
+              f"previous weeks: {[len(b) for b in baseline]}")
+
+        for school in todo:
+            d = build_digest(school, week_start, week_posts, baseline, client)
+            if args.dry_run:
+                print("\n" + "=" * 70 + "\n" + digest_text(d))
+                continue
+            doc_id = save_digest(d)
+            saved += 1
+            print(f"Saved {doc_id} ({d['postCount']} posts, {len(d['issues'])} issues).")
+    if not args.dry_run:
+        print(f"{saved} digests saved, {skipped} already there.")
 
 
 if __name__ == "__main__":

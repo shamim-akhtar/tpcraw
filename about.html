@@ -500,7 +500,7 @@
       <strong>Crawler (Backend)</strong> - Written in Python, it continuously collects posts
       and comments from Reddit, processes them for sentiment analysis, categorizes them, and
       stores them in Firebase Firestore. It leverages the Google Gemini API to extract meaningful
-      insights such as sentiment score, emotion, category, and relevance to the School of IIT.
+      insights such as sentiment score, emotion, category, and the TP schools it names.
     </li>
   </ol>
 
@@ -540,7 +540,7 @@
     <li>📝 View aggregated sentiment data across multiple categories such as Academic, Exams, Internship, Facilities, etc.</li>
     <li>📊 Analyze positive, neutral, and negative sentiments through <strong>charts and graphs</strong>.</li>
     <li>📅 Track sentiment changes over time using <strong>time series visualizations</strong>.</li>
-    <li>🔍 Filter posts based on specific criteria like date range, categories, and IIT relevance.</li>
+    <li>🔍 Filter posts based on specific criteria like date range, categories and school.</li>
     <li>🏫 Switch between <strong>seven polytechnic subreddits</strong> without reloading the page.</li>
     <li>🔎 <strong>Search by keyword</strong> across post and comment text.</li>
     <li>📈 Examine top authors based on their sentiment contributions (positive and negative).</li>
@@ -587,8 +587,8 @@
   </table>
   <p>
     Some filters are specific to a community, so the dashboard shows and hides them as you switch.
-    The <strong>IIT</strong> checkbox applies only to <code>r/TemasekPoly</code>, and the
-    <strong>TP-Related?</strong> checkbox applies only to <code>r/sgExams</code>, where posts cover
+    The <strong>School</strong> choice applies to <code>r/TemasekPoly</code> and <code>r/sgExams</code>, and the
+    <strong>TP-related only</strong> tick box applies only to <code>r/sgExams</code>, where posts cover
     every institution and most are unrelated to Temasek Polytechnic.
   </p>
 
@@ -610,12 +610,12 @@
 
   <hr />
 
-  <h3>📅 Date Range & IIT Filter</h3>
+  <h3>📅 Date Range &amp; School Filter</h3>
   <p>
-    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_02.PNG" alt="Date Range and IIT Filter" />
+    <img src="https://raw.githubusercontent.com/shamim-akhtar/tpcraw/main/images/image_02.PNG" alt="Date Range and School Filter" />
   </p>
   <p>
-    The <strong>Date Range &amp; IIT Filter</strong> feature provides users with flexible data
+    The <strong>Date Range &amp; School Filter</strong> feature provides users with flexible data
     filtering options, enabling customized analysis.
   </p>
   <table>
@@ -636,11 +636,11 @@
       </tr>
       <tr>
         <td id="school-filter-help"><strong>School</strong></td>
-        <td>The page opens on <strong>All schools</strong>, which shows every post in the forum for the whole of TP, whether or not it names a school. Choosing a school shows only the posts that name that school. Gen AI links a post to a school only when it can quote words from the post that name that school: the school's name or short form, a diploma name or code, a module, or a named facility or programme. The quoted words are then checked against the list of schools, and general words such as "TP", bursaries, fees, CCAs, campus services or school subjects do not count. On subreddits other than r/TemasekPoly, a post must also mention Temasek Polytechnic. Each link shows the words relied on. Posts that name no school are counted as <em>general TP</em> posts. They appear under <strong>All schools</strong> but not under a single school. The line under the figures on the Overview shows how many posts in the period name the school, how many are general TP and how many have not been checked yet. Posts collected before school checking started, or checked under the first, looser rules, are not counted as linked until they are checked again. Under Informatics &amp; IT they are still shown if the earlier AI flag marked them as IIT, and they are labelled as such. The list of schools, diplomas, modules and places is kept in <code>schools.json</code>.</td>
+        <td>The page opens on <strong>All schools</strong>, which shows every post in the forum for the whole of TP, whether or not it names a school. Choosing a school shows only the posts that name that school. Gen AI links a post to a school only when it can quote words from the post that name that school: the school's name or short form, a diploma name or code, a module, or a named facility or programme. The quoted words are then checked against the list of schools, and general words such as "TP", bursaries, fees, CCAs, campus services or school subjects do not count. On subreddits other than r/TemasekPoly, a post must also mention Temasek Polytechnic. Each link shows the words relied on. Posts that name no school are counted as <em>general TP</em> posts. They appear under <strong>All schools</strong> but not under a single school. The line under the figures on the Overview shows how many posts in the period name the school, how many are general TP and how many have not been checked yet. Posts collected before school checking started, or checked under the first, looser rules, are not counted as linked until they are checked again. The list of schools, diplomas, modules and places is kept in <code>schools.json</code>.</td>
       </tr>
       <tr>
         <td><strong>TP-Related? Checkbox</strong></td>
-        <td>Shown only when <code>r/sgExams</code> is selected. That subreddit covers every institution in Singapore, so this filter narrows results to posts the crawler flagged as mentioning Temasek Polytechnic (<code>relatedToTemasekPoly: true</code>). As with the IIT flag, the classification comes from Gen AI and may occasionally misfire.</td>
+        <td>Shown only when <code>r/sgExams</code> is selected. That subreddit covers every institution in Singapore, so this filter narrows results to posts the crawler flagged as mentioning Temasek Polytechnic (<code>relatedToTemasekPoly: true</code>). As with school links, the classification comes from Gen AI and may occasionally misfire.</td>
       </tr>
     </tbody>
   </table>
@@ -707,7 +707,7 @@
     The pie chart helps users quickly gauge the overall sentiment landscape by showing the
     proportion of each sentiment type. It is especially useful for identifying whether the
     general mood is positive, negative, or balanced. Users can apply filters to narrow down
-    the data by date range or IIT-related content.
+    the data by date range or school.
   </p>
 
   <hr />
@@ -935,7 +935,7 @@
     <li><strong>Engagement Metrics</strong>: Includes engagement score, weighted sentiment score, raw sentiment score, total positive sentiments, and total negative sentiments.</li>
     <li><strong>Emotion & Category Tags</strong>: Labels generated by the AI model to categorize the content and detect the overall emotion conveyed.</li>
     <li><strong>Summary</strong>: A concise summary of the post and its comments generated by the Google Gemini AI.</li>
-    <li><strong>Comments List</strong>: A detailed list of all comments related to the post, along with sentiment scores, emotions, categories, and IIT relevance.</li>
+    <li><strong>Comments List</strong>: A detailed list of all comments related to the post, along with sentiment scores, emotions, categories and school.</li>
   </ul>
   <p><strong>Export to PDF:</strong></p>
   <ul>
@@ -1042,7 +1042,7 @@
     <li><strong>Sentiment Score</strong>: Determines whether the content is Positive, Negative, or Neutral.</li>
     <li><strong>Emotion Detection</strong>: Identifies the emotional tone, such as Happy, Stress, Frustration, Pride, Disappointment, etc.</li>
     <li><strong>Category Identification</strong>: Classifies content into predefined categories like Academic, Exams, Facilities, Internship, CCA, and more.</li>
-    <li><strong>IIT Relevance Detection</strong>: Distinguishes whether a post or comment is related to the School of IIT or not.</li>
+    <li><strong>School Detection</strong>: Links a post or comment to a TP school only when it names the school, a diploma, a module or a facility.</li>
   </ul>
   <p>
     The sentiment analysis enables the identification of themes, emotional trends, and areas of
