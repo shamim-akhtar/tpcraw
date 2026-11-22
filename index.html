@@ -14,7 +14,7 @@
         Chart.register(ChartZoom);
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script type="module" src="script.js?v=3.6"></script>
+    <script type="module" src="script.js?v=3.7"></script>
 
     <!-- Default to light theme -->
     <link id="themeStylesheet" rel="stylesheet" href="style.css?v1.7">
@@ -40,7 +40,7 @@
         Theme-agnostic responsive layer. Must stay LAST so its rules win over
         whichever theme sheet is loaded into #themeStylesheet above.
     -->
-    <link rel="stylesheet" href="responsive.css?v=1.4">
+    <link rel="stylesheet" href="responsive.css?v=1.5">
 </head>
 
 <body>
@@ -135,6 +135,11 @@
                 <h2>How students feel in this period</h2>
                 <div id="sentimentSplitOther"></div>
             </div>
+        </div>
+
+        <div class="ui-card" id="issueGroupsCard">
+            <h2>Issues raised in this period</h2>
+            <div id="overviewIssueGroups"><p class="ui-muted">Loading...</p></div>
         </div>
 
         <div class="ui-card">

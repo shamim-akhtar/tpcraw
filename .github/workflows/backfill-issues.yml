@@ -1,0 +1,56 @@
+# Run by hand to group past posts into issues. About one Gemini call for
+# every 30 posts. Posts already grouped are skipped, so it can be run again.
+name: Group past posts into issues
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Group posts created in the last N days'
+        required: true
+        default: '90'
+      dry_run:
+        description: 'Only count the posts, do not call Gemini or save'
+        type: boolean
+        default: true
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore firebase-credentials.json from Base64 secret
+        run: |
+          echo "${{ secrets.FIREBASE_CREDENTIALS_BASE64 }}" | base64 -d > firebase-credentials.json
+
+      - name: Create .env file
+        run: |
+          echo "REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}" >> .env
+          echo "REDDIT_CLIENT_SECRET=${{ secrets.REDDIT_CLIENT_SECRET }}" >> .env
+          echo "REDDIT_USER_AGENT=${{ secrets.REDDIT_USER_AGENT }}" >> .env
+          echo "GOOGLE_GEMINI_API_KEY=${{ secrets.GOOGLE_GEMINI_API_KEY }}" >> .env
+
+      - name: Group posts into issues
+        env:
+          DAYS: ${{ inputs.days }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            python issues.py --days "$DAYS" --dry-run
+          else
+            python issues.py --days "$DAYS"
+          fi

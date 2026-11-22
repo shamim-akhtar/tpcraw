@@ -43,3 +43,8 @@ jobs:
       - name: Check for same-day alerts
         if: ${{ !cancelled() }}
         run: python alerts.py
+
+      # Groups the new posts into specific issues for the Overview.
+      - name: Group posts into issues
+        if: ${{ !cancelled() }}
+        run: python issues.py --days 7

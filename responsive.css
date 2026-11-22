@@ -634,6 +634,17 @@ i.ui-pos { background: var(--ui-pos); } i.ui-neu { background: var(--ui-neu); } 
   .post-list-table th:nth-child(2), .post-list-table td:nth-child(2) { display: none; }
 }
 
+/* Issues raised in this period (Overview) */
+.ui-issue-list { list-style: none; margin: 0 0 8px; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.ui-issue { border-radius: 6px; padding: 2px 0; }
+.ui-issue.open { background: var(--ui-chip); }
+.ui-issue-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; width: 100%; text-align: left; font: inherit; font-size: 14px; color: var(--ui-ink); background: none; border: 0; border-radius: 6px; padding: 6px 8px; margin: 0; cursor: pointer; }
+.ui-issue-head:hover, .ui-issue-head:focus-visible { background: var(--ui-chip); }
+.ui-issue-tag { display: inline-block; margin: 0 8px 4px; font-size: 12px; padding: 1px 8px; border-radius: 10px; background: var(--ui-chip); color: var(--ui-muted); }
+.ui-issue.open .ui-issue-tag { background: var(--ui-panel); }
+.ui-issue-posts { margin: 2px 0 8px; padding-left: 28px; font-size: 14px; }
+.ui-issue-posts li { margin-bottom: 4px; }
+.ui-issue-posts .ui-link { text-align: left; }
 /* Hidden personal names in alerts */
 .name-mask { display: inline-block; padding: 0 6px; border-radius: 4px; background: var(--ui-ink); color: var(--ui-panel); font-size: 0.85em; font-weight: normal; line-height: 1.5; }
 .alert-name-note { font-size: 13px; color: var(--ui-muted); margin: 4px 0; }
