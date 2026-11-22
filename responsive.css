@@ -718,3 +718,6 @@ body #post-details { color: var(--ui-ink); font-size: 15px; }
 #post-details .search-results-wrapper h2, #post-details .category-date-details-wrapper h2, #post-details .author-details-wrapper h2 { font-size: 19px; line-height: 1.3; margin-top: 16px; text-align: left; color: var(--ui-ink); }
 #post-details .search-results-wrapper h3, #post-details .category-date-details-wrapper h3, #post-details .author-details-wrapper h3 { font-size: 15px; text-align: left; color: var(--ui-ink); }
 #post-details img { max-width: 100%; }
+/* Loading and error messages in the panel */
+#post-details > .loading-message, #post-details > .details-message { margin: 20px; padding: 0; background: none; border: 0; color: var(--ui-muted); font-size: 15px; text-align: left; }
+#post-details > .details-message.error { color: var(--ui-high); }

@@ -132,13 +132,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function openDrawer() {
-      const wasOpen = drawer.classList.contains('open');
       drawer.classList.add('open');
       pageWrap.classList.add('pp-open');
       document.body.classList.add('pp-open');
       markPanelSource('');
       positionPanel();
-      if (!wasOpen) drawer.scrollTop = 0;
+      drawer.scrollTop = 0;
   }
 
   function closeDrawer() {
@@ -149,6 +148,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
+
+  // A loading or error message in the panel has no bar of its own. Give it
+  // one, so it is laid out like the rest and the panel can always be closed.
+  new MutationObserver(() => {
+      if (postDetailsContent.firstElementChild && !postDetailsContent.querySelector('.pp-bar')) {
+          postDetailsContent.insertAdjacentHTML('afterbegin', panelBarHtml('', '', false));
+      }
+  }).observe(postDetailsContent, { childList: true });
   let lastPostView = null;
 
   // --- 2. CENTRAL MODAL CLICK HANDLER (Event Delegation) ---
@@ -786,10 +793,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                   ${chips}
                   ${schoolReasonsHtml(postData)}
                   ${split}
-                  <h3>AI summary</h3>
-                  <div class="pp-sum">${postData.summary ? html(postData.summary) : 'No summary.'}</div>
-                  <h3>Post</h3>
-                  <div class="pp-post">${postData.body ? html(postData.body) : '<span class="ui-muted">This post has no text.</span>'}</div>
+                  <section><h3>AI summary</h3>
+                  <div class="pp-sum">${postData.summary ? html(postData.summary) : 'No summary.'}</div></section>
+                  <section><h3>Post</h3>
+                  <div class="pp-post">${postData.body ? html(postData.body) : '<span class="ui-muted">This post has no text.</span>'}</div></section>
                   <h3>Comments (${total})</h3>
                   ${commentsHtml || '<p class="ui-muted">No comments.</p>'}
                 </div>
@@ -1620,11 +1627,11 @@ function alertSourceText(a) {
 // Personal names found by AI in an alert (maskNames) are hidden until the
 // reader asks to see them. The text is escaped here.
 // The bar at the top of the post panel. kicker and extra must be safe HTML.
-function panelBarHtml(kicker, extra = '') {
+function panelBarHtml(kicker, extra = '', pdf = true) {
     return `<div class="modal-nav-container pp-bar">
         <button type="button" class="pp-btn pp-back" data-panel-close>&larr; Back</button>
         <span class="pp-kicker">${kicker}</span>
-        ${extra}<button type="button" class="pp-btn" id="downloadPDFBtn">Download PDF</button>
+        ${extra}${pdf ? '<button type="button" class="pp-btn" id="downloadPDFBtn">Download PDF</button>' : ''}
         <button type="button" class="pp-btn pp-x" data-panel-close aria-label="Close">&times;</button>
       </div>`;
 }
