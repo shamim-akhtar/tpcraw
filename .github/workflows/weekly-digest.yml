@@ -8,9 +8,13 @@ on:
   workflow_dispatch:
     inputs:
       week:
-        description: 'Monday of the week to report (YYYY-MM-DD). Leave empty for last week.'
+        description: 'Monday of the latest week to report (YYYY-MM-DD). Leave empty for last week.'
         required: false
         default: ''
+      weeks:
+        description: 'How many weeks to build, counting back. Weeks already saved are skipped.'
+        required: false
+        default: '1'
       mode:
         description: 'What to do with the digests'
         type: choice
@@ -53,8 +57,9 @@ jobs:
         env:
           WEEK: ${{ inputs.week }}
           MODE: ${{ inputs.mode || 'save' }}
+          WEEKS: ${{ inputs.weeks || '1' }}
         run: |
-          ARGS=()
+          ARGS=(--weeks "$WEEKS")
           if [ -n "$WEEK" ]; then ARGS+=(--week "$WEEK"); fi
           if [ "$MODE" = "dry run (print only)" ]; then ARGS+=(--dry-run); fi
           python digest.py "${ARGS[@]}"

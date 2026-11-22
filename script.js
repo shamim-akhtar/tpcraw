@@ -137,15 +137,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   const endDateInput = document.getElementById('end-date');
   const periodButtons = document.getElementById('period-buttons');
   const customDates = document.getElementById('custom-dates');
+  // The page always opens on the last 30 days.
   let periodDays = 30;
-  try {
-    const saved = localStorage.getItem('periodDays');
-    if (saved === 'custom' || ['7', '30', '182'].includes(saved)) periodDays = saved === 'custom' ? 'custom' : parseInt(saved, 10);
-  } catch (e) { /* storage unavailable */ }
+  try { localStorage.removeItem('periodDays'); } catch (e) { /* ignore */ }
 
   const isoDate = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
-  function setPeriod(days, { save = true } = {}) {
+  function setPeriod(days) {
     periodDays = days;
     periodButtons.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.days === String(days)));
     customDates.hidden = days !== 'custom';
@@ -162,9 +160,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       endDateInput.value = isoDate(end);
       startDateInput.value = isoDate(start);
     }
-    if (save) { try { localStorage.setItem('periodDays', String(days)); } catch (e) { /* ignore */ } }
   }
-  setPeriod(periodDays, { save: false });
+  setPeriod(periodDays);
 
   function periodText() {
     if (periodDays !== 'custom') return periodDays === 182 ? 'Last 6 months' : `Last ${periodDays} days`;
@@ -417,7 +414,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Build the data array
     const dataArray = [];
-    const coverage = { total: 0, linked: 0, general: 0, unchecked: 0, shown: 0, clear: 0, legacyShown: 0 };
+    const coverage = { total: 0, linked: 0, general: 0, unchecked: 0, shown: 0 };
     const useSchools = schoolFilterApplies(lowerSub);
     snapshot.forEach(postDoc => {
       const postData = postDoc.data();
@@ -429,8 +426,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           const tag = schoolTagFor(postData, selectedSchool);
           if (tag) {
             coverage.shown++;
-            if (tag.legacy) coverage.legacyShown++;
-            else coverage.clear++;
           } else {
             return;
           }
@@ -453,7 +448,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       const category = postData.category || "";
       const emotion = postData.emotion || "";
       const summary = postData.summary || "";
-      const iit = postData.iit || "";
 
       // Convert Firestore Timestamp to JS Date if applicable
       let createdDate = postData.created;
@@ -474,7 +468,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         totalNegativeSentiments: negativeData,
         emotion: emotion,
         summary: summary,
-        iit: iit,
         postDetails: postData // Keep full data for details view
       });
     });
@@ -1440,7 +1433,7 @@ const SCHOOL_NAMES = {
 // The crawler stores "schoolTags" on each post: a list of
 // {school, diploma, diplomaName, evidence: [...]}.
 // An empty list means the post was checked and names no particular school.
-// Posts stored before school tagging only have the older IIT flag.
+// Posts never checked under the current rules are not linked to any school.
 // Tags written under the first, looser rules (no schoolTagsVersion, or below
 // SCHOOL_TAGS_VERSION) were often wrong, so they are treated as not checked.
 const SCHOOL_TAGS_VERSION = 2;
@@ -1450,20 +1443,12 @@ function hasCurrentSchoolTags(data) {
 }
 
 function schoolTagFor(postData, schoolCode) {
-    if (hasCurrentSchoolTags(postData)) {
-        return postData.schoolTags.find(t => t.school === schoolCode) || null;
-    }
-    // The older IIT flag is used only on posts never tagged. On posts tagged
-    // under the first rules, the flag was set from those same loose tags.
-    if (schoolCode === 'IIT' && postData.iit === 'yes' && !Array.isArray(postData.schoolTags)) {
-        return { school: 'IIT', confidence: 'likely', evidence: [], legacy: true };
-    }
-    return null;
+    if (!hasCurrentSchoolTags(postData)) return null;
+    return postData.schoolTags.find(t => t.school === schoolCode) || null;
 }
 
 // "linked" (checked, names a school), "general" (checked, names no school) or
-// "unchecked" (stored before school checking). The older IIT flag was set by
-// AI without evidence, so it does not count as checked here.
+// "unchecked" (not yet checked under the current rules).
 function schoolStatus(postData) {
     if (hasCurrentSchoolTags(postData)) return postData.schoolTags.length ? 'linked' : 'general';
     return 'unchecked';
@@ -1490,8 +1475,7 @@ function renderSchoolCoverage(useSchools, schoolCode, c) {
     const b = n => `<strong>${n}</strong>`;
     if (schoolCode) {
         const schoolName = escapeHtml(SCHOOL_NAMES[schoolCode] || schoolCode);
-        parts.push(`${b(c.clear)} ${c.clear === 1 ? 'post names' : 'posts name'} ${schoolName}`);
-        if (c.legacyShown) parts.push(`${b(c.legacyShown)} from the earlier IIT flag, set without evidence`);
+        parts.push(`${b(c.shown)} ${c.shown === 1 ? 'post names' : 'posts name'} ${schoolName}`);
         parts.push(`${b(c.general)} general TP ${c.general === 1 ? 'post' : 'posts'} not shown (choose All schools to see them)`);
         if (c.unchecked) parts.push(`${b(c.unchecked)} not yet checked for schools`);
     } else {
@@ -1506,12 +1490,7 @@ function renderSchoolCoverage(useSchools, schoolCode, c) {
 
 // Shows which schools a post or comment is linked to, and why.
 function schoolReasonsHtml(data) {
-    if (!hasCurrentSchoolTags(data)) {
-        if (data.iit === 'yes' && !Array.isArray(data.schoolTags)) {
-            return `<div class="school-reasons"><span class="school-tag school-tag--likely">Informatics &amp; IT</span> <span class="school-evidence">From the older IIT flag. Not yet re-checked for evidence.</span></div>`;
-        }
-        return '';
-    }
+    if (!hasCurrentSchoolTags(data)) return '';
     if (data.schoolTags.length === 0) {
         return `<div class="school-reasons"><span class="school-tag school-tag--none">General TP, no school named</span></div>`;
     }
@@ -2202,12 +2181,11 @@ function safeUrl(url) {
     const issuesBox = document.getElementById('overviewIssues');
     try {
       const code = document.getElementById('school-filter').value || 'TP';
-      const week = digestWeek.options[0] ? digestWeek.options[0].value : '';
-      const snap = week ? await getDoc(doc(db, 'weekly_digests', `${week}_${code}`)) : null;
-      if (!snap || !snap.exists()) {
-        issuesBox.innerHTML = '<p class="ui-muted">No digest for last week yet. Digests are made every Monday morning.</p>';
+      const latest = (await digestWeeksFor(code))[0];
+      if (!latest) {
+        issuesBox.innerHTML = '<p class="ui-muted">No digest yet. Digests are made every Monday morning.</p>';
       } else {
-        const d = snap.data();
+        const d = latest;
         const issues = Array.isArray(d.issues) ? d.issues : [];
         issuesBox.innerHTML = issues.length
           ? '<ol class="ui-issues">' + issues.map(i => `<li><strong>${escapeHtml(i.title)}</strong><div class="ui-muted ui-small">${plural((i.posts || i.postIds || []).length, 'post')}</div></li>`).join('') +
@@ -2329,18 +2307,20 @@ function safeUrl(url) {
   const digestSchool = document.getElementById('digest-school');
   const digestWeek = document.getElementById('digest-week');
 
-  // The last 12 Mondays (Singapore time) before this week, newest first.
-  (function fillDigestWeeks() {
-    const sgNow = new Date(Date.now() + 8 * 3600 * 1000);
-    const day = (sgNow.getUTCDay() + 6) % 7; // Monday = 0
-    const thisMonday = Date.UTC(sgNow.getUTCFullYear(), sgNow.getUTCMonth(), sgNow.getUTCDate() - day);
-    for (let i = 1; i <= 12; i++) {
-      const monday = new Date(thisMonday - i * 7 * 86400000);
-      const iso = monday.toISOString().slice(0, 10);
-      const label = monday.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
-      digestWeek.add(new Option(`Week of ${label}`, iso));
+  // The weeks that have a saved digest for a school, newest first. Only those
+  // weeks are offered, so the tab never opens on an empty week.
+  const digestWeeksBySchool = {};
+  function digestWeeksFor(school) {
+    if (!digestWeeksBySchool[school]) {
+      const q = query(collection(db, 'weekly_digests'), where('school', '==', school));
+      digestWeeksBySchool[school] = getDocs(q).then(snap => {
+        const byWeek = {};
+        snap.docs.forEach(d => { const data = d.data(); if (data.weekStart) byWeek[data.weekStart] = data; });
+        return Object.keys(byWeek).sort().reverse().map(w => byWeek[w]);
+      }).catch(err => { delete digestWeeksBySchool[school]; throw err; });
     }
-  })();
+    return digestWeeksBySchool[school];
+  }
   digestSchool.value = 'TP';
   digestSchool.addEventListener('change', loadDigest);
   digestWeek.addEventListener('change', loadDigest);
@@ -2357,15 +2337,19 @@ function safeUrl(url) {
 
   async function loadDigest() {
     const container = document.getElementById('digestContent');
-    const id = `${digestWeek.value}_${digestSchool.value}`;
     container.innerHTML = '<p class="details-message loading">Loading digest...</p>';
     try {
-      const snap = await getDoc(doc(db, 'weekly_digests', id));
-      if (!snap.exists()) {
-        container.innerHTML = '<p class="details-message info">There is no digest for this school and week yet. Digests are made every Monday morning.</p>';
+      const digests = await digestWeeksFor(digestSchool.value);
+      const chosen = digestWeek.value;
+      digestWeek.innerHTML = '';
+      digests.forEach(d => digestWeek.add(new Option(`Week of ${weekLabel(d.weekStart)}`, d.weekStart)));
+      if (!digests.length) {
+        container.innerHTML = '<p class="details-message info">There are no digests for this school yet. Digests are made every Monday morning.</p>';
         return;
       }
-      container.innerHTML = renderDigestHtml(snap.data());
+      const d = digests.find(x => x.weekStart === chosen) || digests[0];
+      digestWeek.value = d.weekStart;
+      container.innerHTML = renderDigestHtml(d);
     } catch (err) {
       console.error('Error loading digest', err);
       container.innerHTML = '<p class="details-message error">Could not load the digest.</p>';
