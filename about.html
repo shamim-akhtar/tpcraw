@@ -110,7 +110,7 @@
       <a href="#digest">Weekly digest</a>
       <a href="#post-view">Reading a post</a>
       <a href="#other-tabs">Posts, Trends and Authors</a>
-      <a href="#other-polys">Other polytechnics</a>
+      <a href="#other-polys">Other polytechnics and r/SGExams</a>
       <a href="#data">How the data is collected</a>
       <a href="#limits">Points to note</a>
     </nav>
@@ -122,6 +122,7 @@
       <section class="ui-card" id="about">
         <h2>What the dashboard is</h2>
         <p>The dashboard collects posts and comments once a day from selected Reddit forums relating to Singapore’s polytechnics. AI rates the sentiment of each post and comment, and the dashboard shows the results. It helps staff find posts and issues that may need attention.</p>
+        <p>The dashboard is not only for Temasek Polytechnic. It also covers the forums of Nanyang, Republic, Singapore and Ngee Ann Polytechnics, and r/SGExams, so staff of those polytechnics can use it too. See <a href="#other-polys">Other polytechnics and r/SGExams</a>.</p>
         <div class="help-note help-note--limit">
           <strong>Please keep in mind</strong>
           The dashboard shows what people posted on Reddit, as read by AI. It does not represent the views of all students, and its alerts and issues have not been independently verified. Read the post before acting on it.
@@ -167,7 +168,7 @@
         <p>The Overview is the first page. It covers the forum, school and period chosen in the toolbar.</p>
         <figure>
           <img src="images/help_overview.png" alt="The Overview page with figures, what changed, alerts and last week's issues" loading="lazy">
-          <figcaption>The Overview page (sample data, not real posts)</figcaption>
+          <figcaption>The Overview page for r/TemasekPoly, captured on 22 November 2026</figcaption>
         </figure>
 
         <h3>Figures at the top</h3>
@@ -275,7 +276,7 @@
         <p>Click an alert, a post in the digest or a post in a list. The post opens in a panel on the right of the same page, below the toolbar. The main page stays in place and can still be used. Click another post to change the panel, or close it with the X button or the Esc key. On a phone the panel takes the full screen and has a Back button.</p>
         <figure>
           <img src="images/help_post_panel.png" alt="A post opened in the panel beside the list of alerts" loading="lazy">
-          <figcaption>A post opened in the panel from the Alerts tab (sample data, not real posts)</figcaption>
+          <figcaption>A post opened in the panel from the Alerts tab, captured on 22 November 2026. The Reddit username is blurred in this picture.</figcaption>
         </figure>
         <p>The panel shows the AI summary, the post, and the comments with the sentiment of each. A bar shows how many comments are positive, neutral and negative. Search results, the posts of one day and the posts of one author open in the same panel.</p>
         <div class="help-table-wrap">
@@ -304,9 +305,17 @@
       </section>
 
       <section class="ui-card" id="other-polys">
-        <h2>Other polytechnics</h2>
-        <p>The forum list includes the forums of Nanyang, Republic, Singapore and Ngee Ann Polytechnics, and r/SGExams. Alerts and the weekly digest cover each polytechnic, so the Overview has the same parts for each forum.</p>
-        <p>A post on r/SGExams counts for a polytechnic only when it names that polytechnic by its full name or short form (TP, NYP, RP, SP or NP). The School filter and the digests by school apply to TP only.</p>
+        <h2>Other polytechnics and r/SGExams</h2>
+        <p>The dashboard can be used by every polytechnic, not only TP. Choose the polytechnic’s forum in the toolbar: r/nanyangpoly or r/NYP, r/republicpolytechnic, r/SingaporePoly or r/NgeeAnnPoly. The Overview, Alerts, Weekly digest, Posts, Trends and Authors tabs then show that polytechnic’s posts in the same way as for TP.</p>
+        <p>r/SGExams is a general forum for students in Singapore, so most of its posts are not about a polytechnic. You can choose it in the toolbar to see its posts. For alerts and the weekly digest, a post on r/SGExams counts for a polytechnic only when it names that polytechnic by its full name or short form (TP, NYP, RP, SP or NP). These posts are added to that polytechnic’s alerts and digest.</p>
+        <div class="help-note help-note--limit">
+          <strong>Limits</strong>
+          <ul>
+            <li>The School filter and the digests by school are available for TP only. Other polytechnics see figures for the whole polytechnic.</li>
+            <li>An r/SGExams post that names no polytechnic gets no alert.</li>
+            <li>The same points to note apply to every polytechnic: the content is Reddit posts read by AI, and it is not verified.</li>
+          </ul>
+        </div>
       </section>
 
       <section class="ui-card" id="data">
