@@ -380,7 +380,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Build the data array
     const dataArray = [];
-    const coverage = { total: 0, linked: 0, tpwide: 0, unchecked: 0, shown: 0, clear: 0, likely: 0, tpWideShown: 0 };
+    const coverage = { total: 0, linked: 0, general: 0, unchecked: 0, shown: 0, clear: 0, likely: 0, legacyShown: 0, generalShown: 0 };
     const useSchools = schoolFilterApplies(lowerSub);
     snapshot.forEach(postDoc => {
       const postData = postDoc.data();
@@ -392,9 +392,10 @@ document.addEventListener('DOMContentLoaded', async () => {
           const tag = schoolTagFor(postData, selectedSchool);
           if (tag) {
             coverage.shown++;
-            coverage[tag.confidence === 'clear' ? 'clear' : 'likely']++;
-          } else if (includeTpWide && status === 'tpwide') {
-            coverage.tpWideShown++;
+            if (tag.legacy) coverage.legacyShown++;
+            else coverage[tag.confidence === 'clear' ? 'clear' : 'likely']++;
+          } else if (includeTpWide && status === 'general') {
+            coverage.generalShown++;
           } else {
             return;
           }
@@ -1479,7 +1480,7 @@ const SCHOOL_NAMES = {
 
 // The crawler stores "schoolTags" on each post: a list of
 // {school, diploma, diplomaName, evidence: [...], confidence: "clear" | "likely"}.
-// An empty list means the post is TP-wide or not about any one school.
+// An empty list means the post was checked and names no particular school.
 // Posts stored before school tagging only have the older IIT flag.
 function schoolTagFor(postData, schoolCode) {
     if (Array.isArray(postData.schoolTags)) {
@@ -1491,10 +1492,12 @@ function schoolTagFor(postData, schoolCode) {
     return null;
 }
 
-// "linked", "tpwide" (checked, no school) or "unchecked" (older post).
+// "linked" (checked, names a school), "general" (checked, names no school) or
+// "unchecked" (stored before school checking). The older IIT flag was set by
+// AI without evidence, so it does not count as checked here.
 function schoolStatus(postData) {
-    if (Array.isArray(postData.schoolTags)) return postData.schoolTags.length ? 'linked' : 'tpwide';
-    return postData.iit === 'yes' ? 'linked' : 'unchecked';
+    if (Array.isArray(postData.schoolTags)) return postData.schoolTags.length ? 'linked' : 'general';
+    return 'unchecked';
 }
 
 function plural(n, word) {
@@ -1509,16 +1512,28 @@ function renderSchoolCoverage(useSchools, schoolCode, c) {
         box.hidden = true;
         return;
     }
+    const checked = c.linked + c.general;
+    const schoolName = SCHOOL_NAMES[schoolCode] || schoolCode;
     const parts = [];
-    if (schoolCode) {
-        let shown = `Showing ${plural(c.shown, 'post')} linked to ${SCHOOL_NAMES[schoolCode] || schoolCode} (${c.clear} clear, ${c.likely} likely)`;
-        if (c.tpWideShown) shown += `, plus ${plural(c.tpWideShown, 'TP-wide post')}`;
-        parts.push(shown + '.');
+    if (checked === 0) {
+        parts.push(`None of the ${plural(c.total, 'post')} in this period has been checked for school mentions yet, so there are no school figures to show.`);
+    } else {
+        parts.push(`${checked} of ${plural(c.total, 'post')} in this period have been checked for school mentions.`);
+        parts.push(`${c.linked} of these name a specific school. ${c.general} are about TP in general or do not name a school.`);
+        if (c.unchecked) {
+            parts.push(`${plural(c.unchecked, 'older post')} ${c.unchecked === 1 ? 'has' : 'have'} not been checked yet.`);
+        }
     }
-    parts.push(`${c.linked} of ${c.total} posts in this period are linked to a school.`);
-    parts.push(`${plural(c.tpwide, 'post')} ${c.tpwide === 1 ? 'is' : 'are'} TP-wide or not about any one school.`);
-    if (c.unchecked) {
-        parts.push(`${plural(c.unchecked, 'older post')} ${c.unchecked === 1 ? 'has' : 'have'} not been checked for schools yet.`);
+    if (schoolCode) {
+        const checkedShown = c.clear + c.likely;
+        const pieces = [];
+        if (checkedShown || !c.legacyShown) {
+            pieces.push(`${plural(checkedShown, 'post')} that name ${schoolName} (${c.clear} clear, ${c.likely} likely)`);
+        }
+        if (c.legacyShown) pieces.push(`${plural(c.legacyShown, 'older post')} that the earlier AI flag marked as IIT`);
+        if (c.generalShown) pieces.push(`${plural(c.generalShown, 'general TP post')}`);
+        parts.push(`Showing ${pieces.join(', and ')}.`);
+        if (c.legacyShown) parts.push('The earlier IIT flag was set without evidence, so treat those posts with care.');
     }
     text.textContent = parts.join(' ');
     box.hidden = false;
@@ -1533,7 +1548,7 @@ function schoolReasonsHtml(data) {
         return '';
     }
     if (data.schoolTags.length === 0) {
-        return `<div class="school-reasons"><span class="school-tag school-tag--none">TP-wide or no particular school</span></div>`;
+        return `<div class="school-reasons"><span class="school-tag school-tag--none">General TP, no school named</span></div>`;
     }
     const rows = data.schoolTags.map(t => {
         const name = escapeHtml(SCHOOL_NAMES[t.school] || t.school);
