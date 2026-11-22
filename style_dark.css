@@ -1167,3 +1167,10 @@ body.dark-theme #post-details-container {
 .alert-item { background: #2a2a2a; }
 .alert-badge--high { background: #e57373; color: #1a1a1a; }
 .alert-badge--normal { background: #555; color: #eee; }
+
+/* Colours for the layout in layout.css (dark theme) */
+:root {
+  --ui-bg: #15191e; --ui-panel: #1f252c; --ui-ink: #e6e9ed; --ui-muted: #9aa5b1; --ui-line: #2e363f;
+  --ui-brand: #0f1418; --ui-accent: #6ea8fe; --ui-accent-ink: #10151a; --ui-chip: #2a323b;
+  --ui-pos: #3fb3a3; --ui-neg: #e57373; --ui-neu: #7d8894; --ui-high: #e57373; --ui-high-bg: #3a2222;
+}
