@@ -1,0 +1,57 @@
+# Run by hand to check past posts for alerts, for days before the daily alert
+# check started. Each day with candidate posts costs one Gemini call (more on
+# busy days). Posts already alerted or already checked are skipped.
+name: Backfill alerts
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Check posts created in the last N days'
+        required: true
+        default: '30'
+      dry_run:
+        description: 'Only count the posts, do not call Gemini or save'
+        type: boolean
+        default: true
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore firebase-credentials.json from Base64 secret
+        run: |
+          echo "${{ secrets.FIREBASE_CREDENTIALS_BASE64 }}" | base64 -d > firebase-credentials.json
+
+      - name: Create .env file
+        run: |
+          echo "REDDIT_CLIENT_ID=${{ secrets.REDDIT_CLIENT_ID }}" >> .env
+          echo "REDDIT_CLIENT_SECRET=${{ secrets.REDDIT_CLIENT_SECRET }}" >> .env
+          echo "REDDIT_USER_AGENT=${{ secrets.REDDIT_USER_AGENT }}" >> .env
+          echo "GOOGLE_GEMINI_API_KEY=${{ secrets.GOOGLE_GEMINI_API_KEY }}" >> .env
+
+      - name: Backfill alerts
+        env:
+          DAYS: ${{ inputs.days }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            python database_patches/backfill_alerts.py --days "$DAYS" --dry-run
+          else
+            python database_patches/backfill_alerts.py --days "$DAYS"
+          fi

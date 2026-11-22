@@ -144,15 +144,19 @@ def school_fields(post):
     return {"schools": [], "schoolStatus": "unchecked"}
 
 
-def find_alerts(client, candidates):
+def find_alerts(client, candidates, prompt=PROMPT_ALERTS, alerted_at=None):
+    """Returns the alerts, or None if Gemini gave no usable answer.
+
+    alerted_at: a function giving the alert time for a post (default: now).
+    """
     if not candidates or client is None:
         return []
     text = "\n".join(describe_post_for_ai(p) for p in candidates)
-    result = safe_generate_content(client, PROMPT_ALERTS + wrap_text(text), schema=AlertList)
+    result = safe_generate_content(client, prompt + wrap_text(text), schema=AlertList)
     if not isinstance(result, AlertList):
         logging.error("Alerts: Gemini gave no usable answer.")
         print("WARN: Gemini gave no usable answer, so no alerts were made.")
-        return []
+        return None
     by_id = {p["alertId"]: p for p in candidates}
     alerts, seen = [], set()
     for a in result.alerts:
@@ -161,7 +165,7 @@ def find_alerts(client, candidates):
             continue
         seen.add(a.post_id)
         urgency = Urgency.HIGH if a.kind == Kind.WELLBEING else a.urgency
-        now = datetime.datetime.now(SGT)
+        now = alerted_at(post) if alerted_at else datetime.datetime.now(SGT)
         alerts.append({
             "id": a.post_id,
             "postId": post["id"],
@@ -208,7 +212,7 @@ def main():
           f"({len(done)} already alerted).")
 
     client = genai.Client(api_key=crawler.GOOGLE_GEMINI_API_KEY) if crawler.GOOGLE_GEMINI_API_KEY else None
-    alerts = find_alerts(client, candidates)
+    alerts = find_alerts(client, candidates) or []
     for a in alerts:
         line = f"[{a['urgency']}] {a['kind']}: {a['title']} ({a['url']})\n    {a['reason']}"
         if args.dry_run:
