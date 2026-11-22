@@ -132,20 +132,45 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
   });
 
-  // --- 1. SET DYNAMIC DATE RANGE (6 MONTHS) ---
+  // --- 1. PERIOD: quick buttons (7 days, 30 days, 6 months) or custom dates ---
   const startDateInput = document.getElementById('start-date');
   const endDateInput = document.getElementById('end-date');
+  const periodButtons = document.getElementById('period-buttons');
+  const customDates = document.getElementById('custom-dates');
+  let periodDays = 30;
+  try {
+    const saved = localStorage.getItem('periodDays');
+    if (saved === 'custom' || ['7', '30', '182'].includes(saved)) periodDays = saved === 'custom' ? 'custom' : parseInt(saved, 10);
+  } catch (e) { /* storage unavailable */ }
 
-  // Set End Date to Today
-  const today = new Date();
-  endDateInput.value = today.toISOString().split('T')[0];
+  const isoDate = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 
-  // Calculate Start Date (6 Months Ago)
-  const sixMonthsAgo = new Date();
-  sixMonthsAgo.setMonth(today.getMonth() - 6);
-  
-  // Format to YYYY-MM-DD and set value
-  startDateInput.value = sixMonthsAgo.toISOString().split('T')[0];
+  function setPeriod(days, { save = true } = {}) {
+    periodDays = days;
+    periodButtons.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.days === String(days)));
+    customDates.hidden = days !== 'custom';
+    if (days !== 'custom') {
+      const end = new Date();
+      const start = new Date();
+      start.setDate(end.getDate() - (days - 1));
+      endDateInput.value = isoDate(end);
+      startDateInput.value = isoDate(start);
+    } else if (!startDateInput.value || !endDateInput.value) {
+      const end = new Date();
+      const start = new Date();
+      start.setDate(end.getDate() - 29);
+      endDateInput.value = isoDate(end);
+      startDateInput.value = isoDate(start);
+    }
+    if (save) { try { localStorage.setItem('periodDays', String(days)); } catch (e) { /* ignore */ } }
+  }
+  setPeriod(periodDays, { save: false });
+
+  function periodText() {
+    if (periodDays !== 'custom') return periodDays === 182 ? 'Last 6 months' : `Last ${periodDays} days`;
+    const fmt = v => new Date(v).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    return `${fmt(startDateInput.value)} to ${fmt(endDateInput.value)}`;
+  }
 
   // 2. Firebase config
   const firebaseConfig = {
@@ -181,23 +206,28 @@ document.addEventListener('DOMContentLoaded', async () => {
   const postDetailsContainer = document.getElementById('post-details'); // Reference to the display area
 
   //--------------------TABS
-  const tabs = document.querySelectorAll('.tab-button');
-  const tabContents = document.querySelectorAll('.tab-content'); // Ensure tab content elements have this class
+  const tabs = document.querySelectorAll('.ui-tabs .tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
   const tabContainer = document.querySelector('.tab-container'); // Parent for event delegation
 
   // Function to switch tabs
   function switchTab(event) {
-      // Check if the clicked element is a tab button
-      if (!event.target.classList.contains('tab-button')) return;
+      // Check if the clicked element is a tab button (or the badge inside one)
+      const button = event.target.closest('.tab-button');
+      if (!button) return;
+      showTab(button.dataset.tab);
+  }
 
-      const targetTab = event.target.dataset.tab;
+  function showTab(targetTab) {
+      const button = document.querySelector(`.ui-tabs .tab-button[data-tab="${targetTab}"]`);
+      if (!button) return;
 
       // Update button styles
       tabs.forEach(button => {
           button.classList.remove('active');
           // CSS will handle the active state styles (.tab-button.active)
       });
-      event.target.classList.add('active');
+      button.classList.add('active');
 
       // Hide all content sections
       tabContents.forEach(content => {
@@ -228,6 +258,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
           else if (targetTab === 'timeSeriesTab' && timeSeriesChart) {
             timeSeriesChart.resize();
+          }
+          else if (targetTab === 'trendsTab') {
+            resizeActiveTrendChart();
           }
           else if (targetTab === 'digestTab') {
             loadDigest();
@@ -276,7 +309,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!Array.isArray(allPostsData) || allPostsData.length === 0) return;
     try {
       // These render from data already in memory — no extra Firestore reads.
-      renderSentimentPieChart(allPostsData);
       renderWeightedSentimentChart(allPostsData);
       renderSentimentStackChart(allPostsData);
       renderEngagementScoreChart(allPostsData);
@@ -298,8 +330,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       // The active tab is the only one with a measurable box; nudge it.
       const activeChartSection = document.querySelector('.chart-section.active');
       if (activeChartSection) {
-        const canvas = activeChartSection.querySelector('canvas');
-        const instance = canvas && Chart.getChart(canvas);
+        const visible = activeChartSection.querySelector('.trend-view.active canvas') || activeChartSection.querySelector('canvas');
+        const instance = visible && Chart.getChart(visible);
         if (instance) instance.resize();
       }
     } catch (err) {
@@ -328,11 +360,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   // --------------------------------------------------------------
   // FETCH FIRESTORE POSTS - with filters for subreddit & checkboxes
   // --------------------------------------------------------------
-  async function fetchPostsInRange() {
-    // console.log("fetchPostsInRange() called");
-
-    const startDateValue = document.getElementById('start-date').value;
-    const endDateValue = document.getElementById('end-date').value;
+  // range: optional {start, end} as YYYY-MM-DD, used to load the previous period
+  // for comparison. Only the main load updates the school line.
+  async function fetchPostsInRange(range = null) {
+    const startDateValue = range ? range.start : document.getElementById('start-date').value;
+    const endDateValue = range ? range.end : document.getElementById('end-date').value;
 
     // Filters
     const selectedSchool = document.getElementById('school-filter').value;
@@ -354,8 +386,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     // console.log("Selected subreddit:", selectedSubreddit);
     // console.log("Using posts collection:", postsCollection);
 
-    const startDate = new Date(startDateValue);
-    const endDate = new Date(endDateValue);
+    const startDate = new Date(`${startDateValue}T00:00:00`);
+    const endDate = new Date(`${endDateValue}T00:00:00`);
     // Include the entire end date
     endDate.setHours(23, 59, 59, 999);
 
@@ -450,72 +482,85 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     });
 
-    renderSchoolCoverage(useSchools, selectedSchool, coverage);
+    if (!range) renderSchoolCoverage(useSchools, selectedSchool, coverage, includeTpWide);
     return dataArray;
   }
 
   // ---------------------------------------------
   // Chart 1: SENTIMENT DISTRIBUTION PIE CHART
   // ---------------------------------------------
-  function renderSentimentPieChart(data) {
-    const totalPosts = data.length;
-    const ctx = document.getElementById('sentimentPieChart').getContext('2d');
+  function renderSentimentSplit(data) {
+    const total = data.length;
+    const html = (() => {
+      if (!total) return '<p class="ui-muted">No posts in this period.</p>';
+      const pos = data.filter(p => p.weightedSentimentScore > 0).length;
+      const neg = data.filter(p => p.weightedSentimentScore < 0).length;
+      const neu = total - pos - neg;
+      const pct = n => Math.round((n / total) * 100);
+      const seg = (n, cls) => n ? `<i class="${cls}" style="width:${(n / total) * 100}%"></i>` : '';
+      return `<div class="ui-split" role="img" aria-label="Positive ${pct(pos)}%, neutral ${pct(neu)}%, negative ${pct(neg)}%">` +
+        seg(pos, 'ui-pos') + seg(neu, 'ui-neu') + seg(neg, 'ui-neg') + `</div>` +
+        `<div class="ui-legend"><span class="ui-pos">Positive ${pct(pos)}%</span><span class="ui-neu">Neutral ${pct(neu)}%</span><span class="ui-neg">Negative ${pct(neg)}%</span></div>`;
+    })();
+    document.getElementById('sentimentSplit').innerHTML = html;
+    document.getElementById('sentimentSplitOther').innerHTML = html;
+  }
 
-    // If no data, destroy or clear existing chart
-    if (totalPosts === 0) {
-      if (window.sentimentPieChartInstance) {
-        window.sentimentPieChartInstance.destroy();
-      }
-      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-      return;
-    }
+  // ---------------------------------------------
+  // Per-post charts: sideways bars so titles can be read. The top 15 posts
+  // are shown unless "Show all posts" is ticked.
+  // ---------------------------------------------
+  const TOP_POSTS_IN_CHART = 15;
+  const showAllPosts = document.getElementById('showAllPosts');
 
-    const positiveCount = data.filter(p => p.weightedSentimentScore > 0).length;
-    const neutralCount = data.filter(p => p.weightedSentimentScore === 0).length;
-    const negativeCount = data.filter(p => p.weightedSentimentScore < 0).length;
+  function pickPosts(data, sortFn) {
+    const sorted = [...data].sort(sortFn);
+    return showAllPosts.checked ? sorted : sorted.slice(0, TOP_POSTS_IN_CHART);
+  }
 
-    const positivePercent = ((positiveCount / totalPosts) * 100).toFixed(1);
-    const neutralPercent = ((neutralCount / totalPosts) * 100).toFixed(1);
-    const negativePercent = ((negativeCount / totalPosts) * 100).toFixed(1);
+  function sizeRowsChart(canvasId, rows) {
+    const wrap = document.getElementById(canvasId).parentElement;
+    wrap.style.height = `${Math.max(220, rows * (isMobileViewport() ? 30 : 26) + 70)}px`;
+  }
 
-    if (window.sentimentPieChartInstance) {
-      window.sentimentPieChartInstance.destroy();
-    }
+  function rowLabel(title) {
+    const max = isMobileViewport() ? 26 : 48;
+    const t = title || '';
+    return t.length > max ? `${t.slice(0, max - 1)}…` : t;
+  }
 
-    window.sentimentPieChartInstance = new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: ['Positive', 'Neutral', 'Negative'],
-        datasets: [{
-          data: [positivePercent, neutralPercent, negativePercent],
-          backgroundColor: ['#4CAF50', '#FFC107', '#F44336'], // Colors remain hardcoded here as they are chart data
-        }]
+  function horizontalOptions(titleText, items, extra = {}) {
+    return {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: responsiveChartTitle(titleText),
+        legend: responsiveLegend(),
+        tooltip: { callbacks: { title: ctx => items[ctx[0].dataIndex].title } }
       },
-      options: {
-        // Sized by .chart-canvas-wrap--square; stays 1:1 on every screen.
-        responsive: true,
-        maintainAspectRatio: true,
-        aspectRatio: 1,
-        plugins: {
-          legend: {
-            display: false,
-            position: 'left'
-          },
-          tooltip: {
-            callbacks: {
-              label: (context) => `${context.label}: ${context.raw}%`
-            }
-          }
-        }
-      }
-    });
+      scales: {
+        y: { ticks: { autoSkip: false, font: { size: isMobileViewport() ? 10 : 12 } }, ...(extra.y || {}) },
+        x: { beginAtZero: true, ticks: { font: { size: isMobileViewport() ? 10 : 12 } }, ...(extra.x || {}) }
+      },
+      onClick: (evt, elements) => {
+        if (elements.length > 0) fetchAndDisplayPostDetails(items[elements[0].index].postId);
+      },
+      onHover: (evt, elements) => {
+        evt.native.target.style.cursor = elements.length ? 'pointer' : 'default';
+      },
+      ...(extra.interaction ? { interaction: extra.interaction } : {})
+    };
   }
 
   // ---------------------------------------------
   // Chart 2: WEIGHTED SENTIMENT
   // ---------------------------------------------
-   function renderWeightedSentimentChart(data) {
-    const labels = data.map(post => truncateChartLabel(post.title));
+   function renderWeightedSentimentChart(allData) {
+    const data = pickPosts(allData, (a, b) => Math.abs(b.weightedSentimentScore) - Math.abs(a.weightedSentimentScore))
+      .sort((a, b) => a.weightedSentimentScore - b.weightedSentimentScore);
+    sizeRowsChart('weightedSentimentChart', data.length);
+    const labels = data.map(post => rowLabel(post.title));
     const weightedScores = data.map(item => item.weightedSentimentScore);
 
     // Bar color logic remains in JS as it's data-dependent
@@ -533,41 +578,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         data: {
             labels: labels,
             datasets: [{
-                label: 'Weighted Sentiment Score',
+                label: 'Weighted sentiment',
                 data: weightedScores,
-                backgroundColor: backgroundColors // Use dynamic colors
+                backgroundColor: backgroundColors
             }]
         },
-        options: { // Chart options remain largely the same
-            responsive: true,
-            maintainAspectRatio: false, // height comes from .chart-canvas-wrap
-            plugins: {
-                title: responsiveChartTitle('Weighted Sentiment Breakdown by Post'),
-                legend: responsiveLegend(),
-                zoom: responsiveZoomOptions()
-            },
-            scales: {
-                x: { ticks: responsiveCategoryTicks() },
-                y: { beginAtZero: true, ticks: { font: { size: isMobileViewport() ? 10 : 12 } } }
-            },
-            onClick: (evt, elements) => { // Click handler remains
-                if (elements.length > 0) {
-                    const barIndex = elements[0].index;
-                    const item = data[barIndex];
-                    fetchAndDisplayPostDetails(item.postId);
-                }
-            }
-        }
+        options: horizontalOptions('Weighted sentiment by post', data, { x: { beginAtZero: false } })
     });
   }
 
   // ---------------------------------------------
   // Chart 3: RAW SENTIMENT STACK (Stacked Sentiment)
   // ---------------------------------------------
-  function renderSentimentStackChart(data) {
-      const labels = data.map(post => truncateChartLabel(post.title));
-      const positiveData = data.map(post => post.totalPositiveSentiments);
-      const negativeData = data.map(post => post.totalNegativeSentiments);
+  function renderSentimentStackChart(allData) {
+      const total = p => Math.abs(p.totalPositiveSentiments || 0) + Math.abs(p.totalNegativeSentiments || 0);
+      const data = pickPosts(allData, (a, b) => total(b) - total(a));
+      sizeRowsChart('stackedSentimentChart', data.length);
+      const labels = data.map(post => rowLabel(post.title));
+      const positiveData = data.map(post => Math.abs(post.totalPositiveSentiments || 0));
+      const negativeData = data.map(post => -Math.abs(post.totalNegativeSentiments || 0));
 
       const ctx = document.getElementById('stackedSentimentChart').getContext('2d');
 
@@ -580,52 +609,27 @@ document.addEventListener('DOMContentLoaded', async () => {
           data: {
               labels: labels,
               datasets: [
-                  {
-                      label: 'Positive Sentiments',
-                      data: positiveData,
-                      backgroundColor: 'rgba(75, 192, 192, 0.8)', // Color part of data config
-                      stack: 'Stack 0'
-                  },
-                  {
-                      label: 'Negative Sentiments',
-                      data: negativeData,
-                      backgroundColor: 'rgba(255, 99, 132, 0.8)', // Color part of data config
-                      stack: 'Stack 0'
-                  }
+                  { label: 'Positive comments', data: positiveData, backgroundColor: 'rgba(46, 158, 143, 0.85)', stack: 'Stack 0' },
+                  { label: 'Negative comments', data: negativeData, backgroundColor: 'rgba(217, 83, 79, 0.85)', stack: 'Stack 0' }
               ]
           },
-          options: { // Options remain largely the same
-              responsive: true,
-              maintainAspectRatio: false, // height comes from .chart-canvas-wrap
-              interaction: {
-                  mode: 'index', // This detects clicks anywhere on the vertical axis of the bar
-                  intersect: false // Allows clicking even if the mouse isn't directly touching a colored bar
-              },
-              plugins: {
-                  title: responsiveChartTitle('Sentiment Breakdown by Post'),
-                  legend: responsiveLegend(),
-                  zoom: responsiveZoomOptions()
-              },
-              scales: {
-                  x: { stacked: true, ticks: responsiveCategoryTicks() },
-                  y: { stacked: true, beginAtZero: true, ticks: { font: { size: isMobileViewport() ? 10 : 12 } } }
-              },
-              onClick: (evt, elements) => { // Click handler remains
-                  if (elements.length > 0) {
-                      const barIndex = elements[0].index;
-                      const item = data[barIndex];
-                      fetchAndDisplayPostDetails(item.postId);
-                  }
-              }
-          }
+          options: horizontalOptions('Positive and negative comments by post', data, {
+              y: { stacked: true },
+              x: { stacked: true, ticks: { callback: v => Math.abs(v), font: { size: isMobileViewport() ? 10 : 12 } } },
+              interaction: { mode: 'index', axis: 'y', intersect: false }
+          })
       });
+      commentsSentimentChart.options.plugins.tooltip.callbacks.label = c => `${c.dataset.label}: ${Math.abs(c.raw)}`;
+      commentsSentimentChart.update('none');
   }
 
   // ---------------------------------------------
   // Chart 4: ENGAGEMENT SCORE
   // ---------------------------------------------
-  function renderEngagementScoreChart(data) {
-      const labels = data.map(post => truncateChartLabel(post.title));
+  function renderEngagementScoreChart(allData) {
+      const data = pickPosts(allData, (a, b) => b.engagementScore - a.engagementScore);
+      sizeRowsChart('engagementScoreChart', data.length);
+      const labels = data.map(post => rowLabel(post.title));
       const engagementScores = data.map(item => item.engagementScore);
 
       // Color remains here
@@ -638,42 +642,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       const ctx = document.getElementById('engagementScoreChart').getContext('2d');
       engagementScoreChart = new Chart(ctx, {
           type: 'bar',
-          data: {
-              labels: labels,
-              datasets: [{
-                  label: 'Engagement Score',
-                  data: engagementScores,
-                  backgroundColor: backgroundColors
-              }]
-          },
-          options: { // Options remain largely the same
-              responsive: true,
-              maintainAspectRatio: false, // height comes from .chart-canvas-wrap
-              plugins: {
-                  title: responsiveChartTitle('Engagement Score per Post'),
-                  legend: responsiveLegend(),
-                  zoom: responsiveZoomOptions()
-              },
-              scales: {
-                  x: { ticks: responsiveCategoryTicks() },
-                  y: { beginAtZero: true, ticks: { font: { size: isMobileViewport() ? 10 : 12 } } }
-              },
-              onClick: (evt, elements) => { // Click handler remains
-                  if (elements.length > 0) {
-                      const barIndex = elements[0].index;
-                      const item = data[barIndex];
-                      fetchAndDisplayPostDetails(item.postId);
-                  }
-              }
-          }
+          data: { labels, datasets: [{ label: 'Engagement score', data: engagementScores, backgroundColor: backgroundColors }] },
+          options: horizontalOptions('Engagement by post', data)
       });
   }
 
   // ---------------------------------------------
   // Chart 5: TOTAL COMMENTS
   // ---------------------------------------------
-  function renderCommentsCountChart(data) {
-      const labels = data.map(post => truncateChartLabel(post.title));
+  function renderCommentsCountChart(allData) {
+      const data = pickPosts(allData, (a, b) => b.totalComments - a.totalComments);
+      sizeRowsChart('totalCommentsChart', data.length);
+      const labels = data.map(post => rowLabel(post.title));
       const totalComments = data.map(item => item.totalComments);
 
       // Color remains here
@@ -686,34 +666,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       const ctx = document.getElementById('totalCommentsChart').getContext('2d');
       totalCommentsChart = new Chart(ctx, {
           type: 'bar',
-          data: {
-              labels: labels,
-              datasets: [{
-                  label: 'Total Comments',
-                  data: totalComments,
-                  backgroundColor: backgroundColors
-              }]
-          },
-          options: { // Options remain largely the same
-              responsive: true,
-              maintainAspectRatio: false, // height comes from .chart-canvas-wrap
-              plugins: {
-                  title: responsiveChartTitle('Comments per Post'),
-                  legend: responsiveLegend(),
-                  zoom: responsiveZoomOptions()
-              },
-              scales: {
-                  x: { ticks: responsiveCategoryTicks() },
-                  y: { beginAtZero: true, ticks: { font: { size: isMobileViewport() ? 10 : 12 } } }
-              },
-              onClick: (evt, elements) => { // Click handler remains
-                  if (elements.length > 0) {
-                      const barIndex = elements[0].index;
-                      const item = data[barIndex];
-                      fetchAndDisplayPostDetails(item.postId);
-                  }
-              }
-          }
+          data: { labels, datasets: [{ label: 'Comments', data: totalComments, backgroundColor: backgroundColors }] },
+          options: horizontalOptions('Comments by post', data)
       });
   }
 
@@ -801,8 +755,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     let selectedPosts = [...data]; // shallow copy
 
     switch (listType) {
-      case 'topEngaged':
-        selectedPosts.sort((a, b) => b.engagementScore - a.engagementScore);
+      case 'topEngaged': // "Most discussed": most comments first
+        selectedPosts.sort((a, b) => b.totalComments - a.totalComments);
         selectedPosts = selectedPosts.slice(0, 10);
         break;
       case 'lowestWs':
@@ -855,22 +809,24 @@ document.addEventListener('DOMContentLoaded', async () => {
       <table class="post-list-table">
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Weighted Score</th>
-            <th>Engagement Score</th>
-            <th>Raw Sentiment</th>
+            <th>Post</th>
+            <th>Date</th>
+            <th>Comments</th>
+            <th>Sentiment</th>
           </tr>
         </thead>
         <tbody>
     `;
     for (const p of posts) {
-      // Removed inline style="cursor: pointer;" - handled by CSS :hover on the class
+      const ws = p.weightedSentimentScore || 0;
+      const mood = ws > 0 ? 'Positive' : (ws < 0 ? 'Negative' : 'Neutral');
+      const date = p.created instanceof Date ? p.created.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
       html += `
         <tr data-post-id="${escapeHtml(p.postId)}" class="post-list-row">
           <td>${escapeHtml(p.title)}</td>
-          <td>${p.weightedSentimentScore.toFixed(2)}</td>
-          <td>${p.engagementScore.toFixed(2)}</td>
-          <td>${p.rawSentimentScore.toFixed(2)}</td>
+          <td>${date}</td>
+          <td>${p.totalComments}</td>
+          <td><span class="ui-mood ui-mood--${mood.toLowerCase()}">${mood}</span> <span class="ui-muted">${ws.toFixed(2)}</span></td>
         </tr>
       `;
     }
@@ -1520,7 +1476,9 @@ function plural(n, word) {
     return `${n} ${word}${n === 1 ? '' : 's'}`;
 }
 
-function renderSchoolCoverage(useSchools, schoolCode, c) {
+// One short line under the Overview figures: how many posts in the period
+// name the chosen school, and what is left out.
+function renderSchoolCoverage(useSchools, schoolCode, c, includeGeneral) {
     const box = document.getElementById('schoolCoverage');
     const text = document.getElementById('schoolCoverageText');
     if (!box || !text) return;
@@ -1528,30 +1486,23 @@ function renderSchoolCoverage(useSchools, schoolCode, c) {
         box.hidden = true;
         return;
     }
-    const checked = c.linked + c.general;
-    const schoolName = SCHOOL_NAMES[schoolCode] || schoolCode;
     const parts = [];
-    if (checked === 0) {
-        parts.push(`None of the ${plural(c.total, 'post')} in this period has been checked for school mentions yet, so there are no school figures to show.`);
-    } else {
-        parts.push(`${checked} of ${plural(c.total, 'post')} in this period have been checked for school mentions.`);
-        parts.push(`${c.linked} of these name a specific school. ${c.general} are about TP in general or do not name a school.`);
-        if (c.unchecked) {
-            parts.push(`${plural(c.unchecked, 'older post')} ${c.unchecked === 1 ? 'has' : 'have'} not been checked yet.`);
-        }
-    }
+    const b = n => `<strong>${n}</strong>`;
     if (schoolCode) {
-        const checkedShown = c.clear;
-        const pieces = [];
-        if (checkedShown || !c.legacyShown) {
-            pieces.push(`${plural(checkedShown, 'post')} that name ${schoolName}`);
-        }
-        if (c.legacyShown) pieces.push(`${plural(c.legacyShown, 'older post')} that the earlier AI flag marked as IIT`);
-        if (c.generalShown) pieces.push(`${plural(c.generalShown, 'general TP post')}`);
-        parts.push(`Showing ${pieces.join(', and ')}.`);
-        if (c.legacyShown) parts.push('The earlier IIT flag was set without evidence, so treat those posts with care.');
+        const schoolName = escapeHtml(SCHOOL_NAMES[schoolCode] || schoolCode);
+        parts.push(`${b(c.clear)} ${c.clear === 1 ? 'post names' : 'posts name'} ${schoolName}`);
+        if (c.legacyShown) parts.push(`${b(c.legacyShown)} from the earlier IIT flag, set without evidence`);
+        parts.push(includeGeneral
+            ? `${b(c.generalShown)} general TP ${c.generalShown === 1 ? 'post' : 'posts'} included`
+            : `${b(c.general)} general TP ${c.general === 1 ? 'post' : 'posts'} not counted`);
+        if (c.unchecked) parts.push(`${b(c.unchecked)} not yet checked for schools`);
+    } else {
+        parts.push(`${b(c.linked)} ${c.linked === 1 ? 'post names' : 'posts name'} a school`);
+        parts.push(`${b(c.general)} about TP in general`);
+        if (c.unchecked) parts.push(`${b(c.unchecked)} not yet checked for schools`);
     }
-    text.textContent = parts.join(' ');
+    text.innerHTML = parts.map(p => `<span>${p}</span>`).join('') +
+        '<a href="about.html#school-filter-help">How posts are linked to schools</a>';
     box.hidden = false;
 }
 
@@ -1595,7 +1546,7 @@ function alertSchoolText(a) {
     return 'Not yet checked for schools';
 }
 
-function renderAlertsHtml(alerts, schoolFilter) {
+function renderAlertsHtml(alerts, schoolFilter, opts = {}) {
     const shown = alerts.filter(a => {
         if (!schoolFilter) return true;
         if (schoolFilter === 'general') return a.schoolStatus === 'general';
@@ -1618,6 +1569,7 @@ function renderAlertsHtml(alerts, schoolFilter) {
           <p class="alert-meta">r/${escapeHtml(a.subreddit)} · ${plural(a.totalComments || 0, 'comment')} · alerted ${when} · ${alertSchoolText(a)}</p>
         </li>`;
     });
+    if (opts.compact) return `<ul class="alert-list">${items.join('')}</ul>`;
     let html = `<p>${plural(shown.length, 'alert')}.</p><ul class="alert-list">${items.join('')}</ul>`;
     if (schoolFilter === '' && unchecked) {
         html += `<p class="digest-note">${plural(unchecked, 'alert')} ${unchecked === 1 ? 'is on a post' : 'are on posts'} not yet checked for schools, so ${unchecked === 1 ? 'it shows' : 'they show'} only under All of TP.</p>`;
@@ -1886,8 +1838,9 @@ function safeUrl(url) {
 
   // Function to perform search across posts and comments
   async function searchByKeyword() {
-    const keyword = keywordInput.value.trim();if (!keyword) {
-      alert("Please enter a keyword to search.");
+    const keyword = keywordInput.value.trim();
+    if (!keyword) {
+      keywordInput.focus();
       return;
     }
     // Open the modal immediately and show loading
@@ -2156,56 +2109,197 @@ function safeUrl(url) {
   // ---------------------------------------------
   // Main "updateCharts" logic
   // ---------------------------------------------
+  // Previous period of the same length, for the "Negative posts" comparison.
+  function previousRange() {
+    const start = new Date(`${startDateInput.value}T00:00:00`);
+    const end = new Date(`${endDateInput.value}T00:00:00`);
+    const days = Math.round((end - start) / 86400000) + 1;
+    const prevEnd = new Date(start); prevEnd.setDate(start.getDate() - 1);
+    const prevStart = new Date(prevEnd); prevStart.setDate(prevEnd.getDate() - (days - 1));
+    return { start: isoDate(prevStart), end: isoDate(prevEnd), days };
+  }
+
+  const negShare = posts => posts.length ? posts.filter(p => p.weightedSentimentScore < 0).length / posts.length : null;
+
+  async function updateNegativeComparison(share) {
+    const change = document.getElementById('negativeShareChange');
+    if (share === null) { change.textContent = 'No posts in this period'; return; }
+    change.textContent = '';
+    try {
+      const prev = previousRange();
+      const prevPosts = await fetchPostsInRange(prev);
+      const before = negShare(prevPosts);
+      if (before === null) { change.textContent = `No posts in the previous ${prev.days} days to compare`; return; }
+      const diff = share - before;
+      const word = Math.abs(diff) < 0.05 ? 'About the same as' : (diff > 0 ? 'Up from' : 'Down from');
+      change.innerHTML = `<span class="${Math.abs(diff) < 0.05 ? '' : (diff > 0 ? 'ui-up' : 'ui-down')}">${word}</span> ${Math.round(before * 100)}% in the previous ${prev.days} days`;
+    } catch (err) {
+      console.error('Error loading previous period', err);
+    }
+  }
+
+  function renderOverviewTopPosts(data) {
+    const container = document.getElementById('overviewTopPosts');
+    const top = [...data].sort((a, b) => b.totalComments - a.totalComments).slice(0, 8);
+    if (!top.length) { container.innerHTML = '<p class="ui-muted">No posts in this period.</p>'; return; }
+    const max = Math.max(1, ...top.map(p => Math.abs(p.totalPositiveSentiments || 0) + Math.abs(p.totalNegativeSentiments || 0)));
+    container.innerHTML = '<div class="ui-legend"><span class="ui-pos">Positive comments</span><span class="ui-neg">Negative comments</span></div>' +
+      '<div class="ui-bars">' + top.map(p => {
+        const pos = Math.abs(p.totalPositiveSentiments || 0), neg = Math.abs(p.totalNegativeSentiments || 0);
+        return `<button type="button" class="ui-bar" data-post-id="${escapeHtml(p.postId)}">
+          <span class="ui-bar-lbl">${escapeHtml(p.title)}</span>
+          <span class="ui-track"><i class="ui-pos" style="width:${pos / max * 100}%"></i><i class="ui-neg" style="width:${neg / max * 100}%"></i></span>
+          <span class="ui-bar-n" title="Comments">${p.totalComments}</span></button>`;
+      }).join('') + '</div>';
+  }
+  document.getElementById('overviewTopPosts').addEventListener('click', e => {
+    const row = e.target.closest('[data-post-id]');
+    if (row) fetchAndDisplayPostDetails(row.dataset.postId);
+  });
+
+  // Alerts and digests cover TP only (r/TemasekPoly and TP posts on r/SGExams).
+  const coversTp = () => schoolFilterApplies(document.getElementById('subreddit-select').value.toLowerCase());
+
+  async function updateOverviewTpCards() {
+    const tp = coversTp();
+    document.getElementById('tpOnlyCards').hidden = !tp;
+    document.getElementById('otherForumFeel').hidden = tp;
+    document.getElementById('alertsKpi').hidden = !tp;
+    if (!tp) { document.getElementById('alerts-badge').hidden = true; return; }
+    // Alerts: last 7 days for the chosen school
+    const alertsBox = document.getElementById('overviewAlerts');
+    try {
+      const alerts = await recentAlerts(7);
+      const school = document.getElementById('school-filter').value;
+      const shown = alerts.filter(a => !school || (a.schoolStatus === 'linked' && (a.schools || []).includes(school)));
+      const high = shown.filter(a => a.urgency === 'high').length;
+      document.getElementById('alertsCount').textContent = shown.length;
+      document.getElementById('alertsCountNote').textContent = shown.length ? `Last 7 days, ${high} high urgency` : 'Last 7 days';
+      const badge = document.getElementById('alerts-badge');
+      badge.textContent = shown.length;
+      badge.hidden = shown.length === 0;
+      alertsBox.innerHTML = shown.length
+        ? renderAlertsHtml(shown.slice(0, 3), '', { compact: true })
+        : '<p class="ui-muted">No alerts in the last 7 days.</p>';
+    } catch (err) {
+      console.error('Error loading alerts for overview', err);
+      document.getElementById('alertsCount').textContent = '-';
+      alertsBox.innerHTML = '<p class="ui-muted">Could not load the alerts.</p>';
+    }
+    // Issues: the latest weekly digest for the chosen school
+    const issuesBox = document.getElementById('overviewIssues');
+    try {
+      const code = document.getElementById('school-filter').value || 'TP';
+      const week = digestWeek.options[0] ? digestWeek.options[0].value : '';
+      const snap = week ? await getDoc(doc(db, 'weekly_digests', `${week}_${code}`)) : null;
+      if (!snap || !snap.exists()) {
+        issuesBox.innerHTML = '<p class="ui-muted">No digest for last week yet. Digests are made every Monday morning.</p>';
+      } else {
+        const d = snap.data();
+        const issues = Array.isArray(d.issues) ? d.issues : [];
+        issuesBox.innerHTML = issues.length
+          ? '<ol class="ui-issues">' + issues.map(i => `<li><strong>${escapeHtml(i.title)}</strong><div class="ui-muted ui-small">${plural((i.posts || i.postIds || []).length, 'post')}</div></li>`).join('') +
+            `</ol><p class="ui-muted ui-small">From the digest for the week of ${escapeHtml(weekLabel(d.weekStart))}.</p>`
+          : `<p class="ui-muted">No issues stood out in the week of ${escapeHtml(weekLabel(d.weekStart))}.</p>`;
+      }
+    } catch (err) {
+      console.error('Error loading digest for overview', err);
+      issuesBox.innerHTML = '<p class="ui-muted">Could not load the digest.</p>';
+    }
+  }
+
+  const weekLabel = iso => {
+    const d = new Date(`${iso}T00:00:00Z`);
+    return isNaN(d) ? iso : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  };
+
   async function updateCharts() {
     try {
       allPostsData = await fetchPostsInRange();
 
       document.querySelector("#postCount .postCount-number").textContent = allPostsData.length;
+      document.querySelectorAll('[data-period-text]').forEach(el => { el.textContent = periodText(); });
 
       if (allPostsData.length > 0) {
         const sum = allPostsData.reduce((acc, post) => acc + post.weightedSentimentScore, 0);
-        let avg = sum / allPostsData.length;
-
-        // STRICTOR FIX: If the rounded value is 0, force it to be positive 0
-        let formattedAvg = avg.toFixed(2);
-        if (formattedAvg === "-0.00" || formattedAvg === "-0.0") {
-            formattedAvg = "0.00";
-        }
-      
-      document.getElementById("avgWeightedScoreNumber").textContent = formattedAvg;
-
+        let formattedAvg = (sum / allPostsData.length).toFixed(2);
+        if (formattedAvg === "-0.00") formattedAvg = "0.00";
+        document.getElementById("avgWeightedScoreNumber").textContent = formattedAvg;
         const totalComments = allPostsData.reduce((acc, post) => acc + post.totalComments, 0);
         document.getElementById("commentsCountNumber").textContent = totalComments;
       } else {
         document.getElementById("avgWeightedScoreNumber").textContent = "N/A";
         document.getElementById("commentsCountNumber").textContent = "0";
       }
+      const share = negShare(allPostsData);
+      document.getElementById('negativeShare').textContent = share === null ? '-' : `${Math.round(share * 100)}%`;
 
-      // Render charts
-      renderSentimentPieChart(allPostsData);
+      // Overview
+      renderSentimentSplit(allPostsData);
+      renderOverviewTopPosts(allPostsData);
+      updateNegativeComparison(share);
+      updateOverviewTpCards();
+
+      // Trends
       renderWeightedSentimentChart(allPostsData);
       renderSentimentStackChart(allPostsData);
       renderEngagementScoreChart(allPostsData);
       renderCommentsCountChart(allPostsData);
-
-      // Time Series & Authors
       updateTimeSeriesChart();
-      updateAuthorsChart(); // Make sure this fetches data for the current subreddit
+      updateAuthorsChart();
 
-      // Default post list
-      postListDropdown.value = 'lowestRaw'; // Or keep current selection if desired
-      renderPostList(allPostsData, postListDropdown.value); // Update list with new data
+      // Posts list keeps the chosen order
+      renderPostList(allPostsData, postListDropdown.value);
+
+      // Digest and alerts follow the main School choice
+      syncSchoolToTabs();
     }
     catch (error) {
       console.error("Error building charts:", error);
-       // Maybe display an error message to the user in a dedicated area
-       postDetailsContainer.innerHTML = `<p class="details-message error">Error loading dashboard data. Please check filters and try again.</p>`;
+      document.getElementById('overviewTopPosts').innerHTML = `<p class="details-message error">Could not load the dashboard data. Please try again.</p>`;
     }
   }
 
+  // Redraw the per-post charts when "Show all posts" changes. No new reads.
+  showAllPosts.addEventListener('change', () => {
+    renderWeightedSentimentChart(allPostsData);
+    renderSentimentStackChart(allPostsData);
+    renderEngagementScoreChart(allPostsData);
+    renderCommentsCountChart(allPostsData);
+  });
 
-  // 10. Filter button
-  document.getElementById('filter-btn').addEventListener('click', updateCharts);
+  // Trends: one chart at a time
+  const trendPicker = document.getElementById('trend-picker');
+  function resizeActiveTrendChart() {
+    const canvas = document.querySelector('#trendsTab .trend-view.active canvas');
+    const chart = canvas && Chart.getChart(canvas);
+    if (chart) chart.resize();
+  }
+  trendPicker.addEventListener('click', e => {
+    const b = e.target.closest('button[data-trend]');
+    if (!b) return;
+    trendPicker.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    document.querySelectorAll('#trendsTab .trend-view').forEach(v => v.classList.toggle('active', v.id === b.dataset.trend));
+    document.getElementById('showAllWrap').hidden = b.dataset.trend === 'timeSeriesTab';
+    resizeActiveTrendChart();
+  });
+
+  // "All alerts", "Full digest" and "All posts" links on the Overview
+  document.querySelectorAll('[data-go]').forEach(el => el.addEventListener('click', () => showTab(el.dataset.go)));
+
+  // 10. Filters update the page as soon as they change
+  periodButtons.addEventListener('click', e => {
+    const b = e.target.closest('button[data-days]');
+    if (!b) return;
+    const days = b.dataset.days === 'custom' ? 'custom' : parseInt(b.dataset.days, 10);
+    setPeriod(days);
+    if (days !== 'custom') updateCharts();
+  });
+  [startDateInput, endDateInput].forEach(el => el.addEventListener('change', () => {
+    if (startDateInput.value && endDateInput.value && startDateInput.value <= endDateInput.value) updateCharts();
+  }));
+  document.getElementById('include-tpwide').addEventListener('change', updateCharts);
+  document.getElementById('tp-related-filter').addEventListener('change', updateCharts);
 
   // NEW: Search button listener
   searchButton.addEventListener('click', searchByKeyword);
@@ -2248,6 +2342,16 @@ function safeUrl(url) {
   });
   digestWeek.addEventListener('change', loadDigest);
 
+  // The Weekly digest and Alerts tabs use the main School choice.
+  function syncSchoolToTabs() {
+    const school = document.getElementById('school-filter').value;
+    digestSchool.value = school || 'TP';
+    alertsSchool.value = school;
+    const active = document.querySelector('.ui-tabs .tab-button.active');
+    if (active && active.dataset.tab === 'digestTab') loadDigest();
+    if (active && active.dataset.tab === 'alertsTab') loadAlerts();
+  }
+
   async function loadDigest() {
     const container = document.getElementById('digestContent');
     const id = `${digestWeek.value}_${digestSchool.value}`;
@@ -2268,7 +2372,6 @@ function safeUrl(url) {
   // Alerts tab
   const alertsSchool = document.getElementById('alerts-school');
   const alertsDays = document.getElementById('alerts-days');
-  let alertsCache = { days: null, alerts: [] };
   try {
     const savedAlertsSchool = localStorage.getItem('alertsSchool');
     if (savedAlertsSchool !== null && alertsSchool.querySelector(`option[value="${CSS.escape(savedAlertsSchool)}"]`)) {
@@ -2281,24 +2384,32 @@ function safeUrl(url) {
   });
   alertsDays.addEventListener('change', loadAlerts);
 
+  // Alerts from the last N days (Singapore time), high urgency first.
+  // Kept in memory so switching tabs does not read Firestore again.
+  const alertsByDays = {};
+  async function recentAlerts(days) {
+    if (!alertsByDays[days]) {
+      // "Today" starts at midnight Singapore time; longer periods count back whole days.
+      const sgToday = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Singapore' }));
+      const startSg = new Date(sgToday.getFullYear(), sgToday.getMonth(), sgToday.getDate() - (days - 1));
+      const since = new Date(Date.UTC(startSg.getFullYear(), startSg.getMonth(), startSg.getDate()) - 8 * 3600 * 1000);
+      const q = query(collection(db, 'alerts'), where('alertedAt', '>=', since), orderBy('alertedAt', 'desc'));
+      alertsByDays[days] = getDocs(q).then(snap => {
+        const alerts = snap.docs.map(d => d.data());
+        alerts.sort((a, b) => (a.urgency === 'high' ? 0 : 1) - (b.urgency === 'high' ? 0 : 1));
+        return alerts;
+      }).catch(err => { delete alertsByDays[days]; throw err; });
+    }
+    return alertsByDays[days];
+  }
+
   async function loadAlerts() {
     const container = document.getElementById('alertsContent');
     const days = parseInt(alertsDays.value, 10) || 7;
     try {
-      if (alertsCache.days !== days) {
-        container.innerHTML = '<p class="details-message loading">Loading alerts...</p>';
-        // "Today" starts at midnight Singapore time; longer periods count back whole days.
-        const sgToday = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Singapore' }));
-        const startSg = new Date(sgToday.getFullYear(), sgToday.getMonth(), sgToday.getDate() - (days - 1));
-        const since = new Date(Date.UTC(startSg.getFullYear(), startSg.getMonth(), startSg.getDate()) - 8 * 3600 * 1000);
-        const q = query(collection(db, 'alerts'), where('alertedAt', '>=', since), orderBy('alertedAt', 'desc'));
-        const snap = await getDocs(q);
-        const alerts = snap.docs.map(d => d.data());
-        // High urgency first, newest first within each.
-        alerts.sort((a, b) => (a.urgency === 'high' ? 0 : 1) - (b.urgency === 'high' ? 0 : 1));
-        alertsCache = { days, alerts };
-      }
-      container.innerHTML = renderAlertsHtml(alertsCache.alerts, alertsSchool.value);
+      if (!alertsByDays[days]) container.innerHTML = '<p class="details-message loading">Loading alerts...</p>';
+      const alerts = await recentAlerts(days);
+      container.innerHTML = renderAlertsHtml(alerts, alertsSchool.value);
     } catch (err) {
       console.error('Error loading alerts', err);
       container.innerHTML = '<p class="details-message error">Could not load the alerts.</p>';
@@ -2316,6 +2427,7 @@ function safeUrl(url) {
   } catch (e) { /* storage unavailable */ }
   schoolFilterSelect.addEventListener('change', () => {
     try { localStorage.setItem('schoolFilter', schoolFilterSelect.value); } catch (e) { /* ignore */ }
+    updateCharts();
   });
 
   updateCharts();
@@ -2325,48 +2437,21 @@ function safeUrl(url) {
   // And the corresponding tab content also has the 'active' class in HTML
 
   // Reset Zoom Buttons (Listeners remain the same)
-  document.getElementById('resetZoomWeightedBtn').addEventListener('click', () => {
-    if (weightedSentimentChart) weightedSentimentChart.resetZoom();
-  });
-  document.getElementById('resetZoomStackedBtn').addEventListener('click', () => {
-    if (commentsSentimentChart) commentsSentimentChart.resetZoom();
-  });
-  document.getElementById('resetZoomTotalCommentsBtn').addEventListener('click', () => {
-    if (totalCommentsChart) totalCommentsChart.resetZoom();
-  });
-  document.getElementById('resetZoomEngagementBtn').addEventListener('click', () => {
-    if (engagementScoreChart) engagementScoreChart.resetZoom();
-  });
+
+
+
+
   document.getElementById('resetZoomTimeSeriesBtn').addEventListener('click', () => {
     if (timeSeriesChart) timeSeriesChart.resetZoom();
   });
 
   // --- Filter Visibility Logic ---
   const subredditSelect = document.getElementById("subreddit-select");
-  // const schoolFilterContainer = document.getElementById("iit-filter-container"); // Assuming label and input are wrapped
-  // const tpRelatedFilterContainer = document.getElementById("tp-related-filter-container"); // Assuming label and input are wrapped
-  const schoolFilter = document.getElementById("school-filter");
-  const tpRelatedFilter = document.getElementById("tp-related-filter");
-  // Get the labels associated with the checkboxes
-
-  const schoolLabel = document.querySelector('label[for="school-filter"]');
-
-  const tpLabel = document.querySelector('label[for="tp-related-filter"]');
-
   function updateFilterVisibility() {
-    // School filters: TemasekPoly and sgExams. TP-Related filter: sgExams only.
-    const showSchool = subredditSelect.value === "TemasekPoly" || subredditSelect.value === "sgExams";
-    const showTpRelated = subredditSelect.value === "sgExams";
-    const tpWide = document.getElementById("include-tpwide");
-    const tpWideLabel = document.querySelector('label[for="include-tpwide"]');
-    [schoolFilter, schoolLabel, tpWide, tpWideLabel].forEach(el => {
-      if (el) el.style.display = showSchool ? "inline-block" : "none";
-    });
-    [tpRelatedFilter, tpLabel].forEach(el => {
-      if (el) el.style.display = showTpRelated ? "inline-block" : "none";
-    });
+    // School filters: TemasekPoly and sgExams. TP-related filter: sgExams only.
+    document.getElementById('school-field').hidden = !(subredditSelect.value === "TemasekPoly" || subredditSelect.value === "sgExams");
+    document.getElementById('tp-related-field').hidden = subredditSelect.value !== "sgExams";
   }
-
 
   // Initial call to set visibility based on default selection
   updateFilterVisibility();

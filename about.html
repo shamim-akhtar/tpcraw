@@ -464,6 +464,23 @@
 
   <hr />
 
+  <h2>Quick guide</h2>
+  <p>Choose a <strong>Forum</strong>, a <strong>School</strong> and a <strong>Period</strong> at the top. The page updates as soon as you change one. <strong>Search posts</strong> finds posts and comments that contain a word.</p>
+  <table>
+    <thead><tr><th>Tab</th><th>What it shows</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Overview</strong></td><td>The number of posts and comments, the share of negative posts compared with the previous period of the same length, recent alerts, last week's issues from the digest, how students feel, and the most discussed posts.</td></tr>
+      <tr><td><strong>Alerts</strong></td><td>Posts that AI suggests staff look at, checked every morning. The number on the tab counts alerts from the last 7 days.</td></tr>
+      <tr><td><strong>Weekly digest</strong></td><td>A summary of each week, made every Monday morning.</td></tr>
+      <tr><td><strong>Posts</strong></td><td>The 10 most discussed, most negative, most positive or newest posts. Click a row to read the post.</td></tr>
+      <tr><td><strong>Trends</strong></td><td>Charts by post (sentiment, weighted sentiment, comments, engagement) and topics over time. Charts by post show the top 15 unless you tick <em>Show all posts</em>.</td></tr>
+      <tr><td><strong>Authors</strong></td><td>The 10 authors with the most negative posts and comments.</td></tr>
+    </tbody>
+  </table>
+  <p>Alerts and the weekly digest cover r/TemasekPoly and the TP-related posts on r/SGExams only. The sections further down describe the earlier layout in more detail.</p>
+
+  <hr />
+
   <h2>📌 About This App</h2>
   <p>
     This application is a tool designed to gather, process, and visualize user-generated content from
@@ -618,16 +635,12 @@
         <td>Select the end date (defaults to today).</td>
       </tr>
       <tr>
-        <td><strong>School</strong> and <strong>+ General TP</strong></td>
-        <td>Shows posts that mention one Temasek Polytechnic school. Gen AI links a post to a school only when it can quote words from the post that name that school: the school's name or short form, a diploma name or code, a module, or a named facility or programme. The quoted words are then checked against the list of schools, and general words such as "TP", bursaries, fees, CCAs, campus services or school subjects do not count. On subreddits other than r/TemasekPoly, a post must also mention Temasek Polytechnic. Each link shows the words relied on. Posts that name no school are counted as <em>general TP</em> posts. Tick <strong>+ General TP</strong> to show them alongside the school's posts. The School mentions box shows how many posts in the period have been checked, how many name a school and how many have not been checked yet. Posts collected before school checking started, or checked under the first, looser rules, are not counted as linked until they are checked again. Under Informatics &amp; IT they are still shown if the earlier AI flag marked them as IIT, and they are labelled as such. The list of schools, diplomas, modules and places is kept in <code>schools.json</code>.</td>
+        <td id="school-filter-help"><strong>School</strong> and <strong>Include general TP posts</strong></td>
+        <td>Shows posts that mention one Temasek Polytechnic school. Gen AI links a post to a school only when it can quote words from the post that name that school: the school's name or short form, a diploma name or code, a module, or a named facility or programme. The quoted words are then checked against the list of schools, and general words such as "TP", bursaries, fees, CCAs, campus services or school subjects do not count. On subreddits other than r/TemasekPoly, a post must also mention Temasek Polytechnic. Each link shows the words relied on. Posts that name no school are counted as <em>general TP</em> posts. Tick <strong>Include general TP posts</strong> to show them alongside the school's posts. The line under the figures on the Overview shows how many posts in the period name the school, how many are general TP and how many have not been checked yet. Posts collected before school checking started, or checked under the first, looser rules, are not counted as linked until they are checked again. Under Informatics &amp; IT they are still shown if the earlier AI flag marked them as IIT, and they are labelled as such. The list of schools, diplomas, modules and places is kept in <code>schools.json</code>.</td>
       </tr>
       <tr>
         <td><strong>TP-Related? Checkbox</strong></td>
         <td>Shown only when <code>r/sgExams</code> is selected. That subreddit covers every institution in Singapore, so this filter narrows results to posts the crawler flagged as mentioning Temasek Polytechnic (<code>relatedToTemasekPoly: true</code>). As with the IIT flag, the classification comes from Gen AI and may occasionally misfire.</td>
-      </tr>
-      <tr>
-        <td><strong>Filter Button</strong></td>
-        <td>Once the desired filter criteria are set, clicking the "Filter" button updates all charts and visualizations in real-time, ensuring that only relevant data is displayed.</td>
       </tr>
     </tbody>
   </table>
