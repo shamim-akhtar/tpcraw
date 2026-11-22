@@ -729,11 +729,11 @@ document.addEventListener('DOMContentLoaded', async () => {
               </div>
           </div>`;
 
-        const header = `<h2 class="post-details-title"><a href="${postData.URL || '#'}" target="_blank">${postData.title}</a></h2>`;
-        const meta = `<p class="post-details-meta">By <strong>${postData.author}</strong> on ${formattedDate}</p>`;
+        const header = `<h2 class="post-details-title"><a href="${safeUrl(postData.URL)}" target="_blank" rel="noopener noreferrer">${escapeHtml(postData.title)}</a></h2>`;
+        const meta = `<p class="post-details-meta">By <strong>${escapeHtml(postData.author)}</strong> on ${formattedDate}</p>`;
         const badges = `<div class="post-details-badges">${generateBadgesHtml(postData)}</div>`;
-        const summary = `<div class="post-details-summary"><h4 class="summary-title">AI Summary</h4><p class="summary-text">${postData.summary || 'N/A'}</p></div>`;
-        const body = `<div class="post-details-body-container"><h4 class="body-title">Post Content</h4><div class="body-content">${postData.body || ''}</div></div>`;
+        const summary = `<div class="post-details-summary"><h4 class="summary-title">AI Summary</h4><p class="summary-text">${postData.summary ? textToHtml(postData.summary) : 'N/A'}</p></div>`;
+        const body = `<div class="post-details-body-container"><h4 class="body-title">Post Content</h4><div class="body-content">${textToHtml(postData.body)}</div></div>`;
 
         // 3. Fetch Comments
         const commentsSnapshot = await getDocs(collection(db, `${postsCollection}/${postId}/comments`));
@@ -743,8 +743,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const c = cDoc.data();
             commentsHtml += `
                 <div class="post-details-comment">
-                    <p class="comment-meta"><strong>${c.author || 'Anon'}</strong></p>
-                    <p class="comment-body">${c.body || ''}</p>
+                    <p class="comment-meta"><strong>${escapeHtml(c.author || 'Anon')}</strong></p>
+                    <p class="comment-body">${textToHtml(c.body)}</p>
                     <div class="comment-badges">${generateCommentBadgesHtml(c)}</div>
                 </div>`;
         });
@@ -767,132 +767,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         postDetailsContent.innerHTML = `<div class="details-message error">Error loading details. Please check console for technical info.</div>`;
     }
   }
-
-  async function fetchAndDisplayPostDetails_old(postId) {
-    const postDetailsContainer = document.getElementById('post-details');
-    postDetailsContainer.innerHTML = '<p class="loading-message">Loading post details...</p>'; // Add class for styling
-
-    // Identify the posts collection
-    const subredditSelect = document.getElementById('subreddit-select');
-    const selectedSubreddit = subredditSelect.value;
-    const lowerSub = selectedSubreddit.toLowerCase();
-    const postsCollection = (lowerSub === "temasekpoly") ? "posts" : `${lowerSub}_posts`;
-
-    const postRef = doc(db, postsCollection, postId);
-    const postSnap = await getDoc(postRef);
-
-    if (!postSnap.exists()) {
-        // Add class for styling
-        postDetailsContainer.innerHTML = `<div class="details-message error">No details available for this post.</div>`;
-        return;
-    }
-
-    const postData = postSnap.data();
-
-    // --- Extract Data ---
-    const postTitle = postData.title || "No Title";
-    const author = postData.author || 'Unknown';
-    const postUrl = postData.URL || '#';
-    const date = postData.created?.toDate ? postData.created.toDate() : (postData.created ? new Date(postData.created) : new Date());
-    const formattedDate = date.toLocaleString('en-GB', {
-        day: '2-digit', month: 'short', year: 'numeric',
-        hour: '2-digit', minute: '2-digit', hour12: false
-    }).replace(',', '');
-
-    // --- Build HTML Sections (Removed inline styles, using classes) ---
-
-    // 1. Title Section
-    const urlHtml = `
-        <h2 class="post-details-title">
-            <a href="${postUrl}" target="_blank">
-                ${postTitle}
-            </a>
-        </h2>`;
-
-    // 2. Metadata Section
-    const metaHtml = `
-        <p class="post-details-meta">
-            Posted by <strong>${author}</strong> on ${formattedDate}
-        </p>`;
-
-    // 3. Badges Section
-    const badgesHtml = `
-        <div class="post-details-badges">
-            ${generateBadgesHtml(postData)}
-        </div>`;
-
-    // 4. Summary Section
-    const summaryHtml = `
-      <div class="post-details-summary">
-        <h4 class="summary-title">
-            💡 AI Generated Summary & Analysis
-        </h4>
-        <p class="summary-text">
-            ${postData.summary || '<i>No summary provided.</i>'}
-        </p>
-      </div>`;
-
-    // 5. Body Section
-    const bodyHtml = `
-      <div class="post-details-body-container">
-        <h4 class="body-title">Original Post Content:</h4>
-        <div class="body-content">
-            ${postData.body || '<i>No body content provided.</i>'}
-        </div>
-      </div>`;
-
-    // 6. Comments Section
-    const commentsRef = collection(db, `${postsCollection}/${postId}/comments`);
-    const commentsSnapshot = await getDocs(commentsRef);
-
-    let commentsHtml = `
-        <h3 class="post-details-comments-title">
-            Comments (${commentsSnapshot.size}):
-        </h3>`;
-
-    if (commentsSnapshot.size === 0) {
-        commentsHtml += `<p class="no-comments-message">No comments available.</p>`;
-    }
-    else {
-        commentsSnapshot.forEach(commentDoc => {
-            const commentData = commentDoc.data();
-            const commentDate = commentData.created?.toDate ? commentData.created.toDate() : (commentData.created ? new Date(commentData.created) : new Date());
-            const commentAuthor = commentData.author || 'Unknown';
-            const formattedCommentDate = commentDate.toLocaleString('en-GB', {
-                day: '2-digit', month: 'short', year: 'numeric',
-                hour: '2-digit', minute: '2-digit', hour12: false
-            }).replace(',', '');
-
-            const commentBadges = generateCommentBadgesHtml(commentData); // Assumes this generates HTML with classes now
-
-            commentsHtml += `
-              <div class="post-details-comment">
-                  <p class="comment-meta">
-                      Comment by <strong>${commentAuthor}</strong> on ${formattedCommentDate}
-                  </p>
-                  <p class="comment-body">
-                      ${commentData.body || '<i>No comment body.</i>'}
-                  </p>
-                  <div class="comment-badges">${commentBadges}</div>
-              </div>
-            `;
-        });
-    }
-
-    // --- Assemble Final HTML in a Styled Container ---
-    // Removed inline styles from the wrapper
-    postDetailsContainer.innerHTML = `
-      <div class="post-details-wrapper">
-          ${urlHtml}
-          ${metaHtml}
-          ${badgesHtml}
-          ${summaryHtml}
-          ${bodyHtml}
-          ${commentsHtml}
-      </div>
-    `;
-}
-
 
   // ---------------------------------------------
   // Post List Dropdown / Table
@@ -971,8 +845,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     for (const p of posts) {
       // Removed inline style="cursor: pointer;" - handled by CSS :hover on the class
       html += `
-        <tr data-post-id="${p.postId}" class="post-list-row"> 
-          <td>${p.title}</td>
+        <tr data-post-id="${escapeHtml(p.postId)}" class="post-list-row">
+          <td>${escapeHtml(p.title)}</td>
           <td>${p.weightedSentimentScore.toFixed(2)}</td>
           <td>${p.engagementScore.toFixed(2)}</td>
           <td>${p.rawSentimentScore.toFixed(2)}</td>
@@ -1343,7 +1217,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const statsDocSnap = await getDoc(statsDocRef);
 
         if (!statsDocSnap.exists()) {
-            container.innerHTML = `<div class="details-message info">No activity data found for date <strong>${dateStr}</strong>. Cannot check category ${formattedCategory}.</div>`;
+            container.innerHTML = `<div class="details-message info">No activity data found for date <strong>${escapeHtml(dateStr)}</strong>. Cannot check category ${escapeHtml(category)}.</div>`;
             return;
         }
 
@@ -1399,7 +1273,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Check if *any* posts or comments were found after combining lower/upper cases
         if (postIds.length === 0 && totalCommentCount === 0) {
             // Updated message to reflect that variations were checked
-            container.innerHTML = `<div class="details-message info">No posts or comments found specifically matching category <strong>${formattedCategory}</strong> (or its variations like ${lowerCategory}/${upperCategory}) on ${dateStr}.</div>`;
+            container.innerHTML = `<div class="details-message info">No posts or comments found specifically matching category <strong>${escapeHtml(category)}</strong> (or its variations like ${escapeHtml(lowerCategory)}/${escapeHtml(upperCategory)}) on ${escapeHtml(dateStr)}.</div>`;
             return;
         }
 
@@ -1449,7 +1323,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let html = `
             <div class="category-date-details-wrapper">
                 ${navHtml}
-                <h2 class="category-date-title">Category: ${category} on ${dateStr}</h2>
+                <h2 class="category-date-title">Category: ${escapeHtml(category)} on ${escapeHtml(dateStr)}</h2>
         `;
 
         // --- Display Posts (using combined postIds) ---
@@ -1489,9 +1363,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     html += `
                         <div class="search-result-post category-post-item">
                             <h4 class="post-title">
-                                <a href="${postUrl}" target="_blank" rel="noopener noreferrer">${postTitle}</a>
+                                <a href="${safeUrl(postUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(postTitle)}</a>
                             </h4>
-                            <p class="post-meta">By <strong>${author}</strong> on ${formattedPostDate}</p>
+                            <p class="post-meta">By <strong>${escapeHtml(author)}</strong> on ${formattedPostDate}</p>
                             <p class="post-body-excerpt">
                                 ${postBody ? escapeHtml(postBody.substring(0, 250) + (postBody.length > 250 ? '...' : '')) : '<i>No body content</i>'}
                             </p>
@@ -1556,7 +1430,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     html += `
                         <div class="search-result-comment category-comment-item">
                             <p class="comment-meta">
-                                In Post: <span class="parent-post-title">"${escapeHtml(parentPostTitle)}"</span> (Comment by <strong>${author}</strong> on ${formattedDate})
+                                In Post: <span class="parent-post-title">"${escapeHtml(parentPostTitle)}"</span> (Comment by <strong>${escapeHtml(author)}</strong> on ${formattedDate})
                             </p>
                             <p class="comment-body">
                                 ${commentBody ? escapeHtml(commentBody) : '<i>No comment body.</i>'}
@@ -1579,27 +1453,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         container.innerHTML = html;
 
     } catch (error) {
-        console.error(`Error fetching details for category ${formattedCategory} on ${dateStr}:`, error);
+        console.error(`Error fetching details for category ${category} on ${dateStr}:`, error);
         container.innerHTML = `<div class="details-message error">An error occurred while fetching activity details. Please check the console or try again later.</div>`;
     }
 }
 
-// Helper function to escape HTML (prevent XSS)
+// Reddit posts, comments and AI summaries are untrusted text. Always pass
+// them through these helpers before putting them into innerHTML.
 function escapeHtml(unsafe) {
-    if (!unsafe) return '';
-    return unsafe
+    if (unsafe === null || unsafe === undefined) return '';
+    return String(unsafe)
          .replace(/&/g, "&amp;")
          .replace(/</g, "&lt;")
          .replace(/>/g, "&gt;")
          .replace(/"/g, "&quot;")
          .replace(/'/g, "&#039;");
- }
+}
+
+// Escaped text with line breaks kept.
+function textToHtml(text) {
+    return escapeHtml(text).replace(/\r?\n/g, '<br>');
+}
+
+// Only allow http(s) links, so a stored "javascript:" URL cannot run.
+function safeUrl(url) {
+    if (!url) return '#';
+    try {
+        const parsed = new URL(String(url));
+        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+            return escapeHtml(parsed.href);
+        }
+    } catch (e) { /* fall through */ }
+    return '#';
+}
 
   // For clicking on the authors chart bars
   async function fetchAndDisplayPostsAndCommentsByAuthor(authorName) {
     openDrawer();
     const container = document.getElementById('post-details');
-    container.innerHTML = `<div class="details-message loading">Loading ${authorName}'s activity...</div>`;
+    container.innerHTML = `<div class="details-message loading">Loading ${escapeHtml(authorName)}'s activity...</div>`;
 
     const subredditSelect = document.getElementById('subreddit-select');
     const selectedSubreddit = subredditSelect.value;
@@ -1613,7 +1505,7 @@ function escapeHtml(unsafe) {
 
         if (!authorSnap.exists()) {
             // Use class for message
-            container.innerHTML = `<div class="details-message info">No activity data found for author: <strong>${authorName}</strong>.</div>`;
+            container.innerHTML = `<div class="details-message info">No activity data found for author: <strong>${escapeHtml(authorName)}</strong>.</div>`;
             return;
         }
 
@@ -1633,7 +1525,7 @@ function escapeHtml(unsafe) {
         let html = `
           <div class="author-details-wrapper">
             ${navHtml}
-            <h2 class="author-details-title">Activity by ${authorName}</h2>
+            <h2 class="author-details-title">Activity by ${escapeHtml(authorName)}</h2>
         `;
 
         // --- Fetch and Display Posts ---
@@ -1661,11 +1553,11 @@ function escapeHtml(unsafe) {
                     html += `
                       <div class="search-result-post author-post-item">
                         <h4 class="post-title">
-                          <a href="${postUrl}" target="_blank">${postTitle}</a>
+                          <a href="${safeUrl(postUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(postTitle)}</a>
                         </h4>
                         <p class="post-meta">Posted on ${formattedPostDate}</p>
                         <p class="post-body-excerpt">
-                          ${postBody || '<i>No body content</i>'}
+                          ${postBody ? escapeHtml(postBody) : '<i>No body content</i>'}
                         </p>
                         <div class="post-badges">${generateBadgesHtml(postData)}</div>
                         <button class="view-full-post-btn" data-post-id="${postId}">
@@ -1737,10 +1629,10 @@ function escapeHtml(unsafe) {
                     html += `
                       <div class="search-result-comment author-comment-item">
                           <p class="comment-meta">
-                              In Post: <span class="parent-post-title">"${parentPostTitle}"</span> (On ${formattedCommentDate})
+                              In Post: <span class="parent-post-title">"${escapeHtml(parentPostTitle)}"</span> (On ${formattedCommentDate})
                           </p>
                           <p class="comment-body">
-                              ${commentBody || '<i>No comment body.</i>'}
+                              ${commentBody ? escapeHtml(commentBody) : '<i>No comment body.</i>'}
                           </p>
                           <div class="comment-badges">${commentBadges}</div>
                           <button class="view-full-post-btn view-thread-btn" data-post-id="${commentPostId}">
@@ -1761,7 +1653,7 @@ function escapeHtml(unsafe) {
     catch (error) {
         console.error(`Error fetching details for author ${authorName}:`, error);
          // Use class for error message
-        container.innerHTML = `<div class="details-message error">Error fetching details for <strong>${authorName}</strong>. Please check the console.</div>`;
+        container.innerHTML = `<div class="details-message error">Error fetching details for <strong>${escapeHtml(authorName)}</strong>. Please check the console.</div>`;
     }
 }
 
@@ -1771,17 +1663,14 @@ function escapeHtml(unsafe) {
   // ---------------------------------------------
 
   // Function to highlight keyword in text (remains the same)
+  // Escapes the text, then wraps each match of the keyword in <mark>.
   function highlightKeyword(text, keyword) {
-    if (!text || !keyword) return text;
-    try {
-      const regex = new RegExp(`(${keyword.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
-      return text.replace(regex, '<mark>$1</mark>');
-    }
-    catch (e) {
-      console.error("Regex error during highlighting:", e);
-      // Basic fallback
-      return text.replace(new RegExp(keyword, 'gi'), `<mark>${keyword}</mark>`);
-    }
+    if (!text) return '';
+    if (!keyword) return escapeHtml(text);
+    const pattern = keyword.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const parts = String(text).split(new RegExp(`(${pattern})`, 'gi'));
+    // split() with a capture group puts the matches at the odd positions.
+    return parts.map((part, i) => i % 2 === 1 ? `<mark>${escapeHtml(part)}</mark>` : escapeHtml(part)).join('');
   }
 
   // Function to perform search across posts and comments
@@ -1793,7 +1682,7 @@ function escapeHtml(unsafe) {
     // Open the modal immediately and show loading
     openDrawer();
     const postDetailsContainer = document.getElementById('post-details');
-    postDetailsContainer.innerHTML = `<p class="loading-message">Searching for "${keyword}"...</p>`;
+    postDetailsContainer.innerHTML = `<p class="loading-message">Searching for "${escapeHtml(keyword)}"...</p>`;
 
     const subredditSelect = document.getElementById('subreddit-select');
     const selectedSubreddit = subredditSelect.value;
@@ -1891,7 +1780,7 @@ function escapeHtml(unsafe) {
           <div class="search-results-wrapper no-results">
             ${navHtml}
             <h2 class="search-results-title">Search Results</h2>
-            <p class="search-no-results-message">No results found matching "<strong>${keyword}</strong>".</p>
+            <p class="search-no-results-message">No results found matching "<strong>${escapeHtml(keyword)}</strong>".</p>
           </div>`;
         return;
     }
@@ -1899,7 +1788,7 @@ function escapeHtml(unsafe) {
     let html = `
       <div class="search-results-wrapper">
         ${navHtml}
-        <h2 class="search-results-title">Search Results for "${keyword}"</h2>
+        <h2 class="search-results-title">Search Results for "${escapeHtml(keyword)}"</h2>
     `;
 
     // --- Display matching posts ---
@@ -1920,9 +1809,9 @@ function escapeHtml(unsafe) {
             html += `
               <div class="search-result-post search-item-card">
                 <h4 class="post-title">
-                  <a href="${url}" target="_blank">${highlightKeyword(postTitle, keyword)}</a>
+                  <a href="${safeUrl(url)}" target="_blank" rel="noopener noreferrer">${highlightKeyword(postTitle, keyword)}</a>
                 </h4>
-                <p class="post-meta">By <strong>${author}</strong> on ${formattedDate}</p>
+                <p class="post-meta">By <strong>${escapeHtml(author)}</strong> on ${formattedDate}</p>
                 <p class="post-body-excerpt">
                   ${highlightKeyword(postBody, keyword) || '<i>No body content</i>'}
                 </p>
@@ -1958,8 +1847,8 @@ function escapeHtml(unsafe) {
             html += `
               <div class="search-result-comment search-item-card">
                   <p class="comment-meta">
-                      Comment by <strong>${author}</strong> on ${formattedDate}
-                      (in post: <span class="parent-post-title">"${parentPostTitle}"</span>)
+                      Comment by <strong>${escapeHtml(author)}</strong> on ${formattedDate}
+                      (in post: <span class="parent-post-title">"${escapeHtml(parentPostTitle)}"</span>)
                   </p>
                   <p class="comment-body">
                       ${highlightKeyword(commentBody, keyword) || '<i>No comment body.</i>'}
