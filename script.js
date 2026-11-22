@@ -1478,7 +1478,10 @@ function plural(n, word) {
 
 // One short line under the Overview figures: how many posts in the period
 // name the chosen school, and what is left out.
+let lastSchoolCoverage = null;
+
 function renderSchoolCoverage(useSchools, schoolCode, c, includeGeneral) {
+    lastSchoolCoverage = useSchools ? { schoolCode, includeGeneral, ...c } : null;
     const box = document.getElementById('schoolCoverage');
     const text = document.getElementById('schoolCoverageText');
     if (!box || !text) return;
@@ -2138,10 +2141,24 @@ function safeUrl(url) {
     }
   }
 
+  // Why a view is empty, in plain words. With a school chosen, the usual
+  // reason is that no post in the period names that school.
+  function emptyPeriodText() {
+    const c = lastSchoolCoverage;
+    if (c && c.schoolCode && c.total > 0) {
+      const name = SCHOOL_NAMES[c.schoolCode] || c.schoolCode;
+      let t = `No post in this period names ${name}.`;
+      if (c.general) t += ` ${plural(c.general, 'post')} ${c.general === 1 ? 'is' : 'are'} about TP in general: tick "Include general TP posts" to see ${c.general === 1 ? 'it' : 'them'}, or choose a longer period.`;
+      if (c.unchecked) t += ` ${plural(c.unchecked, 'post')} ${c.unchecked === 1 ? 'has' : 'have'} not been checked for schools yet.`;
+      return t;
+    }
+    return 'No posts in this period.';
+  }
+
   function renderOverviewTopPosts(data) {
     const container = document.getElementById('overviewTopPosts');
     const top = [...data].sort((a, b) => b.totalComments - a.totalComments).slice(0, 8);
-    if (!top.length) { container.innerHTML = '<p class="ui-muted">No posts in this period.</p>'; return; }
+    if (!top.length) { container.innerHTML = `<p class="ui-muted">${emptyPeriodText()}</p>`; return; }
     const max = Math.max(1, ...top.map(p => Math.abs(p.totalPositiveSentiments || 0) + Math.abs(p.totalNegativeSentiments || 0)));
     container.innerHTML = '<div class="ui-legend"><span class="ui-pos">Positive comments</span><span class="ui-neg">Negative comments</span></div>' +
       '<div class="ui-bars">' + top.map(p => {
