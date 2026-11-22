@@ -71,6 +71,7 @@ def main():
     client = None if args.dry_run else genai.Client(api_key=crawler.GOOGLE_GEMINI_API_KEY)
 
     alerts.correct_saved_alerts(dry_run=args.dry_run)
+    alerts.mask_saved_alerts(client, dry_run=args.dry_run)
 
     today = datetime.datetime.now(SGT).date()
     first = today - datetime.timedelta(days=args.days - 1)
