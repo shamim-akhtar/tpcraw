@@ -674,15 +674,25 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // ---------------------------------------------
-  // Chart 3: RAW SENTIMENT STACK (Stacked Sentiment)
+  // Chart 3: COMMENTS BY POST (positive, neutral, negative)
+  // Negative comments go left of zero and positive comments go right.
+  // Neutral comments sit in the middle in grey, half on each side, so a post
+  // whose comments are all neutral still shows a bar.
   // ---------------------------------------------
+  function commentSplit(post) {
+    const pos = Math.abs(post.totalPositiveSentiments || 0);
+    const neg = Math.abs(post.totalNegativeSentiments || 0);
+    const neu = Math.max(0, (post.totalComments || 0) - pos - neg);
+    return { pos, neg, neu };
+  }
+
   function renderSentimentStackChart(allData) {
-      const total = p => Math.abs(p.totalPositiveSentiments || 0) + Math.abs(p.totalNegativeSentiments || 0);
+      const total = p => { const c = commentSplit(p); return c.pos + c.neg + c.neu; };
       const data = pickPosts(allData, (a, b) => total(b) - total(a));
       sizeRowsChart('stackedSentimentChart', data.length);
       const labels = data.map(post => rowLabel(post.title));
-      const positiveData = data.map(post => Math.abs(post.totalPositiveSentiments || 0));
-      const negativeData = data.map(post => -Math.abs(post.totalNegativeSentiments || 0));
+      const split = data.map(commentSplit);
+      const NEUTRAL = 'rgba(154, 165, 177, 0.85)';
 
       const ctx = document.getElementById('stackedSentimentChart').getContext('2d');
 
@@ -690,22 +700,40 @@ document.addEventListener('DOMContentLoaded', async () => {
           commentsSentimentChart.destroy();
       }
 
+      // Bars stack outwards from zero in the order listed here.
       commentsSentimentChart = new Chart(ctx, {
           type: 'bar',
           data: {
               labels: labels,
               datasets: [
-                  { label: 'Positive comments', data: positiveData, backgroundColor: 'rgba(46, 158, 143, 0.85)', stack: 'Stack 0' },
-                  { label: 'Negative comments', data: negativeData, backgroundColor: 'rgba(217, 83, 79, 0.85)', stack: 'Stack 0' }
+                  { label: 'Neutral comments', data: split.map(c => c.neu / 2), backgroundColor: NEUTRAL, stack: 'Stack 0', counts: split.map(c => c.neu) },
+                  { label: 'Neutral comments', data: split.map(c => -c.neu / 2), backgroundColor: NEUTRAL, stack: 'Stack 0', counts: split.map(c => c.neu), hideInLegend: true },
+                  { label: 'Positive comments', data: split.map(c => c.pos), backgroundColor: 'rgba(46, 158, 143, 0.85)', stack: 'Stack 0', counts: split.map(c => c.pos) },
+                  { label: 'Negative comments', data: split.map(c => -c.neg), backgroundColor: 'rgba(217, 83, 79, 0.85)', stack: 'Stack 0', counts: split.map(c => c.neg) }
               ]
           },
-          options: horizontalOptions('Positive and negative comments by post', data, {
+          options: horizontalOptions('Comments by post', data, {
               y: { stacked: true },
               x: { stacked: true, ticks: { callback: v => Math.abs(v), font: { size: isMobileViewport() ? 10 : 12 } } },
               interaction: { mode: 'index', axis: 'y', intersect: false }
           })
       });
-      commentsSentimentChart.options.plugins.tooltip.callbacks.label = c => `${c.dataset.label}: ${Math.abs(c.raw)}`;
+      const opts = commentsSentimentChart.options.plugins;
+      opts.legend.labels.filter = item => !commentsSentimentChart.data.datasets[item.datasetIndex].hideInLegend;
+      // Clicking "Neutral comments" in the legend hides both halves.
+      opts.legend.onClick = (e, item, legend) => {
+          const chart = legend.chart;
+          const label = chart.data.datasets[item.datasetIndex].label;
+          const show = !chart.isDatasetVisible(item.datasetIndex);
+          chart.data.datasets.forEach((d, i) => { if (d.label === label) chart.setDatasetVisible(i, show); });
+          chart.update();
+      };
+      // One line per type, in the same order as the legend, with whole counts.
+      const ORDER = ['Positive comments', 'Neutral comments', 'Negative comments'];
+      opts.legend.labels.sort = (a, b) => ORDER.indexOf(a.text) - ORDER.indexOf(b.text);
+      opts.tooltip.filter = item => !item.dataset.hideInLegend;
+      opts.tooltip.itemSort = (a, b) => ORDER.indexOf(a.dataset.label) - ORDER.indexOf(b.dataset.label);
+      opts.tooltip.callbacks.label = c => `${c.dataset.label}: ${c.dataset.counts[c.dataIndex]}`;
       commentsSentimentChart.update('none');
   }
 
